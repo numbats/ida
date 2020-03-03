@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Assessment</title>
+
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="assets/styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand"  src='assets/monash-logo.png'> 
+      <a class="navbar-brand" href="index.html">ETC1010: Introduction to Data Analysis</a>
+      <div class="navbar-brand" style="color: #E6E6E6; font-size:0.8em;">2020 S1</div>
+      <div class="navbar-brand d-none d-print-block" style="color: #E6E6E6; font-size:0.8em;">Copyright &copy; Monash University</div>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="assessment.html">Assessment</a></li>
+        <li><a href="help.html"><i class="fa fa-question-circle"></i> Help</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="about.html"><i class="fa fa-info-circle"></i> About</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Assessment</h1>
+
+</div>
+
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Assessment Task
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Value
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Due Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Reading Quizzes
+</td>
+<td style="text-align:center;width: 1cm; ">
+5%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Weeks 1-8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Lab Exercises
+</td>
+<td style="text-align:center;width: 1cm; ">
+5%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Each class period
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Assignment 1
+</td>
+<td style="text-align:center;width: 1cm; ">
+6%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Week 4 ()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Mid-semester in-class exam
+</td>
+<td style="text-align:center;width: 1cm; ">
+8%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Week 6 ()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Assignment 2
+</td>
+<td style="text-align:center;width: 1cm; ">
+6%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Week 8 ()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Data Analysis Practical Exam
+</td>
+<td style="text-align:center;width: 1cm; ">
+10%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Week 11 ()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Project
+</td>
+<td style="text-align:center;width: 1cm; ">
+10%
+</td>
+<td style="text-align:left;width: 3cm; ">
+Week 11 ()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+Final Exam
+</td>
+<td style="text-align:center;width: 1cm; ">
+50%
+</td>
+<td style="text-align:left;width: 3cm; ">
+TBA
+</td>
+</tr>
+</tbody>
+</table>
+<div id="assignments" class="section level2">
+<h2>Assignments</h2>
+<p>Information to complete the assignments is below:</p>
+<ul>
+<li>Unzip the file and double click on the rstudio project, “assignment-1-2020-s1.Rproj” This contains the data and Rmd file</li>
+<li><strong>Note that the assignment is also on rstudio.cloud as well under assignment 3</strong></li>
+</ul>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Assignment
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Due.Date
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Instructions
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 0.5cm; ">
+1
+</td>
+<td style="text-align:center;width: 1cm; ">
+2020/04/01 at 5pm
+</td>
+<td style="text-align:left;width: 3cm; ">
+link
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="project" class="section level2">
+<h2>Project</h2>
+<p><a href="project/project-instructions.html">Project instructions</a></p>
+<ul>
+<li><strong>Deadline 1 (13th September)</strong>: Find team members, and potential topics to study (List of groups will be posted here)</li>
+<li><strong>Deadline 2 (20th September)</strong>: Team members and team name, data description.</li>
+<li><strong>Deadline 3 (11th October) </strong>: Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.</li>
+<li><strong>Deadline 4 (21st October) </strong>: Final version of story board uploaded.</li>
+<li><strong>Presentation in week 12</strong></li>
+</ul>
+<p>There are several ways to do the storyboard: - <code>learnr</code> package that the lecture notes are written in. <a href="project/lecture10b.zip">Example files with css</a> - <a href="https://rmarkdown.rstudio.com/flexdashboard/">flexdashboard</a> package, and there is an <a href="project/pisa_au_app.zip">example here</a> - or a basic <a href="https://shiny.rstudio.com/gallery/">shiny</a> app</p>
+<p>Past Example projects from ETC1010:</p>
+<ul>
+<li><p><a href="https://ebsmonash.shinyapps.io/Thor/">Analysing Movie Data</a></p></li>
+<li><p><a href="https://ebsmonash.shinyapps.io/Instagram/">Instagram analysis</a></p></li>
+<li><p>Examples from different web sites:</p>
+<ul>
+<li><a href="https://www.r-bloggers.com/blue-bikes-sharing-in-boston/">Blue Bikes Sharing in Boston</a></li>
+<li><a href="https://ropensci.org/blog/2018/08/21/birds-radolfzell/">What birds are observed near Radolfzell? Bird occurrence data in R</a>
+<ul>
+<li><a href="https://www.r-bloggers.com/who-wrote-the-anti-trump-new-york-times-op-ed-using-tidytext-to-find-document-similarity/">Who wrote the anti-Trump New York Times op-ed? Using tidytext to find document similarity</a></li>
+<li><a href="https://nycdatascience.com/blog/student-works/web-scraping/hotels-vs-airbnb-barcelona-case-study-proof-of-concept/">Hotels vs Airbnb - Barcelona case study (proof of concept)</a></li>
+<li><a href="http://www.sastibe.de/2018/04/don-t-worry-google-location/">Don’t Worry: Google Only Checks Your Location Every 10 Minutes</a></li>
+<li><a href="http://staff.math.su.se/hoehle/blog/2018/07/09/gini.html">World Income, Inequality and Murder</a></li>
+<li><a href="http://varianceexplained.org/r/trump-tweets/">Text analysis of Trump’s tweets confirms he writes only the (angrier) Android half</a></li>
+<li><a href="http://varianceexplained.org/r/super-bowl-squares/">What digits should you bet on in Super Bowl squares?</a></li>
+<li><a href="http://varianceexplained.org/r/digit-eda/">Exploring handwritten digit classification: a tidy analysis of the MNIST dataset</a></li>
+<li><a href="https://rickpackblog.wordpress.com/2018/08/20/facebook-advertising-case-study-dog-food-and-manhood/">Facebook advertising case-study: dog food and manhood</a></li>
+<li><a href="https://datascienceplus.com/analysis-of-los-angeles-crime-with-r/">Analysis of Los Angeles Crime with R</a></li>
+<li><a href="https://pradeepadhokshaja.wordpress.com/2018/08/06/looking-at-seinfeld-dialogues-using-tidytext/">Looking at Seinfeld dialogues using #tidytext</a></li>
+<li><a href="https://github.com/neilfws/Twitter/blob/master/user2018/code/R/user2018.md">Twitter Coverage of the useR Conference 2018</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="exam-information" class="section level2">
+<h2>Exam information</h2>
+<ul>
+<li><p><a href="exam/midterm2019.pdf">Midterm 2019</a> <a href="exam/midterm2019_solution.pdf">(solution)</a></p></li>
+<li><p><a href="exam/formula_sheet.pdf">Formula sheet</a></p></li>
+<li><p><a href="exam/exam2018.pdf">Final Exam for 2018 Semester 1</a> <a href="exam/exam2018_solution.pdf">(solution)</a></p></li>
+<li><p><a href="exam/exam2018_S2.pdf">Final Exam for 2018 Semester 2</a> <a href="exam/exam2018_S2_solution.pdf">(solution)</a></p></li>
+<li><p><a href="exam/exam2019-s1.pdf">Final Exam for 2019 Semester 1</a></p></li>
+</ul>
+</div>
+
+  </div> <!-- articleBandContent -->
+</div> <!-- pageContent -->
+
+<footer id="sticky-footer">
+<div class="container text-center">
+   Copyright &copy; 2020 Monash University
+</div>
+
+</footer>
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

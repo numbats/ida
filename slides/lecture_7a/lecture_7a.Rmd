@@ -1,0 +1,74 @@
+---
+title: "ETC1010: Introduction to Data Analysis"
+week: "Week 7, part A"
+subtitle: "Week of introduction"
+author: "Nicholas Tierney"
+email: "nicholas.tierney@monash.edu"
+date: "20th April 2020"
+pdflink: ""
+bgimg: "images/bg1.jpg"
+output:
+  xaringan::moon_reader:
+    css:
+      - ninjutsu 
+      - "assets/animate.css"
+      - "assets/monash-logo.css"
+      - "assets/monash-brand.css"
+      - "assets/monash-fonts.css"
+      - "assets/styles.css" # small improvements
+      - "assets/custom.css" # add your own CSS here!
+      - "assets/demo.css" # this should be removed
+    self_contained: false 
+    seal: false 
+    chakra: 'libs/remark-latest.min.js'
+    lib_dir: libs
+    includes:
+      in_header: "assets/custom.html"
+    mathjax: "assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    nature:
+      highlightStyle: github 
+      highlightLanguage: r 
+      highlightLines: true
+      highlightSpans: false 
+      countIncrementalSlides: false
+      slideNumberFormat: '%current%/%total%'
+      navigation:
+        scroll: false 
+        touch: true
+        click: false
+      ratio: '16:9'
+---
+  
+```{r titleslide, child="components/titleslide.Rmd"}
+```
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+opts_chunk$set(echo = TRUE,   
+               message = FALSE,
+               warning = FALSE,
+               collapse = TRUE,
+               fig.height = 4,
+               fig.width = 8,
+               fig.align = "center",
+               cache = FALSE)
+
+as_table <- function(...) knitr::kable(..., format='html', digits = 3)
+```
+
+
+---
+# First - go to ED and mark another person's assignment
+
+[
+- dmac.netlify.com
+]
+
+
+---
+  
+```{r endslide, child="components/endslide.Rmd"}
+```

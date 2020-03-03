@@ -1,0 +1,126 @@
+---
+title: "Assessment"
+---
+
+```{r setup, echo = FALSE, warning = FALSE, message = FALSE} 
+library(knitr)
+library(tidyverse)
+library(kableExtra)
+
+opts_chunk$set(echo = FALSE)
+
+```
+
+
+```{r create-assessment}
+
+assessment_df <- data.frame(
+  "assessment_task" = c("Reading Quizzes",
+                        "Lab Exercises",
+                        "Assignment 1",
+                        "Mid-semester in-class exam",
+                        "Assignment 2",
+                        "Data Analysis Practical Exam",
+                        "Project",
+                        "Final Exam"),
+  "value" = c("5%",
+              "5%",
+              "6%",
+              "8%",
+              "6%",
+              "10%",
+              "10%",
+              "50%"),
+  "due_date" = c("Weeks 1-8",
+                 "Each class period",
+                 "Week 4 ()",
+                 "Week 6 ()",
+                 "Week 8 ()",
+                 "Week 11 ()",
+                 "Week 11 ()",
+                 "TBA")
+  )
+
+names(assessment_df) <- c("Assessment Task",
+                          "Value",
+                          "Due Date")
+
+assessment_df %>% 
+kable(escape = FALSE, 
+      align = c("l", "c", "l")) %>% 
+  kable_styling(bootstrap_options = "striped",
+                fixed_thead = T) %>% 
+  column_spec(1, width = "0.5cm") %>% 
+  column_spec(2, width = "1cm") %>% 
+  column_spec(3, width = "3cm") 
+```
+
+## Assignments
+
+Information to complete the assignments is below:
+
+- Unzip the file and double click on the rstudio project, "assignment-1-2020-s1.Rproj" This contains the data and Rmd file
+- **Note that the assignment is also on rstudio.cloud as well under assignment 3**
+
+
+```{r assignments}
+assignment_df <- data.frame(
+  Assignment = 1,
+  `Due Date` = "2020/04/01 at 5pm",
+  Instructions = "link"
+)
+
+assignment_df %>% 
+kable(escape = FALSE, 
+      align = c("l", "c", "l")) %>% 
+  kable_styling(bootstrap_options = "striped",
+                fixed_thead = T) %>% 
+  column_spec(1, width = "0.5cm") %>% 
+  column_spec(2, width = "1cm") %>% 
+  column_spec(3, width = "3cm") 
+```
+
+## Project
+
+[Project instructions](project/project-instructions.html) 
+
+- **Deadline 1 (13th September)**:  Find team members, and potential topics to study (List of groups will be posted here)
+- **Deadline 2 (20th September)**:  Team members and team name, data description.
+- **Deadline 3 (11th October) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
+- **Deadline 4 (21st October) **:  Final version of story board uploaded. 
+- **Presentation in week 12**
+
+There are several ways to do the storyboard:
+  - `learnr` package that the lecture notes are written in. [Example files with css](project/lecture10b.zip)
+  - [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) package, and there is an [example here](project/pisa_au_app.zip)
+	- or a basic [shiny](https://shiny.rstudio.com/gallery/) app
+  
+Past Example projects from ETC1010:
+
+- [Analysing Movie Data](https://ebsmonash.shinyapps.io/Thor/)
+- [Instagram analysis](https://ebsmonash.shinyapps.io/Instagram/)
+
+- Examples from different web sites:
+  - [Blue Bikes Sharing in Boston](https://www.r-bloggers.com/blue-bikes-sharing-in-boston/)
+  - [What birds are observed near Radolfzell? Bird occurrence data in R](https://ropensci.org/blog/2018/08/21/birds-radolfzell/)
+	- [Who wrote the anti-Trump New York Times op-ed? Using tidytext to find document similarity](https://www.r-bloggers.com/who-wrote-the-anti-trump-new-york-times-op-ed-using-tidytext-to-find-document-similarity/)
+	- [Hotels vs Airbnb - Barcelona case study (proof of concept)](https://nycdatascience.com/blog/student-works/web-scraping/hotels-vs-airbnb-barcelona-case-study-proof-of-concept/)
+	- [Don't Worry: Google Only Checks Your Location Every 10 Minutes](http://www.sastibe.de/2018/04/don-t-worry-google-location/)
+	- [World Income, Inequality and Murder](http://staff.math.su.se/hoehle/blog/2018/07/09/gini.html)
+	- [Text analysis of Trump's tweets confirms he writes only the (angrier) Android half](http://varianceexplained.org/r/trump-tweets/)
+	- [What digits should you bet on in Super Bowl squares?](http://varianceexplained.org/r/super-bowl-squares/)
+	- [Exploring handwritten digit classification: a tidy analysis of the MNIST dataset](http://varianceexplained.org/r/digit-eda/)
+	- [Facebook advertising case-study: dog food and manhood](https://rickpackblog.wordpress.com/2018/08/20/facebook-advertising-case-study-dog-food-and-manhood/)
+	- [Analysis of Los Angeles Crime with R](https://datascienceplus.com/analysis-of-los-angeles-crime-with-r/)
+	- [Looking at Seinfeld dialogues using #tidytext](https://pradeepadhokshaja.wordpress.com/2018/08/06/looking-at-seinfeld-dialogues-using-tidytext/)
+	- [Twitter Coverage of the useR Conference 2018](https://github.com/neilfws/Twitter/blob/master/user2018/code/R/user2018.md)
+
+## Exam information
+
+- [Midterm 2019](exam/midterm2019.pdf) [(solution)](exam/midterm2019_solution.pdf)
+
+- [Formula sheet](exam/formula_sheet.pdf)
+
+- [Final Exam for 2018 Semester 1](exam/exam2018.pdf) [(solution)](exam/exam2018_solution.pdf)
+- [Final Exam for 2018 Semester 2](exam/exam2018_S2.pdf) [(solution)](exam/exam2018_S2_solution.pdf)
+- [Final Exam for 2019 Semester 1](exam/exam2019-s1.pdf)

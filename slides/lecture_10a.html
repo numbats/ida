@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ETC1010: Introduction to Data Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nicholas Tierney" />
+    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    -->
+    <link rel="icon" href="images/favicon.ico"  type='image/x-icon'/>    
+    <link rel="stylesheet" href="assets/animate.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-logo.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-brand.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles.css" type="text/css" />
+    <link rel="stylesheet" href="assets/custom.css" type="text/css" />
+    <link rel="stylesheet" href="assets/demo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+  
+
+
+background-color: #006DAE
+class: middle center hide-slide-number
+
+
+&lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;/div&gt;
+
+&lt;br&gt;
+
+.white[Press the **right arrow** to progress to the next slide!]
+
+---
+
+
+background-image: url(images/bg1.jpg)
+background-size: cover
+class: hide-slide-number split-70 title-slide
+count: false
+
+.column.shade_black[.content[
+
+&lt;br&gt;
+
+# .monash-blue.outline-text[ETC1010: Introduction to Data Analysis]
+
+&lt;h2 class="monash-blue2 outline-text" style="font-size: 30pt!important;"&gt;Week 10, part A&lt;/h2&gt;
+
+&lt;br&gt;
+
+&lt;h2 style="font-weight:900!important;"&gt;Week of introduction&lt;/h2&gt;
+
+.bottom_abs.width100[
+
+Lecturer: *Nicholas Tierney*
+
+Department of Econometrics and Business Statistics
+
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+
+11th Mar 2020
+
+&lt;br&gt;
+]
+
+
+]]
+
+
+
+&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
+&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
+&lt;svg class="clip-svg absolute"&gt;
+&lt;defs&gt;
+&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
+&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
+&lt;/clipPath&gt;
+&lt;/defs&gt;	
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+
+
+
+---
+
+# Announcements
+
+- Some of the lecture slides don't load on a web browser
+- Current alternative for viewing: Download the HTML or the RMD for the moment and view locally.
+- I'm in the process of sorting it out
+
+---
+# The Practical Exam
+
+- Time: 1 Hour
+- Task: Complete a data analysis and answer questions (like the assignments, but short - similar to the in class exercises)
+- Conditions: 
+  - Open book
+  - Internet access
+  - No contacting / messaging / communicating friends during exam (penalty will be the same as cheating in exam)
+
+---
+# The Project Data Milestone: What do Submit
+
+- An Rmd file + 
+- The rendered HTML file
+- The data
+- Zipped / compressed together
+- In the document:
+  - Write about the data - what is it, what are the variables, what sort of questions are you asking, what did you need to do clean the data, what cleaning is remaining?
+  - (About 1-2 paragraphs of text.)
+
+---
+# The Project: More general questions
+
+- "How many questions should we ask?"
+  - About 3 - roughly one per person in your group
+- "How will the project be marked?"
+  - You will all mark the projects as you watch them
+- You will need to present for 5 minutes max - use this to help frame how long your analysis should be. 
+- 5 minutes is short - but it is actually a pretty serious challenge!
+- But also consider that the project will be marked by me as well - you won't need to cover everything
+
+---
+# The project: What should we present?
+
+Many options!
+
+- You can submit an Rmarkdown document + HTML file
+- You present with a [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) (demo)
+- You could even present as a slide show (like the lecture slides)
+- How to share - Ideally you can use netlify drag and drop (demo)
+
+---
+# Exam details
+
+- Worth 50% of your final grade
+- NOT Open Book
+- Calculator: Yes - Allowed to take in "Only HP 10bII+ or Casio FX82 (any suffix) calculator permitted"
+- One A4 page of notes, printed on both sides. This will be collected at the end of the examination.
+- **Hurdle requirement**: You must get 40% on the exam to pass the course (also true of the final project).
+
+---
+# Exam Details
+
+- I'll now talk about the questions in the exam, and some of the concepts you need to be familiar with
+- These concepts will help guide what you focus on in the lectures
+- Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+# Tidy data Concepts:
+
+- Variables
+- Observations
+- Tidy data
+
+---
+# Data Wrangling Concepts:
+
+- Converting "messy" data to tidy data
+- Code / key functions to use to convert data into "tidy" data
+  - e.g, `gather`, `spread`, `separate`, etc.
+
+---
+# Relational data concepts:
+
+- Left Join
+- Why do joins of data
+- Predict output of a join
+- Sketching out code to summarise data from a join
+
+---
+# Data visualisation concepts:
+
+- How the grammar of graphics produces a plot - identify plots produced by which code
+- Understand the focus of a given graphic on the data - questions like: 
+  - "What and how does this graphic make us focus on what feature of the data?"
+  - "What do you learn from a graphic?"
+
+---
+# Missing Values concepts:
+
+- Principles of tidy missing data
+- Interpreting graphics of missing data
+- Predict output of function on data with missing values
+- Imputation - what is it, which methods are good / bad / better
+
+---
+# Linear Models Concepts:
+
+- Write down an equation of a model from code output
+
+--
+
+- The formula `\(y = 3x + 5\)` is a function with input `\(x\)`, and output `\(y\)`, when x is `___` , the output is `___`
+
+---
+# Linear Models Concepts:
+
+`$$\widehat{height_{in}} \sim 3.62 + 0.78 Width_{in}$$`
+- **slope**: For each additional inch the painting is wider, the height is expected to be higher, on average, by 0.78 inches.
+- **Intercept**: Paintings that are 0 inches wide are expected to be 3.62 inches high, on average.
+- If a paining is 5 Inches wide, what is it's estimated height?
+
+---
+# Linear Models Concepts:
+
+- How to make predictions from a fitted model
+- Understand what makes predictions good and bad
+- Measurements of model fit:
+  - R2 - what it is - what values mean good/bad fit?
+  - **A good idea to bring in an equation of R2**
+- Residuals - What do we expect to see
+- Centering variables
+- Think about how you can improve fit of models to your data
+
+---
+# Programming concepts:
+
+- Why write functions
+- How to write a function in R
+- How to take existing code and turn it into a function
+- Identify potential mistakes in provided code
+- Understand what `map` does
+
+---
+# Networks Concepts:
+
+- From an association / correlation matrix, which are most or least related?
+- Understand how you can convert a numeric matrix into a binary association matrix
+- Understand how a correlation matrix (or other association) of data relates to a provided network (let's do an example)
+
+---
+# How to study for the exam
+
+These concepts guide what to focus on
+
+While the readings aren't assessed, **they provide great information that will certainly help improve your understanding**
+
+Remember that these are to help you focus, I can't give you the exam, but I can help tell you what is important.
+
+Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+# On a more personal note
+
+I've had a great time this semester
+
+I've been **seriously impressed** with you all - you are all so bright!
+
+Thanks for being engaged and curious, I'm really excited to see your projects!
+
+--
+
+Also a special thanks to everyone for dealing with the 8am lecture!
+
+  
+
+background-image: url(images/bg1.jpg)
+background-size: cover
+class: hide-slide-number split-70
+count: false
+
+.column.shade_black[.content[
+
+&lt;br&gt;&lt;br&gt;
+
+# That's it!
+
+.bottom_abs.width100[
+
+Lecturer: Nicholas Tierney
+
+Department of Econometrics and Business Statistics&lt;br&gt;
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+
+11th Mar 2020
+
+
+]
+
+&lt;br /&gt;
+This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
+
+&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
+
+
+]]
+
+
+
+&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
+&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
+&lt;svg class="clip-svg absolute"&gt;
+&lt;defs&gt;
+&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
+&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
+&lt;/clipPath&gt;
+&lt;/defs&gt;	
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLanguage": "r",
+"highlightLines": true,
+"highlightSpans": false,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%/%total%",
+"navigation": {
+"scroll": false,
+"touch": true,
+"click": false
+},
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

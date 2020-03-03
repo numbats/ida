@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ETC1010: Introduction to Data Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nicholas Tierney" />
+    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding-4.9.2/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <script src="libs/jquery-1.11.3/jquery.min.js"></script>
+    <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    -->
+    <link rel="icon" href="images/favicon.ico"  type='image/x-icon'/>    
+    <link rel="stylesheet" href="assets/animate.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-logo.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-brand.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles.css" type="text/css" />
+    <link rel="stylesheet" href="assets/custom.css" type="text/css" />
+    <link rel="stylesheet" href="assets/demo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+  
+
+
+background-color: #006DAE
+class: middle center hide-slide-number
+
+
+&lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;/div&gt;
+
+&lt;br&gt;
+
+.white[Press the **right arrow** to progress to the next slide!]
+
+---
+
+
+background-image: url(images/bg1.jpg)
+background-size: cover
+class: hide-slide-number split-70 title-slide
+count: false
+
+.column.shade_black[.content[
+
+&lt;br&gt;
+
+# .monash-blue.outline-text[ETC1010: Introduction to Data Analysis]
+
+&lt;h2 class="monash-blue2 outline-text" style="font-size: 30pt!important;"&gt;Week 4, part B&lt;/h2&gt;
+
+&lt;br&gt;
+
+&lt;h2 style="font-weight:900!important;"&gt;Advanced topics in data visualisation&lt;/h2&gt;
+
+.bottom_abs.width100[
+
+Lecturer: *Nicholas Tierney*
+
+Department of Econometrics and Business Statistics
+
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+
+28th Mar 2020
+
+&lt;br&gt;
+]
+
+
+]]
+
+
+
+&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
+&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
+&lt;svg class="clip-svg absolute"&gt;
+&lt;defs&gt;
+&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
+&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
+&lt;/clipPath&gt;
+&lt;/defs&gt;	
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+
+
+---
+class: transition
+# While the song is playing...
+
+Draw a mental model / concept map of last lectures content on joins.
+
+---
+class: refresher
+# recap
+
+- Joins
+- venn diagrams
+- feedback
+
+---
+
+# Joins with a person and a coat, by [Leight Tami](https://twitter.com/leigh_tami18/status/1021471889309487105/photo/1)
+
+&lt;img src="images/joins_using_coat.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Upcoming Due Dates
+
+- Assignment 1: ...
+- Other due dates?
+- Stay tuned on ED for the upcoming dates
+
+---
+
+
+# Making effective data plots
+
+1. Principles / science of data visualisation
+2. Features of graphics
+
+---
+# Principles / science of data visualisation
+
+  - Palettes and colour blindness
+  - change blindness
+  - using proximity
+  - hierarchy of mappings
+
+---
+# Features of graphics 
+
+- Layering statistical summaries
+- Themes
+- adding interactivity
+
+---
+# Palettes and colour blindness
+
+There are three main types of colour palette:
+
+- Qualitative: categorical variables
+- Sequential: low to high numeric values
+- Diverging: negative to positive values
+
+---
+# Qualitative: categorical variables
+
+&lt;img src="lecture_4b_files/figure-html/print-qual-pal-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Sequential: low to high numeric values
+
+&lt;img src="lecture_4b_files/figure-html/print-seq-pal-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Diverging: negative to positive values
+
+&lt;img src="lecture_4b_files/figure-html/print-div-pal-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Example: TB data
+
+
+```
+## # A tibble: 157,820 x 5
+##    country      year count gender age  
+##    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+##  1 Afghanistan  1980    NA m      04   
+##  2 Afghanistan  1981    NA m      04   
+##  3 Afghanistan  1982    NA m      04   
+##  4 Afghanistan  1983    NA m      04   
+##  5 Afghanistan  1984    NA m      04   
+##  6 Afghanistan  1985    NA m      04   
+##  7 Afghanistan  1986    NA m      04   
+##  8 Afghanistan  1987    NA m      04   
+##  9 Afghanistan  1988    NA m      04   
+## 10 Afghanistan  1989    NA m      04   
+## # … with 157,810 more rows
+```
+
+---
+# Example: TB data: adding relative change
+
+
+```
+## # A tibble: 219 x 4
+##    country             `2002` `2012`  reldif
+##    &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Afghanistan           6509  13907  1.14  
+##  2 Albania                225    185 -0.178 
+##  3 Algeria               8246   7510 -0.0893
+##  4 American Samoa           1      0 -1     
+##  5 Andorra                  2      2  0     
+##  6 Angola               17988  22106  0.229 
+##  7 Anguilla                 0      0  0     
+##  8 Antigua and Barbuda      4      1 -0.75  
+##  9 Argentina             5383   4787 -0.111 
+## 10 Armenia                511    316 -0.382 
+## # … with 209 more rows
+```
+
+
+
+
+---
+# Example: Sequential colour with default palette
+
+
+```r
+ggplot(tb_map) + geom_polygon(aes(x = long, y = lat, group = group, fill = reldif)) +
+  theme_map()
+```
+
+&lt;img src="lecture_4b_files/figure-html/map-default-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Example: (improved) sequential colour with default palette
+
+
+```r
+library(viridis)
+ggplot(tb_map) +
+  geom_polygon(aes(x = long, y = lat, group = group, fill = reldif)) +
+  theme_map() + scale_fill_viridis(na.value = "white")
+```
+
+&lt;img src="lecture_4b_files/figure-html/viridis-plot-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Example:  Diverging colour with better palette
+
+
+```r
+ggplot(tb_map) +
+  geom_polygon(aes(x = long, y = lat, group = group, fill = reldif)) +
+  theme_map() +
+  scale_fill_distiller(palette = "PRGn", na.value = "white", limits = c(-7, 7))
+```
+
+&lt;img src="lecture_4b_files/figure-html/map-distiller-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Summary on colour palettes
+
+- Different ways to map colour to values:
+  - Qualitative: categorical variables
+  - Sequential: low to high numeric values
+  - Diverging: negative to positive values
+
+---
+# Colour blindness
+
+- About 8% of men (about 1 in 12), and 0.5% women (about 1 in 200) population have difficulty distinguishing between red and green. 
+- Several colour blind tested palettes: RColorbrewer has an associated web site [colorbrewer.org](http://colorbrewer2.org) where the palettes are labelled. See also `viridis`, and `scico`.
+
+---
+# Plot of two coloured points: Normal Mode
+
+&lt;img src="lecture_4b_files/figure-html/colour-blind-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Plot of two coloured points: dicromat mode
+
+&lt;img src="lecture_4b_files/figure-html/colour-blind-2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+&lt;img src="lecture_4b_files/figure-html/colourblindr-show-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+```r
+p2 &lt;- p + scale_colour_brewer(palette = "Dark2")
+p2
+```
+
+&lt;img src="lecture_4b_files/figure-html/colourblindr-brewer-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+&lt;img src="lecture_4b_files/figure-html/cb-grid-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+```r
+p3 &lt;- p + scale_colour_viridis_d()
+p3
+```
+
+&lt;img src="lecture_4b_files/figure-html/colourblindr-viridis-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="lecture_4b_files/figure-html/cb-grid-viridis-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Summary colour blindness
+
+- Apply colourblind-friendly colourscales
+  - `+ scale_colour_viridis()`
+  - `+ scale_colour_brewer(pallete = "Dark2")`
+  - `scico` R package
+
+---
+# Pre-attentiveness: Find the odd one out?
+
+&lt;img src="lecture_4b_files/figure-html/pre-attentiveness-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Pre-attentiveness: Find the odd one out?
+
+&lt;img src="lecture_4b_files/figure-html/pre-attentive-easier-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Using proximity in your plots
+
+Basic rule: place the groups that you want to compare close to each other
+
+
+
+---
+# Which plot answers which question?
+
+- "Is the incidence similar for males and females in 2012 across age groups?"
+- "Is the incidence similar for age groups in 2012, across gender?" 
+
+---
+# ...incidence similar for: (males and females) or (age groups, across gender) ?" 
+
+
+
+&lt;img src="lecture_4b_files/figure-html/print-many-tb-1.png" width="100%" style="display: block; margin: auto;" /&gt;&lt;img src="lecture_4b_files/figure-html/print-many-tb-2.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+???
+
+Here are two different arrangements of the tb data. To answer the question "Is the incidence similar for males and females in 2012 across age groups?" the first arrangement is better. It puts males and females right beside each other, so the relative heights of the bars can be seen quickly. The answer to the question would be "No, the numbers were similar in youth, but males are more affected with increasing age."
+
+The second arrangement puts the focus on age groups, and is better to answer the question "Is the incidence similar for age groups in 2012, across gender?" To which the answer would be "No, among females, the incidence is higher at early ages. For males, the incidence is much more uniform across age groups."
+
+
+---
+# "Is the incidence similar for males and females in 2012 across age groups?"
+
+&lt;img src="lecture_4b_files/figure-html/gg-fill-gender-print-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+- Males &amp; females next to each other: relative heights of bars is seen quickly. 
+- Auestion answer: "No, the numbers were similar in youth, but males are more affected with increasing age."
+
+---
+# "Is the incidence similar for age groups in 2012, across gender?"
+
+&lt;img src="lecture_4b_files/figure-html/gg-fill-age-print-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+- Puts the focus on age groups 
+- Answer to the question: "No, among females, the incidence is higher at early ages. For males, the incidence is much more uniform across age groups."
+
+---
+# Proximity wrap up
+
+- Facetting of plots, and proximity are related to change blindness, an area of study in cognitive psychology. 
+- There are a series of fabulous videos illustrating the effects of making a visual break, on how the mind processes it by Daniel Simons lab. 
+- Here's one example:  
+[The door study](https://www.youtube.com/watch?v=FWSxSQsspiQ)
+
+---
+# Layering
+
+- *Statistical summaries:* It is common to layer plots, particularly by adding statistical summaries, like a model fit, or means and standard deviations. The purpose is to show the **trend** in relation to the **variation**. 
+- *Maps:* Commonly maps provide the framework for data collected spatially. One layer for the map, and another for the data.
+
+
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y1)) + geom_point()
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-1-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y1)) + geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y1)) + geom_point() +
+  geom_smooth(method = "lm")
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-3-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y2)) + geom_point()
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-4-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y2)) + geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-5-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y2)) + geom_point() +
+  geom_smooth(se = FALSE)
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-6-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+ggplot(df, aes(x = x, y = y2)) + geom_point() +
+  geom_smooth(se = FALSE, span = 0.05)
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-7-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+p1 &lt;- ggplot(df, aes(x = x, y = y2)) + geom_point() +
+  geom_smooth(se = FALSE, span = 0.2)
+p1
+```
+
+&lt;img src="lecture_4b_files/figure-html/point-8-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Interactivity with magic plotly
+
+
+```r
+library(plotly)
+ggplotly(p1)
+```
+
+<div id="htmlwidget-777dda5d887200aa435d" style="width:100%;height:288px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-777dda5d887200aa435d">{"x":{"data":[{"x":[0.930508088553324,0.389928860124201,0.943622461520135,0.386944966390729,0.417173166526482,0.366789127001539,0.732362359762192,0.601165748201311,0.571731613017619,0.13485919451341,0.898039114195853,0.831273777177557,0.406063373433426,0.273702772567049,0.48075048928149,0.465281907701865,0.762183431070298,0.549268542556092,0.118960881838575,0.521084885112941,0.378556436160579,0.176858324091882,0.82545853452757,0.199669322231784,0.796959432540461,0.420757299987599,0.904633441474289,0.377614002209157,0.4710076097399,0.9915075909812,0.941147408913821,0.59226189693436,0.609007658902556,0.630565788364038,0.051218023058027,0.297057713381946,0.251560061238706,0.0162269396241754,0.653729311423376,0.538954648887739,0.488135406980291,0.454282183200121,0.327291885856539,0.401728070806712,0.852239777799696,0.533071475103498,0.965295298956335,0.603468970628455,0.947861760156229,0.0938989613205194,0.56375911552459,0.114374946337193,0.693086406448856,0.0559775652363896,0.277934925863519,0.952764885732904,0.59367564576678,0.266000180970877,0.419925430091098,0.639033108251169,0.710367822088301,0.827430173754692,0.676336255157366,0.356711562024429,0.625204300740734,0.93576927180402,0.29372591455467,0.927228660788387,0.235663931351155,0.576906116679311,0.691533744335175,0.896171593107283,0.237648205598816,0.204975869273767,0.240729821613058,0.703833892242983,0.40626254491508,0.464942355174571,0.962566200178117,0.276333722285926,0.409475945169106,0.823283904697746,0.746819325489923,0.518095803912729,0.135140875354409,0.7939798834268,0.497836646391079,0.720091392518952,0.167591624893248,0.506932806922123,0.802581663941965,0.814721518196166,0.870057087624446,0.353601259877905,0.788973797811195,0.291870790533721,0.331725816475227,0.734726763796061,0.839368433458731,0.320004892069846],"y":[0.749897540952902,0.095249789599528,-0.0549262657561111,-0.353190416747478,-1.1818548373447,-0.165029624862205,-1.9641976732592,0.113120589752823,0.531462332011284,3.35666246693,-0.192374497606292,0.704110220718205,0.0419278282014896,0.680233375430902,0.118591932848634,0.695919723845963,-0.469586680293926,-0.56473869332871,1.3154043123204,-1.48757679328676,-1.21984473481808,2.50813243227044,0.755353241676733,-0.206385197827131,1.41414230574145,1.03669926945592,0.659055830342798,-0.459000619626947,0.614631442549381,0.484143543622865,0.354398552453768,-0.0451947430599093,-2.19396731006451,-0.589579381299552,3.85047494074544,-0.409619410560386,-0.0370377700061768,1.47593014276166,-0.669128134765981,0.149874670977971,-2.14123520429152,-1.71575505080565,-0.0479548060386911,-1.36889425725561,0.678041102249687,-0.0607555538463883,3.33284747196808,-0.386497143933889,1.35437852279545,1.98481261305973,-0.378244896226713,2.16911269622661,0.855928937173612,3.39263861433974,0.0216406721322987,0.134388311063317,-0.20928629859131,-1.57507489407387,0.760181503587173,0.462721932372785,0.383137027453576,1.33769885875875,1.34344156739208,-1.39045769521008,1.03072642196332,2.06848435363445,-0.129821603679888,2.4015547609357,0.450666224471659,1.37787355980897,0.134887323911753,1.7438248849625,0.425537935280449,1.25385310929146,0.253130055141746,-0.818905197026538,0.238689721248071,-0.778783117318729,1.46475584202165,-0.22338952780519,-1.01681017183456,0.104535702496979,0.18149431389919,-0.333621871882684,2.63419954114596,1.27777214726403,-0.854231378551674,1.21579912981332,1.37198553415917,0.402764849671032,2.36237500936261,-1.93823506105908,-0.47354623642936,1.34465753326176,-0.63065619383474,-2.06390254997399,-0.837696378362541,0.102575434650265,0.548372634651044,-0.0492623488338721],"text":["x: 0.93050809<br />y2:  0.74989754","x: 0.38992886<br />y2:  0.09524979","x: 0.94362246<br />y2: -0.05492627","x: 0.38694497<br />y2: -0.35319042","x: 0.41717317<br />y2: -1.18185484","x: 0.36678913<br />y2: -0.16502962","x: 0.73236236<br />y2: -1.96419767","x: 0.60116575<br />y2:  0.11312059","x: 0.57173161<br />y2:  0.53146233","x: 0.13485919<br />y2:  3.35666247","x: 0.89803911<br />y2: -0.19237450","x: 0.83127378<br />y2:  0.70411022","x: 0.40606337<br />y2:  0.04192783","x: 0.27370277<br />y2:  0.68023338","x: 0.48075049<br />y2:  0.11859193","x: 0.46528191<br />y2:  0.69591972","x: 0.76218343<br />y2: -0.46958668","x: 0.54926854<br />y2: -0.56473869","x: 0.11896088<br />y2:  1.31540431","x: 0.52108489<br />y2: -1.48757679","x: 0.37855644<br />y2: -1.21984473","x: 0.17685832<br />y2:  2.50813243","x: 0.82545853<br />y2:  0.75535324","x: 0.19966932<br />y2: -0.20638520","x: 0.79695943<br />y2:  1.41414231","x: 0.42075730<br />y2:  1.03669927","x: 0.90463344<br />y2:  0.65905583","x: 0.37761400<br />y2: -0.45900062","x: 0.47100761<br />y2:  0.61463144","x: 0.99150759<br />y2:  0.48414354","x: 0.94114741<br />y2:  0.35439855","x: 0.59226190<br />y2: -0.04519474","x: 0.60900766<br />y2: -2.19396731","x: 0.63056579<br />y2: -0.58957938","x: 0.05121802<br />y2:  3.85047494","x: 0.29705771<br />y2: -0.40961941","x: 0.25156006<br />y2: -0.03703777","x: 0.01622694<br />y2:  1.47593014","x: 0.65372931<br />y2: -0.66912813","x: 0.53895465<br />y2:  0.14987467","x: 0.48813541<br />y2: -2.14123520","x: 0.45428218<br />y2: -1.71575505","x: 0.32729189<br />y2: -0.04795481","x: 0.40172807<br />y2: -1.36889426","x: 0.85223978<br />y2:  0.67804110","x: 0.53307148<br />y2: -0.06075555","x: 0.96529530<br />y2:  3.33284747","x: 0.60346897<br />y2: -0.38649714","x: 0.94786176<br />y2:  1.35437852","x: 0.09389896<br />y2:  1.98481261","x: 0.56375912<br />y2: -0.37824490","x: 0.11437495<br />y2:  2.16911270","x: 0.69308641<br />y2:  0.85592894","x: 0.05597757<br />y2:  3.39263861","x: 0.27793493<br />y2:  0.02164067","x: 0.95276489<br />y2:  0.13438831","x: 0.59367565<br />y2: -0.20928630","x: 0.26600018<br />y2: -1.57507489","x: 0.41992543<br />y2:  0.76018150","x: 0.63903311<br />y2:  0.46272193","x: 0.71036782<br />y2:  0.38313703","x: 0.82743017<br />y2:  1.33769886","x: 0.67633626<br />y2:  1.34344157","x: 0.35671156<br />y2: -1.39045770","x: 0.62520430<br />y2:  1.03072642","x: 0.93576927<br />y2:  2.06848435","x: 0.29372591<br />y2: -0.12982160","x: 0.92722866<br />y2:  2.40155476","x: 0.23566393<br />y2:  0.45066622","x: 0.57690612<br />y2:  1.37787356","x: 0.69153374<br />y2:  0.13488732","x: 0.89617159<br />y2:  1.74382488","x: 0.23764821<br />y2:  0.42553794","x: 0.20497587<br />y2:  1.25385311","x: 0.24072982<br />y2:  0.25313006","x: 0.70383389<br />y2: -0.81890520","x: 0.40626254<br />y2:  0.23868972","x: 0.46494236<br />y2: -0.77878312","x: 0.96256620<br />y2:  1.46475584","x: 0.27633372<br />y2: -0.22338953","x: 0.40947595<br />y2: -1.01681017","x: 0.82328390<br />y2:  0.10453570","x: 0.74681933<br />y2:  0.18149431","x: 0.51809580<br />y2: -0.33362187","x: 0.13514088<br />y2:  2.63419954","x: 0.79397988<br />y2:  1.27777215","x: 0.49783665<br />y2: -0.85423138","x: 0.72009139<br />y2:  1.21579913","x: 0.16759162<br />y2:  1.37198553","x: 0.50693281<br />y2:  0.40276485","x: 0.80258166<br />y2:  2.36237501","x: 0.81472152<br />y2: -1.93823506","x: 0.87005709<br />y2: -0.47354624","x: 0.35360126<br />y2:  1.34465753","x: 0.78897380<br />y2: -0.63065619","x: 0.29187079<br />y2: -2.06390255","x: 0.33172582<br />y2: -0.83769638","x: 0.73472676<br />y2:  0.10257543","x: 0.83936843<br />y2:  0.54837263","x: 0.32000489<br />y2: -0.04926235"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0162269396241754,0.0285722643248973,0.0409175890256191,0.0532629137263409,0.0656082384270628,0.0779535631277846,0.0902988878285064,0.102644212529228,0.11498953722995,0.127334861930672,0.139680186631394,0.152025511332116,0.164370836032837,0.176716160733559,0.189061485434281,0.201406810135003,0.213752134835725,0.226097459536447,0.238442784237168,0.25078810893789,0.263133433638612,0.275478758339334,0.287824083040056,0.300169407740778,0.312514732441499,0.324860057142221,0.337205381842943,0.349550706543665,0.361896031244387,0.374241355945109,0.38658668064583,0.398932005346552,0.411277330047274,0.423622654747996,0.435967979448718,0.44831330414944,0.460658628850161,0.473003953550883,0.485349278251605,0.497694602952327,0.510039927653049,0.522385252353771,0.534730577054492,0.547075901755214,0.559421226455936,0.571766551156658,0.58411187585738,0.596457200558102,0.608802525258824,0.621147849959545,0.633493174660267,0.645838499360989,0.658183824061711,0.670529148762433,0.682874473463154,0.695219798163876,0.707565122864598,0.71991044756532,0.732255772266042,0.744601096966764,0.756946421667485,0.769291746368207,0.781637071068929,0.793982395769651,0.806327720470373,0.818673045171095,0.831018369871817,0.843363694572538,0.85570901927326,0.868054343973982,0.880399668674704,0.892744993375426,0.905090318076147,0.917435642776869,0.929780967477591,0.942126292178313,0.954471616879035,0.966816941579757,0.979162266280479,0.9915075909812],"y":[2.31200046528541,2.4650704201679,2.5825594420863,2.66418959039516,2.70968292444902,2.71876150360244,2.69114738720996,2.61546793845146,2.47628113793742,2.30401703259721,2.13178618322502,1.97700138819652,1.81916938778008,1.63341934172285,1.38058584833348,1.06534925110309,0.73038156433168,0.418358235183161,0.16688278068867,-0.0681367066549196,-0.24647836444115,-0.391348811603383,-0.501608594481307,-0.526761849838524,-0.418775979210882,-0.312956449360424,-0.309145463610244,-0.355058802657938,-0.408967967757124,-0.445504272210175,-0.450806245332875,-0.33387517382602,-0.249375690026786,-0.192892683222181,-0.186727923830312,-0.214780926616759,-0.309648903860485,-0.445938660293061,-0.508883109172099,-0.538811654000536,-0.565897854425561,-0.539953156791457,-0.350221463559363,-0.0929757525372278,0.0926035516826086,0.0925732678407354,-0.00778337001085784,-0.0796820455130959,-0.162548206808479,-0.218337852961601,-0.204110636669124,-0.0330759635219073,0.205383416657608,0.383070386946941,0.389890321917036,0.287749145405102,0.175146676862061,-0.0669431977847791,-0.248318558129626,-0.1841827976518,-0.0194288554591812,0.115829906553305,0.328823704532605,0.534144427672181,0.618524408818872,0.581203774923177,0.529256610739765,0.44446987034989,0.455879784735591,0.503350206766237,0.578321595070261,0.672234408276089,0.795416515612874,0.958745021474168,1.09808690492629,1.21448585525479,1.25496387661434,1.23833702466752,1.16929385689362,1.05115351785197],"text":["x: 0.01622694<br />y2:  2.31200047","x: 0.02857226<br />y2:  2.46507042","x: 0.04091759<br />y2:  2.58255944","x: 0.05326291<br />y2:  2.66418959","x: 0.06560824<br />y2:  2.70968292","x: 0.07795356<br />y2:  2.71876150","x: 0.09029889<br />y2:  2.69114739","x: 0.10264421<br />y2:  2.61546794","x: 0.11498954<br />y2:  2.47628114","x: 0.12733486<br />y2:  2.30401703","x: 0.13968019<br />y2:  2.13178618","x: 0.15202551<br />y2:  1.97700139","x: 0.16437084<br />y2:  1.81916939","x: 0.17671616<br />y2:  1.63341934","x: 0.18906149<br />y2:  1.38058585","x: 0.20140681<br />y2:  1.06534925","x: 0.21375213<br />y2:  0.73038156","x: 0.22609746<br />y2:  0.41835824","x: 0.23844278<br />y2:  0.16688278","x: 0.25078811<br />y2: -0.06813671","x: 0.26313343<br />y2: -0.24647836","x: 0.27547876<br />y2: -0.39134881","x: 0.28782408<br />y2: -0.50160859","x: 0.30016941<br />y2: -0.52676185","x: 0.31251473<br />y2: -0.41877598","x: 0.32486006<br />y2: -0.31295645","x: 0.33720538<br />y2: -0.30914546","x: 0.34955071<br />y2: -0.35505880","x: 0.36189603<br />y2: -0.40896797","x: 0.37424136<br />y2: -0.44550427","x: 0.38658668<br />y2: -0.45080625","x: 0.39893201<br />y2: -0.33387517","x: 0.41127733<br />y2: -0.24937569","x: 0.42362265<br />y2: -0.19289268","x: 0.43596798<br />y2: -0.18672792","x: 0.44831330<br />y2: -0.21478093","x: 0.46065863<br />y2: -0.30964890","x: 0.47300395<br />y2: -0.44593866","x: 0.48534928<br />y2: -0.50888311","x: 0.49769460<br />y2: -0.53881165","x: 0.51003993<br />y2: -0.56589785","x: 0.52238525<br />y2: -0.53995316","x: 0.53473058<br />y2: -0.35022146","x: 0.54707590<br />y2: -0.09297575","x: 0.55942123<br />y2:  0.09260355","x: 0.57176655<br />y2:  0.09257327","x: 0.58411188<br />y2: -0.00778337","x: 0.59645720<br />y2: -0.07968205","x: 0.60880253<br />y2: -0.16254821","x: 0.62114785<br />y2: -0.21833785","x: 0.63349317<br />y2: -0.20411064","x: 0.64583850<br />y2: -0.03307596","x: 0.65818382<br />y2:  0.20538342","x: 0.67052915<br />y2:  0.38307039","x: 0.68287447<br />y2:  0.38989032","x: 0.69521980<br />y2:  0.28774915","x: 0.70756512<br />y2:  0.17514668","x: 0.71991045<br />y2: -0.06694320","x: 0.73225577<br />y2: -0.24831856","x: 0.74460110<br />y2: -0.18418280","x: 0.75694642<br />y2: -0.01942886","x: 0.76929175<br />y2:  0.11582991","x: 0.78163707<br />y2:  0.32882370","x: 0.79398240<br />y2:  0.53414443","x: 0.80632772<br />y2:  0.61852441","x: 0.81867305<br />y2:  0.58120377","x: 0.83101837<br />y2:  0.52925661","x: 0.84336369<br />y2:  0.44446987","x: 0.85570902<br />y2:  0.45587978","x: 0.86805434<br />y2:  0.50335021","x: 0.88039967<br />y2:  0.57832160","x: 0.89274499<br />y2:  0.67223441","x: 0.90509032<br />y2:  0.79541652","x: 0.91743564<br />y2:  0.95874502","x: 0.92978097<br />y2:  1.09808690","x: 0.94212629<br />y2:  1.21448586","x: 0.95447162<br />y2:  1.25496388","x: 0.96681694<br />y2:  1.23833702","x: 0.97916227<br />y2:  1.16929386","x: 0.99150759<br />y2:  1.05115352"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":3.77952755905512,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":37.2602739726027},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0325370929436758,1.04027162354905],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"x","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2.49618942260501,4.15269705328594],"tickmode":"array","ticktext":["-2","0","2","4"],"tickvals":[-2,0,2,4],"categoryorder":"array","categoryarray":["-2","0","2","4"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"y2","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"1869b66b307da":{"x":{},"y":{},"type":"scatter"},"1869b73c8ade2":{"x":{},"y":{}}},"cur_data":"1869b66b307da","visdat":{"1869b66b307da":["function (y) ","x"],"1869b73c8ade2":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+# Themes: Add some style to your plot
+
+.left-code[
+
+```r
+p &lt;- ggplot(mtcars) +
+  geom_point(aes(x = wt, 
+                 y = mpg, 
+                 colour = factor(gear))) +
+  facet_wrap(~am)
+p
+
+```
+]
+
+.right-plot[
+&lt;img src="lecture_4b_files/figure-html/mtcars-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Theme: theme_minimal
+
+.left-code[
+
+```r
+p + 
+  theme_minimal()
+```
+]
+
+.right-plot[
+&lt;img src="lecture_4b_files/figure-html/mtcars-minimal-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+---
+# Theme: ggthemes `theme_few()`
+
+.left-code[
+
+```r
+p + 
+  theme_few() + 
+  scale_colour_few()
+```
+]
+
+.right-plot[
+&lt;img src="lecture_4b_files/figure-html/mtcars-theme-few-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Theme: ggthemes `theme_excel()` 💉
+
+.left-code[
+
+```r
+p + 
+  theme_excel() + 
+  scale_colour_excel()
+```
+]
+
+.right-plot[
+&lt;img src="lecture_4b_files/figure-html/mtcars-theme-excel-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+---
+# Theme: for fun
+
+.left-code[
+
+```r
+library(wesanderson)
+p + 
+  scale_colour_manual(
+    values = wes_palette("Royal1")
+    )
+
+```
+]
+
+.right-plot[
+&lt;img src="lecture_4b_files/figure-html/theme-wes-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Summary: themes
+
+- The `ggthemes` package has many different styles for the plots. 
+- Other packages such as `xkcd`, `skittles`, `wesanderson`, `beyonce`, `ochre`, ....
+
+---
+# Hierarchy of mappings
+
+1. Position - common scale (BEST): axis system
+2. Position - nonaligned scale: boxes in a side-by-side boxplot
+3. Length, direction, angle: pie charts, regression lines, wind maps
+4. Area: bubble charts
+5. Volume, curvature: 3D plots
+6. Shading, color (WORST): maps, points coloured by numeric variable
+
+- [Di's crowd-sourcing expt](http://visiphilia.org/2016/08/03/CM-hierarchy)
+- Nice explanation by [Peter Aldous](http://paldhous.github.io/ucb/2016/dataviz/week2.html)
+- [General plotting advice and a book from Naomi Robbins](https://www.forbes.com/sites/naomirobbins/#2b1e20082a6a)
+
+---
+# Your Turn:
+
+- lab quiz open (requires answering questions from Lab exercise)
+- go to rstudio.cloud and check out exercise 4-B
+- If you want to use R / Rstudio on your laptop:
+  - Install R + Rstudio (see )
+  - open R
+  - type the following:
+  ```r
+  # install.packages("usethis")
+  library(usethis)
+  use_course("dmac.netlify.com/lectures/lecture4b/exercise/exercise-4b.zip")
+  ```
+
+---
+
+# Resources
+
+- Kieran Healy [Data Visualization](http://socviz.co/index.html)
+- Winston Chang (2012) [Cookbook for R](graphics cookbook)
+- Antony Unwin (2014) [Graphical Data Analysis](http://www.gradaanwr.net)
+- Naomi Robbins (2013) [Creating More Effective Charts](http://www.nbr-graphs.com)
+
+---
+  
+
+background-image: url(images/bg1.jpg)
+background-size: cover
+class: hide-slide-number split-70
+count: false
+
+.column.shade_black[.content[
+
+&lt;br&gt;&lt;br&gt;
+
+# That's it!
+
+.bottom_abs.width100[
+
+Lecturer: Nicholas Tierney
+
+Department of Econometrics and Business Statistics&lt;br&gt;
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+
+28th Mar 2020
+
+
+]
+
+&lt;br /&gt;
+This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
+
+&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
+
+
+]]
+
+
+
+&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
+&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
+&lt;svg class="clip-svg absolute"&gt;
+&lt;defs&gt;
+&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
+&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
+&lt;/clipPath&gt;
+&lt;/defs&gt;	
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLanguage": "r",
+"highlightLines": true,
+"highlightSpans": false,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%/%total%",
+"navigation": {
+"scroll": false,
+"touch": true,
+"click": false
+},
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+Week 1:
+  Topic: 
+  Readings:
+    A:
+      - "[Chapter 2](https://r4ds.had.co.nz/explore-intro.html)"
+      - "[Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#the-layered-grammar-of-graphics)"
+      - "[Chapter 4 (very short)](https://r4ds.had.co.nz/workflow-basics.html)"
+    B: 
+      - "[Chapter 27](https://r4ds.had.co.nz/r-markdown.html)"
+      - "[Chapters 1 - 4 in Rmarkdown for Scientists](https://rmd4sci.njtierney.com/why-rmarkdown.html)"
+Week 2:
+  Topic:
+  Readings:
+    A:
+      - "[Chapter 12: Tidy Data](http://r4ds.had.co.nz/tidy-data.html)"
+    B:
+      - "[Chapter 5: Data Transformation](https://r4ds.had.co.nz/transform.html)"
+Week 3:
+  Topic:
+  Readings:
+    A:
+      - "[Chapter 3: Data visualisation (again!)](http://r4ds.had.co.nz/data-visualisation.html)"
+    B:
+      - "[Chapter 16: Dates and Times](http://r4ds.had.co.nz/dates-and-times.html)"
+Week 4:
+  Topic:
+  Readings:
+    A:
+      - "[Chapter 13: Relational Data](http://r4ds.had.co.nz/relational-data.html)"
+    B:
+      - "[Chapter 1 of Data Visualisation: A Practical Introduction](http://socviz.co/lookatdata.html#lookatdata)"
+Week 5:
+  Topic:
+  Readings:
+    A:
+      - "[Getting Started with Missing values](http://naniar.njtierney.com/articles/getting-started-w-naniar.html)"
+      - "[Exploring Imputed Values](http://naniar.njtierney.com/articles/exploring-imputed-values.html)"
+      - "[Gallery of Missing Data Visualisations](http://naniar.njtierney.com/articles/naniar-visualisation.html)"
+    B:
+      - "[rvest R package for web scraping README](https://rvest.tidyverse.org/index.html)"
+      - "[rvest description of selectorGadget](https://rvest.tidyverse.org/articles/selectorgadget.html)"
+Week 6:
+  Topic: Introduction to modeling, and programming
+  Readings:
+    A:
+      - "[Intro to Modelling](https://r4ds.had.co.nz/model-intro.html)"
+      - "[Modelling Basics](https://r4ds.had.co.nz/model-basics.html)"
+    B:
+      - "[Introduction to programming](https://r4ds.had.co.nz/program-intro.html)"
+      - "[Pipes (`%>%`)](https://r4ds.had.co.nz/pipes.html)"
+      - "[Functions](https://r4ds.had.co.nz/functions.html)"
+Week 7:
+  Topic: Intermediate models and programming
+  Readings:
+    A:
+      - "[Vectors](https://r4ds.had.co.nz/vectors.html)"
+      - "[Iteration](https://r4ds.had.co.nz/iteration.html)"
+    B:     
+      - "[Building Models](https://r4ds.had.co.nz/model-building.html)"
+      - "[Many Models](http://r4ds.had.co.nz/many-models.html)"
+Week 8: 
+  Topic: Analysing text data
+  Readings:
+    A:
+      - "[Introduction to tidy text analysis](https://www.tidytextmining.com/tidytext.html)"
+      - "[Sentiment Analysis with tidy text](https://www.tidytextmining.com/sentiment.html)"
+    B:  
+      - "[Word and document frequency](https://www.tidytextmining.com/tfidf.html)"
+      - "[n-grams](https://www.tidytextmining.com/ngrams.html)"
+Week 9:
+  Topic: Wrangling, plotting and modeling network data
+  Readings:
+    A:
+      - "None"
+    B:
+      - "None"
+Week 10:
+  Topic: Computational modeling, and good data collection practices
+  Readings:
+    A:
+      - None
+    B:  
+      - None
+Week 11:
+  Topic: Guest Lecture + practical exam
+  Readings:
+    A:
+      - None
+    B:
+      - None
+Week 12:
+  Topic: Project Presentations
+  Readings:
+    A:
+      - None
+    B:  
+      - None

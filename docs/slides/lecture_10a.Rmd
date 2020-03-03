@@ -1,0 +1,249 @@
+---
+title: "ETC1010: Introduction to Data Analysis"
+week: "Week 10, part A"
+subtitle: "Week of introduction"
+author: "Nicholas Tierney"
+email: "nicholas.tierney@monash.edu"
+date: "11th Mar 2020"
+pdflink: ""
+bgimg: "images/bg1.jpg"
+output:
+  xaringan::moon_reader:
+    css:
+      - ninjutsu 
+      - "assets/animate.css"
+      - "assets/monash-logo.css"
+      - "assets/monash-brand.css"
+      - "assets/monash-fonts.css"
+      - "assets/styles.css" # small improvements
+      - "assets/custom.css" # add your own CSS here!
+      - "assets/demo.css" # this should be removed
+    self_contained: false 
+    seal: false 
+    chakra: 'libs/remark-latest.min.js'
+    lib_dir: libs
+    includes:
+      in_header: "assets/custom.html"
+    mathjax: "assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    nature:
+      highlightStyle: github 
+      highlightLanguage: r 
+      highlightLines: true
+      highlightSpans: false 
+      countIncrementalSlides: false
+      slideNumberFormat: '%current%/%total%'
+      navigation:
+        scroll: false 
+        touch: true
+        click: false
+      ratio: '16:9'
+---
+  
+```{r titleslide, child="components/titleslide.Rmd"}
+```
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(emo)
+library(ggraph)
+library(igraph)
+library(tidygraph)
+library(knitr)
+library(lubridate)
+library(gridExtra)
+library(plotly)
+library(countdown)
+opts_chunk$set(echo = TRUE,   
+               message = FALSE,
+               warning = FALSE,
+               collapse = TRUE,
+               fig.height = 4,
+               fig.width = 8,
+               out.width = "100%",
+               fig.align = "center",
+               cache = FALSE)
+
+as_table <- function(...) knitr::kable(..., format='html', digits = 3)
+```
+
+
+---
+
+# Announcements
+
+- Some of the lecture slides don't load on a web browser
+- Current alternative for viewing: Download the HTML or the RMD for the moment and view locally.
+- I'm in the process of sorting it out
+
+---
+# The Practical Exam
+
+- Time: 1 Hour
+- Task: Complete a data analysis and answer questions (like the assignments, but short - similar to the in class exercises)
+- Conditions: 
+  - Open book
+  - Internet access
+  - No contacting / messaging / communicating friends during exam (penalty will be the same as cheating in exam)
+
+---
+# The Project Data Milestone: What do Submit
+
+- An Rmd file + 
+- The rendered HTML file
+- The data
+- Zipped / compressed together
+- In the document:
+  - Write about the data - what is it, what are the variables, what sort of questions are you asking, what did you need to do clean the data, what cleaning is remaining?
+  - (About 1-2 paragraphs of text.)
+
+---
+# The Project: More general questions
+
+- "How many questions should we ask?"
+  - About 3 - roughly one per person in your group
+- "How will the project be marked?"
+  - You will all mark the projects as you watch them
+- You will need to present for 5 minutes max - use this to help frame how long your analysis should be. 
+- 5 minutes is short - but it is actually a pretty serious challenge!
+- But also consider that the project will be marked by me as well - you won't need to cover everything
+
+---
+# The project: What should we present?
+
+Many options!
+
+- You can submit an Rmarkdown document + HTML file
+- You present with a [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) (demo)
+- You could even present as a slide show (like the lecture slides)
+- How to share - Ideally you can use netlify drag and drop (demo)
+
+---
+# Exam details
+
+- Worth 50% of your final grade
+- NOT Open Book
+- Calculator: Yes - Allowed to take in "Only HP 10bII+ or Casio FX82 (any suffix) calculator permitted"
+- One A4 page of notes, printed on both sides. This will be collected at the end of the examination.
+- **Hurdle requirement**: You must get 40% on the exam to pass the course (also true of the final project).
+
+---
+# Exam Details
+
+- I'll now talk about the questions in the exam, and some of the concepts you need to be familiar with
+- These concepts will help guide what you focus on in the lectures
+- Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+# Tidy data Concepts:
+
+- Variables
+- Observations
+- Tidy data
+
+---
+# Data Wrangling Concepts:
+
+- Converting "messy" data to tidy data
+- Code / key functions to use to convert data into "tidy" data
+  - e.g, `pivot_longer`, `pivot_wider`, `separate`, etc.
+
+---
+# Relational data concepts:
+
+- Left Join
+- Why do joins of data
+- Predict output of a join
+- Sketching out code to summarise data from a join
+
+---
+# Data visualisation concepts:
+
+- How the grammar of graphics produces a plot - identify plots produced by which code
+- Understand the focus of a given graphic on the data - questions like: 
+  - "What and how does this graphic make us focus on what feature of the data?"
+  - "What do you learn from a graphic?"
+
+---
+# Missing Values concepts:
+
+- Principles of tidy missing data
+- Interpreting graphics of missing data
+- Predict output of function on data with missing values
+- Imputation - what is it, which methods are good / bad / better
+
+---
+# Linear Models Concepts:
+
+- Write down an equation of a model from code output
+
+--
+
+- The formula $y = 3x + 5$ is a function with input $x$, and output $y$, when x is `___` , the output is `___`
+
+---
+# Linear Models Concepts:
+
+$$\widehat{height_{in}} \sim 3.62 + 0.78 Width_{in}$$
+- **slope**: For each additional inch the painting is wider, the height is expected to be higher, on average, by 0.78 inches.
+- **Intercept**: Paintings that are 0 inches wide are expected to be 3.62 inches high, on average.
+- If a paining is 5 Inches wide, what is it's estimated height?
+
+---
+# Linear Models Concepts:
+
+- How to make predictions from a fitted model
+- Understand what makes predictions good and bad
+- Measurements of model fit:
+  - R2 - what it is - what values mean good/bad fit?
+  - **A good idea to bring in an equation of R2**
+- Residuals - What do we expect to see
+- Centering variables
+- Think about how you can improve fit of models to your data
+
+---
+# Programming concepts:
+
+- Why write functions
+- How to write a function in R
+- How to take existing code and turn it into a function
+- Identify potential mistakes in provided code
+- Understand what `map` does
+
+---
+# Networks Concepts:
+
+- From an association / correlation matrix, which are most or least related?
+- Understand how you can convert a numeric matrix into a binary association matrix
+- Understand how a correlation matrix (or other association) of data relates to a provided network (let's do an example)
+
+---
+# How to study for the exam
+
+These concepts guide what to focus on
+
+While the readings aren't assessed, **they provide great information that will certainly help improve your understanding**
+
+Remember that these are to help you focus, I can't give you the exam, but I can help tell you what is important.
+
+Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+# On a more personal note
+
+I've had a great time this semester
+
+I've been **seriously impressed** with you all - you are all so bright!
+
+Thanks for being engaged and curious, I'm really excited to see your projects!
+
+--
+
+Also a special thanks to everyone for dealing with the 8am lecture!
+
+---
+
+```{r endslide, child="components/endslide.Rmd"}
+```

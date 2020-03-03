@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>ETC1010: Introduction to Data Analysis</title>
+
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="assets/styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand"  src='assets/monash-logo.png'> 
+      <a class="navbar-brand" href="index.html">ETC1010: Introduction to Data Analysis</a>
+      <div class="navbar-brand" style="color: #E6E6E6; font-size:0.8em;">2020 S1</div>
+      <div class="navbar-brand d-none d-print-block" style="color: #E6E6E6; font-size:0.8em;">Copyright &copy; Monash University</div>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="assessment.html">Assessment</a></li>
+        <li><a href="help.html"><i class="fa fa-question-circle"></i> Help</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="about.html"><i class="fa fa-info-circle"></i> About</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">ETC1010: Introduction to Data Analysis</h1>
+<h3 class="subtitle">Semester 1 2020</h3>
+
+</div>
+
+
+<ul>
+<li>Lecturer: Dr. Nicholas Tierney</li>
+<li>Chief Examiner: Di Cook</li>
+<li>Tutors: Steph Kobakian, Sherry Zhang, Cynthia, Sarah Belet, Nitika Kandhari</li>
+</ul>
+<p>This is the course website. This page shows information about the consultation times, MoVE, and Schedule and lecture notes.</p>
+<p>The “Assessments” tab above provides information about all assessment for ETC1010.</p>
+<div id="expectations" class="section level2">
+<h2>Expectations</h2>
+<ul>
+<li>Unless your question is a personal issue or an administrative matter, please do not send us direct email. The <a href="https://edstem.org/">ED site</a> is appropriate for questions related to the course material.</li>
+<li>ED is used for asking for help, reading and lab exercise quizzes and assignment turn in. Only your name and email is stored in this system.</li>
+<li><strong>If you register after the start of the semester</strong> or if you miss a lecture/lab, it is your responsibility to catch up with missed material, learn about due dates for material to be turned in, and getting assigned to a group for team work.</li>
+</ul>
+</div>
+<div id="consultation-times" class="section level2">
+<h2>Consultation times</h2>
+<ul>
+<li>Steph:</li>
+<li>Sarah:</li>
+<li>Sherry:</li>
+<li>Nitika:</li>
+<li>Cynthia:</li>
+<li>Nick: Monday 10:30-11:30 <strong>Menzies W1105</strong></li>
+<li>Nick: Wednesday 12:30-1:30 <strong>Menzies W1105</strong></li>
+</ul>
+</div>
+<div id="tentative-schedule" class="section level2">
+<h2>Tentative Schedule</h2>
+<p>There are two lectorials every week:</p>
+<ul>
+<li><strong>Monday 4-6pm</strong> (G31 - LTB Bldg 92)</li>
+<li><strong>Wednesday 12 - 2pm</strong> (G31 - LTB Bldg 92)</li>
+</ul>
+<p>There are no lectorials during the midsemester break.</p>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Week
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Lecture
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Date
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Instructor
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Slides
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Topic
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Exercise
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Readings
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Assessment
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+1
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-09
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_1A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_1A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Introduction to the language of data analysis
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_1A.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://r4ds.had.co.nz/explore-intro.html">Chapter 2</a></p>
+<p><a href="https://r4ds.had.co.nz/data-visualisation.html#the-layered-grammar-of-graphics">Chapter 3</a></p>
+<a href="https://r4ds.had.co.nz/workflow-basics.html">Chapter 4 (very short)</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+1
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-11
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_1B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_1B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_1B.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://r4ds.had.co.nz/r-markdown.html">Chapter 27</a></p>
+<a href="https://rmd4sci.njtierney.com/why-rmarkdown.html">Chapters 1 - 4 in Rmarkdown for Scientists</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+2
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-16
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_2A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_2A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Tidy data principles, reshaping your data into tidy form, and basic data wrangling
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_2A.zip"></a>
+</td>
+<td style="text-align:center;">
+<a href="http://r4ds.had.co.nz/tidy-data.html">Chapter 12: Tidy Data</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+2
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-18
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_2B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_2B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_2B.zip"></a>
+</td>
+<td style="text-align:center;">
+<a href="https://r4ds.had.co.nz/transform.html">Chapter 5: Data Transformation</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+3
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-23
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_3A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_3A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Plotting your data, and wrangling temporal data
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_3A.zip"></a>
+</td>
+<td style="text-align:center;">
+<a href="http://r4ds.had.co.nz/data-visualisation.html">Chapter 3: Data visualisation (again!)</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+3
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-25
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_3B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_3B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_3B.zip"></a>
+</td>
+<td style="text-align:center;">
+<a href="http://r4ds.had.co.nz/dates-and-times.html">Chapter 16: Dates and Times</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+4
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-03-30
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_4A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_4A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Advanced wrangling, joining tables, and advanced data visualisation
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_4A.zip"></a>
+</td>
+<td style="text-align:center;">
+<a href="http://r4ds.had.co.nz/relational-data.html">Chapter 13: Relational Data</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+4
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-01
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_4B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_4B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_4B.zip"></a>
+</td>
+<td style="text-align:center;">
+<a href="http://socviz.co/lookatdata.html#lookatdata">Chapter 1 of Data Visualisation: A Practical Introduction</a>
+</td>
+<td style="text-align:center;">
+Assignment 1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+5
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-06
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_5A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_5A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Handling missing values and scraping data
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_5A.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="http://naniar.njtierney.com/articles/getting-started-w-naniar.html">Getting Started with Missing values</a></p>
+<p><a href="http://naniar.njtierney.com/articles/exploring-imputed-values.html">Exploring Imputed Values</a></p>
+<a href="http://naniar.njtierney.com/articles/naniar-visualisation.html">Gallery of Missing Data Visualisations</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+5
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-08
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_5B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_5B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_5B.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://rvest.tidyverse.org/index.html">rvest R package for web scraping README</a></p>
+<a href="https://rvest.tidyverse.org/articles/selectorgadget.html">rvest description of selectorGadget</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr grouplength="2">
+<td colspan="9" style="background-color: #d9e1e8; padding-left: 4em;" indentlevel="2">
+<strong>Midsemester Break</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+6
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-20
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_6A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_6A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Introduction to modeling, and programming
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_6A.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://r4ds.had.co.nz/model-intro.html">Intro to Modelling</a></p>
+<a href="https://r4ds.had.co.nz/model-basics.html">Modelling Basics</a>
+</td>
+<td style="text-align:center;">
+Mid Semester In-Class Exam
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+6
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-22
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_6B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_6B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_6B.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://r4ds.had.co.nz/program-intro.html">Introduction to programming</a></p>
+<p><a href="https://r4ds.had.co.nz/pipes.html">Pipes (<code>%&amp;gt;%</code>)</a></p>
+<a href="https://r4ds.had.co.nz/functions.html">Functions</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+7
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-27
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_7A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_7A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Intermediate models and programming
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_7A.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://r4ds.had.co.nz/vectors.html">Vectors</a></p>
+<a href="https://r4ds.had.co.nz/iteration.html">Iteration</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+7
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-04-29
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_7B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_7B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_7B.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://r4ds.had.co.nz/model-building.html">Building Models</a></p>
+<a href="http://r4ds.had.co.nz/many-models.html">Many Models</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+8
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-04
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_8A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_8A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Analysing text data
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_8A.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://www.tidytextmining.com/tidytext.html">Introduction to tidy text analysis</a></p>
+<a href="https://www.tidytextmining.com/sentiment.html">Sentiment Analysis with tidy text</a>
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+8
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-06
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_8B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_8B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_8B.zip"></a>
+</td>
+<td style="text-align:center;">
+<p><a href="https://www.tidytextmining.com/tfidf.html">Word and document frequency</a></p>
+<a href="https://www.tidytextmining.com/ngrams.html">n-grams</a>
+</td>
+<td style="text-align:center;">
+Assignment 2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+9
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-11
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_9A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_9A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Wrangling, plotting and modeling network data
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_9A.zip"></a>
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+9
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-13
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #4269a5 !important;">Nick</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_9B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_9B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_9B.zip"></a>
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+10
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-18
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #8e4f89 !important;">TBA</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_10A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_10A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Computational modeling, and good data collection practices
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_10A.zip"></a>
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+10
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-20
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #8e4f89 !important;">TBA</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_10B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_10B.pdf"></a>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_10B.zip"></a>
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+11
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-25
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #39825a !important;">James McKeone</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_11A.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_11A.pdf"></a>
+</td>
+<td style="text-align:left;">
+Guest Lecturer
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_11A.zip"></a>
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+Project Due
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+11
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-05-27
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #8e4f89 !important;">TBA</span>
+</td>
+<td style="text-align:left;">
+<a class="fa fa-link" href="slides/lecture_11B.html"></a> <a class="fa fa-file-pdf" href="slides/lecture_11B.pdf"></a>
+</td>
+<td style="text-align:left;">
+Practical Exam
+</td>
+<td style="text-align:center;">
+<a class="fa fa-link" href="exercise_11B.zip"></a>
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+Practical Exam
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+12
+</td>
+<td style="text-align:center;width: 1cm; ">
+A
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-06-01
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #8e4f89 !important;">TBA</span>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Project Presentation
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+Projects Presented
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 0.5cm;  padding-left: 2em;" indentlevel="1">
+12
+</td>
+<td style="text-align:center;width: 1cm; ">
+B
+</td>
+<td style="text-align:center;width: 3cm; ">
+2020-06-03
+</td>
+<td style="text-align:center;width: 1cm; ">
+<span style="     color: #8e4f89 !important;">TBA</span>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Project Presentation
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+None
+</td>
+<td style="text-align:center;">
+Projects Presented
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+  </div> <!-- articleBandContent -->
+</div> <!-- pageContent -->
+
+<footer id="sticky-footer">
+<div class="container text-center">
+   Copyright &copy; 2020 Monash University
+</div>
+
+</footer>
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

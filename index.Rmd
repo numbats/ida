@@ -1,0 +1,137 @@
+---
+title: "ETC1010: Introduction to Data Analysis"
+subtitle: "Semester 1 2020"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(glue)
+library(googlesheets4)
+library(lubridate)
+library(ymlthis)
+library(yaml)
+```
+
+```{r functions}
+generate_readings <- function(week, part){
+  readings <- read_yaml("materials/readings.yml")
+  reading_list <- glue('readings[["Week {week}"]]\\
+                                      [["Readings"]]\\
+                                      [["{part}"]]')
+  eval(parse(text = reading_list)) %>% 
+    glue_collapse("\n\n")
+}
+
+```
+
+- Lecturer: Dr. Nicholas Tierney
+- Chief Examiner: Di Cook
+- Tutors: Steph Kobakian, Sherry Zhang, Cynthia, Sarah Belet, Nitika Kandhari
+
+This is the course website. This page shows information about the consultation times, MoVE, and Schedule and lecture notes.
+
+The "Assessments" tab above provides information about all assessment for ETC1010.
+
+## Expectations 
+
+- Unless your question is a personal issue or an administrative matter, please do not send us direct email. The [ED site](https://edstem.org/) is appropriate for questions related to the course material.
+- For personal or administrative issues, the email contact is: ETC1010.Clayton-x@monash.edu
+- ED is used for asking for help, reading and lab exercise quizzes and assignment turn in. Only your name and email is stored in this system.
+- **If you register after the start of the semester** or if you
+  miss a lecture/lab, it is your responsibility to catch up with
+  missed material, learn about due dates for material to be turned in,
+  and getting assigned to a group for team work.
+
+## Consultation times
+
+- Steph: 
+- Sarah: 
+- Sherry: 
+- Nitika: 
+- Cynthia:
+- Nick: Monday 10:30-11:30 **Menzies W1105**
+- Nick: Wednesday 12:30-1:30 **Menzies W1105**
+
+## Tentative Schedule
+
+There are two lectorials every week:
+
+* **Monday 4-6pm** (G31 - LTB Bldg 92)
+* **Wednesday 12 - 2pm** (G31 - LTB Bldg 92)
+
+There are no lectorials during the midsemester break.
+
+```{r read-create-sheet, eval = FALSE}
+# to be run interatively when google sheet is updated
+google_schedule <- read_sheet("https://docs.google.com/spreadsheets/d/1OmwIYBtuedFICwqXToTNx1xRRoDO0ZjjVjumvmg-TYU/edit#gid=0")
+
+write_csv(google_schedule, path = "materials/schedule.csv")
+```
+
+
+```{r read-data-google}
+schedule <-  read_csv("materials/schedule.csv") %>% 
+  mutate(Slides = case_when(
+    !is.na(HTML) & !is.na(PDF) ~ glue("<a class='fa fa-link' href='slides/{HTML}'></a> <a class='fa fa-file-pdf' href='slides/{PDF}'></a>"),
+    !is.na(HTML) ~ glue("<a class='fa fa-link' href='slides/{HTML}'></a>"),
+    !is.na(PDF) ~ glue("<a class='fa fa-file-pdf' href='slides/{PDF}'></a>"),
+    TRUE ~ ""
+  ),
+  Exercise = case_when(
+    !is.na(Exercise) ~ glue("<a class='fa fa-link' href='{Exercise}'></a>"),
+    TRUE ~ ""
+  ),
+  Topic = ifelse(is.na(Topic), "", Topic),
+  Exercise = ifelse(is.na(Exercise), "", Exercise)) %>% 
+  # Date = janitor::excel_numeric_to_date(Date)) %>% 
+  select(Week, 
+         Lecture, 
+         Date, 
+         Instructor, 
+         Slides, 
+         Topic, 
+         Exercise, 
+         Readings, 
+         Assessment) %>% 
+  # generate readings
+  mutate(Readings = map2_chr(Week, Lecture, generate_readings)) 
+
+midsem_break <- 10 # after which week
+
+monash_pals <- c(blue = "#4269a5",
+                 purple = "#8e4f89", 
+                 green = "#39825a", 
+                 orange = "#dc6141")
+
+schedule %>% 
+  mutate(Instructor = cell_spec(
+    Instructor, "html",
+    color = factor(x = Instructor, 
+                   levels = unique(Instructor), 
+                   labels = monash_pals[seq_len(n_distinct(Instructor))])
+  )) %>% 
+  kable(escape = FALSE, 
+        align = c("c", "c", "c", "c", "l", "l")) %>% 
+  kable_styling(bootstrap_options = "striped",
+                fixed_thead = T) %>% 
+  column_spec(1, width = "0.5cm") %>% 
+  column_spec(2, width = "1cm") %>% 
+  column_spec(3, width = "3cm") %>% 
+  column_spec(4, width = "1cm") %>% 
+  group_rows(group_label = "Midsemester Break", 
+             start_row = midsem_break + 1, 
+             end_row = midsem_break, 
+             label_row_css = "background-color: #d9e1e8;") %>% 
+  add_indent(1:midsem_break) %>%  # this needs to be done to match up with above
+  add_indent((midsem_break+1):24) # this needs to be done to match up with above
+```
+
+
+
