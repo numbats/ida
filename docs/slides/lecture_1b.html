@@ -8,6 +8,9 @@
     <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <link href="libs/typer-js-1.0.2/typer.css" rel="stylesheet" />
+    <script src="libs/typer-js-1.0.2/typer.min.js"></script>
+    <script src="libs/hacker-type-0.0.12/hacker-type.js"></script>
     <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
     <script src="libs/countdown-0.3.5/countdown.js"></script>
     <!--
@@ -20,7 +23,6 @@
     <link rel="stylesheet" href="assets/monash-fonts.css" type="text/css" />
     <link rel="stylesheet" href="assets/styles.css" type="text/css" />
     <link rel="stylesheet" href="assets/custom.css" type="text/css" />
-    <link rel="stylesheet" href="assets/demo.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -30,7 +32,6 @@
 
 background-color: #006DAE
 class: middle center hide-slide-number
-
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
 &lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
@@ -95,33 +96,13 @@ Department of Econometrics and Business Statistics
 
 
 
----
-
-# What is this song?
-
 
 ---
-class: refresher
 
-# Traffic Light System
-
-# .red[Red] Post it
-
-- I need a hand
-- Slow down
-
---
-
-# Green Post it
-
-* I am up to speed
-* I have completed the thing
-
----
-class: refresher, center, bottom
-background-image: url("images/rstudio-cooking-example.jpeg")
+background-image: url(images/rstudio-cooking-example.jpeg)
 background-size: contain
 background-position: 50% 50%
+class: center, bottom, white
 
 From Jessica Ward (@JKRWard) of R Ladies Newcaslte (UK) - @RLadiesNCL
 https://twitter.com/RLadiesNCL/status/1138812826917724160
@@ -146,76 +127,50 @@ background-position: 50% 50%
 class: refresher, center, bottom
 
 ---
+class: refresher
 # R essentials: A short list (for now)
 
 - Functions are (most often) verbs, followed by what they will be applied to in parentheses:
 
+.hacker-type[
 
 ```r
 do_this(to_this)
-do_that(to_this, to_that, with_those)
 ```
-
+]
 --
 
 - Columns (variables) in data frames are accessed with `$`:
 
+.hacker-type[
 
 ```r
 dataframe$var_name
 ```
-
+]
 --
 
-- Packages are installed with the `install.packages` function and loaded with the `library` function, once per session:
+- Packages are installed with `install.packages`, and loaded with `library` , once per session:
 
+.hacker-type[
 
 ```r
 install.packages("package_name")
 library(package_name)
 ```
+]
 
 ---
 
 # Today: Outline
 
-* Why we care about Reproducibility
-* R + markdown = Rmarkdown 
-* Controling output and input of rmarkdown
-* Exercises on creating rmarkdown reports on the humble platypus
-* Form up assignment groups
-* Quiz
-* Release assignment (later today)
-]
-
-???
-
-* Reproducibility: Why we care
-* Rmarkdown 
-  * YAML
-  * Code
-  * text
-* markdown (online quiz)
-* rmarkdown - edit the existing one on platypus!
-* code chunks
-* code chunk names
-* chunk options
-* exercise on this
-* setting different chunk options globally
-* exercise extending the platypus report
-* make assignment groups
-* release assignment
-* quiz
-
-Should be able to answer the questions:
-
-How should I start an rmarkdown document?
-What do I put in the YAML metadata?
-How do I create a code chunk?
-What sort of options to I need to worry about for my code?
-What is the value in a reproducible report?
-What is markdown?
-Can I combine my software and my writing?
+- Why we care about Reproducibility
+- R + markdown = Rmarkdown 
+- Controling output and input of rmarkdown
+- Exercises on creating rmarkdown reports on the humble platypus
+- Form up assignment groups
+- Quiz
+- Assignment 1 released next week.
 
 ---
 class: transition
@@ -228,9 +183,7 @@ Only 6 out of 53 landmark results could be reproduced
 -- [Amgen, 2014*](https://www.nature.com/articles/483531a)
 ]
 
-.footnote[`*` Heard via Garret Grolemund's [great talk](https://www.youtube.com/watch?v=HVlwNayog-k)]
-
----
+--
 
 .blockquote[
 An estimated 75% - 90% of preclinical results cannot be reproduced
@@ -238,17 +191,14 @@ An estimated 75% - 90% of preclinical results cannot be reproduced
 -- [Begley, 2015*](https://www.ncbi.nlm.nih.gov/pubmed/25552691)
 ]
 
-
-.footnote[`*` Heard via Garret Grolemund's [great talk](https://www.youtube.com/watch?v=HVlwNayog-k)]
-
----
+--
 
 .blockquote[
 Estimated **annual** cost of irreproducibility for biomedical industry = 28 Billion USD
 
 -- [Freedman, 2015*](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002165)
 ]
-
+ 
 
 .footnote[`*` Heard via Garret Grolemund's [great talk](https://www.youtube.com/watch?v=HVlwNayog-k)]
 
@@ -309,7 +259,7 @@ Long-term goals:
 
 ---
 
-So
+# So
 
 --
 
@@ -363,7 +313,9 @@ In 2004, [John Gruber](https://en.wikipedia.org/wiki/John_Gruber), of [daring fi
 2. numbered list
 3. numbered list
 
-__bold__, **bold**, _italic_, *italic*
+__bold__, **bold**, 
+
+_italic_, *italic*
 
 &gt; quote of something profound
 
@@ -379,7 +331,9 @@ __bold__, **bold**, _italic_, *italic*
 2. numbered list
 3. numbered list
 
-__bold__, **bold**, _italic_, *italic*
+__bold__, **bold**, 
+
+_italic_, *italic*
 
 &gt; quote of something profound
 
@@ -395,7 +349,7 @@ With very little marking up, we can create rich text, that **actually resembles*
 
 **Learn to use markdown** In your small groups, spend five minutes working through [markdowntutorial.com](https://www.markdowntutorial.com/)
 
-<div class="countdown" id="timer_5e575e7f" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e5dca36" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -407,7 +361,6 @@ With very little marking up, we can create rich text, that **actually resembles*
 * Q: How do we take `markdown` + `R code` = "literate programming environment"
 
 * A: `Rmarkdown` 
-]
 
 ---
 
@@ -416,7 +369,6 @@ With very little marking up, we can create rich text, that **actually resembles*
 --
 
 Provides an environment where you can write your complete analysis, and marries your text, and code together into a rich document. 
-]
 
 --
 
@@ -456,7 +408,7 @@ There are three parts to an rmarkdown document.
 
 - The metadata of the document tells you how it is formed - what the **title** is, what **date** to put, and other control information.  
 
-- If you're familiar with `\(\LaTeX\)`, this is ksimilar to how you specify document type, styles, fonts, options, etc in the front matter / preamble.
+- If you're familiar with `\(\LaTeX\)`, this is similar to how you specify document type, styles, fonts, options, etc in the front matter / preamble.
 
 ---
 # Metadata: YAML
@@ -521,13 +473,14 @@ We refer to code in an rmarkdown document in two ways:
 ---
 # Code: backtick?
 
-**a backtick** is a special character you might not have seen before, it is typically located under the tilde key (`~`). On USA / Australia keyboards, is under the escape key:
+**A backtick** is a special character you might not have seen before, it is typically located under the tilde key (`~`). On USA / Australia keyboards, is under the escape key:
 
 
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="images/ansi-keyboard.png" alt="image from https://commons.wikimedia.org/wiki/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg" width="80%" /&gt;
-&lt;p class="caption"&gt;image from https://commons.wikimedia.org/wiki/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg&lt;/p&gt;
-&lt;/div&gt;
+&lt;img src="images/ansi-keyboard.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+.small[
+image from https://commons.wikimedia.org/wiki/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
+]
 
 ---
 # Code: Inline code
@@ -546,26 +499,37 @@ You might want to run the code inline to name the number of variables or rows in
 
 You can call code "inline"  like so:
 
+.hacker-type[
 ````markdown
 
 There are `r nrow(airquality) ` observations in the airquality dataset, 
 and `r ncol(airquality) ` variables.
 
 ````
+]
 
 Which gives you the following sentence
 
 --
 
-
+.hacker-type[
 &gt; There are 153 observations in the airquality dataset, and 6 variables.
+]
 
 ---
 
 
 # Code: Inline code
 
-What's great about this is that if your data changes upstream, then you don't need to work out where you mentioned your data, you just update the document.
+- If your data changes upstream
+
+--
+
+- You don't need to work out where you mentioned your data
+
+--
+
+- You just update the document. 🎉
  
 ---
 # Your Turn: Put it together
@@ -578,7 +542,7 @@ Go to `rstudio.cloud` and
 * knit the document again
 * How do the text and figures in the document change?
 
-<div class="countdown" id="timer_5e575d2f" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e5dc9ad" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -589,11 +553,18 @@ background-size: contain
 background-position: 50% 50%
 
 ---
+class: transition
+# End of part 1 of Lecture 1B
+Make sure you finish the exercise on the rstudio.cloud
+
+---
+class: transition
+# Start of part 2 of Lecture 1B
+
+---
 # Code: Chunk names
 
 Straight after the ` ```{r ` you can use a text string to name the chunk:
-
-` ```{r read-crime-data} `
 
 ````markdown
 ```{r read-crime-data}
@@ -613,8 +584,9 @@ Naming code chunks has three advantages:
 ---
 # Code: Chunk names
 
-- Every chunk should ideally have a name.
-- Naming things is hard, but follow these rules and you'll be fine:
+Every chunk should ideally have a name.
+
+Naming things is hard, but follow these rules and you'll be fine:
 
 1. One word that describes the action (e.g., "read")
 2. One word that describes the thing inside the code (e.g, "gapminder")
@@ -633,7 +605,7 @@ gap &lt;- read_csv("gapminder.csv")
 
 What do you think this does?
 
-<div class="countdown" id="timer_5e575eae" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e5dc9f2" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -657,9 +629,17 @@ You can read more about the options at the official documentation: https://yihui
 * Re-Knit the document.
 * Take a look at the [R Markdown Gallery](https://rmarkdown.rstudio.com/gallery.html).
 
-<div class="countdown" id="timer_5e575e96" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e5dc990" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
+
+---
+class: transition
+# End of Part 2 of Lecture 1B
+
+---
+class: transition
+# Start of Part 3 of Lecture 1B
 
 ---
 # Global options: Set and forget
@@ -690,8 +670,8 @@ knitr::opts_chunk$set(
 - Update the other code chunks by removing the code chunk options.
 
 
-<div class="countdown" id="timer_5e575ced" style="right:0;bottom:0;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div class="countdown" id="timer_5e5dca6e" style="right:0;bottom:0;left:0;margin:3%;padding:15px;font-size:4em;" data-audio="true" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
@@ -708,28 +688,6 @@ The many different outputs of rmarkdown
 2. Create a new document that will produce a slide show `File &gt; New R Markdown &gt; Presentation`
 3. Create a flexdashboard document - see this option in the `File &gt; New R Markdown &gt; From template` list.
 
-
----
-# Your Turn: Making the groups
-
-We are going to set up the groups for doing assignment work.
-
-1. Choose a quote from the bag. 
-2. Find the other people in the class with the same quote as you
-3. Grab your gear and claim a table to work together at. 
-
-
----
-# Your Turn: Ask your team mates these questions:
-
-1. What is one food you'd never want to taste again?
-2. If you were a comic strip character, who would you be and why?
-
-LASTLY, come up with a name for your team and tell this to a tutor, along with the names of members of the team.
-
-<div class="countdown" id="timer_5e575e3b" style="right:0;bottom:0;left:0;margin:3%;padding:15px;font-size:4em;" data-audio="true" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
 
 ---
 # Your Turn
@@ -759,7 +717,6 @@ LASTLY, come up with a name for your team and tell this to a tutor, along with t
 
 Take the quiz for today from ED.
 
-  
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -815,6 +772,35 @@ This work is licensed under a &lt;a rel="license" href="http://creativecommons.o
 - The workspace of your R Markdown document is separate from the Console
 
 - rmarkdown runs code from the start to finish in a new environment
+
+???
+
+* Reproducibility: Why we care
+* Rmarkdown 
+  * YAML
+  * Code
+  * text
+* markdown (online quiz)
+* rmarkdown - edit the existing one on platypus!
+* code chunks
+* code chunk names
+* chunk options
+* exercise on this
+* setting different chunk options globally
+* exercise extending the platypus report
+* make assignment groups
+* release assignment
+* quiz
+
+Should be able to answer the questions:
+
+How should I start an rmarkdown document?
+What do I put in the YAML metadata?
+How do I create a code chunk?
+What sort of options to I need to worry about for my code?
+What is the value in a reproducible report?
+What is markdown?
+Can I combine my software and my writing?
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

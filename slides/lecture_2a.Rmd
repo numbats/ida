@@ -166,6 +166,24 @@ class: refresher
 ---
 class: refresher
 
+# Traffic Light System
+
+# .red[Red] Post it
+
+- I need a hand
+- Slow down
+
+--
+
+# Green Post it
+
+* I am up to speed
+* I have completed the thing
+
+
+---
+class: refresher
+
 # Recap
 
 - packages are installed with ___ ?

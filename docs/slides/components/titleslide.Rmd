@@ -2,7 +2,6 @@
 background-color: #006DAE
 class: middle center hide-slide-number
 
-
 <div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;">
 <i class="fas fa-exclamation-circle"></i> These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See <a href=`r rmarkdown::metadata$pdflink`/>here for PDF <i class="fas fa-file-pdf"></i></a>. 
 </div>
