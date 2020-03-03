@@ -696,7 +696,7 @@ For example:
 
 --
 
-.hacker-type.hacker-type[
+.hacker-type[
 ```{r mean-example, echo = TRUE}
 mean(c(1,2,1,2))
 ```
@@ -717,7 +717,7 @@ dataframe$var_name
 For example:
 
 --
-.hacker-type.hacker-type[
+.hacker-type[
 ```{r show-mean, echo = TRUE}
 starwars$name
 ```
@@ -729,7 +729,7 @@ starwars$name
 
 - Packages are installed with the `install.packages` function and loaded with the `library` function, once per session:
 
-.hacker-type.hacker-type[
+.hacker-type[
 ```{r eval=FALSE, echo = TRUE}
 install.packages("package_name")
 library(package_name)
