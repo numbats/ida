@@ -41,6 +41,9 @@ output:
 ```{r titleslide, child="components/titleslide.Rmd"}
 ```
 
+```{r xaringanExtra}
+xaringanExtra::use_hacker_type()
+```
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -234,47 +237,11 @@ ABS, **CSIRO**, ATO, **Microsoft**, Energy Qld, Auto and General, Bank of Qld, B
 ]
 
 ---
-# Traffic Light System
-
-```{r tom-cruise, out.width = "90%"}
-include_graphics("gifs/help-me-help-you.gif")
-```
-
----
-# Traffic Light System
-
-.pull-left.middle[
-
-.red[
-# Red Post-it
-]
-
-* I need a hand
-* Slow down
-
-]
-
---
-
-.pull-right.middle[
-.green[
-# Green Post-it
-]
-
-* I am up to speed
-* I have completed  the thing
-]
-
----
 # Let's start writing...
 
 Go to [bit.ly/ask-nick]() to log in to RStudio cloud.
 
 Log in with Google / GitHub / other credentials.
-
-.red[If you have questions, place a red sticky note on your laptop.]
-
-.green[If you are done, place a green sticky on your laptop]
 
 .small[
 This section is based on an exercise from [data science in a box by Mine Çetinkaya-Rundel](https://github.com/rstudio-education/datascience-box/blob/c2e3ed13417c896fb49b78fd4a5a551392286351/extras/exercises/01-unvotes/unvotes.Rmd)
@@ -289,10 +256,18 @@ This section is based on an exercise from [data science in a box by Mine Çetink
 - Go back to the file and change your name on top (in the `yaml` -- we'll talk about what this means later) and knit again.
 - Change the country names to those you're interested in. Spelling and capitalization should match the data so take a peek at the Appendix to see how the country names are spelled. Knit again. And voila, your first data visualization!
 
-- **If you have questions or issues, place a sticky note on the laptop**
+---
+class: transition
+
+# End of part 1 of Lecture 1A
+Make sure you've completed the previous exercise ("create your first data visualisation") before moving on to part 2 (available at [this link]()).
 
 ---
+class: transition
 
+# Start of part 2 of Lecture 1A
+
+---
 # What can you do at the end of semester?
 
 Some of our best final projects:
@@ -363,7 +338,7 @@ Whatever I do in the data analysis that is shown to you during the class, you ca
 
 ---
 class: informative
-# Course Website: http://dmac.netlify.com
+# Course Website: http://ida-monash.netlify.com
 
 - "ida" = Introduction to Data Analysis
 - [unit guide](https://unitguidemanager.monash.edu/view?unitCode=ETC1010&tpCode=S1-01&tpYear=2020) (authority on course structure).
@@ -549,15 +524,19 @@ class: center, bottom, bg-indigo
 ---
 #  Diversity & Inclusiveness:
 
-- Intent: Students from all diverse backgrounds and perspectives be well-served by this course, that students' learning needs be addressed both in and out of class, and that the diversity that the students bring to this class be viewed as a resource, strength and benefit. It is my intent to present materials and activities that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture. Let me know ways to improve the effectiveness of the course for you personally, or for other students or student groups.
+- Intent: Students from all diverse backgrounds and perspectives be well-served by this course, that students' learning needs be addressed both in and out of class, and that the diversity that the students bring to this class be viewed as a resource, strength and benefit. 
 
-- If you have a name and/or set of pronouns that differ from those that appear in your official Monash records, please let me know!
+- It is my intent to present materials and activities that are respectful of diversity: gender identity, sexuality, disability, age, socioeconomic status, ethnicity, race, nationality, religion, and culture. Let me know ways to improve the effectiveness of the course for you personally, or for other students or student groups.
 
 ---
 # Diversity & Inclusiveness:
 
+- If you have a name and/or set of pronouns that differ from those that appear in your official Monash records, please let me know!
 
 - If you feel like your performance in the class is being impacted by your experiences outside of class, please don't hesitate to come and talk with me. I want to be a resource for you. If you prefer to speak with someone outside of the course, talk to Di Cook, or look at the services available to you in the [Monash student support services](https://www.monash.edu/students/support). 
+
+---
+# Diversity & Inclusiveness:
 
 - I (like many people) am still in the process of learning about diverse perspectives and identities. If something was said in class (by anyone) that made you feel uncomfortable, please talk to me about it.
 
@@ -576,11 +555,6 @@ class: center, bottom, bg-indigo
 - Assignment groups may not directly share code with another group. 
 - You are welcome to discuss the problems together and ask for advice, but you may not make direct use of code from another team.
 
----
-class: transition middle
-# Group Assignments
-
-Assignment 1 will be announced at class on Monday Week 2
 
 ---
 
@@ -632,6 +606,23 @@ Each student will be randomly assigned another team's submission to provide feed
 --
 
 - In this situation the team will need to discuss team function and dysfunction with the instructor.
+
+
+---
+class: transition middle
+# Group Assignments
+
+Assignment 1 will be announced at class on Monday Week 2
+
+---
+class: transition
+
+# End of Part 2 of Lecture 1A
+
+---
+class: transition
+
+# Start of Part 3 of Lecture 1A
 
 ---
 class: transition
@@ -701,10 +692,15 @@ do_that(to_this, to_that, with_those)
 
 --
 
+For example:
+
+--
+
+.hacker-type.hacker-type[
 ```{r mean-example, echo = TRUE}
 mean(c(1,2,1,2))
 ```
-
+]
 
 ---
 # R essentials: A short list (for now)
@@ -716,10 +712,16 @@ mean(c(1,2,1,2))
 dataframe$var_name
 ```
 
+--
+
+For example:
+
+--
+.hacker-type.hacker-type[
 ```{r show-mean, echo = TRUE}
 starwars$name
 ```
-
+]
 
 ---
 # R essentials: A short list (for now)
@@ -727,11 +729,12 @@ starwars$name
 
 - Packages are installed with the `install.packages` function and loaded with the `library` function, once per session:
 
+.hacker-type.hacker-type[
 ```{r eval=FALSE, echo = TRUE}
 install.packages("package_name")
 library(package_name)
 ```
-
+]
 
 ---
 class: refresher
@@ -765,7 +768,7 @@ Check your knowledge and comprehension by taking your first lab quiz on Ed
 
 Go to the ED page, and complete the lab quiz.
 
-*NOTE: Reading assignment on ED site due by 8am before Class on Friday*
+*NOTE: Reading assignment on ED site due by 12pm before Class on Wednesday*
 
 ---
 

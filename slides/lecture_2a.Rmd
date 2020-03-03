@@ -115,6 +115,38 @@ countdown(minutes = 5,
           play_sound = TRUE)
 ```
 
+---
+# Traffic Light System
+
+```{r tom-cruise, out.width = "90%"}
+include_graphics("gifs/help-me-help-you.gif")
+```
+
+---
+# Traffic Light System
+
+.pull-left.middle[
+
+.red[
+# Red Post-it
+]
+
+* I need a hand
+* Slow down
+
+]
+
+--
+
+.pull-right.middle[
+.green[
+# Green Post-it
+]
+
+* I am up to speed
+* I have completed  the thing
+]
+
 
 ---
 class: refresher
@@ -127,6 +159,9 @@ class: refresher
 - We are using ___, not ___ for ETC1010?
 - Functions are  ___
 - columns in data frames are accessed with ___ ?
+.red[If you have questions, place a red sticky note on your laptop.]
+
+.green[If you are done, place a green sticky on your laptop]
 
 ---
 class: refresher

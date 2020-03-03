@@ -1,25 +1,25 @@
-Week,Lecture,Date,Instructor,HTML,PDF,Exercise,Topic,Readings,Assessment
-1,A,2020-03-09T00:00:00Z,Nick,lecture_1A.html,lecture_1A.pdf,exercise_1A.zip,Introduction to the language of data analysis,NA,NA
-1,B,2020-03-11T00:00:00Z,Nick,lecture_1B.html,lecture_1B.pdf,exercise_1B.zip,NA,NA,NA
-2,A,2020-03-16T00:00:00Z,Nick,lecture_2A.html,lecture_2A.pdf,exercise_2A.zip,"Tidy data principles, reshaping your data into tidy form, and basic data wrangling",NA,NA
-2,B,2020-03-18T00:00:00Z,Nick,lecture_2B.html,lecture_2B.pdf,exercise_2B.zip,NA,NA,NA
-3,A,2020-03-23T00:00:00Z,Nick,lecture_3A.html,lecture_3A.pdf,exercise_3A.zip,"Plotting your data, and wrangling temporal data",NA,NA
-3,B,2020-03-25T00:00:00Z,Nick,lecture_3B.html,lecture_3B.pdf,exercise_3B.zip,NA,NA,NA
-4,A,2020-03-30T00:00:00Z,Nick,lecture_4A.html,lecture_4A.pdf,exercise_4A.zip,"Advanced wrangling, joining tables, and advanced data visualisation",NA,NA
-4,B,2020-04-01T00:00:00Z,Nick,lecture_4B.html,lecture_4B.pdf,exercise_4B.zip,NA,NA,Assignment 1
-5,A,2020-04-06T00:00:00Z,Nick,lecture_5A.html,lecture_5A.pdf,exercise_5A.zip,Handling missing values and scraping data,NA,NA
-5,B,2020-04-08T00:00:00Z,Nick,lecture_5B.html,lecture_5B.pdf,exercise_5B.zip,NA,NA,NA
-6,A,2020-04-20T00:00:00Z,Nick,lecture_6A.html,lecture_6A.pdf,exercise_6A.zip,"Introduction to modeling, and programming",NA,Mid Semester In-Class Exam
-6,B,2020-04-22T00:00:00Z,Nick,lecture_6B.html,lecture_6B.pdf,exercise_6B.zip,NA,NA,NA
-7,A,2020-04-27T00:00:00Z,Nick,lecture_7A.html,lecture_7A.pdf,exercise_7A.zip,Intermediate models and programming,NA,NA
-7,B,2020-04-29T00:00:00Z,Nick,lecture_7B.html,lecture_7B.pdf,exercise_7B.zip,NA,NA,NA
-8,A,2020-05-04T00:00:00Z,Nick,lecture_8A.html,lecture_8A.pdf,exercise_8A.zip,Analysing text data,NA,NA
-8,B,2020-05-06T00:00:00Z,Nick,lecture_8B.html,lecture_8B.pdf,exercise_8B.zip,NA,NA,Assignment 2
-9,A,2020-05-11T00:00:00Z,Nick,lecture_9A.html,lecture_9A.pdf,exercise_9A.zip,"Wrangling, plotting and modeling network data",NA,NA
-9,B,2020-05-13T00:00:00Z,Nick,lecture_9B.html,lecture_9B.pdf,exercise_9B.zip,NA,NA,NA
-10,A,2020-05-18T00:00:00Z,TBA,lecture_10A.html,lecture_10A.pdf,exercise_10A.zip,"Computational modeling, and good data collection practices",NA,NA
-10,B,2020-05-20T00:00:00Z,TBA,lecture_10B.html,lecture_10B.pdf,exercise_10B.zip,NA,NA,NA
-11,A,2020-05-25T00:00:00Z,James McKeone,lecture_11A.html,lecture_11A.pdf,exercise_11A.zip,Guest Lecturer,NA,Project Due
-11,B,2020-05-27T00:00:00Z,TBA,lecture_11B.html,lecture_11B.pdf,exercise_11B.zip,Practical Exam,NA,Practical Exam
-12,A,2020-06-01T00:00:00Z,TBA,NA,NA,NA,Project Presentation,NA,Projects Presented
-12,B,2020-06-03T00:00:00Z,TBA,NA,NA,NA,Project Presentation,NA,Projects Presented
+Week,Lecture,Date,HTML,PDF,Exercise,Topic,Readings,Assessment
+1,A,2020-03-09T00:00:00Z,lecture_1A.html,lecture_1A.pdf,exercise_1A.zip,Introduction to the language of data analysis,NA,NA
+1,B,2020-03-11T00:00:00Z,lecture_1B.html,lecture_1B.pdf,exercise_1B.zip,NA,NA,NA
+2,A,2020-03-16T00:00:00Z,NA,NA,NA,"Tidy data principles, reshaping your data into tidy form, and basic data wrangling",NA,NA
+2,B,2020-03-18T00:00:00Z,NA,NA,NA,NA,NA,NA
+3,A,2020-03-23T00:00:00Z,NA,NA,NA,"Plotting your data, and wrangling temporal data",NA,NA
+3,B,2020-03-25T00:00:00Z,NA,NA,NA,NA,NA,NA
+4,A,2020-03-30T00:00:00Z,NA,NA,NA,"Advanced wrangling, joining tables, and advanced data visualisation",NA,NA
+4,B,2020-04-01T00:00:00Z,NA,NA,NA,NA,NA,Assignment 1
+5,A,2020-04-06T00:00:00Z,NA,NA,NA,Handling missing values and scraping data,NA,NA
+5,B,2020-04-08T00:00:00Z,NA,NA,NA,NA,NA,NA
+6,A,2020-04-20T00:00:00Z,NA,NA,NA,"Introduction to modeling, and programming",NA,Mid Semester In-Class Exam
+6,B,2020-04-22T00:00:00Z,NA,NA,NA,NA,NA,NA
+7,A,2020-04-27T00:00:00Z,NA,NA,NA,Intermediate models and programming,NA,NA
+7,B,2020-04-29T00:00:00Z,NA,NA,NA,NA,NA,NA
+8,A,2020-05-04T00:00:00Z,NA,NA,NA,Analysing text data,NA,NA
+8,B,2020-05-06T00:00:00Z,NA,NA,NA,NA,NA,Assignment 2
+9,A,2020-05-11T00:00:00Z,NA,NA,NA,"Wrangling, plotting and modeling network data",NA,NA
+9,B,2020-05-13T00:00:00Z,NA,NA,NA,NA,NA,NA
+10,A,2020-05-18T00:00:00Z,NA,NA,NA,"Computational modeling, and good data collection practices",NA,NA
+10,B,2020-05-20T00:00:00Z,NA,NA,NA,NA,NA,NA
+11,A,2020-05-25T00:00:00Z,NA,NA,NA,Guest Lecturer,NA,Project Due
+11,B,2020-05-27T00:00:00Z,NA,NA,NA,Practical Exam,NA,Practical Exam
+12,A,2020-06-01T00:00:00Z,NA,NA,NA,Project Presentation,NA,Projects Presented
+12,B,2020-06-03T00:00:00Z,NA,NA,NA,Project Presentation,NA,Projects Presented

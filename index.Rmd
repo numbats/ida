@@ -17,6 +17,12 @@ library(googlesheets4)
 library(lubridate)
 library(ymlthis)
 library(yaml)
+
+
+monash_pals <- c(blue = "#4269a5",
+                 purple = "#8e4f89", 
+                 green = "#39825a", 
+                 orange = "#dc6141")
 ```
 
 ```{r functions}
@@ -94,7 +100,6 @@ schedule <-  read_csv("materials/schedule.csv") %>%
   select(Week, 
          Lecture, 
          Date, 
-         Instructor, 
          Slides, 
          Topic, 
          Exercise, 
@@ -103,20 +108,9 @@ schedule <-  read_csv("materials/schedule.csv") %>%
   # generate readings
   mutate(Readings = map2_chr(Week, Lecture, generate_readings)) 
 
-midsem_break <- 10 # after which week
-
-monash_pals <- c(blue = "#4269a5",
-                 purple = "#8e4f89", 
-                 green = "#39825a", 
-                 orange = "#dc6141")
+midsem_break <- 10 # after which week (but there are 2 lectures per week)
 
 schedule %>% 
-  mutate(Instructor = cell_spec(
-    Instructor, "html",
-    color = factor(x = Instructor, 
-                   levels = unique(Instructor), 
-                   labels = monash_pals[seq_len(n_distinct(Instructor))])
-  )) %>% 
   kable(escape = FALSE, 
         align = c("c", "c", "c", "c", "l", "l")) %>% 
   kable_styling(bootstrap_options = "striped",
