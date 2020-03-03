@@ -33,11 +33,11 @@ assessment_df <- data.frame(
               "50%"),
   "due_date" = c("Weeks 1-8",
                  "Each class period",
-                 "Week 4 ()",
-                 "Week 6 ()",
-                 "Week 8 ()",
-                 "Week 11 ()",
-                 "Week 11 ()",
+                 "Week 4 (1st April)",
+                 "Week 6 (20th April)",
+                 "Week 8 (4th May)",
+                 "Week 11 (27th May)",
+                 "Week 12 (1st June)",
                  "TBA")
   )
 
@@ -60,7 +60,7 @@ kable(escape = FALSE,
 Information to complete the assignments is below:
 
 - Unzip the file and double click on the rstudio project, "assignment-1-2020-s1.Rproj" This contains the data and Rmd file
-- **Note that the assignment is also on rstudio.cloud as well under assignment 3**
+- **Note that the assignment is also on rstudio.cloud as well, named after the assessment task. So Assignment 1 will be named, "Assignment 1".**
 
 
 ```{r assignments}
@@ -84,10 +84,11 @@ kable(escape = FALSE,
 
 [Project instructions](project/project-instructions.html) 
 
-- **Deadline 1 (13th September)**:  Find team members, and potential topics to study (List of groups will be posted here)
-- **Deadline 2 (20th September)**:  Team members and team name, data description.
-- **Deadline 3 (11th October) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
-- **Deadline 4 (21st October) **:  Final version of story board uploaded. 
+- **Deadline 1 (6th May)**:  Find team members, and potential topics to study (List of groups will be posted here)
+- **Deadline 2 (13th May)**:  Team members and team name, data description.
+- **Deadline 3 (20th May) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
+- **Deadline 4 (29th May) **:  Final version of story board uploaded. 
+- 
 - **Presentation in week 12**
 
 There are several ways to do the storyboard:
