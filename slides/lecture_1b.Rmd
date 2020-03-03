@@ -17,7 +17,6 @@ output:
       - "assets/monash-fonts.css"
       - "assets/styles.css" # small improvements
       - "assets/custom.css" # add your own CSS here!
-      - "assets/demo.css" # this should be removed
     self_contained: false 
     seal: false 
     chakra: 'libs/remark-latest.min.js'
@@ -57,29 +56,15 @@ opts_chunk$set(echo = FALSE,
                cache = FALSE)
 ```
 
----
-class: refresher
-
-# Traffic Light System
-
-# .red[Red] Post it
-
-- I need a hand
-- Slow down
-
---
-
-# Green Post it
-
-* I am up to speed
-* I have completed the thing
-
----
-
-```{r rstudio-cookbook}
-include_graphics("images/rstudio-cooking-example.jpeg")
+```{r xaringanExtra}
+xaringanExtra::use_hacker_type()
 ```
+---
 
+background-image: url(images/rstudio-cooking-example.jpeg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
 
 From Jessica Ward (@JKRWard) of R Ladies Newcaslte (UK) - @RLadiesNCL
 https://twitter.com/RLadiesNCL/status/1138812826917724160
@@ -109,26 +94,30 @@ class: refresher
 
 - Functions are (most often) verbs, followed by what they will be applied to in parentheses:
 
+.hacker-type[
 ```{r eval=FALSE, echo = TRUE}
 do_this(to_this)
 ```
-
+]
 --
 
 - Columns (variables) in data frames are accessed with `$`:
 
+.hacker-type[
 ```{r eval=FALSE, echo = TRUE}
 dataframe$var_name
 ```
-
+]
 --
 
 - Packages are installed with `install.packages`, and loaded with `library` , once per session:
 
+.hacker-type[
 ```{r eval=FALSE, echo = TRUE}
 install.packages("package_name")
 library(package_name)
 ```
+]
 
 ---
 
@@ -140,7 +129,7 @@ library(package_name)
 - Exercises on creating rmarkdown reports on the humble platypus
 - Form up assignment groups
 - Quiz
-- Assignment 1 released enxt week.
+- Assignment 1 released next week.
 
 ---
 class: transition
@@ -381,7 +370,7 @@ There are three parts to an rmarkdown document.
 
 - The metadata of the document tells you how it is formed - what the **title** is, what **date** to put, and other control information.  
 
-- If you're familiar with $\LaTeX$, this is ksimilar to how you specify document type, styles, fonts, options, etc in the front matter / preamble.
+- If you're familiar with $\LaTeX$, this is similar to how you specify document type, styles, fonts, options, etc in the front matter / preamble.
 
 ---
 # Metadata: YAML
@@ -474,19 +463,22 @@ You might want to run the code inline to name the number of variables or rows in
 
 You can call code "inline"  like so:
 
+.hacker-type[
 ````markdown
 
 There are `r "\u0060r nrow(airquality) \u0060"` observations in the airquality dataset, 
 and `r "\u0060r ncol(airquality) \u0060"` variables.
 
 ````
+]
 
 Which gives you the following sentence
 
 --
 
-
+.hacker-type[
 > There are `r nrow(airquality)` observations in the airquality dataset, and `r ncol(airquality)` variables.
+]
 
 ---
 
@@ -523,6 +515,15 @@ class: transition center bottom
 background-image: url(https://imgs.xkcd.com/comics/art_project.png)
 background-size: contain
 background-position: 50% 50%
+
+---
+class: transition
+# End of part 1 of Lecture 1B
+Make sure you finish the exercise on the rstudio.cloud
+
+---
+class: transition
+# Start of part 2 of Lecture 1B
 
 ---
 # Code: Chunk names
@@ -595,6 +596,14 @@ You can read more about the options at the official documentation: https://yihui
 ```{r cdown-rmd-chunk-opts}
 countdown(minutes = 5)
 ```
+
+---
+class: transition
+# End of Part 2 of Lecture 1B
+
+---
+class: transition
+# Start of Part 3 of Lecture 1B
 
 ---
 # Global options: Set and forget
