@@ -61,13 +61,14 @@ xaringanExtra::use_hacker_type()
 ```
 ---
 
-background-image: url(images/rstudio-cooking-example.jpeg)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
+```{r show-cooking-example, out.width = "90%"}
+include_graphics("images/rstudio-cooking-example.jpeg")
+```
 
+.small.bottom[
 From Jessica Ward (@JKRWard) of R Ladies Newcaslte (UK) - @RLadiesNCL
 https://twitter.com/RLadiesNCL/status/1138812826917724160
+]
 
 ---
 background-image: url(images/unvotes-oz-usa.png)
@@ -196,9 +197,7 @@ Near-term goals:
 - In addition to what was done, is it clear **why** it was done? 
 (e.g., how were parameter settings chosen?)
 
----
-
-# Reproducibility checklist
+--
 
 
 Long-term goals:
@@ -298,8 +297,7 @@ _italic_, *italic*
 
 ]
 
----
-# Markdown as a new player to legibility
+--
 
 With very little marking up, we can create rich text, that **actually resembles** the text that we want to see.
 
@@ -315,8 +313,6 @@ countdown(minutes = 5)
 
 ---
 # Rmarkdown helps address the reproducibility problem
-
---
 
 * Q: How do we take `markdown` + `R code` = "literate programming environment"
 

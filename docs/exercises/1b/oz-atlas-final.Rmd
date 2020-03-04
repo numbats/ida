@@ -1,0 +1,188 @@
+---
+title: "Australian Atlas"
+date: "2019-08-02"
+author: "Nicholas Tierney"
+output: html_document
+---
+
+```{r setup}
+```
+
+
+We have pulled some data on platypuses from the Atlas of Living Australia using the "ALA4R" package, and done some subsetting of the data to only look at a few of the key variables, and for the state of Victoria.
+
+Let's read in  data with `read_csv`:
+
+```{r echo=TRUE}
+library(readr)
+platypus_vic <- read_csv(here::here("data/platypus-vic.csv"))
+# platypus_vic <- read_csv(here::here("exercises/1b/data/platypus-vic.csv"))
+library(dplyr)
+
+```
+
+There are `r nrow(data)` observations of platypus that we have seen.
+
+Add a section header called "About the data" to your document. Write a paragraph about the "Atlas of Living Australia" (use your internet search skills!).
+
+You could even try adding a picture of a platypus into your report. Be sure that it is an image that you are free to use.
+
+## Adding plots
+
+
+Let's make some plots. Two of the variables in the data set are the latitude and longitude indicating where the animal was spotted. This is going to be the first plot, made using the `ggplot2` package from `tidyverse` suite.
+
+```{r echo=TRUE}
+library(tidyverse)
+ggplot(data = platypus_vic,
+       aes(x = longitude, 
+           y = latitude)) + 
+  geom_point()
+```
+
+If you are good at recognising the shape of Australia, you might realise that the sightings are all along the east coast of Victoria!
+
+But, we can make it look a bit more like Australia by making a map projection by adding `coord_map()`:
+
+```{r  echo=TRUE, fig.height=6, eval=FALSE}
+ggplot(platypus_vic,
+       aes(x = longitude, 
+           y = latitude), 
+       alpha = 0.1) + 
+  geom_point() +
+  coord_map()
+```
+
+We can add a map underneath using the powerful `leaflet` package:
+
+```{r echo=TRUE}
+library(leaflet)
+leaflet(platypus_vic) %>% 
+  addTiles() %>%
+  addCircleMarkers(clusterOptions = markerClusterOptions())
+```
+
+Are there platypus sightings near you?
+
+Write a couple of paragraphs about the locations of platypus in Australia, based on the map that you have created.
+
+### Temporal trend
+
+The date of the sighting is another variable in the data set.
+
+Let's count how many distinct dates there are using `n_distinct()`
+
+```{r}
+n_distinct(platypus_vic$eventDate)
+```
+
+We can even perform `summary` on the year data to see what the range of values is.
+
+```{r}
+summary(platypus_vic$eventDate)
+```
+
+We can plot of the sightings over time. The variable is called `year`. It is considered to be a `number` variable by R, so the first step is to get R to recognise that it is a date time object.
+
+The code below creates a new column called `date`, that is a tidies up version of `eventDate`:
+
+```{r echo=TRUE}
+library(lubridate)
+platypus_vic_tidy <- platypus_vic %>% 
+  mutate(date = ymd(eventDate),
+         year = year(date),
+         month = month(date),
+         day = day(date))
+```
+
+We can also explore occurences over time:
+
+```{r echo=TRUE}
+summary(platypus_vic_tidy$date)
+summary(platypus_vic_tidy$month)
+```
+
+```{r}
+ggplot(platypus_vic_tidy,
+       aes(x = date)) + 
+  geom_histogram()
+```
+
+There are some records dating back before 1850!
+
+```{r eval=FALSE}
+# These just have the lat/long wrong
+platypus_vic_tidy %>% filter(eventDate < ymd("1850-01-01")) 
+```
+
+Let's focus on records since 1900, and count the number for each year.
+
+```{r echo=TRUE}
+platypus_vic_1900 <- platypus_vic_tidy %>% 
+  filter(year > 1900) %>% 
+  count(year) 
+
+ggplot(data = platypus_vic_1900) +
+  geom_point(aes(x = year, 
+                 y = n))
+```
+
+Add a trend line.
+
+```{r echo=TRUE}
+ggplot(data = platypus_vic_1900, 
+       aes(x = year, 
+           y = n)) +
+  geom_point() +
+  geom_smooth(se = F)
+```
+
+Make it interactive with the magic function `ggplotly()` so that we can investigate some observations:
+
+```{r echo=TRUE}
+library(plotly)
+ggplotly()
+```
+
+*Discussion question:* Was there a population explosion in 1980 and 2004? Is the population of platypus been increasing since 1900, and descreasing in the last decade?
+
+Add a new section to your report, titled "Temporal patterns". Write a couple of paragraphs on what you have learned about the data over time.
+
+## Appendix
+
+Below contains the code used to download the data
+
+```{r ala-for-4, echo=TRUE, eval = FALSE}
+# load the ALA4R package, which contains the platypus data
+library(ALA4R)
+# Take a look at what the package does using the code `help(package="ALA4R")`
+
+# Look up the scientific name for platypus using:
+specieslist("platypus")
+
+# This returns a lot of different organisms with "platypus" in the name, but you should be able to find one line with the relevant information, that its scientific name is "Ornithorhynchus anatinus". 
+
+platypus <- occurrences("Ornithorhynchus anatinus", download_reason_id=10)
+
+# 518426.7 is NOWHERE near Australia. Let's filter it out
+platypus <- platypus$data %>% filter(longitude < 518426)
+
+# subset the data using dplyr filter and select commands
+platypus_vic <- platypus %>% 
+  filter(state == "Victoria") %>% 
+  select(id,
+         commonName,
+         scientificName,
+         state,
+         latitude,
+         longitude,
+         year:day,
+         sex)
+
+
+write_csv(platypus_vic, "data/platypus-vic.csv")
+
+# You can learn more about `read_csv` and `write_csv` by typing `?write_csv`.
+
+```
+
