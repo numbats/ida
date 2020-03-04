@@ -161,7 +161,7 @@ class: refresher
 - columns in data frames are accessed with ___ ?
 .red[If you have questions, place a red sticky note on your laptop.]
 
-.green[If you are done, place a green sticky on your laptop]
+.white[If you are done, place a green sticky on your laptop]
 
 ---
 class: refresher

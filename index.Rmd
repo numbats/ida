@@ -39,7 +39,7 @@ generate_readings <- function(week, part){
 
 - Lecturer: Dr. Nicholas Tierney
 - Chief Examiner: Di Cook
-- Tutors: Steph Kobakian, Sherry Zhang, Cynthia, Sarah Belet, Nitika Kandhari
+- Tutors: Steph Kobakian, Sherry Zhang, Cynthia Huang, Sarah Belet, Nitika Kandhari
 
 This is the course website. This page shows information about the consultation times, MoVE, and Schedule and lecture notes.
 
@@ -55,15 +55,17 @@ The "Assessments" tab above provides information about all assessment for ETC101
   missed material, learn about due dates for material to be turned in,
   and getting assigned to a group for team work.
 
-## Consultation times (Consults from Week 2)
+## Consultation times
 
-- Steph: TBA
-- Sarah: Monday 3-4pm
-- Sherry: Friday 1pm-2pm
-- Nitika: Tuesday 11:30am-12:30pm
-- Cynthia: Thursday 12pm-1pm
-- Nick: Monday morning **Menzies W1105**
-- Nick: Wednesday morning **Menzies W1105**
+Consultations begin from Week 2 (16th March)
+
+- Steph Kobakian: TBA
+- Sarah Belet: Monday 3-4pm
+- Sherry Zhang: Friday 1pm-2pm
+- Nitika Kandhari: Tuesday 11:30am-12:30pm
+- Cynthia Huang: Thursday 12pm-1pm
+- Nick Tierney: Monday morning **Menzies W1105**
+- Nick Tierney: Wednesday morning **Menzies W1105**
 
 ## Tentative Schedule
 
