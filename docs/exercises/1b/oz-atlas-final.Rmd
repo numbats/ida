@@ -9,43 +9,46 @@ output: html_document
 ```
 
 
-We have pulled some data on platypuses from the Atlas of Living Australia using the "ALA4R" package, and done some subsetting of the data to only look at a few of the key variables, and for the state of Victoria.
+We have pulled some data on platypuses from the Atlas of Living Australia using the "ALA4R" package, and done some subsetting of the data to only look at a few of the key variables.
 
 Let's read in  data with `read_csv`:
 
 ```{r echo=TRUE}
 library(readr)
-platypus_vic <- read_csv(here::here("data/platypus-vic.csv"))
+platypus <- read_csv(here::here("data/platypus.csv"))
 # platypus_vic <- read_csv(here::here("exercises/1b/data/platypus-vic.csv"))
-library(dplyr)
-
 ```
+
+This code can be read as: "read in this .csv file from the data folder".
+
+(We'll talk more about what `here::here` means in an upcoming lecture.)
 
 There are `r nrow(data)` observations of platypus that we have seen.
 
-Add a section header called "About the data" to your document. Write a paragraph about the "Atlas of Living Australia" (use your internet search skills!).
+Task:
+- Add a section header called "About the data" to your document. Write a paragraph about the "Atlas of Living Australia" (use your internet search skills!).
+- You could even try adding a picture of a platypus into your report. You can do this using markdown syntax or `include_graphics()` - try looking online for the rstudio markdown cheatsheet, or typing `?include_graphics()` into the console.
 
-You could even try adding a picture of a platypus into your report. Be sure that it is an image that you are free to use.
+## About the data
 
 ## Adding plots
-
 
 Let's make some plots. Two of the variables in the data set are the latitude and longitude indicating where the animal was spotted. This is going to be the first plot, made using the `ggplot2` package from `tidyverse` suite.
 
 ```{r echo=TRUE}
 library(tidyverse)
-ggplot(data = platypus_vic,
+ggplot(data = platypus,
        aes(x = longitude, 
            y = latitude)) + 
   geom_point()
 ```
 
-If you are good at recognising the shape of Australia, you might realise that the sightings are all along the east coast of Victoria!
+If you are good at recognising the shape of Australia, you might realise that the sightings match Australia!
 
 But, we can make it look a bit more like Australia by making a map projection by adding `coord_map()`:
 
 ```{r  echo=TRUE, fig.height=6, eval=FALSE}
-ggplot(platypus_vic,
+ggplot(platypus,
        aes(x = longitude, 
            y = latitude), 
        alpha = 0.1) + 
@@ -53,18 +56,30 @@ ggplot(platypus_vic,
   coord_map()
 ```
 
+This changes the dimensions of the plot to more closely match the longitude and latitude lines.
+
 We can add a map underneath using the powerful `leaflet` package:
 
 ```{r echo=TRUE}
 library(leaflet)
-leaflet(platypus_vic) %>% 
+leaflet(platypus) %>% 
   addTiles() %>%
   addCircleMarkers(clusterOptions = markerClusterOptions())
 ```
 
-Are there platypus sightings near you?
+Are there platypus sightings near where you live?
 
-Write a couple of paragraphs about the locations of platypus in Australia, based on the map that you have created.
+Write a paragraph about the locations of platypus in Australia, based on the map that you have created.
+
+## subsetting the data
+
+Let's subset the data to only look at platypus sightings from Victoria
+
+```{r filter-platy}
+platypus_vic <- platypus %>% 
+  filter(state == "Victoria")
+```
+
 
 ### Temporal trend
 

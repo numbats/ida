@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 1, part B"
 subtitle: "Week of introduction"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "11th Mar 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -76,12 +76,6 @@ background-size: contain
 background-position: 50% 50%
 class: refresher center, bottom
 
----
-
-background-image: url(images/tower-of-babel.jpg)
-background-size: contain
-background-position: 50% 50%
-class: refresher, center, bottom
 
 ---
 background-image: url(images/edstem.png)
@@ -95,30 +89,29 @@ class: refresher
 
 - Functions are (most often) verbs, followed by what they will be applied to in parentheses:
 
-.hacker-type[
+
 ```{r eval=FALSE, echo = TRUE}
 do_this(to_this)
 ```
-]
+
 --
 
 - Columns (variables) in data frames are accessed with `$`:
 
-.hacker-type[
+
 ```{r eval=FALSE, echo = TRUE}
 dataframe$var_name
 ```
-]
+
 --
 
 - Packages are installed with `install.packages`, and loaded with `library` , once per session:
 
-.hacker-type[
+
 ```{r eval=FALSE, echo = TRUE}
 install.packages("package_name")
 library(package_name)
 ```
-]
 
 ---
 
@@ -297,19 +290,28 @@ _italic_, *italic*
 
 ]
 
---
-
-With very little marking up, we can create rich text, that **actually resembles** the text that we want to see.
-
 ---
 # Markdown as a new player to legibility
 
-**Learn to use markdown** In your small groups, spend five minutes working through [markdowntutorial.com](https://www.markdowntutorial.com/)
+With very little marking up, we can create rich text, that **actually resembles** the text that we want to see.
+
+--
+
+**Learn to use markdown** Spend five minutes working through [markdowntutorial.com](https://www.markdowntutorial.com/)
 
 ```{r cdown-md}
 library(countdown)
 countdown(minutes = 5)
 ```
+
+--
+
+##  This the end of part 1 of lecture 1b
+
+---
+class: transition
+
+#  Start of part 2 of lecture 1b
 
 ---
 # Rmarkdown helps address the reproducibility problem
@@ -459,22 +461,20 @@ You might want to run the code inline to name the number of variables or rows in
 
 You can call code "inline"  like so:
 
-.hacker-type[
+
 ````markdown
 
 There are `r "\u0060r nrow(airquality) \u0060"` observations in the airquality dataset, 
 and `r "\u0060r ncol(airquality) \u0060"` variables.
 
 ````
-]
 
 Which gives you the following sentence
 
 --
 
-.hacker-type[
+
 > There are `r nrow(airquality)` observations in the airquality dataset, and `r ncol(airquality)` variables.
-]
 
 ---
 
@@ -494,7 +494,7 @@ Which gives you the following sentence
 ---
 # Your Turn: Put it together
 
-Go to `rstudio.cloud` and 
+Go to `rstudio.cloud` and go to "ida-exercise-1b"
 
 * open the document "01-oz-atlas.Rmd"
 * knit the document 
@@ -514,12 +514,12 @@ background-position: 50% 50%
 
 ---
 class: transition
-# End of part 1 of Lecture 1B
+# End of part 2 of Lecture 1B
 Make sure you finish the exercise on the rstudio.cloud
 
 ---
 class: transition
-# Start of part 2 of Lecture 1B
+# Start of part 3 of Lecture 1B
 
 ---
 # Code: Chunk names
@@ -595,11 +595,11 @@ countdown(minutes = 5)
 
 ---
 class: transition
-# End of Part 2 of Lecture 1B
+# End of Part 3 of Lecture 1B
 
 ---
 class: transition
-# Start of Part 3 of Lecture 1B
+# Start of Part 4 of Lecture 1B
 
 ---
 # Global options: Set and forget
@@ -639,6 +639,18 @@ countdown(minutes = 5,
           font_size = "4em",
           play_sound = TRUE)
 ```
+
+
+
+---
+class: transition
+
+# End of part 4 of lecture 1b
+
+---
+class: transition
+
+# Start of part 5 of lecture 1b
 
 ---
 class: transition middle
@@ -682,6 +694,8 @@ The many different outputs of rmarkdown
 # Lab quiz
 
 Take the quiz for today from ED.
+
+---
 
 ```{r endslide, child="components/endslide.Rmd"}
 ```

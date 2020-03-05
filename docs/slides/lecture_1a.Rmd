@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 1"
 subtitle: "Week of introduction"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "9th Mar 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -39,10 +39,6 @@ output:
 ---
 
 ```{r titleslide, child="components/titleslide.Rmd"}
-```
-
-```{r xaringanExtra, echo = FALSE}
-xaringanExtra::use_hacker_type()
 ```
 
 ```{r setup, include=FALSE}
@@ -118,63 +114,11 @@ Taught as a **lectorial** (Lecture + Tutorial)
 
 --
 
-It is **not** recorded because **you** are doing work
+It is **not** (typically) recorded because **you** are doing work
 
----
-class: transition middle
+--
 
-# About your instructors
-
-
----
-# Nick
-
-* `r emo::ji("mortar_board")` Bachelor of Psychological Sciences UQ
-*  `r emo::ji("mortar_board")` PhD in Statistics at QUT. 
-* Research: missing data, data visualisation, statistical computing
-* R `r emo::ji("package")`: `naniar`, `visdat`, 
-* `#rstats` `r emo::ji("microphone")`: Credibly Curious w Saskia Freytag
-* `r emo::ji("heart")` outdoors, especially: `r emo::ji("hiking_boot")`, `r emo::ji("man_running")`, and `r emo::ji("man_climbing")`.
-
----
-# Steph
-
-* `r emo::ji("mortar_board")` Bachelor of Economics and Bachelor of Commerce from Monash
-* Studying a Masters of Statistics at QUT, based at Monash.  
-* Loves to read `r emo::ji("book")`, any and all recommendations are welcome.
-* Has an R package called [taipan](https://github.com/srkobakian/taipan), and another called [sugarbag](https://github.com/srkobakian/sugarbag).
-
----
-
-# Sarah
-
----
-
-# Cynthia
-
----
-
-# Nitika
-
----
-
-# Sherry
-
-- `r emo::ji("mortar_board")` Bachelor of Commerce 2018
-- Honours in Econometrics 2019 with Di Cook 
-- Commenced PhD programme 2020
-- Created her first ever R package, `quickdraw`
-- Loves puzzles games like jigsaws `r emo::ji("jigsaw")`. 
-
-
----
-
-# Di
-
-- Professor at Monash University in Melbourne Australia, doing research in statistics, data science, visualisation, and statistical computing. 
-- Created the current version of the course
-- Likes to play all sorts of sports, tennis, soccer, hockey, cricket, and go boogie boarding.
-
+You have to show up to class to practice!
 
 ---
 class: motivator
@@ -237,15 +181,59 @@ ABS, **CSIRO**, ATO, **Microsoft**, Energy Qld, Auto and General, Bank of Qld, B
 ]
 
 ---
-# Let's start writing...
+class: bg-white center middle
 
-Go to [bit.ly/ask-nick]() to log in to RStudio cloud.
+# R and RStudio
 
-Log in with Google / GitHub / other credentials.
-
-.small[
-This section is based on an exercise from [data science in a box by Mine Çetinkaya-Rundel](https://github.com/rstudio-education/datascience-box/blob/c2e3ed13417c896fb49b78fd4a5a551392286351/extras/exercises/01-unvotes/unvotes.Rmd)
+.pull-left[
+```{r r-logo, out.width = "100%"}
+include_graphics("images/Rlogo.png")
+```
 ]
+
+
+.pull-right[
+```{r rstudio-logo, out.width = "100%"}
+include_graphics("images/rstudio-logo.png")
+```
+
+]
+---
+class: informative
+
+# What is R/RStudio?
+
+- R is a statistical programming language
+
+- RStudio is a convenient interface for R (an integrated development environment, IDE)
+
+--
+
+.blockquote[
+If R were **an airplane**, RStudio would be **the airport**, providing many, many supporting services that make it easier for you, the pilot, to take off and go to awesome places. Sure, you can fly an airplane without an airport, but having those runways and supporting infrastructure is a game-changer
+
+-- [Julie Lowndes](http://jules32.github.io/resources/RStudio_intro/) 
+]
+
+---
+class: transition middle
+
+# Let's take a tour of R and RStudio
+
+---
+class: bg-main1
+background-image: url(images/rstudio-screenshot.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+???
+
+- __Source code editor__: This is where you edit your script! Experiment with writing your data analysis pipeline, ... You can have multiple files open, there are useful shortcuts (eg "Run", "Knit"), code is highlighted usefully and there is tab-completion when you start typing. *Also, if you want to look at any of the data you have read or created, it can be viewed in a tab on this pane.*
+- __Console window__: This is where the code is executed. There is a prompt ">" which says *R is waiting for your command*. You don't actually need to type anything in this pane, you can run code directly from the Editor pane. The functions will show up in this window, and the results will be here. (Although, if you use an R notebook the result will show up in that notebook.)
+- __Help__: *?function* will show the help pages for the function here.
+- __Plot__: Plots you ask R to make will show up here, and you can zoom to make them bigger in a separate window if you want.
+- __Environment__: Data that you have read into R, or data or functions that you create will be listed here. **When you quit R, you will be asked if you want to save the environment. I suggest that you always answer NO.** Because we are scripting everything it is always easy to re-create the objects in the environment. The only time it can be useful is if you have created something that took a while, but a better option is to save this object to a file, and read it in at the start of the next R session.
 
 
 ---
@@ -258,6 +246,18 @@ class: transition
 
 # Start of part 2 of Lecture 1A
 
+
+---
+# Let's start writing...
+
+Go to [http://bit.ly/etc1010-s1-2020](http://bit.ly/etc1010-s1-2020) to log in to RStudio cloud.
+
+Log in with Google / GitHub / other credentials.
+
+.small[
+This section is based on an exercise from [data science in a box by Mine Çetinkaya-Rundel](https://github.com/rstudio-education/datascience-box/blob/c2e3ed13417c896fb49b78fd4a5a551392286351/extras/exercises/01-unvotes/unvotes.Rmd)
+]
+
 ---
 # Create your first data visualisation
 
@@ -266,6 +266,7 @@ class: transition
 - In the Files pane in the bottom right corner, open the file called `unvotes.Rmd`. Then click on the "Knit" button.
 - Go back to the file and change your name on top (in the `yaml` -- we'll talk about what this means later) and knit again.
 - Change the country names to those you're interested in. Spelling and capitalization should match the data so take a peek at the Appendix to see how the country names are spelled. Knit again. And voila, your first data visualization!
+
 
 ---
 class: transition
@@ -276,6 +277,58 @@ class: transition
 class: transition
 
 # Start of part 3 of Lecture 1A
+
+---
+# R essentials: A short list (for now)
+
+- Functions are (most often) verbs, followed by what they will be applied to in parentheses:
+
+```{r do-what, eval=FALSE, echo = TRUE}
+do_this(to_this)
+do_that(to_this, to_that, with_those)
+```
+
+--
+
+For example:
+
+--
+
+```{r mean-example, echo = TRUE}
+mean(c(1,2,1,2))
+```
+
+---
+# R essentials: A short list (for now)
+
+
+- Columns (variables) in data frames are accessed with `$`:
+
+```{r eval=FALSE, echo = TRUE}
+dataframe$var_name
+```
+
+--
+
+For example:
+
+--
+
+```{r show-mean, echo = TRUE}
+starwars$name
+```
+
+---
+# R essentials: A short list (for now)
+
+
+- Packages are installed with the `install.packages` function and loaded with the `library` function, once per session:
+
+```{r eval=FALSE, echo = TRUE}
+install.packages("package_name")
+library(package_name)
+```
+
 
 ---
 # What can you do at the end of semester?
@@ -316,28 +369,6 @@ The learning goals associated with this unit are to:
 
 ---
 
-.left-code[
-What could this image say about R?
-
-```{r countdown-babel}
-countdown(minutes = 3,
-          left = 0,
-          play_sound = TRUE,
-          font_size = "1.5em")
-```
-
-]
-
-.right-plot[
-```{r babel, out.width = "100%"}
-include_graphics("images/tower-of-babel.jpg")
-```
-]
-<!-- There can be many ways to achieve the same result. I don't know everything. You might find a better solution than I have give you. Your tutors might give you different ways to do it than I told you.  -->
-
-
----
-
 # Philosophy
 
 .blockquote[
@@ -357,16 +388,20 @@ class: informative
 - Assignment and project instructions
 - Textbook + other online resources related to topics
 - Consultation times (7 x 1Hr consultations)
+- demo
 
 ---
 
-# MoVE unit
+# Using laptops
 
-You can use the rstudio cloud server.
+- We will start out using the rstudio cloud server.
 
-In the future we will have R and Rstudio installed locally.
+- In the future we will have R and Rstudio installed locally.
 
-When this happens, you can use USB stick, attach to the borrowed laptop, and install R, RStudio and all your packages on this. Use can then use the USB stick as your working environment, with the borrowed laptop simply as the computing engine.
+- This course is also set up as a "MoVE unit", which means you can borrow a laptop
+from the university for class hours.
+
+- It is also possible to set up R and RStudio onto a USB stick to use with your borrowed laptop.
 
 
 ---
@@ -448,23 +483,41 @@ include_graphics("https://raw.githubusercontent.com/hadley/r4ds/master/cover.png
 * Written by authors of [Tidyverse R packages](http://tidyverse.org/)
 ]
 
-
 ---
-class: motivator
+class: informative
+# Ed System
 
-# Remember:
-
-All information is on the website `r emo::ji("smile")`
+- Online quizzes
+- Conduct discussions
+- Ask questions about the course material and exercises, and turn in assignments and project. *Only your name and email address are recorded in the ED systems.*
 
 --
 
-Post questions on ED 
+(DEMO)
 
->> 
+---
+background-image: url(https://imgs.njtierney.com/edstem.png)
+background-size: contain
+class: center, bottom, bg-indigo
 
-Post question over email
+---
+# Tips for asking questions
 
+- First search existing discussion for answers. If the question has already been answered, you're done! If it has already been asked but you're not satisfied with the answer, add to the thread. 
 
+--
+
+- Give your question context from course concepts not course assignments.
+    - Good context: "I have a question on filtering data"
+    - Bad context: "I have a question on Assignment 1"
+
+---
+# Tips for asking questions
+
+- Be precise in your description:
+    - Good description: "I am getting the following error and I'm not sure how to resolve it - `Error: could not find function "ggplot"`"
+    - Bad description: "R giving errors, help me! Aaaarrrrrgh!" 
+- Remember: you can edit a question after posting it.
 
 ---
 class: informative
@@ -495,42 +548,19 @@ class: informative
 
 - Be curious, be positive, be engaged. 
 
----
-class: informative
-# Ed System
 
-- Online quizzes
-- Conduct discussions
-- Ask questions about the course material and exercises, and turn in assignments and project. *Only your name and email address are recorded in the ED systems.*
+---
+class: motivator
+
+# Remember:
+
+All information is on the website `r emo::ji("smile")`
 
 --
 
-(DEMO)
-
----
-background-image: url(https://imgs.njtierney.com/edstem.png)
-background-size: contain
-class: center, bottom, bg-indigo
+Post questions on ED **instead of** questions over email
 
 
----
-# Tips for asking questions
-
-- First search existing discussion for answers. If the question has already been answered, you're done! If it has already been asked but you're not satisfied with the answer, add to the thread. 
-
---
-
-- Give your question context from course concepts not course assignments.
-    - Good context: "I have a question on filtering data"
-    - Bad context: "I have a question on Assignment 1"
-
----
-# Tips for asking questions
-
-- Be precise in your description:
-    - Good description: "I am getting the following error and I'm not sure how to resolve it - `Error: could not find function "ggplot"`"
-    - Bad description: "R giving errors, help me! Aaaarrrrrgh!" 
-- Remember: you can edit a question after posting it.
 
 ---
 #  Diversity & Inclusiveness:
@@ -635,117 +665,6 @@ class: transition
 
 # Start of Part 4 of Lecture 1A
 
----
-class: bg-white center
-
-# R and RStudio
-
-.pull-left[
-```{r r-logo, out.width = "100%"}
-include_graphics("images/R.jpg")
-```
-]
-
-
-.pull-right[
-```{r rstudio-logo, out.width = "100%"}
-include_graphics("images/rstudio-logo.png")
-```
-
-]
----
-class: informative
-
-# What is R/RStudio?
-
-- R is a statistical programming language
-
-- RStudio is a convenient interface for R (an integrated development environment, IDE)
-
---
-
-.blockquote[
-If R were **an airplane**, RStudio would be **the airport**, providing many, many supporting services that make it easier for you, the pilot, to take off and go to awesome places. Sure, you can fly an airplane without an airport, but having those runways and supporting infrastructure is a game-changer
-
--- [Julie Lowndes](http://jules32.github.io/resources/RStudio_intro/) 
-]
-
----
-class: transition middle
-
-# Let's take a tour of R and RStudio
-
----
-class: bg-main1
-background-image: url(images/rstudio-screenshot.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
-
-???
-
-- __Source code editor__: This is where you edit your script! Experiment with writing your data analysis pipeline, ... You can have multiple files open, there are useful shortcuts (eg "Run", "Knit"), code is highlighted usefully and there is tab-completion when you start typing. *Also, if you want to look at any of the data you have read or created, it can be viewed in a tab on this pane.*
-- __Console window__: This is where the code is executed. There is a prompt ">" which says *R is waiting for your command*. You don't actually need to type anything in this pane, you can run code directly from the Editor pane. The functions will show up in this window, and the results will be here. (Although, if you use an R notebook the result will show up in that notebook.)
-- __Help__: *?function* will show the help pages for the function here.
-- __Plot__: Plots you ask R to make will show up here, and you can zoom to make them bigger in a separate window if you want.
-- __Environment__: Data that you have read into R, or data or functions that you create will be listed here. **When you quit R, you will be asked if you want to save the environment. I suggest that you always answer NO.** Because we are scripting everything it is always easy to re-create the objects in the environment. The only time it can be useful is if you have created something that took a while, but a better option is to save this object to a file, and read it in at the start of the next R session.
-
-
----
-# R essentials: A short list (for now)
-
-- Functions are (most often) verbs, followed by what they will be applied to in parentheses:
-
-```{r do-what, eval=FALSE, echo = TRUE}
-do_this(to_this)
-do_that(to_this, to_that, with_those)
-```
-
---
-
-For example:
-
---
-
-.hacker-type[
-```{r mean-example, echo = TRUE}
-mean(c(1,2,1,2))
-```
-]
-
----
-# R essentials: A short list (for now)
-
-
-- Columns (variables) in data frames are accessed with `$`:
-
-```{r eval=FALSE, echo = TRUE}
-dataframe$var_name
-```
-
---
-
-For example:
-
---
-.hacker-type[
-```{r show-mean, echo = TRUE}
-starwars$name
-```
-]
-
----
-# R essentials: A short list (for now)
-
-
-- Packages are installed with the `install.packages` function and loaded with the `library` function, once per session:
-
-.hacker-type[
-```{r eval=FALSE, echo = TRUE}
-install.packages("package_name")
-library(package_name)
-```
-]
 
 ---
 class: refresher

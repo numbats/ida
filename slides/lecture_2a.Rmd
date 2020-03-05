@@ -67,6 +67,79 @@ class: transition middle
 
 
 ---
+class: transition middle
+
+# About your instructors
+
+
+---
+# Nick
+
+* `r emo::ji("mortar_board")` Bachelor of Psychological Sciences UQ
+*  `r emo::ji("mortar_board")` PhD in Statistics at QUT. 
+* Research: missing data, data visualisation, statistical computing
+* R `r emo::ji("package")`: `naniar`, `visdat`, 
+* `#rstats` `r emo::ji("microphone")`: Credibly Curious w Saskia Freytag
+* `r emo::ji("heart")` outdoors, especially: `r emo::ji("hiking_boot")`, `r emo::ji("man_running")`, and `r emo::ji("man_climbing")`.
+
+---
+# Steph
+
+* `r emo::ji("mortar_board")` Bachelor of Economics and Bachelor of Commerce from Monash
+* Studying a Masters of Statistics at QUT, based at Monash.  
+* Loves to read `r emo::ji("book")`, any and all recommendations are welcome.
+* Has an R package called [taipan](https://github.com/srkobakian/taipan), and another called [sugarbag](https://github.com/srkobakian/sugarbag).
+
+---
+
+# Sarah
+
+- `r emo::ji("mortar_board")` MPhil student in Applied Mathematics and Statistics at Monash University. Research predicts mosquito behaviour (ask me for mosquito facts!)
+- Commenced in 2017, moved from Adelaide
+- Loves figure skating `r emo::ji("ice skate")`
+
+---
+
+# Cynthia
+
+*`r emo::ji("mortar_board")` Bachelor of Commerce with Honours in Economics from Unimelb
+* Previously, Research & Tutoring at Unimelb Econ Department
+* Now, Research Assistant with SoDa Labs at Monash doing data collection / cleaning / analysis
+* Loves climbing, food & my nintendo switch
+
+---
+
+# Nitika
+
+* `r emo::ji("mortar_board")` Bachelor of Bioinformatics
+* `r emo::ji("mortar_board")` Master of Bioinformatics
+* Current: PhD Student in the Faculty of Medicine Nursing and Health Sciences
+* Data Officer with [Monash Data Fluency](https://monashdatafluency.github.io/)
+* Research: Bioinformatics analysis with RNA seq data
+* `r emo::ji("heart")` Travel, Food, Anime, D&D.
+
+---
+
+# Sherry
+
+- `r emo::ji("mortar_board")` Bachelor of Commerce 2018
+- Honours in Econometrics 2019 with Di Cook 
+- Commenced PhD programme 2020
+- Created her first ever R package, `quickdraw`
+- Loves puzzles games like jigsaws `r emo::ji("jigsaw")`. 
+
+
+---
+
+# Di
+
+- Professor at Monash University in Melbourne Australia, doing research in statistics, data science, visualisation, and statistical computing. 
+- Created the current version of the course
+- Likes to play all sorts of sports, tennis, soccer, hockey, cricket, and go boogie boarding.
+
+
+
+---
 class: transition left
 # Your Turn: Turn to the people next to you and ask 2 questions:
 
@@ -353,6 +426,29 @@ countdown(minutes = 3)
 
 - "as the number of students increases the median time to degree increases, weakly" (correct)
 - as the number of students increases the variability in median time to degree decreases
+
+---
+
+.left-code[
+What could this image say about R?
+
+```{r countdown-babel}
+countdown(minutes = 3,
+          left = 0,
+          play_sound = TRUE,
+          font_size = "1.5em")
+```
+
+]
+
+.right-plot[
+```{r babel, out.width = "100%"}
+include_graphics("images/tower-of-babel.jpg")
+```
+]
+<!-- There can be many ways to achieve the same result. I don't know everything. You might find a better solution than I have give you. Your tutors might give you different ways to do it than I told you.  -->
+
+
 
 
 ---
@@ -785,6 +881,14 @@ Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-
 - the keyboard got stuck
 - "the value was missing"
 
+---
+
+---
+
+background-image: url(images/tower-of-babel.jpg)
+background-size: contain
+background-position: 50% 50%
+class: refresher, center, bottom
 
 
 ---

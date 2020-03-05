@@ -14,7 +14,6 @@ library(knitr)
 library(kableExtra)
 library(glue)
 library(googlesheets4)
-library(lubridate)
 library(ymlthis)
 library(yaml)
 
@@ -55,17 +54,32 @@ The "Assessments" tab above provides information about all assessment for ETC101
   missed material, learn about due dates for material to be turned in,
   and getting assigned to a group for team work.
 
+## MoVE
+
+Borrow a laptop:
+If you are enrolled in a MoVE unit and forget your laptop, or do not own one as yet, please visit **Monash Connect** to borrow a laptop for an activity or part of a day:
+
+**Clayton: 7.45AM - 5PM**
+
+You may be required to provide proof of ID (student card or personal ID) in order to borrow a laptop. 
+We have a limited amount of laptops available for students to borrow (during semester only). Collect an IT Services ticket when you go to Monash Connect.
+
+*We will use the rstudio cloud server. In the future we may have R and Rstudio installed locally. When this happens, you can use USB stick, attach to the borrowed laptop, and install R, RStudio and all your packages on this. Use can then use the USB stick as your working environment, with the borrowed laptop simply as the computing engine.*
+
+
 ## Consultation times
 
 Consultations begin from Week 2 (16th March)
+
+All consultations are in **Menzies W1105**
 
 - Steph Kobakian: TBA
 - Sarah Belet: Monday 3-4pm
 - Sherry Zhang: Friday 1pm-2pm
 - Nitika Kandhari: Tuesday 11:30am-12:30pm
 - Cynthia Huang: Thursday 12pm-1pm
-- Nick Tierney: Monday morning **Menzies W1105**
-- Nick Tierney: Wednesday morning **Menzies W1105**
+- Nick Tierney: Monday 11am - 12pm
+- Nick Tierney: Wednesday 10:30am - 11:30am
 
 ## Tentative Schedule
 
@@ -93,7 +107,7 @@ schedule <-  read_csv("materials/schedule.csv") %>%
     TRUE ~ ""
   ),
   Exercise = case_when(
-    !is.na(Exercise) ~ glue("<a class='fa fa-link' href='{Exercise}'></a>"),
+    !is.na(Exercise) ~ glue("<a class='fa fa-link' href='exercises/{Week}{Lecture}/{Exercise}'></a>"),
     TRUE ~ ""
   ),
   Topic = ifelse(is.na(Topic), "", Topic),

@@ -1,0 +1,43 @@
+---
+title:
+author:
+date:
+output: html_document
+---
+
+First we read in the data from the excel sheet
+```{r read-passengers}
+library(readxl)
+passengers <- read_xls(path = "data/WebAirport_FY_1986-2017.xls", 
+                       sheet = 3, 
+                       skip = 6)
+passengers
+```
+
+Tidy the data, to produce a data set with these columns
+    - airport: all of the airports. 
+    - year 
+    - type_of_flight: DOMESTIC, INTERNATIONAL
+    - bound: IN or OUT
+    
+
+
+```{r extension exercise}
+tidy_passengers <- passengers %>%
+  select(-...1, 
+         -...14, 
+         -Rank, 
+         -starts_with("TOTAL")) %>%
+  rename(
+    INBOUND_DOM = ___,
+    INBOUND_INTL = ___,
+    OUTBOUND_DOM = ___,
+    OUTBOUND_INTL = ___,
+    INBOUND_TOTL = ___,
+    OUTBOUND_TOTL =___
+  ) %>%
+  gather(key = where, 
+         value = amount, 
+         starts_with("IN"), 
+         starts_with("OUT"))
+```

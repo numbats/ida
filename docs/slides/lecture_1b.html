@@ -67,7 +67,7 @@ Lecturer: *Nicholas Tierney*
 
 Department of Econometrics and Business Statistics
 
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
 11th Mar 2020
 
@@ -99,13 +99,12 @@ Department of Econometrics and Business Statistics
 
 ---
 
-background-image: url(images/rstudio-cooking-example.jpeg)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
+&lt;img src="images/rstudio-cooking-example.jpeg" width="90%" style="display: block; margin: auto;" /&gt;
 
+.small.bottom[
 From Jessica Ward (@JKRWard) of R Ladies Newcaslte (UK) - @RLadiesNCL
 https://twitter.com/RLadiesNCL/status/1138812826917724160
+]
 
 ---
 background-image: url(images/unvotes-oz-usa.png)
@@ -113,12 +112,6 @@ background-size: contain
 background-position: 50% 50%
 class: refresher center, bottom
 
----
-
-background-image: url(images/tower-of-babel.jpg)
-background-size: contain
-background-position: 50% 50%
-class: refresher, center, bottom
 
 ---
 background-image: url(images/edstem.png)
@@ -132,33 +125,32 @@ class: refresher
 
 - Functions are (most often) verbs, followed by what they will be applied to in parentheses:
 
-.hacker-type[
+
 
 ```r
 do_this(to_this)
 ```
-]
+
 --
 
 - Columns (variables) in data frames are accessed with `$`:
 
-.hacker-type[
+
 
 ```r
 dataframe$var_name
 ```
-]
+
 --
 
 - Packages are installed with `install.packages`, and loaded with `library` , once per session:
 
-.hacker-type[
+
 
 ```r
 install.packages("package_name")
 library(package_name)
 ```
-]
 
 ---
 
@@ -237,9 +229,7 @@ Near-term goals:
 - In addition to what was done, is it clear **why** it was done? 
 (e.g., how were parameter settings chosen?)
 
----
-
-# Reproducibility checklist
+--
 
 
 Long-term goals:
@@ -344,19 +334,25 @@ _italic_, *italic*
 
 With very little marking up, we can create rich text, that **actually resembles** the text that we want to see.
 
----
-# Markdown as a new player to legibility
+--
 
-**Learn to use markdown** In your small groups, spend five minutes working through [markdowntutorial.com](https://www.markdowntutorial.com/)
+**Learn to use markdown** Spend five minutes working through [markdowntutorial.com](https://www.markdowntutorial.com/)
 
-<div class="countdown" id="timer_5e5f4433" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6076bf" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
+--
+
+##  This the end of part 1 of lecture 1b
+
+---
+class: transition
+
+#  Start of part 2 of lecture 1b
+
 ---
 # Rmarkdown helps address the reproducibility problem
-
---
 
 * Q: How do we take `markdown` + `R code` = "literate programming environment"
 
@@ -499,22 +495,20 @@ You might want to run the code inline to name the number of variables or rows in
 
 You can call code "inline"  like so:
 
-.hacker-type[
+
 ````markdown
 
 There are `r nrow(airquality) ` observations in the airquality dataset, 
 and `r ncol(airquality) ` variables.
 
 ````
-]
 
 Which gives you the following sentence
 
 --
 
-.hacker-type[
+
 &gt; There are 153 observations in the airquality dataset, and 6 variables.
-]
 
 ---
 
@@ -534,7 +528,7 @@ Which gives you the following sentence
 ---
 # Your Turn: Put it together
 
-Go to `rstudio.cloud` and 
+Go to `rstudio.cloud` and go to "ida-exercise-1b"
 
 * open the document "01-oz-atlas.Rmd"
 * knit the document 
@@ -542,7 +536,7 @@ Go to `rstudio.cloud` and
 * knit the document again
 * How do the text and figures in the document change?
 
-<div class="countdown" id="timer_5e5f43f9" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6076b2" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -554,12 +548,12 @@ background-position: 50% 50%
 
 ---
 class: transition
-# End of part 1 of Lecture 1B
+# End of part 2 of Lecture 1B
 Make sure you finish the exercise on the rstudio.cloud
 
 ---
 class: transition
-# Start of part 2 of Lecture 1B
+# Start of part 3 of Lecture 1B
 
 ---
 # Code: Chunk names
@@ -605,7 +599,7 @@ gap &lt;- read_csv("gapminder.csv")
 
 What do you think this does?
 
-<div class="countdown" id="timer_5e5f43f2" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e607655" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -629,17 +623,17 @@ You can read more about the options at the official documentation: https://yihui
 * Re-Knit the document.
 * Take a look at the [R Markdown Gallery](https://rmarkdown.rstudio.com/gallery.html).
 
-<div class="countdown" id="timer_5e5f4398" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e60765a" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
 class: transition
-# End of Part 2 of Lecture 1B
+# End of Part 3 of Lecture 1B
 
 ---
 class: transition
-# Start of Part 3 of Lecture 1B
+# Start of Part 4 of Lecture 1B
 
 ---
 # Global options: Set and forget
@@ -670,9 +664,21 @@ knitr::opts_chunk$set(
 - Update the other code chunks by removing the code chunk options.
 
 
-<div class="countdown" id="timer_5e5f43d0" style="right:0;bottom:0;left:0;margin:3%;padding:15px;font-size:4em;" data-audio="true" data-warnwhen="0">
+<div class="countdown" id="timer_5e6076f8" style="right:0;bottom:0;left:0;margin:3%;padding:15px;font-size:4em;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
+
+
+
+---
+class: transition
+
+# End of part 4 of lecture 1b
+
+---
+class: transition
+
+# Start of part 5 of lecture 1b
 
 ---
 class: transition middle
@@ -717,6 +723,8 @@ The many different outputs of rmarkdown
 
 Take the quiz for today from ED.
 
+---
+
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -734,7 +742,7 @@ count: false
 Lecturer: Nicholas Tierney
 
 Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
 11th Mar 2020
 
