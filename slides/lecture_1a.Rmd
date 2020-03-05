@@ -656,17 +656,6 @@ class: transition middle
 Assignment 1 will be announced at class on Monday Week 2
 
 ---
-class: transition
-
-# End of Part 3 of Lecture 1A
-
----
-class: transition
-
-# Start of Part 4 of Lecture 1A
-
-
----
 class: refresher
 
 # Concepts introduced:
