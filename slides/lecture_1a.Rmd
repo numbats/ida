@@ -181,7 +181,7 @@ ABS, **CSIRO**, ATO, **Microsoft**, Energy Qld, Auto and General, Bank of Qld, B
 ]
 
 ---
-class: bg-white center middle
+class: center middle
 
 # R and RStudio
 
@@ -696,9 +696,7 @@ class: bg-main1
 
 Check your knowledge and comprehension by taking your first lab quiz on Ed
 
-Go to the ED page, and complete the lab quiz.
-
-*NOTE: Reading assignment on ED site due by 12pm before Class on Wednesday*
+Go to the ED page, and complete the lab quiz before next Monday, 16th March.
 
 ---
 
