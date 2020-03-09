@@ -37,10 +37,6 @@ output:
         click: false
       ratio: '16:9'
 ---
-  
-```{r titleslide, child="components/titleslide.Rmd"}
-```
-
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -56,9 +52,9 @@ opts_chunk$set(echo = FALSE,
                cache = FALSE)
 ```
 
-```{r xaringanExtra}
-xaringanExtra::use_hacker_type()
+```{r titleslide, child="components/titleslide.Rmd"}
 ```
+
 ---
 
 ```{r show-cooking-example, out.width = "90%"}
@@ -214,16 +210,19 @@ Long-term goals:
 
 --
 
-Imagine a report:
+## Imagine a report:
 
 Introduction, methods, results, discussion, and conclusion,
 
 --
 
-and all the bits of code that make each section. 
+All the bits of code that make each section. 
 
+--
 
 With rmarkdown, you can see all the pieces of your data analysis all together.
+
+--
 
 Each time you knit the analysis is ran from the beginning
 
@@ -666,13 +665,6 @@ The many different outputs of rmarkdown
 2. Create a new document that will produce a slide show `File > New R Markdown > Presentation`
 3. Create a flexdashboard document - see this option in the `File > New R Markdown > From template` list.
 
-
----
-# Your Turn
-
-- Go to rstudio.cloud to `oz-atlas-final.Rmd`
-- Read through the document and add text where prompted to learn more about the Australian native platypus!
-
 ---
 
 # Recap:
@@ -690,10 +682,12 @@ The many different outputs of rmarkdown
 - [R Markdown cheat sheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf) and Markdown Quick Reference (Help -> Markdown Quick Reference) handy, we'll refer to it often as the course progresses
 
 ---
+class: transition
+# Your Turn
 
-# Lab quiz
-
-Take the quiz for today from ED.
+- Go to rstudio.cloud to `oz-atlas-final.Rmd`
+- Follow prompts and questions to learn more about the Australian native platypus - (copy content over from previous doc)
+- Take the Ed lab quiz for today.
 
 ---
 

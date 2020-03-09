@@ -91,7 +91,7 @@ There are two lectorials every week:
 There are no lectorials during the midsemester break.
 
 ```{r read-create-sheet, eval = FALSE}
-# to be run interatively when google sheet is updated
+# to be run interactively when google sheet is updated
 google_schedule <- read_sheet("https://docs.google.com/spreadsheets/d/1OmwIYBtuedFICwqXToTNx1xRRoDO0ZjjVjumvmg-TYU/edit#gid=0")
 
 write_csv(google_schedule, path = "materials/schedule.csv")

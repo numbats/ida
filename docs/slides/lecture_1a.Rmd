@@ -5,7 +5,7 @@ subtitle: "Week of introduction"
 author: "Nicholas Tierney"
 email: "ETC1010.Clayton-x@monash.edu"
 date: "9th Mar 2020"
-pdflink: ""
+pdflink: "https://ida.numbat.space/slides/lecture_1a.pdf"
 bgimg: "images/bg1.jpg"
 output:
   xaringan::moon_reader:
