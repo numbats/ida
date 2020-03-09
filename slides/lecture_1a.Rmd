@@ -262,7 +262,7 @@ This section is based on an exercise from [data science in a box by Mine Çetink
 # Create your first data visualisation
 
 - Once you log on to RStudio Cloud, click on this course's workspace "ETC1010 2020 semester 1"
-- You should see a project called "UN Votes", click on the xx icon. This will create a copy of the project, and launch it.
+- You should see a project called "UN Votes", click on the icon to create a copy of the project, and launch it.
 - In the Files pane in the bottom right corner, open the file called `unvotes.Rmd`. Then click on the "Knit" button.
 - Go back to the file and change your name on top (in the `yaml` -- we'll talk about what this means later) and knit again.
 - Change the country names to those you're interested in. Spelling and capitalization should match the data so take a peek at the Appendix to see how the country names are spelled. Knit again. And voila, your first data visualization!
@@ -679,8 +679,6 @@ class: refresher
 ]
 
 ---
-class: bg-main1
-
 # Lab Exercise
 
 Check your knowledge and comprehension by taking your first lab quiz on Ed
