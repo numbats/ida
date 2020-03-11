@@ -673,7 +673,7 @@ The many different outputs of rmarkdown
 - rmarkdown = YAML + text + code
 - rmarkdown has many different output types
 - Platypus are interesting!
-- Assignment will be announced later today
+- Assignment will be announced next week
 
 ---
 

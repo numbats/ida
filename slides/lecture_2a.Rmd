@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 2, part A"
 subtitle: "Week of Tidy Data"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "16th Mar 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -48,6 +48,7 @@ library(tidyverse)
 library(knitr)
 library(kableExtra)
 library(emo)
+library(countdown)
 opts_chunk$set(echo = FALSE,   
                message = FALSE,
                warning = FALSE,
@@ -96,13 +97,13 @@ class: transition middle
 
 - `r emo::ji("mortar_board")` MPhil student in Applied Mathematics and Statistics at Monash University. Research predicts mosquito behaviour (ask me for mosquito facts!)
 - Commenced in 2017, moved from Adelaide
-- Loves figure skating `r emo::ji("ice skate")`
+- Loves figure skating ⛸
 
 ---
 
 # Cynthia
 
-*`r emo::ji("mortar_board")` Bachelor of Commerce with Honours in Economics from Unimelb
+* `r emo::ji("mortar_board")` Bachelor of Commerce with Honours in Economics from Unimelb
 * Previously, Research & Tutoring at Unimelb Econ Department
 * Now, Research Assistant with SoDa Labs at Monash doing data collection / cleaning / analysis
 * Loves climbing, food & my nintendo switch
@@ -138,24 +139,6 @@ class: transition middle
 - Likes to play all sorts of sports, tennis, soccer, hockey, cricket, and go boogie boarding.
 
 
-
----
-class: transition left
-# Your Turn: Turn to the people next to you and ask 2 questions:
-
-- Are you more of a dog or a cat person?
-- What languages do you know how to speak?
-
-```{r first-timer}
-library(countdown)
-countdown(minutes = 3,
-          left = 0, 
-          right = 0,
-          padding = "10px",
-          margin = "5%",
-          font_size = "2em",
-          play_sound = TRUE)
-```
 
 
 ---
@@ -228,8 +211,6 @@ class: refresher
 
 - Traffic Light System: Green = "good!" ; Red = "Help!"
 - R + Rstudio
-- Tower of babel analogy for writing R code
-- We are using ___, not ___ for ETC1010?
 - Functions are  ___
 - columns in data frames are accessed with ___ ?
 .red[If you have questions, place a red sticky note on your laptop.]
@@ -634,6 +615,15 @@ include_graphics("images/lego.png")
 - `separate`: Split one column into many
 
 ---
+# Aside: naming things is hard
+
+- You might have come across `pivot_` functions as `spread` or `gather`. These are still valid, but have been improved upon in the latest version of the `tidyr` package.
+- You can read more about this change here:
+
+  - [tidyverse blog post]()
+  - [Hadley Wickham's talk on this here]()
+
+---
 
 # one more time: `pivot_longer`
 
@@ -781,7 +771,6 @@ recliners
 ```
 
 ---
-class: transition left
 # Exercise 1: Rude Recliners (15 minutes)
 
 Answer the following questions in the rmarkdown document.
@@ -806,12 +795,30 @@ recliners %>%
 ```
 
 ---
-class: transition
+class: transition left
+# Your Turn: Turn to the people next to you and ask 2 questions:
+
+- Are you more of a dog or a cat person?
+- What languages do you know how to speak?
+
+```{r first-timer}
+library(countdown)
+countdown(minutes = 3,
+          left = 0, 
+          right = 0,
+          padding = "10px",
+          margin = "5%",
+          font_size = "2em",
+          play_sound = TRUE)
+```
+
+
+---
 # Exercise 2: Tuberculosis Incidence data (15 minutes)
 
 Open: `tb-incidence.Rmd`
 
-Tidy the TB incidence data, using rthe Rmd to orompt questions.
+Tidy the TB incidence data, using rthe Rmd to prompt questions.
 
 ---
 # Exercise 3: Currency rates (15 minutes)
@@ -882,6 +889,10 @@ Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-
 - "the value was missing"
 
 ---
+
+# summary slide
+
+- Tower of babel analogy for writing R code
 
 ---
 

@@ -620,6 +620,13 @@ Stephen Colbert, April 6th, 2010
 (OpenIntro Statistics. "Extrapolation is treacherous." OpenIntro Statistics.)
 
 ---
+# Aside: How to make equations
+
+Make sure we explicitly flag this as extension material (maybe a special “orange/red” slide class to flag this.
+
+
+
+---
 class: transition
 
 # Measuring model fit

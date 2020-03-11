@@ -1,8 +1,11 @@
 ---
 title: "Australian Atlas"
-date: "2019-08-02"
 author: "Nicholas Tierney"
-output: html_document
+date: '2019-08-02'
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup}

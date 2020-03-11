@@ -66,6 +66,12 @@ We have a limited amount of laptops available for students to borrow (during sem
 
 *We will use the rstudio cloud server. In the future we may have R and Rstudio installed locally. When this happens, you can use USB stick, attach to the borrowed laptop, and install R, RStudio and all your packages on this. Use can then use the USB stick as your working environment, with the borrowed laptop simply as the computing engine.*
 
+# Textbook
+
+- R for Data Science
+- Freely Available Online (https://r4ds.had.co.nz/)
+- Also available for purchase on Amazon if you prefer a hardcopy.
+- Readings for the semester are linked in the table below (some do not include the R4DS book)
 
 ## Consultation times
 
@@ -73,13 +79,13 @@ Consultations begin from Week 2 (16th March)
 
 All consultations are in **Menzies W1105**
 
-- Steph Kobakian: TBA
+- Steph Kobakian: Thursday 3-4pm
 - Sarah Belet: Monday 3-4pm
-- Sherry Zhang: Friday 1pm-2pm
+- Sherry Zhang: Friday 1-2pm
 - Nitika Kandhari: Tuesday 11:30am-12:30pm
-- Cynthia Huang: Thursday 12pm-1pm
+- Cynthia Huang: Thursday 11:30am-12:30pm
 - Nick Tierney: Monday 11am - 12pm
-- Nick Tierney: Wednesday 10:30am - 11:30am
+- Nick Tierney: Wednesday 10:30 - 11:30am
 
 ## Tentative Schedule
 
