@@ -72,13 +72,22 @@ class: transition
 
 ---
 
-# recap: from ED survey
+# An aside on learning
+
+- I want to take the first 15 minutes of class to discuss some ideas on learning, and how this ties into the course.
+- [new slides]
+
+- (insert these slides from the tidyverse teaching.)
+
+
+---
+class: refresher
+# recap
 
 .pull-left[
 - Traffic Light System: .green[Green = "good!"] ; .red[Red = "Help!"]
 - R + Rstudio
 - Tower of babel analogy for writing R code
-- We are using ___, not ___ for ETC1010?
 - Functions are  ___
 - columns in data frames are accessed with ___ ?
 ]

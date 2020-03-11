@@ -76,20 +76,39 @@ class: transition middle
 ---
 # Nick
 
+.pull-left[
 * `r emo::ji("mortar_board")` Bachelor of Psychological Sciences UQ
 *  `r emo::ji("mortar_board")` PhD in Statistics at QUT. 
 * Research: missing data, data visualisation, statistical computing
 * R `r emo::ji("package")`: `naniar`, `visdat`, 
 * `#rstats` `r emo::ji("microphone")`: Credibly Curious w Saskia Freytag
 * `r emo::ji("heart")` outdoors, especially: `r emo::ji("hiking_boot")`, `r emo::ji("man_running")`, and `r emo::ji("man_climbing")`.
+]
+
+.pull-right[
+```{r img-nick, out.width = "80%"}
+knitr::include_graphics("images/njtierney.jpg")
+```
+
+]
+
 
 ---
 # Steph
 
+.pull-left[
 * `r emo::ji("mortar_board")` Bachelor of Economics and Bachelor of Commerce from Monash
 * Studying a Masters of Statistics at QUT, based at Monash.  
 * Loves to read `r emo::ji("book")`, any and all recommendations are welcome.
 * Has an R package called [taipan](https://github.com/srkobakian/taipan), and another called [sugarbag](https://github.com/srkobakian/sugarbag).
+]
+
+.pull-right[
+```{r img-steph, out.width = "80%"}
+knitr::include_graphics("images/steph.jpeg")
+```
+
+]
 
 ---
 
@@ -103,11 +122,18 @@ class: transition middle
 
 # Cynthia
 
+.pull-left[
 * `r emo::ji("mortar_board")` Bachelor of Commerce with Honours in Economics from Unimelb
 * Previously, Research & Tutoring at Unimelb Econ Department
 * Now, Research Assistant with SoDa Labs at Monash doing data collection / cleaning / analysis
 * Loves climbing, food & my nintendo switch
+]
 
+.pull-right[
+```{r img-cynthia, out.width = "80%"}
+knitr::include_graphics("images/cynthia.jpeg")
+```
+]
 ---
 
 # Nitika
@@ -123,21 +149,35 @@ class: transition middle
 
 # Sherry
 
+.pull-left[
 - `r emo::ji("mortar_board")` Bachelor of Commerce 2018
 - Honours in Econometrics 2019 with Di Cook 
 - Commenced PhD programme 2020
 - Created her first ever R package, `quickdraw`
 - Loves puzzles games like jigsaws `r emo::ji("jigsaw")`. 
+]
 
+.pull-right[
+```{r img-sherry, out.width = "80%"}
+knitr::include_graphics("images/sherry.jpeg")
+```
+]
 
 ---
 
 # Di
 
+.pull-left[
 - Professor at Monash University in Melbourne Australia, doing research in statistics, data science, visualisation, and statistical computing. 
 - Created the current version of the course
 - Likes to play all sorts of sports, tennis, soccer, hockey, cricket, and go boogie boarding.
+]
 
+.pull-right[
+```{r img-di, out.width = "80%"}
+knitr::include_graphics("images/di.png")
+```
+]
 
 
 
@@ -147,10 +187,9 @@ class: transition left
 
 We are going to set up the groups for doing assignment work.
 
-1. Choose a quote from the bag. 
-2. Find the other people in the class with the same quote as you
+1. Find your name from the list at [this link]()
+2. Find the other people in the class with the same quote as you (feel free to wander around the class!)
 3. Grab your gear and claim a table to work together at. 
-
 
 ---
 class: transition left
@@ -159,15 +198,15 @@ class: transition left
 1. What is one food you'd never want to taste again?
 2. If you were a comic strip character, who would you be and why?
 
-LASTLY, come up with a name for your team and tell this to a tutor, along with the names of members of the team.
+LASTLY, come up with a name for your team (we have provided a suggested name, but you are free to change it!) and tell this to a tutor, along with the names of members of the team.
 
 ```{r countdown-two}
 countdown(minutes = 5,
           left = 0, 
           right = 0,
-          padding = "5px",
-          margin = "3%",
-          font_size = "3em",
+          padding = "2px",
+          margin = "2%",
+          font_size = "2em",
           play_sound = TRUE)
 ```
 
@@ -203,36 +242,6 @@ include_graphics("gifs/help-me-help-you.gif")
 * I have completed  the thing
 ]
 
-
----
-class: refresher
-
-# Recap
-
-- Traffic Light System: Green = "good!" ; Red = "Help!"
-- R + Rstudio
-- Functions are  ___
-- columns in data frames are accessed with ___ ?
-.red[If you have questions, place a red sticky note on your laptop.]
-
-.white[If you are done, place a green sticky on your laptop]
-
----
-class: refresher
-
-# Traffic Light System
-
-# .red[Red] Post it
-
-- I need a hand
-- Slow down
-
---
-
-# Green Post it
-
-* I am up to speed
-* I have completed the thing
 
 
 ---
@@ -273,15 +282,6 @@ class: refresher
 
 - The theory of this class will only get you so far
 - The real learning happens from doing the data analysis - the **pressure of a deadline can also help.**
-
----
-
-# An aside on learning
-
-- I want to take the first 15 minutes of class to discuss some ideas on learning, and how this ties into the course.
-- [new slides]
-
-- (insert these slides from the tidyverse teaching.)
 
 ---
 # Tidy Data
@@ -337,11 +337,18 @@ grad
 ---
 # Example: US graduate programs
 
-What's good about the format?
+Good things about the format:
+
+```{r print-grad, echo = FALSE}
+head(grad) %>% as_table()
+```
 
 --
 
 - **Rows** contain information about the institution
+
+--
+
 - **Columns** contain types of information, like average number of publications, average number of citations, % completion, 
 
 ---
@@ -373,25 +380,32 @@ grad %>%
 
 Easy to make a plot
 
-```{r grad-plot, echo = TRUE}
+.left-code[
+```{r grad-plot, eval = FALSE}
 grad %>%
   filter(subject == "economics") %>%
   ggplot(aes(x = NumStud, 
              y = MedianTimetoDegree)) +
   geom_point() + 
   theme(aspect.ratio = 1)
+```  
+]
+
+.right-plot[
+```{r gra-dplot-out, ref.label = 'grad-plot', echo = FALSE, out.width = "100%"}
+
 ```
 
 ---
 class: transition left
-# Your Turn: Go to the rstudio.cloud + open Lecture 2A.
+# Your Turn: Open Lecture 2A in rstudio cloud
 
 - Notice the `data/` directory with many datasets! 
-- flag a tutor with the traffic light system if you need a hand.
-- Open the `graduate-programs.Rmd` file
-- Can you answer these questions?
-    - "What is the average number of graduate students per economics program?:"
+- Open `graduate-programs.Rmd`
+- Answer these questions:
+    - "What is the average number of graduate students per economics program?"
     - "What is the best description of the relationship between number of students and median time to degree?"
+- Use the traffic light system if you need a hand.
 
 ```{r cd-graduate-programs}
 countdown(minutes = 3)
@@ -409,7 +423,7 @@ countdown(minutes = 3)
 - as the number of students increases the variability in median time to degree decreases
 
 ---
-
+class: refresher
 .left-code[
 What could this image say about R?
 
@@ -610,18 +624,20 @@ include_graphics("images/lego.png")
 ---
 # Data Tidying verbs
 
-- `pivot_longer`: Specify the **keys** (identifiers) and the **values** (measures) to make long form data. You can also think of this as longer form data.
-- `pivot_wider`: Variables in columns
+- `pivot_longer`: Specify the **names_to** (identifiers) and the **values_to** (measures) to make longer form data.
+- `pivot_wider`: Variables split out in columns
 - `separate`: Split one column into many
 
 ---
+class: refresher
 # Aside: naming things is hard
 
 - You might have come across `pivot_` functions as `spread` or `gather`. These are still valid, but have been improved upon in the latest version of the `tidyr` package.
 - You can read more about this change here:
 
-  - [tidyverse blog post]()
-  - [Hadley Wickham's talk on this here]()
+  - [tidyverse blog post](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/)
+  - [tidyr vignette](http://tidyr.tidyverse.org/articles/pivot.html)
+  - [Hadley Wickham's talk]()
 
 ---
 
@@ -650,7 +666,7 @@ table4a
 
 .pull-right[
 
-```{r pivot_longer-table4}
+```{r pivot_longer-table4, echo = TRUE}
 table4a %>% 
   pivot_longer(cols = c("1999", "2000"),
                names_to = "year",
@@ -676,6 +692,13 @@ genes
 ---
 # Tidy genes data
 
+.pull-left[
+```{r show-pivot-longer}
+genes
+```
+
+]
+
 ```{r pivot_longer-genes, echo = TRUE}
 genes_long <- genes %>% 
   pivot_longer(cols = -id,
@@ -688,16 +711,25 @@ genes_long
 ---
 # Separate columns
 
+.pull-left[
+```{r print-genes-long}
+genes_long
+```
+
+]
+
+.pull-right[
 ```{r genes-separate, echo = TRUE}
 genes_long %>%
   separate(col = variable, 
            into = c("trt", "leftover"), "-")
 ```
+]
 
 ---
 # Separate columns
 
-```{r genes-separate-again}
+```{r genes-separate-again, echo = TRUE}
 genes_long_tidy <- genes_long %>%
   separate(variable, c("trt", "leftover"), "-") %>%
   separate(leftover, c("time", "rep"), "\\.") 
@@ -708,17 +740,24 @@ genes_long_tidy
 
 ---
 class: transition
-# Now pivot_wider to examine different aspects
+# Now let's use `pivot_wider` to examine different aspects
 
 ---
-## Examine treatments against each other
+# Examine treatments against each other
 
-```{r plot-genes}
+.left-code[
+```{r plot-genes, eval = FALSE}
 genes_long_tidy %>%
   pivot_wider(id_cols = c(id, rep, time),
               names_from = trt, 
               values_from = expr) %>%
   ggplot(aes(x=WI, y=WM, colour=id)) + geom_point()
+```  
+]
+
+.right-plot[
+```{r plot-genes-out, ref.label = 'plot-genes', echo = FALSE, out.width = "100%"}
+
 ```
 
 Generally, some negative association within each gene, WM is low if WI is high. 
@@ -726,13 +765,20 @@ Generally, some negative association within each gene, WM is low if WI is high.
 ---
 # Examine replicates against each other
 
-```{r}
+.left-code[
+```{r shoe-replicates, eval = FALSE}
 genes_long_tidy %>%
   pivot_wider(id_cols = c(id, trt, time),
               names_from = rep, 
               values_from = expr) %>%
   ggplot(aes(x=R1, y=R4, colour=id)) + 
   geom_point() + coord_equal()
+```  
+]
+
+.right-plot[
+```{r shoe-replicates-out, ref.label = 'shoe-replicates', echo = FALSE, out.width = "100%"}
+
 ```
 
 Roughly, replicate 4 is like replicate 1, eg if one is low, the other is low. 
@@ -741,9 +787,9 @@ That's a good thing, that the replicates are fairly similar.
 
 ---
 class: transition
-# Your turn: Demonstrate with koala bilby data (write this as live code)
+# Your turn: Demonstrate with koala bilby data (live code)
 
-Here is a little data set to practice pivot_longer, pivot_wider and separate on.
+Here is a little data to practice `pivot_longer`, `pivot_wider` and `separate` on.
 
 ```{r koala-bilby}
 kb <- read_csv(here::here("slides/data/koala_bilby.csv"))
@@ -887,6 +933,38 @@ Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-
 - it was really cold
 - the keyboard got stuck
 - "the value was missing"
+
+
+---
+class: refresher
+
+# Recap
+
+- Traffic Light System: Green = "good!" ; Red = "Help!"
+- R + Rstudio
+- Functions are  ___
+- columns in data frames are accessed with ___ ?
+.red[If you have questions, place a red sticky note on your laptop.]
+
+.white[If you are done, place a green sticky on your laptop]
+
+---
+class: refresher
+
+# Traffic Light System
+
+# .red[Red] Post it
+
+- I need a hand
+- Slow down
+
+--
+
+# Green Post it
+
+* I am up to speed
+* I have completed the thing
+
 
 ---
 

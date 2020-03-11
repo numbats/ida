@@ -19,7 +19,8 @@ First, let's read in the data
 ```{r read-in}
 library(tidyverse)
 
-recliners <- read_csv("data/recliners.csv")
+# recliners <- read_csv(here::here("recliners.csv")
+recliners <- read_csv(here::here("exercises/2a/data/recliners.csv"))
 recliners
 ```
 
