@@ -73,6 +73,11 @@ We have a limited amount of laptops available for students to borrow (during sem
 - Also available for purchase on Amazon if you prefer a hardcopy.
 - Readings for the semester are linked in the table below (some do not include the R4DS book)
 
+## Exercises on rstudio cloud (rstudio.cloud)
+
+- You can follow the link on [this slide](https://ida.numbat.space/slides/lecture_1a#27) to establish your account (this link will expire in week 3)
+- Every time we go to use rstudio.cloud in class, you will log in to rstudio.cloud using your monash gmail account.
+
 ## Consultation times
 
 Consultations begin from Week 2 (16th March)
