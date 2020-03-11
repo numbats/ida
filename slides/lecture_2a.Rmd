@@ -340,7 +340,7 @@ grad
 Good things about the format:
 
 ```{r print-grad, echo = FALSE}
-head(grad) %>% as_table()
+head(grad)
 ```
 
 --
