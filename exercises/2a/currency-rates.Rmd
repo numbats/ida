@@ -12,7 +12,8 @@ library(tidyverse)
 
 Then read in the data, `rates.csv` and name it `rates`
 ```{r read-rates}
-___ <- read_csv("data/___")
+# ___ <- read_csv("data/___")
+rates <- read_csv(here::here("exercises/2a/data/rates.csv"))
 
 head(rates)
 ```
@@ -24,8 +25,10 @@ Now plot the data:
 
 ```{r plot-rates}
 ggplot(rates, 
-       aes(x = ___, 
-           y = ___)) + 
+       # aes(x = ___, 
+       #     y = ___)) + 
+       aes(x = date,
+           y = AUD)) +
   geom_line()
 ```
 
@@ -41,27 +44,36 @@ Make a subset of the data that includes the following columns:
 
 ```{r subset-rates}
 rates_sub <- rates %>% 
-  select(___, 
-         ___, 
-         ___, 
-         ___, 
-         ___, 
-         ___)
+  # select(___, 
+  #        ___, 
+  #        ___, 
+  #        ___, 
+  #        ___, 
+  #        ___)
+  select(date,
+         AUD,
+         GBP,
+         JPY,
+         CNY,
+         CAD)
 
 rates_sub
 ```
 
 
-Now put the data into long form, where:
+Now pivot the data into long form, where:
 
-* `key` is `currency`
-* `value` is `rate`
+* `names_to` is `currency`
+* `values_to` is `rate`
 
 ```{r rates-long}
 rates_long <- rates_sub %>%
-  gather(key = ___, 
-         value = ___, 
-         -date)
+  pivot_longer(cols = -date,
+               names_to = "currency", 
+               values_to = "rate")
+               # names_to = ___, 
+               # values_to = ___)
+rates_long
 ```
 
 Now plot the currency rates
@@ -73,8 +85,10 @@ Now plot the currency rates
 ```{r plot-all-currencies, fig.width=6, fig.height=10}
 
 ggplot(rates_long, 
-       aes(x = ___, 
-           y = ___)) + 
+       #% aes(x = ___, 
+       #%     y = ___)) + 
+       aes(x = date,
+           y = rate)) +
   geom_line() +
   facet_wrap(~currency, # facetted by currency
              ncol = 1, 

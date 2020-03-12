@@ -1,0 +1,26 @@
+---
+title: "ETC1010 Groups, Semester one, 2020"
+output: html_document
+---
+
+# Find your username below, and your group, then find your group members!
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r get-groups, include = FALSE}
+library(googlesheets4)
+googlesheets4::sheets_auth(email = "nicholas.tierney@monash.edu")
+
+library(dplyr)
+groups <- read_sheet("https://docs.google.com/spreadsheets/d/1YZAhzZvrPyIPHsTl0MGsLiNzL4U1s2-AbdO0SdFufyk/edit#gid=0",
+                     .name_repair = janitor::make_clean_names) %>% 
+  select(username,
+         group)
+```
+
+```{r print-dt, echo = FALSE}
+DT::datatable(groups)
+```
+

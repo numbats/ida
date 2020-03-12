@@ -29,20 +29,22 @@ recliners
 * The variables are ...
 * The observations are ...
 
-## Ex 1B) Put the data in tidy long form (using the names `V2` as the key variable, and `count` as the value). 
+## Ex 1B) Pivot the data in tidy long form (using the names `V2` as the key variable, and `count` as the value). 
 
 ```{r recline-long}
+recline_long <- recliners %>% 
+  pivot_longer(cols = -V1,
+               # names_to = __,
+               # values_to = __)
+               names_to = "response",
+               values_to = "count")
 
-recline_long <- recliners %>% gather(key = ___, 
-                                     value = ___,
-                                     -V1)
+recline_long
 ```
 
 ## Ex 1C) Use the `rename` function to better describe the variable names.
 
 ```{r rename-recline}
 recline_long %>%
-  rename(V1 = "response",
-         V2 = "question")
+  rename(question = V1)
 ```
-

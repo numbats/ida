@@ -12,12 +12,14 @@ First, load `library(tidyverse)`, and read in the data
 
 ```{r tb-read}
 library(tidyverse)
-tb_raw <- read_csv("data/TB_notifications_2018-03-18.csv")
+# tb_raw <- read_csv("data/TB_notifications_2018-03-18.csv")
+tb_raw <- read_csv(
+  here::here("exercises/2a/data/TB_notifications_2018-03-18.csv"))
 tb_raw
 ```
 
 - select the variables `country`, `year`, and those that start with `new_sp_`. See `?select` for more information
-- then filter the observations to be between 1996 and 2012.
+- then `filter` the observations to be between 1996 and 2012.
 - Save this shorterned dataset as `tb_short`.
 
 
@@ -28,6 +30,8 @@ tb_short <-  tb_raw %>%
          starts_with("new_sp_")) %>%
   filter(year > 1996, 
          year < 2012) # before 2012
+
+tb_short
 ```
 
 - Identify the top 20 observations using `top_n`
@@ -36,26 +40,29 @@ tb_short <-  tb_raw %>%
 tb_short %>% top_n(20) # place 20 inside top_n
 ```
 
-`gather` the data into columns into columns named `stuff` and `count`
+`pivot_longer` the data into columns into columns named `stuff` and `count`
 
-```{r tb-gather}
-tb_gather <- tb_short %>% 
-  gather(key = stuff, 
-         value = count, 
-         starts_with("new_sp_"))
+```{r tb-longer}
+tb_longer <- tb_short %>% 
+  pivot_longer(cols = starts_with("new_sp_"),
+               names_to = "stuff",
+               values_to = "count")
 
-tb_gather
+tb_longer
 ```
 
 - Separate the column `stuff`,  `into` three columns named "stuff1", "stuff2", and "genderage"
 
 ```{r tb-sep1}
-tb_sep_step1 <- tb_gather %>%
+tb_sep_step1 <- tb_longer %>%
   separate(col = stuff, 
-           into = c("stuff1", "stuff2", "genderage"))
+           into = c("stuff1", "stuff2", "genderage"),
+           sep = "_")
 
 tb_sep_step1
 ```
+
+
 
 - Separate `genderage` into two columns named "gender" and "age", separating on the first position.
 
@@ -64,6 +71,8 @@ tb_sep_step2 <- tb_sep_step1 %>%
   separate(col = genderage, 
            into = c("gender", "age"), 
            sep = 1)
+
+tb_sep_step2
 ```
 
 Drop the columns named stuff1 and stuff2
@@ -73,4 +82,5 @@ tb_tidy <- tb_sep_step2 %>%
   select(- stuff1, 
          - stuff2) # drop stuff1 and stuff2
 
+tb_tidy
 ```

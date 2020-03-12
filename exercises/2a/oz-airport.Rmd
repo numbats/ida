@@ -5,12 +5,24 @@ date:
 output: html_document
 ---
 
-First we read in the data from the excel sheet
+First we read in the data from the excel sheet using `read_xls`
+
+Here are are telling it:
+
+- path: this is where my data lives
+- sheet: This is the sheet number of the excel sheet
+- skip: This is the number of rows to skip
+
 ```{r read-passengers}
 library(readxl)
-passengers <- read_xls(path = "data/WebAirport_FY_1986-2017.xls", 
-                       sheet = 3, 
-                       skip = 6)
+passengers <- read_xls(
+  path = here::here("exercises/2a/data/WebAirport_FY_1986-2017.xls"), 
+  sheet = 3, 
+  skip = 6,
+  # this gives us much easier names to work with
+  .name_repair = janitor::make_clean_names
+  )
+
 passengers
 ```
 
@@ -19,25 +31,29 @@ Tidy the data, to produce a data set with these columns
     - year 
     - type_of_flight: DOMESTIC, INTERNATIONAL
     - bound: IN or OUT
-    
-
 
 ```{r extension exercise}
 tidy_passengers <- passengers %>%
-  select(-...1, 
-         -...14, 
-         -Rank, 
-         -starts_with("TOTAL")) %>%
-  rename(
-    INBOUND_DOM = ___,
-    INBOUND_INTL = ___,
-    OUTBOUND_DOM = ___,
-    OUTBOUND_INTL = ___,
-    INBOUND_TOTL = ___,
-    OUTBOUND_TOTL =___
-  ) %>%
-  gather(key = where, 
-         value = amount, 
-         starts_with("IN"), 
-         starts_with("OUT"))
+  select(-x, 
+         -x_2, 
+         -rank, 
+         -starts_with("total")) %>%
+  rename(inbound_dom = inbound,
+         inbound_intl = inbound_2,
+         inbound_totl = inbound_3,
+         outbound_dom = outbound,
+         outbound_intl = outbound_2,
+         outbound_totl =outbound_3) %>%
+    pivot_longer(cols = contains("bound"),
+                 names_to = "where",
+                 values_to = "amount") %>% 
+  separate(col = where,
+           into = c("bound", "type")) %>% 
+  filter(type != "totl")
+
+tidy_passengers
+  # gather(key = where, 
+  #        value = amount, 
+  #        starts_with("IN"), 
+  #        starts_with("OUT"))
 ```

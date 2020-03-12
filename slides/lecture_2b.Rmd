@@ -908,3 +908,49 @@ tb %>% top_n(20)
   
 ```{r endslide, child="components/endslide.Rmd"}
 ```
+
+
+```{r allison-tidy-img, echo = FALSE, out.width = "50%"}
+include_graphics("images/horst_tidy.jpg")
+```
+
+Source: A drawing made by Alison Horst [@allison_horst](https://twitter.com/allison_horst?lang=en) 
+
+
+# Learning is where you:
+
+1. Receive information accurately
+2. Remember the information (long term memory)
+3. In such a way that you can reapply the information when appropriate
+
+---
+
+# Your Turn:
+
+Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-noaa-data) 
+- "Which is the best description of the temperature units?"
+- "What is the best description of the precipitation units"
+- "What does -9999 mean?"
+
+
+???
+
+- "Which is the best description of the temperature units?"
+
+- degrees farehnheit F
+- degrees Kelvin K
+- "degrees C x10"
+
+"What is the best description of the precipitation units"
+
+- "mm x10"
+- inches
+
+"What does -9999 mean?"
+
+- it was really cold
+- the keyboard got stuck
+- "the value was missing"
+
+
+---

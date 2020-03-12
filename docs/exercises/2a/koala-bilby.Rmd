@@ -1,6 +1,6 @@
 # Demonstrate with koala bilby data (write this as live code)
 
-Here is a little data set to practice gather, spread and separate on.
+Here is a little data set to practice `pivot_longer`, `pivot_wider` and `separate` on.
 
 First we load the library `tidyverse` to load up all of our functions.
 
@@ -10,7 +10,7 @@ library(tidyverse)
 
 
 ```{r koala-bilby}
-kb <- read_csv("data/koala_bilby.csv")
+kb <- read_csv(here::here("exercises/2a/data/koala_bilby.csv"))
 kb
 ```
 
@@ -18,13 +18,13 @@ kb
 
 ### Exercise 1
 
-Gather the data into long form, naming the two new variables, `label` and `count`
+Pivot the data into long form, naming the two new variables, `label` and `count`
 
 ```{r kb-long}
 kb_long <- kb %>% 
-  gather(key = label, 
-         value = count, 
-         -ID)
+  pivot_longer(cols = -ID,
+               names_to = "label", 
+               values_to = "count")
 
 kb_long
 ```
@@ -36,28 +36,30 @@ Separate the labels into two new variables, `animal`, `state`
 ```{r kb-separate}
 kb_long_sep <- kb_long %>%
   separate(col = label, 
-           into = c(__, ___))
+           # into = c(__, ___))
+           into = c("animal", "state"))
 
 kb_long_sep
 ```
 
 ### Exercise 3
 
-Spread the long form data into wide form, where the columns are `state`s. 
+Pivot the long form data into wide form, where the columns are `state`s. 
+
 ```{r kb-wide-state}
 kb_long_sep %>% 
-  spread(key = ___, 
-         value = count)
+  # pivot_wider(names_from = ___, 
+  pivot_wider(names_from = state,
+              values_from = count)
 ```
 
 ### Exercise 4
 
-Spread the long form data into wide form, where the columns are the `animal`s. 
+Convert the long form data into wide form, where the columns are the `animal`s. 
 
-```{r kb-spread-animal}
+```{r kb-pivot-wider-animal}
 kb_long_sep %>% 
-  spread(key = ___, 
-         value = count)
+  # pivot_wider(key = ___, 
+  pivot_wider(names_from = animal,
+              values_from = count)
 ```
-
----

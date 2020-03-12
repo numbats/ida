@@ -66,6 +66,17 @@ class: transition middle
 
 (Discuss with your neighbour)
 
+---
+class: refresher
+
+# Recap
+
+- packages are installed with ___ ?
+- packages are loaded with ___ ?
+- Why do we care about Reproducibility?
+- Output + input of rmarkdown
+- I have an assignment group
+
 
 ---
 class: transition middle
@@ -188,7 +199,7 @@ class: transition left
 We are going to set up the groups for doing assignment work.
 
 1. Find your name from the list at [this link]()
-2. Find the other people in the class with the same quote as you (feel free to wander around the class!)
+2. Find the other people in the class with the same group as you (feel free to wander around the class!)
 3. Grab your gear and claim a table to work together at. 
 
 ---
@@ -245,22 +256,9 @@ include_graphics("gifs/help-me-help-you.gif")
 
 
 ---
-class: refresher
-
-# Recap
-
-- packages are installed with ___ ?
-- packages are loaded with ___ ?
-- Why do we care about Reproducibility?
-- Output + input of rmarkdown
-- I have an assignment group
-- If I have an assignment group, have recorded my assignment group in the ED survey
-
----
 
 # Today: Outline
 
-- An aside on learning
 - Tidy Data
 - Terminology of data
 - Different examples of data 
@@ -381,7 +379,7 @@ grad %>%
 Easy to make a plot
 
 .left-code[
-```{r grad-plot, eval = FALSE}
+```{r grad-plot, eval = FALSE, echo = TRUE}
 grad %>%
   filter(subject == "economics") %>%
   ggplot(aes(x = NumStud, 
@@ -395,6 +393,7 @@ grad %>%
 ```{r gra-dplot-out, ref.label = 'grad-plot', echo = FALSE, out.width = "100%"}
 
 ```
+]
 
 ---
 class: transition left
@@ -408,7 +407,8 @@ class: transition left
 - Use the traffic light system if you need a hand.
 
 ```{r cd-graduate-programs}
-countdown(minutes = 3)
+countdown(minutes = 3,
+          padding = "2px")
 ```
 
 ???
@@ -453,7 +453,7 @@ include_graphics("images/tower-of-babel.jpg")
 - For the grad programs, these would be all the column headers.
 
 ```{r show-grad}
-grad
+head(grad)
 ```
 
 ---
@@ -464,7 +464,7 @@ grad
 - For the grad programs, this is institution, and program, uniquley define the observation.
 
 ```{r show-grad-again}
-grad
+head(grad)
 ```
 
 
@@ -476,7 +476,7 @@ grad
 - For the grad programs, this is the value in each cell
 
 ```{r show-grad-again-again}
-grad
+head(grad)
 ```
 
 
@@ -489,11 +489,16 @@ __Tabular data__ is a set of values, each associated with a variable and an obse
 * Each observation in its own row,
 * Each value is placed in its own `cell`.
 
+```{r show-tidy-data, out.width = "100%"}
+include_graphics("images/tidy-data.png")
+```
+
+
 ---
-background-image: url(https://imgs.njtierney.com/tidy-data.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, black
+class: transition
+# Different examples of data
+
+For each of these data examples, **let's try together to identify the variables and the observations** - some are HARD!
 
 ---
 
@@ -505,14 +510,8 @@ Is in **tidy** tabular form.
 grad
 ```
 
-
 ---
-class: transition
-# Different examples of data
 
-For each of these data examples, **let's try together to identify the variables and the observations** - some are HARD!
-
----
 
 # Your Turn: Genes experiment `r ji("thinking")`
 
@@ -629,7 +628,7 @@ include_graphics("images/lego.png")
 - `separate`: Split one column into many
 
 ---
-class: refresher
+class: informative
 # Aside: naming things is hard
 
 - You might have come across `pivot_` functions as `spread` or `gather`. These are still valid, but have been improved upon in the latest version of the `tidyr` package.
@@ -655,16 +654,16 @@ pivot_longer(<DATA>,
 - **values_to** is the name of the variable whose values are spread over the cells.
 
 ---
-# pivot_longer: example
+# `pivot_longer`: example
 
-.pull-left[
-```{r print-table4a}
+.left-code[
+```{r print-table4a, echo = TRUE}
 table4a
 ```
 
 ]
 
-.pull-right[
+.right-plot[
 
 ```{r pivot_longer-table4, echo = TRUE}
 table4a %>% 
@@ -692,13 +691,14 @@ genes
 ---
 # Tidy genes data
 
-.pull-left[
-```{r show-pivot-longer}
+.left-code[
+```{r show-pivot-longer, echo = TRUE}
 genes
 ```
 
 ]
 
+.right-plot[
 ```{r pivot_longer-genes, echo = TRUE}
 genes_long <- genes %>% 
   pivot_longer(cols = -id,
@@ -707,18 +707,19 @@ genes_long <- genes %>%
 
 genes_long
 ```
+]
 
 ---
 # Separate columns
 
-.pull-left[
-```{r print-genes-long}
+.left-code[
+```{r print-genes-long, echo = TRUE}
 genes_long
 ```
 
 ]
 
-.pull-right[
+.right-plot[
 ```{r genes-separate, echo = TRUE}
 genes_long %>%
   separate(col = variable, 
@@ -746,7 +747,7 @@ class: transition
 # Examine treatments against each other
 
 .left-code[
-```{r plot-genes, eval = FALSE}
+```{r plot-genes, eval = FALSE, echo = TRUE}
 genes_long_tidy %>%
   pivot_wider(id_cols = c(id, rep, time),
               names_from = trt, 
@@ -759,6 +760,7 @@ genes_long_tidy %>%
 ```{r plot-genes-out, ref.label = 'plot-genes', echo = FALSE, out.width = "100%"}
 
 ```
+]
 
 Generally, some negative association within each gene, WM is low if WI is high. 
 
@@ -766,7 +768,7 @@ Generally, some negative association within each gene, WM is low if WI is high.
 # Examine replicates against each other
 
 .left-code[
-```{r shoe-replicates, eval = FALSE}
+```{r shoe-replicates, eval = FALSE, echo = TRUE}
 genes_long_tidy %>%
   pivot_wider(id_cols = c(id, trt, time),
               names_from = rep, 
@@ -780,14 +782,14 @@ genes_long_tidy %>%
 ```{r shoe-replicates-out, ref.label = 'shoe-replicates', echo = FALSE, out.width = "100%"}
 
 ```
+]
 
 Roughly, replicate 4 is like replicate 1, eg if one is low, the other is low. 
 
 That's a good thing, that the replicates are fairly similar.
 
 ---
-class: transition
-# Your turn: Demonstrate with koala bilby data (live code)
+# Demo: koala bilby data
 
 Here is a little data to practice `pivot_longer`, `pivot_wider` and `separate` on.
 
@@ -796,12 +798,15 @@ kb <- read_csv(here::here("slides/data/koala_bilby.csv"))
 kb
 ```
 
-- Read over `koala-bilby.Rmd`
-- pivot_longer the data into long form, naming the two new variables, `label` and `count`
-- Separate the labels into two new variables, `animal`, `state`
-- pivot_wider the long form data into wide form, where the columns are the states. 
-- pivot_wider the long form data into wide form, where the columns are the animals. 
 
+---
+# Exercise: koala bilby data
+
+- Read over `koala-bilby.Rmd`
+- `pivot_longer` the data into long form, naming the two new variables, `label` and `count`
+- Separate the labels into two new variables, `animal`, `state`
+- `pivot_wider` the long form data into wide form, where the columns are the states. 
+- `pivot_wider` the long form data into wide form, where the columns are the animals. 
 
 ---
 # Exercise 1: Rude Recliners 
@@ -836,7 +841,7 @@ library(tidyverse)
 recliners <- read_csv(here::here("slides/data/recliners.csv"))
 recliners %>% 
   pivot_longer(cols = -V1,
-               names_to = "V2",
+               names_to = "response",
                values_to = "count")
 ```
 
@@ -850,8 +855,6 @@ class: transition left
 ```{r first-timer}
 library(countdown)
 countdown(minutes = 3,
-          left = 0, 
-          right = 0,
           padding = "10px",
           margin = "5%",
           font_size = "2em",
@@ -864,7 +867,7 @@ countdown(minutes = 3,
 
 Open: `tb-incidence.Rmd`
 
-Tidy the TB incidence data, using rthe Rmd to prompt questions.
+Tidy the TB incidence data, using the Rmd to prompt questions.
 
 ---
 # Exercise 3: Currency rates (15 minutes)
@@ -878,7 +881,6 @@ Tidy the TB incidence data, using rthe Rmd to prompt questions.
 3. Make line plots of the currencies, describe the similarities and differences between the currencies. 
 
 ---
-
 # Exercise 4: Australian Airport Passengers (optional!)
 
 - Open `oz-airport.Rmd`
@@ -898,44 +900,6 @@ Tidy the TB incidence data, using rthe Rmd to prompt questions.
 Time to take the lab quiz.
 
 ---
-
-# Learning is where you:
-
-1. Receive information accurately
-2. Remember the information (long term memory)
-3. In such a way that you can reapply the information when appropriate
-
----
-
-# Your Turn:
-
-Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-noaa-data) 
-- "Which is the best description of the temperature units?"
-- "What is the best description of the precipitation units"
-- "What does -9999 mean?"
-
-
-???
-
-- "Which is the best description of the temperature units?"
-
-- degrees farehnheit F
-- degrees Kelvin K
-- "degrees C x10"
-
-"What is the best description of the precipitation units"
-
-- "mm x10"
-- inches
-
-"What does -9999 mean?"
-
-- it was really cold
-- the keyboard got stuck
-- "the value was missing"
-
-
----
 class: refresher
 
 # Recap
@@ -949,44 +913,6 @@ class: refresher
 .white[If you are done, place a green sticky on your laptop]
 
 ---
-class: refresher
 
-# Traffic Light System
-
-# .red[Red] Post it
-
-- I need a hand
-- Slow down
-
---
-
-# Green Post it
-
-* I am up to speed
-* I have completed the thing
-
-
----
-
-# summary slide
-
-- Tower of babel analogy for writing R code
-
----
-
-background-image: url(images/tower-of-babel.jpg)
-background-size: contain
-background-position: 50% 50%
-class: refresher, center, bottom
-
-
----
-  
 ```{r endslide, child="components/endslide.Rmd"}
 ```
-
-```{r allison-tidy-img, echo = FALSE, out.width = "50%"}
-include_graphics("images/horst_tidy.jpg")
-```
-
-Source: A drawing made by Alison Horst [@allison_horst](https://twitter.com/allison_horst?lang=en) 
