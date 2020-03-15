@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 2, part B"
 subtitle: "Week of Tidy Data + Style"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "11th Mar 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -58,6 +58,7 @@ opts_chunk$set(echo = TRUE,
 ```{r titleslide, child="components/titleslide.Rmd"}
 ```
 
+---
 class: transition
 
 # What is this song?
@@ -69,16 +70,95 @@ class: transition
 class: transition
 # Your Turn: complete class survey
 
+---
+class: transition
+# How to learn
+
+I want to some time to discuss ideas on learning, and how it ties into the course.
+
 
 ---
+background-image: url(images/how-to-learn-img-page-1.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
 
-# An aside on learning
 
-- I want to take the first 15 minutes of class to discuss some ideas on learning, and how this ties into the course.
-- [new slides]
+---
+background-image: url(images/how-to-learn-img-page-2.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
 
-- (insert these slides from the tidyverse teaching.)
 
+---
+background-image: url(images/how-to-learn-img-page-3.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-4.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-5.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-6.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-7.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-8.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-9.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-10.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-11.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-12.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
 
 ---
 class: refresher
@@ -90,308 +170,19 @@ class: refresher
 - Tower of babel analogy for writing R code
 - Functions are  ___
 - columns in data frames are accessed with ___ ?
+- packages are installed with ___ ?
+- packages are loaded with ___ ?
 ]
 
 .pull-right[
-- packages are installed with ___ ?
-- packages are loaded with ___ ?
 - Why do we care about Reproducibility?
 - Output + input of rmarkdown
 - I have an assignment group
-- If I have an assignment group, have recorded my assignment group in the ED survey
+- I have made contact with my assignment group
 ]
-
----
-background-image: url(images/allison-horst-dplyr-wrangling.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
-
-.black.large[
-Source: Artwork by @allison_horst
-]
-
----
-# Overview
-
-.pull-left[
-- `filter()`
-- `select()`
-- `mutate()`
-- `arrange()`
-
-]
-
-.pull-right[
-- `group_by()`
-- `summarise()`
-- `count()`
-]
-
----
-background-image: url(images/allison-horst-tidyverse-celestial.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, bg-black
-
-.left.white.large[
-Artwork by @allison_horst
-]
-
----
-class: transition
-# R Packages
-
-```{r avail-pkg}
-avail_pkg <- available.packages()
-dim(avail_pkg)
-```
-
-As of `r Sys.Date()` there are `r nrow(avail_pkg)` R packages available
-
----
-
-# Name clashes
-
-```{r print-tidyverse, message = TRUE, include = TRUE, echo = TRUE}
-library(tidyverse)
-```
-
----
-# Many R packages
-
-- A blessing & a curse! 
-- So many packages available, it can make it hard to choose!
-- Many of the packages are designed to solve a specific problem
-- The tidyverse is designed to work with many other packages following a consistent philosophy
-- What this means is that you shouldn't notice it!
-
-
-???
-
-Extra reading:
-
-We have been loading the `tidyverse` package. Its actually a suite of packages, and you can learn more about the individual packages at https://www.tidyverse.org. You could load each individually.
-
-Because so many people contribute packages to R, it is a blessing and a curse. 
-
-???
-
-The best techniques are available, but there can be conflicts between function names. When you load tidyverse it prints a great summary of conflicts that it knows about, between its functions and others.
-
-
-For example, there is a `filter` function in the `stats` package that comes with the R distribution. This can cause confusion when you want to use the filter function in `dplyr` (part of tidyverse). To be sure the function you use is the one you want to use, you can prefix it with the package name, `dplyr::filter()`.
----
-class: transition
-
-# Let's talk about data
-
----
-background-image: url(images/french-fries.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
-
-???
-
-This was an actual experiment in Food Sciences at Iowa State University. The goal was to find out if some cheaper oil options could be used to make hot chips: that people would not be able to distinguish the difference between chips fried in the new oils relative to those fried in the current market leader.
-
-Twelve tasters were recruited to sample two chips from each batch, over a period of ten weeks. The same oil was kept for a period of 10 weeks! May be a bit gross by the end!
-
-This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
-
-
----
-
-# Example: french fries
-
-- Experiment in Food Sciences at Iowa State University. 
-- Aim: find if cheaper oil could be used to make hot chips
-- Question: Can people distinguish between chips fried in the new oils relative to those current market leader oil.
-- 12 tasters recruited 
-- Each sampled two chips from each batch
-- Over a period of ten weeks.
-
-Same oil kept for a period of 10 weeks! May be a bit gross!
-
-
----
-# Example: french-fries - gathering into long form
-
-```{r ff-echo, echo = TRUE, eval = FALSE}
-french_fries <- read_csv("data/french_fries.csv")
-french_fries
-```
-
-```{r ff-print, echo = FALSE, eval = TRUE}
-french_fries <- read_csv("data/french_fries.csv")
-head(french_fries)
-```
-
---
-
-This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
-
----
-# French fries - gathering into long form
-
-```{r create-ff-long, echo = FALSE}
-fries_long <- french_fries %>% 
-  gather(key = type, 
-         value = rating, 
-         -time, 
-         -treatment, 
-         -subject, 
-         -rep) %>%
-  mutate(type = as.factor(type))
-```
-
-
-.left-code[
-```{r ff-long, eval = FALSE, echo = TRUE}
-fries_long <- french_fries %>% 
-  gather(key = type, 
-         value = rating, 
-         -time, 
-         -treatment, 
-         -subject, 
-         -rep) 
-```
-]
-
---
-
-.right-plot[
-```{r print-ff-long}
-fries_long
-```
-
-]
-
----
-class: transition
-# `filter()`
-
-choose observations from your data
-
----
-# `filter()`: example
-
-```{r ff-filter-subj}
-fries_long %>%
-  filter(subject == 10)
-```
-
-
----
-# `filter()`: details
-
-Filtering requires comparison to find the subset of observations of interest.  What do you think the following mean?
-
-- `subject != 10` 
-- `x > 10` 
-- `x >= 10` 
-- `class %in% c("A", "B")` 
-- `!is.na(y)`
-
-```{r cd}
-countdown(minutes = 3, play_sound = TRUE)
-```
-
-
----
-# `filter()`: details
-
-`subject != 10`
-
---
-
-Find rows corresponding to all subjects except subject 10
-
-```{r}
-
-```
-
-
----
-# `filter()`: details
-
- `x > 10` 
-
---
-
-find all rows where variable `x` has values bigger than 10
-
----
-# `filter()`: details
-
-`x >= 10` 
-
---
-
- finds all rows variable `x` is greater than or equal to 10.
-
----
-# `filter()`: details
-
-`class %in% c("A", "B")`
-
---
-
- finds all rows where variable `class` is either A or B
-
-
----
-# `filter()`: details
-
-`!is.na(y)` 
-
---
-
-finds all rows that *DO NOT* have a missing value for variable `y`
-
----
-# Your turn: open french-fries.Rmd
-
-Filter the french fries data to have:
-
-- only week 1
-- oil type 1 (oil type is called treatment)
-- oil types 1 and 3 but not 2
-- weeks 1-4 only
-
----
-# French Fries Filter: only week 1
-
-```{r french-fries-filter-t1}
-fries_long %>% filter(time == 1)
-```
-
-
----
-# French Fries Filter: oil type 1
-
-```{r french-fries-filter-treatment-eq}
-fries_long %>% filter(treatment == 1)
-```
-
----
-# French Fries Filter: oil types 1 and 3 but not 2
-
-```{r french-fries-filter-treatment-neq}
-fries_long %>% filter(treatment != 2)
-```
-
----
-# French Fries Filter: weeks 1-4 only
-
-```{r french-fries-filter-time-in}
-fries_long %>% filter(time %in% c("1", "2", "3", "4"))
-```
 
 ---
 # Style guide
-
 
 > "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread." -- Hadley Wickham
 
@@ -499,6 +290,270 @@ ggplot(diamonds, mapping = aes(x = price)) +
 # Your Turn: ed
 
 - Go to ed and assess your understanding of code style (there may be some technical difficulty)
+
+
+
+---
+background-image: url(images/allison-horst-dplyr-wrangling.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+.black.large[
+Source: Artwork by @allison_horst
+]
+
+---
+# Overview
+
+.pull-left[
+- `filter()`
+- `select()`
+- `mutate()`
+- `arrange()`
+
+]
+
+.pull-right[
+- `group_by()`
+- `summarise()`
+- `count()`
+]
+
+---
+background-image: url(images/allison-horst-tidyverse-celestial.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, bg-black
+
+.left.white.large[
+Artwork by @allison_horst
+]
+
+---
+class: transition
+# R Packages
+
+```{r avail-pkg}
+avail_pkg <- available.packages()
+dim(avail_pkg)
+```
+
+As of `r Sys.Date()` there are `r nrow(avail_pkg)` R packages available
+
+---
+
+# Name clashes
+
+```{r print-tidyverse, message = TRUE, include = TRUE, echo = TRUE}
+library(tidyverse)
+```
+
+---
+# Many R packages
+
+- A blessing & a curse! 
+- So many packages available, it can make it hard to choose!
+- Many of the packages are designed to solve a specific problem
+- The tidyverse is designed to work with many other packages following a consistent philosophy
+- What this means is that you shouldn't notice it!
+
+
+???
+
+Extra reading:
+
+We have been loading the `tidyverse` package. Its actually a suite of packages, and you can learn more about the individual packages at https://www.tidyverse.org. You could load each individually.
+
+Because so many people contribute packages to R, it is a blessing and a curse. 
+
+???
+
+The best techniques are available, but there can be conflicts between function names. When you load tidyverse it prints a great summary of conflicts that it knows about, between its functions and others.
+
+
+For example, there is a `filter` function in the `stats` package that comes with the R distribution. This can cause confusion when you want to use the filter function in `dplyr` (part of tidyverse). To be sure the function you use is the one you want to use, you can prefix it with the package name, `dplyr::filter()`.
+---
+class: transition
+
+# Let's talk about data
+
+---
+background-image: url(images/french_fries.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+???
+
+This was an actual experiment in Food Sciences at Iowa State University. The goal was to find out if some cheaper oil options could be used to make hot chips: that people would not be able to distinguish the difference between chips fried in the new oils relative to those fried in the current market leader.
+
+Twelve tasters were recruited to sample two chips from each batch, over a period of ten weeks. The same oil was kept for a period of 10 weeks! May be a bit gross by the end!
+
+This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
+
+
+---
+
+# Example: french fries
+
+- Experiment in Food Sciences at Iowa State University. 
+- Aim: find if cheaper oil could be used to make hot chips
+- Question: Can people distinguish between chips fried in the new oils relative to those current market leader oil.
+- 12 tasters recruited 
+- Each sampled two chips from each batch
+- Over a period of ten weeks.
+
+Same oil kept for a period of 10 weeks! May be a bit gross!
+
+
+---
+# Example: french-fries - pivoting into long form
+
+```{r ff-echo, echo = TRUE, eval = FALSE}
+french_fries <- read_csv("data/french_fries.csv")
+french_fries
+```
+
+```{r ff-print, echo = FALSE, eval = TRUE}
+# french_fries <- read_csv("data/french_fries.csv")
+french_fries <- read_csv(here::here("slides/data/french_fries.csv"))
+head(french_fries)
+```
+
+--
+
+This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
+
+---
+# Example: french-fries - pivoting into long form
+
+```{r create-ff-long, echo = FALSE}
+fries_long <- french_fries %>% 
+  pivot_longer(cols = potato:painty,
+               names_to = "type", 
+               values_to = "rating") %>%
+  mutate(type = as.factor(type))
+```
+
+.left-code[
+```{r name, eval = FALSE}
+fries_long <- french_fries %>% 
+  pivot_longer(cols = potato:painty,
+               names_to = "type", 
+               values_to = "rating")
+fries_long
+```  
+]
+
+.right-plot[
+```{r name-out, ref.label = 'create-ff-long', echo = FALSE}
+```
+
+---
+class: transition
+# `filter()`
+
+choose observations from your data
+
+---
+# `filter()`: example
+
+```{r ff-filter-subj}
+fries_long %>%
+  filter(subject == 10)
+```
+
+
+---
+# `filter()`: details
+
+Filtering requires comparison to find the subset of observations of interest.  What do you think the following mean?
+
+- `subject != 10` 
+- `x > 10` 
+- `x >= 10` 
+- `class %in% c("A", "B")` 
+- `!is.na(y)`
+
+```{r cd, echo = FALSE}
+countdown(minutes = 3, play_sound = TRUE)
+```
+
+
+---
+# `filter()`: details
+
+`subject != 10`
+
+--
+
+Find rows corresponding to all subjects except subject 10
+
+--
+
+ `x > 10` 
+
+--
+
+find all rows where variable `x` has values bigger than 10
+
+`x >= 10` 
+
+--
+
+ finds all rows variable `x` is greater than or equal to 10.
+
+`class %in% c("A", "B")`
+
+--
+
+ finds all rows where variable `class` is either A or B
+
+`!is.na(y)` 
+
+--
+
+finds all rows that *DO NOT* have a missing value for variable `y`
+
+---
+# Your turn: open french-fries.Rmd
+
+Filter the french fries data to have:
+
+- only week 1
+- oil type 1 (oil type is called treatment)
+- oil types 1 and 3 but not 2
+- weeks 1-4 only
+
+---
+# French Fries Filter: only week 1
+
+```{r french-fries-filter-t1}
+fries_long %>% filter(time == 1)
+```
+
+
+---
+# French Fries Filter: oil type 1
+
+```{r french-fries-filter-treatment-eq}
+fries_long %>% filter(treatment == 1)
+```
+
+---
+# French Fries Filter: oil types 1 and 3 but not 2
+
+```{r french-fries-filter-treatment-neq}
+fries_long %>% filter(treatment != 2)
+```
+
+---
+# French Fries Filter: weeks 1-4 only
+
+```{r french-fries-filter-time-in}
+fries_long %>% filter(time %in% c("1", "2", "3", "4"))
+```
 
 
 

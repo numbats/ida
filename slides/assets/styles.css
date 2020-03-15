@@ -73,8 +73,9 @@ ul {
 
 
 a {
-  color: #027EB6;
-  text-decoration: none;
+  /*color: #027EB6;*/
+  color: var(--color-deep-orange);
+  text-decoration: underline;
 }
 
 .footnote {
@@ -94,8 +95,12 @@ a {
 
 
 .remark-slide-number { font-size: 18pt; }
-/*.remark-slide-content h1:first-of-type { padding-top:20px; } 
-.remark-slide-content { padding: 0 0 0 0; }*/
+/*.remark-slide-content h1:first-of-type { padding-top:20px; } */
+
+.remark-slide-content { 
+  padding: 1em 3em 1em 3em; 
+  
+}
 
 
 .remark-slide-content:not(.transition):not(.refresher):not(.motivator):not(.informative)  > h1:first-of-type{
@@ -103,8 +108,8 @@ a {
   color: white;
   border-bottom: double 5px #3D5480;
   margin-top: -1em; 
-  margin-left: -4em;
-  margin-right: -4em;
+  margin-left: -3em;
+  margin-right: -3em;
   text-align: center;
 }
 
@@ -119,8 +124,8 @@ a {
 
 .grid, .grid-col, .grid-row {
   display: grid;
-  margin-left: -4em;
-  margin-right: -4em;
+  margin-left: -3em;
+  margin-right: -3em;
   width: calc(100% + 8em);
   height: 100%;  
 }

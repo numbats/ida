@@ -1,4 +1,10 @@
-# Demonstrate with koala bilby data (write this as live code)
+---
+title:
+author: 
+output: html_document
+---
+
+# Demonstrate with koala bilby data (live code)
 
 Here is a little data set to practice `pivot_longer`, `pivot_wider` and `separate` on.
 

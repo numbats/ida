@@ -5,7 +5,7 @@ subtitle: "Week of Tidy Data"
 author: "Nicholas Tierney"
 email: "ETC1010.Clayton-x@monash.edu"
 date: "16th Mar 2020"
-pdflink: ""
+pdflink: "https://ida.numbat.space/slides/lecture_2a.pdf"
 bgimg: "images/bg1.jpg"
 output:
   xaringan::moon_reader:
@@ -39,10 +39,6 @@ output:
       ratio: '16:9'
 ---
  
-```{r titleslide, child="components/titleslide.Rmd"}
-```
-
-
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(knitr)
@@ -59,12 +55,99 @@ opts_chunk$set(echo = FALSE,
                cache = FALSE)
 ```
 
+```{r titleslide, child="components/titleslide.Rmd"}
+```
+
 ---
 class: transition middle
 
 # What is this song?
 
 (Discuss with your neighbour)
+
+---
+class: transition middle
+
+# Quick Talk about COVID-19
+
+(Borrowed from [Dr. Andrew Heiss](https://evalsp20.classes.andrewheiss.com/slides/PMAP-8521_2020-03-11.pdf))
+
+---
+# What is all this
+
+- New virus in the coronavirus family
+- Officially named "SARS-COV-2"
+- Causes Respiratory disease named COVID-19
+- Originated in Wuhan, Hubei Province, China
+- Do not call it "Chinese Coronavirus" or "Kung Flu" or other xenophobic names!
+
+---
+
+# Symptoms
+
+- Fever and dry cough initially; pneumonia-like
+- respiratory failure later for vulnerable people
+
+- Up to two weeks can pass between exposure and symptoms
+
+---
+
+background-image: url(gifs/covid19-flatten-curve.gif)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+
+---
+class: transition
+
+# If you’re young and healthy, all these cancellations and precautions are not about you!
+
+- Social distancing, staying home, washing your hands, etc. protects the vulnerable
+- Huge collective action problem!
+
+---
+# What can you do?
+
+- Wash hands for 20 seconds
+- Disinfect phone
+- Don't touch your face
+- Stay home if you’re sick
+- Practice social distancing
+- Limit non-essential travel
+- Don’t buy masks
+- Stock up on essentials but don’t hoard
+
+---
+
+# What can we do?
+
+- We **will** get through this
+- Humor can be an effective way to assist with reducing anxiety in these types of situations [(Yovetich et al, 1990)](https://journals.sagepub.com/doi/abs/10.2466/pr0.1990.66.1.51?casa_token=b-L7KSArSkcAAAAA:GvljfzwAkPjvs2Fo4li4pVEL_YRenTzCGApBlW2L7fQwNnr4BKBjCbNJk7ijRi7GTbWPFKyczBKGEw)
+- On that note...
+
+# 
+
+https://www.instagram.com/p/B9FFVnigLEE/?utm_source=ig_embed
+
+Singapore's videos on COVID19
+
+- https://www.youtube.com/watch?v=Hcx0LJJ-hLU
+- https://www.youtube.com/watch?v=ywOEkzO86ms
+
+Vietnam's awesome pop track
+
+- https://www.youtube.com/watch?v=V9YirNgAzXI
+
+---
+
+# What does this mean for our class?
+
+- **Stay home if you are feeling unwell**
+- **Lectorials are now being recorded**
+- Monash is advising everyone to proceed as normal, unless you are feeling unwell
+- I am committed to help you all succeed and keep learning!
 
 ---
 class: refresher
@@ -75,7 +158,6 @@ class: refresher
 - packages are loaded with ___ ?
 - Why do we care about Reproducibility?
 - Output + input of rmarkdown
-- I have an assignment group
 
 
 ---
@@ -131,22 +213,6 @@ knitr::include_graphics("images/steph.jpeg")
 
 ---
 
-# Cynthia
-
-.pull-left[
-* `r emo::ji("mortar_board")` Bachelor of Commerce with Honours in Economics from Unimelb
-* Previously, Research & Tutoring at Unimelb Econ Department
-* Now, Research Assistant with SoDa Labs at Monash doing data collection / cleaning / analysis
-* Loves climbing, food & my nintendo switch
-]
-
-.pull-right[
-```{r img-cynthia, out.width = "80%"}
-knitr::include_graphics("images/cynthia.jpeg")
-```
-]
----
-
 # Nitika
 
 * `r emo::ji("mortar_board")` Bachelor of Bioinformatics
@@ -198,9 +264,10 @@ class: transition left
 
 We are going to set up the groups for doing assignment work.
 
-1. Find your name from the list at [this link]()
+1. Find your name from the list at [this link](https://ida.numbat.space/groups/groups)
 2. Find the other people in the class with the same group as you (feel free to wander around the class!)
-3. Grab your gear and claim a table to work together at. 
+3. Grab your gear and claim a table to work together at
+4. Email the group to work out how to best stay in touch
 
 ---
 class: transition left
@@ -280,6 +347,10 @@ include_graphics("gifs/help-me-help-you.gif")
 
 - The theory of this class will only get you so far
 - The real learning happens from doing the data analysis - the **pressure of a deadline can also help.**
+
+--
+
+- I want to take a moment to run through RStudio, what it is, and how it works again. (demo)
 
 ---
 # Tidy Data
@@ -378,7 +449,7 @@ grad %>%
 
 Easy to make a plot
 
-.left-code[
+.pull-left[
 ```{r grad-plot, eval = FALSE, echo = TRUE}
 grad %>%
   filter(subject == "economics") %>%
@@ -389,7 +460,7 @@ grad %>%
 ```  
 ]
 
-.right-plot[
+.pull-right[
 ```{r gra-dplot-out, ref.label = 'grad-plot', echo = FALSE, out.width = "100%"}
 
 ```
@@ -627,16 +698,6 @@ include_graphics("images/lego.png")
 - `pivot_wider`: Variables split out in columns
 - `separate`: Split one column into many
 
----
-class: informative
-# Aside: naming things is hard
-
-- You might have come across `pivot_` functions as `spread` or `gather`. These are still valid, but have been improved upon in the latest version of the `tidyr` package.
-- You can read more about this change here:
-
-  - [tidyverse blog post](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/)
-  - [tidyr vignette](http://tidyr.tidyverse.org/articles/pivot.html)
-  - [Hadley Wickham's talk]()
 
 ---
 
@@ -650,8 +711,8 @@ pivot_longer(<DATA>,
 ```
 
 - **Cols** to select are those that represent values, not variables.
-- **names_to** is the name of the variable whose values for the column names.
-- **values_to** is the name of the variable whose values are spread over the cells.
+- **names_to** variable name for current column names.
+- **values_to** variable name whose values are spread over the cells.
 
 ---
 # `pivot_longer`: example
@@ -723,70 +784,34 @@ genes_long
 ```{r genes-separate, echo = TRUE}
 genes_long %>%
   separate(col = variable, 
-           into = c("trt", "leftover"), "-")
+           into = c("trt", "leftover"),
+           sep = "-")
 ```
 ]
 
 ---
 # Separate columns
 
+.pull-left[
 ```{r genes-separate-again, echo = TRUE}
 genes_long_tidy <- genes_long %>%
-  separate(variable, c("trt", "leftover"), "-") %>%
-  separate(leftover, c("time", "rep"), "\\.") 
+  separate(variable, 
+           into = c("trt", "leftover"), 
+           sep = "-") %>%
+  separate(leftover, 
+           into = c("time", "rep"), 
+           sep = "\\.") 
+```
+]
 
+.pull-right[
+```{r print-genes-separated, echo = TRUE}
 genes_long_tidy
 
 ```
 
----
-class: transition
-# Now let's use `pivot_wider` to examine different aspects
-
----
-# Examine treatments against each other
-
-.left-code[
-```{r plot-genes, eval = FALSE, echo = TRUE}
-genes_long_tidy %>%
-  pivot_wider(id_cols = c(id, rep, time),
-              names_from = trt, 
-              values_from = expr) %>%
-  ggplot(aes(x=WI, y=WM, colour=id)) + geom_point()
-```  
 ]
 
-.right-plot[
-```{r plot-genes-out, ref.label = 'plot-genes', echo = FALSE, out.width = "100%"}
-
-```
-]
-
-Generally, some negative association within each gene, WM is low if WI is high. 
-
----
-# Examine replicates against each other
-
-.left-code[
-```{r shoe-replicates, eval = FALSE, echo = TRUE}
-genes_long_tidy %>%
-  pivot_wider(id_cols = c(id, trt, time),
-              names_from = rep, 
-              values_from = expr) %>%
-  ggplot(aes(x=R1, y=R4, colour=id)) + 
-  geom_point() + coord_equal()
-```  
-]
-
-.right-plot[
-```{r shoe-replicates-out, ref.label = 'shoe-replicates', echo = FALSE, out.width = "100%"}
-
-```
-]
-
-Roughly, replicate 4 is like replicate 1, eg if one is low, the other is low. 
-
-That's a good thing, that the replicates are fairly similar.
 
 ---
 # Demo: koala bilby data
@@ -824,7 +849,7 @@ recliners
 ---
 # Exercise 1: Rude Recliners (15 minutes)
 
-Answer the following questions in the rmarkdown document.
+Answer the following questions in the `rude-recliners.Rmd` rmarkdown document.
 
 - A) What are the variables and observations in this data?
 
@@ -894,12 +919,6 @@ Tidy the TB incidence data, using the Rmd to prompt questions.
     - bound: IN or OUT
 
 ---
-
-# Lab quiz
-
-Time to take the lab quiz.
-
----
 class: refresher
 
 # Recap
@@ -914,5 +933,79 @@ class: refresher
 
 ---
 
+# Lab quiz
+
+Time to take the lab quiz.
+
+
+---
+class: informative
+# A note on `pivot_wider` and `pivot_longer`, `gather` and `spread`
+
+(Not needed to know for the course, but nice to know)
+
+- Naming things is hard
+- There are many ways to do the same thing in R
+- You might have come across `pivot_` functions as `spread` or `gather`. These are still valid, but have been improved upon in the latest version of the `tidyr` package.
+- You can read more about this change here:
+  - [tidyverse blog post](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/)
+  - [tidyr vignette](http://tidyr.tidyverse.org/articles/pivot.html)
+
+
+---
+
 ```{r endslide, child="components/endslide.Rmd"}
 ```
+
+
+???
+
+# Now let's use `pivot_wider` to examine different aspects
+
+# Examine treatments against each other
+
+.left-code[
+```{r plot-genes, eval = FALSE, echo = TRUE}
+genes_long_tidy %>%
+  pivot_wider(
+    id_cols = c(id, rep, time),
+    names_from = trt, 
+    values_from = expr
+    ) %>%
+  ggplot(aes(x = WI, 
+             y = WM, 
+             colour = id)) + 
+  geom_point()
+```  
+]
+
+.right-plot[
+```{r plot-genes-out, ref.label = 'plot-genes', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+Generally, some negative association within each gene, WM is low if WI is high. 
+
+# Examine replicates against each other
+
+.left-code[
+```{r shoe-replicates, eval = FALSE, echo = TRUE}
+genes_long_tidy %>%
+  pivot_wider(id_cols = c(id, trt, time),
+              names_from = rep, 
+              values_from = expr) %>%
+  ggplot(aes(x=R1, y=R4, colour=id)) + 
+  geom_point() + coord_equal()
+```  
+]
+
+.right-plot[
+```{r shoe-replicates-out, ref.label = 'shoe-replicates', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+Roughly, replicate 4 is like replicate 1, eg if one is low, the other is low. 
+
+That's a good thing, that the replicates are fairly similar.

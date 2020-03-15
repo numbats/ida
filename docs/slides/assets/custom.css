@@ -69,17 +69,3 @@ table {
 table thead th { border-bottom: 1px solid #ddd; }
 th, td { padding: 5px; }
 tr:nth-child(even) { background: #eee }
-
-/*
-.remark-slide table{
-        width: 100%;
-    }
-
-    /* Change the background color to white for shaded rows (even rows)
-
-    .remark-slide thead, .remark-slide tr:nth-child(2n) {
-        background-color: white;
-    }
-    
-    */
-    

@@ -31,12 +31,11 @@
 
 
 
-background-color: #006DAE
-class: middle center hide-slide-number
-
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
-&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;br&gt;
@@ -44,7 +43,6 @@ class: middle center hide-slide-number
 .white[Press the **right arrow** to progress to the next slide!]
 
 ---
-
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -61,7 +59,7 @@ count: false
 
 &lt;br&gt;
 
-&lt;h2 style="font-weight:900!important;"&gt;Week of Tidy Data&lt;/h2&gt;
+&lt;h2 style="font-weight:900!important;"&gt;Week of Tidy Data + Style&lt;/h2&gt;
 
 .bottom_abs.width100[
 
@@ -69,7 +67,7 @@ Lecturer: *Nicholas Tierney*
 
 Department of Econometrics and Business Statistics
 
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
 11th Mar 2020
 
@@ -95,6 +93,7 @@ Department of Econometrics and Business Statistics
 
 
 
+---
 class: transition
 
 # What is this song?
@@ -103,14 +102,107 @@ class: transition
 
 
 ---
+class: transition
+# Your Turn: complete class survey
 
-# recap: from ED survey
+---
+class: transition
+# How to learn
+
+I want to some time to discuss ideas on learning, and how it ties into the course.
+
+
+---
+background-image: url(images/how-to-learn-img-page-1.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-2.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-3.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-4.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-5.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-6.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-7.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-8.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-9.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-10.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-11.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+
+---
+background-image: url(images/how-to-learn-img-page-12.jpg)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+---
+class: refresher
+# recap
 
 .pull-left[
 - Traffic Light System: .green[Green = "good!"] ; .red[Red = "Help!"]
 - R + Rstudio
 - Tower of babel analogy for writing R code
-- We are using ___, not ___ for ETC1010?
 - Functions are  ___
 - columns in data frames are accessed with ___ ?
 ]
@@ -166,17 +258,31 @@ class: transition
 # R Packages
 
 
-```
-## [1] 15330    17
+```r
+avail_pkg &lt;- available.packages()
+dim(avail_pkg)
+## [1] 15356    17
 ```
 
-As of 2020-02-28 there are 15330 R packages available
+As of 2020-03-13 there are 15356 R packages available
 
 ---
 
 # Name clashes
 
 
+```r
+library(tidyverse)
+## ── Attaching packages ───────────────────────────────────────────── tidyverse 1.3.0 ──
+## ✓ ggplot2 3.3.0          ✓ purrr   0.3.3.9000
+## ✓ tibble  2.1.3          ✓ dplyr   0.8.5     
+## ✓ tidyr   1.0.2          ✓ stringr 1.4.0     
+## ✓ readr   1.3.1          ✓ forcats 0.5.0
+## ── Conflicts ──────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter()     masks stats::filter()
+## x dplyr::group_rows() masks kableExtra::group_rows()
+## x dplyr::lag()        masks stats::lag()
+```
 
 ---
 # Many R packages
@@ -202,9 +308,8 @@ The best techniques are available, but there can be conflicts between function n
 
 
 For example, there is a `filter` function in the `stats` package that comes with the R distribution. This can cause confusion when you want to use the filter function in `dplyr` (part of tidyverse). To be sure the function you use is the one you want to use, you can prefix it with the package name, `dplyr::filter()`.
-
 ---
-class: Transition
+class: transition
 
 # Let's talk about data
 
@@ -271,13 +376,23 @@ This data set was brought to R by Hadley Wickham, and was one of the problems th
 
 .left-code[
 
+```r
+fries_long &lt;- french_fries %&gt;% 
+  gather(key = type, 
+         value = rating, 
+         -time, 
+         -treatment, 
+         -subject, 
+         -rep) 
+```
 ]
 
 --
 
 .right-plot[
 
-```
+```r
+fries_long
 ## # A tibble: 3,480 x 6
 ##     time treatment subject   rep type   rating
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -297,13 +412,18 @@ This data set was brought to R by Hadley Wickham, and was one of the problems th
 ]
 
 ---
-# `filter()`: choose observations from your data
+class: transition
+# `filter()`
+
+choose observations from your data
 
 ---
 # `filter()`: example
 
 
-```
+```r
+fries_long %&gt;%
+  filter(subject == 10)
 ## # A tibble: 300 x 6
 ##     time treatment subject   rep type   rating
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -332,7 +452,12 @@ Filtering requires comparison to find the subset of observations of interest.  W
 - `class %in% c("A", "B")` 
 - `!is.na(y)`
 
-<div class="countdown" id="timer_5e58a02b" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
+
+```r
+countdown(minutes = 3, play_sound = TRUE)
+```
+
+<div class="countdown" id="timer_5e6b07f0" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -400,7 +525,8 @@ Filter the french fries data to have:
 # French Fries Filter: only week 1
 
 
-```
+```r
+fries_long %&gt;% filter(time == 1)
 ## # A tibble: 360 x 6
 ##     time treatment subject   rep type   rating
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -422,7 +548,8 @@ Filter the french fries data to have:
 # French Fries Filter: oil type 1
 
 
-```
+```r
+fries_long %&gt;% filter(treatment == 1)
 ## # A tibble: 1,160 x 6
 ##     time treatment subject   rep type   rating
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -443,7 +570,8 @@ Filter the french fries data to have:
 # French Fries Filter: oil types 1 and 3 but not 2
 
 
-```
+```r
+fries_long %&gt;% filter(treatment != 2)
 ## # A tibble: 2,320 x 6
 ##     time treatment subject   rep type   rating
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -464,7 +592,8 @@ Filter the french fries data to have:
 # French Fries Filter: weeks 1-4 only
 
 
-```
+```r
+fries_long %&gt;% filter(time %in% c("1", "2", "3", "4"))
 ## # A tibble: 1,440 x 6
 ##     time treatment subject   rep type   rating
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -480,6 +609,125 @@ Filter the french fries data to have:
 ## 10     1         1      19     2 potato   13  
 ## # … with 1,430 more rows
 ```
+
+---
+# Style guide
+
+
+&gt; "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread." -- Hadley Wickham
+
+- Style guide for this course is based on the Tidyverse style guide: http://style.tidyverse.org/
+- There's more to it than what we'll cover today, we'll mention more as we introduce more functionality, and do a recap later in the semester
+
+---
+# File names and code chunk labels
+
+- Do not use spaces in file names, use `-` or `_` to separate words
+- Use all lowercase letters
+
+
+```r
+# Good
+ucb-admit.csv
+
+# Bad
+UCB Admit.csv
+```
+
+---
+# Object names
+
+- Use `_` to separate words in object names
+- Use informative but short object names
+- Do not reuse object names within an analysis
+
+
+```r
+# Good
+acs_employed
+
+# Bad
+acs.employed
+acs2
+acs_subset
+acs_subsetted_for_males
+```
+
+---
+# Spacing
+
+
+- Put a space before and after all infix operators (=, +, -, &lt;-, etc.), and when naming arguments in function calls. 
+- Always put a space after a comma, and never before (just like in regular English).
+
+
+```r
+# Good
+average &lt;- mean(feet / 12 + inches, na.rm = TRUE)
+
+# Bad
+average&lt;-mean(feet/12+inches,na.rm=TRUE)
+```
+
+---
+# ggplot
+
+- Always end a line with `+`
+- Always indent the next line
+
+
+```r
+# Good
+ggplot(diamonds, mapping = aes(x = price)) +
+  geom_histogram()
+
+# Bad
+ggplot(diamonds,mapping=aes(x=price))+geom_histogram()
+```
+
+---
+# Long lines
+
+- Limit your code to 80 characters per line. This fits comfortably on a printed page with a reasonably sized font.
+- Take advantage of RStudio editor's auto formatting for indentation at line breaks.
+
+---
+# Assignment
+
+- Use `&lt;-` not `=`
+
+
+```r
+# Good
+x &lt;- 2
+
+# Bad
+x = 2
+```
+
+---
+# Quotes
+
+Use `"`, not `'`, for quoting text. The only exception is when the text already contains double quotes and no single quotes.
+
+
+```r
+ggplot(diamonds, mapping = aes(x = price)) +
+  geom_histogram() +
+  # Good
+  labs(title = "`Shine bright like a diamond`",
+  # Good
+       x = "Diamond prices",
+  # Bad
+       y = 'Frequency')
+```
+
+---
+# Your Turn: ed
+
+- Go to ed and assess your understanding of code style (there may be some technical difficulty)
+
+
 
 ---
 class: transition
@@ -501,7 +749,11 @@ class: transition
 
 
 
-```
+```r
+french_fries %&gt;% 
+  select(time, 
+         treatment, 
+         subject)
 ## # A tibble: 696 x 3
 ##     time treatment subject
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -524,7 +776,11 @@ class: transition
 --
 
 
-```
+```r
+french_fries %&gt;% 
+  select(-time, 
+         -treatment, 
+         -subject)
 ## # A tibble: 696 x 6
 ##      rep potato buttery grassy rancid painty
 ##    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -543,7 +799,7 @@ class: transition
 
 ---
 
-left-code[
+.left-code[
 Inside `select()` you can use text-matching of the names like `starts_with()`, `ends_with()`, `contains()`, `matches()`, or `everything()`
 ]
 
@@ -551,7 +807,9 @@ Inside `select()` you can use text-matching of the names like `starts_with()`, `
 
 .right-plot[
 
-```
+```r
+french_fries %&gt;% 
+  select(contains("e"))
 ## # A tibble: 696 x 5
 ##     time treatment subject   rep buttery
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
@@ -580,7 +838,9 @@ You can use `:` to choose variables in order of the columns
 
 .right-plot[
 
-```
+```r
+french_fries %&gt;% 
+  select(time:subject)
 ## # A tibble: 696 x 3
 ##     time treatment subject
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -606,7 +866,7 @@ class: transition
 - `select()` subject through to rating
 - drop subject
 
-<div class="countdown" id="timer_5e58a0b1" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6b0858" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -627,7 +887,8 @@ Artwork by @allison_horst
 # `mutate()`: create a new variable; keep existing ones
 
 
-```
+```r
+french_fries 
 ## # A tibble: 696 x 9
 ##     time treatment subject   rep potato buttery grassy rancid painty
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -648,7 +909,9 @@ Artwork by @allison_horst
 # `mutate()`: create a new variable; keep existing ones
 
 
-```
+```r
+french_fries %&gt;% 
+* mutate(rainty = rancid + painty)
 ## # A tibble: 696 x 10
 ##     time treatment subject   rep potato buttery grassy rancid painty rainty
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -674,7 +937,7 @@ Compute a new variable called `lrating` by taking a log of the rating
 
 
 
-<div class="countdown" id="timer_5e589e91" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6b052d" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -683,6 +946,9 @@ Compute a new variable called `lrating` by taking a log of the rating
 # `summarise()`: boil data down to one row observation 
 
 
+```r
+fries_long
+```
 
 
 ```
@@ -700,7 +966,9 @@ Compute a new variable called `lrating` by taking a log of the rating
 --
 
 
-```
+```r
+fries_long %&gt;% 
+  summarise(rating = mean(rating, na.rm = TRUE))
 ## # A tibble: 1 x 1
 ##   rating
 ##    &lt;dbl&gt;
@@ -708,7 +976,8 @@ Compute a new variable called `lrating` by taking a log of the rating
 ```
 
 ---
-But what if we want to get a summary for each `type`?
+class: transition
+# What if we want a summary for each `type`?
 
 --
 
@@ -720,7 +989,10 @@ use `group_by()`
 Produce summaries for every group:
 
 
-```
+```r
+fries_long %&gt;% 
+  group_by(type) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE))
 ## # A tibble: 5 x 2
 ##   type    rating
 ##   &lt;fct&gt;    &lt;dbl&gt;
@@ -738,7 +1010,7 @@ class: transition
 - Compute the average rating by subject
 - Compute the average rancid rating per week
 
-<div class="countdown" id="timer_5e58a0ce" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6b0719" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -747,7 +1019,10 @@ class: transition
 # french fries answers
 
 
-```
+```r
+fries_long %&gt;% 
+  group_by(subject) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE))
 ## # A tibble: 12 x 2
 ##    subject rating
 ##      &lt;dbl&gt;  &lt;dbl&gt;
@@ -769,7 +1044,11 @@ class: transition
 # french fries answers
 
 
-```
+```r
+fries_long %&gt;% 
+  filter(type == "rancid") %&gt;%
+  group_by(time) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE))
 ## # A tibble: 10 x 2
 ##     time rating
 ##    &lt;dbl&gt;  &lt;dbl&gt;
@@ -793,7 +1072,10 @@ class: transition
 Useful for display of results (but there are other uses!)
 
 
-```
+```r
+fries_long %&gt;% 
+  group_by(type) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE)) 
 ## # A tibble: 5 x 2
 ##   type    rating
 ##   &lt;fct&gt;    &lt;dbl&gt;
@@ -808,7 +1090,11 @@ Useful for display of results (but there are other uses!)
 # `arrange()`
 
 
-```
+```r
+fries_long %&gt;% 
+  group_by(type) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE)) %&gt;%
+  arrange(rating)
 ## # A tibble: 5 x 2
 ##   type    rating
 ##   &lt;fct&gt;    &lt;dbl&gt;
@@ -826,7 +1112,7 @@ class: transition
 - Arrange the average rating by type in decreasing order
 - Arrange the average subject rating in order lowest to highest.
 
-<div class="countdown" id="timer_5e58a161" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6b0871" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -834,7 +1120,11 @@ class: transition
 # `arrange()` answers
 
 
-```
+```r
+fries_long %&gt;% 
+  group_by(type) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE)) %&gt;%
+  arrange(desc(rating))
 ## # A tibble: 5 x 2
 ##   type    rating
 ##   &lt;fct&gt;    &lt;dbl&gt;
@@ -849,7 +1139,11 @@ class: transition
 # `arrange()` answers
 
 
-```
+```r
+fries_long %&gt;% 
+  group_by(subject) %&gt;%
+  summarise(rating = mean(rating, na.rm=TRUE)) %&gt;%
+  arrange(rating)
 ## # A tibble: 12 x 2
 ##    subject rating
 ##      &lt;dbl&gt;  &lt;dbl&gt;
@@ -871,7 +1165,9 @@ class: transition
 # `count()` the number of things in a given column
 
 
-```
+```r
+fries_long %&gt;% 
+  count(type, sort = TRUE)
 ## # A tibble: 5 x 2
 ##   type        n
 ##   &lt;fct&gt;   &lt;int&gt;
@@ -889,7 +1185,7 @@ class: transition left
 - count the number of subjects
 - count the number of types
 
-<div class="countdown" id="timer_5e589eca" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e6b0513" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -903,7 +1199,14 @@ class: transition
 
 .pull-left[
 
-```
+```r
+fries_long %&gt;% 
+  group_by(type) %&gt;%
+  summarise(m = mean(rating, 
+                     na.rm = TRUE), 
+            sd = sd(rating, 
+                    na.rm = TRUE)) %&gt;%
+  arrange(-m)
 ## # A tibble: 5 x 3
 ##   type        m    sd
 ##   &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;
@@ -926,13 +1229,26 @@ The scales of the ratings are quite different. Mostly the chips are rated highly
 ---
 # French Fries: Are ratings similar?
 
+
+```r
+ggplot(fries_long,
+       aes(x = type, 
+           y = rating)) +
+  geom_boxplot()
+```
+
 &lt;img src="lecture_2b_files/figure-html/plot-fries-type-rating-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # French Fries: Are reps like each other?
 
 
-```
+```r
+fries_spread &lt;- fries_long %&gt;% 
+  spread(key = rep, 
+         value = rating)
+  
+fries_spread
 ## # A tibble: 1,740 x 6
 ##     time treatment subject type      `1`   `2`
 ##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;
@@ -953,7 +1269,9 @@ The scales of the ratings are quite different. Mostly the chips are rated highly
 # French Fries: Are reps like each other?
 
 
-```
+```r
+summarise(fries_spread,
+          r = cor(`1`, `2`, use = "complete.obs"))
 ## # A tibble: 1 x 1
 ##       r
 ##   &lt;dbl&gt;
@@ -962,17 +1280,31 @@ The scales of the ratings are quite different. Mostly the chips are rated highly
 
 ---
 
+
+```r
+  ggplot(fries_spread,
+         aes(x = `1`, 
+             y = `2`)) + 
+  geom_point() + 
+  labs(title = "Data is poor quality: the replicates do not look like each other!")
+```
+
 &lt;img src="lecture_2b_files/figure-html/fries-spread-plot-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-&lt;img src="lecture_2b_files/figure-html/fries-spread-plot-out-1.png" width="0%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_2b_files/figure-html/fries-spread-plot-out-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # French Fries: Replicates by rating type
 
 
-```
+```r
+fries_spread %&gt;%
+  group_by(type) %&gt;%
+  summarise(r = cor(x = `1`, 
+                    y = `2`, 
+                    use = "complete.obs"))
 ## # A tibble: 5 x 2
 ##   type        r
 ##   &lt;fct&gt;   &lt;dbl&gt;
@@ -986,6 +1318,12 @@ The scales of the ratings are quite different. Mostly the chips are rated highly
 ---
 
 # French Fries: Replicates by rating type
+
+
+```r
+ggplot(fries_spread, aes(x=`1`, y=`2`)) + 
+  geom_point() + facet_wrap(~type, ncol = 5)
+```
 
 &lt;img src="lecture_2b_files/figure-html/plot-fries-facet-type-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
@@ -1016,7 +1354,10 @@ Time to take the lab quiz.
 # `select()` example
 
 
-```
+```r
+tb &lt;- read_csv("data/TB_notifications_2018-03-18.csv") %&gt;%
+  select(country, year, starts_with("new_sp_")) 
+tb %&gt;% top_n(20)
 ## # A tibble: 22 x 22
 ##    country  year new_sp_m04 new_sp_m514 new_sp_m014 new_sp_m1524 new_sp_m2534
 ##    &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
@@ -1056,7 +1397,7 @@ count: false
 Lecturer: Nicholas Tierney
 
 Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
 11th Mar 2020
 
@@ -1084,6 +1425,50 @@ This work is licensed under a &lt;a rel="license" href="http://creativecommons.o
 &lt;/svg&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+
+
+&lt;img src="images/horst_tidy.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+Source: A drawing made by Alison Horst [@allison_horst](https://twitter.com/allison_horst?lang=en) 
+
+
+# Learning is where you:
+
+1. Receive information accurately
+2. Remember the information (long term memory)
+3. In such a way that you can reapply the information when appropriate
+
+---
+
+# Your Turn:
+
+Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-noaa-data) 
+- "Which is the best description of the temperature units?"
+- "What is the best description of the precipitation units"
+- "What does -9999 mean?"
+
+
+???
+
+- "Which is the best description of the temperature units?"
+
+- degrees farehnheit F
+- degrees Kelvin K
+- "degrees C x10"
+
+"What is the best description of the precipitation units"
+
+- "mm x10"
+- inches
+
+"What does -9999 mean?"
+
+- it was really cold
+- the keyboard got stuck
+- "the value was missing"
+
+
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
@@ -1140,6 +1525,42 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  /* Replace <script> tags in slides area to make them executable
+   *
+   * Runs after post-processing of markdown source into slides and replaces only
+   * <script>s on the last slide of continued slides using the .has-continuation
+   * class added by xaringan. Finally, any <script>s in the slides area that
+   * aren't executed are commented out.
+   */
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container:not(.has-continuation) script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+  var scriptsNotExecuted = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container.has-continuation script'
+  );
+  if (!scriptsNotExecuted.length) return;
+  for (var i = 0; i < scriptsNotExecuted.length; i++) {
+    var comment = document.createComment(scriptsNotExecuted[i].outerHTML)
+    scriptsNotExecuted[i].parentElement.replaceChild(comment, scriptsNotExecuted[i])
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -1157,17 +1578,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
