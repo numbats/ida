@@ -97,15 +97,13 @@ background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
 
-
-
 ---
-class: transition
+background-image: url(https://timchurches.github.io/blog/posts/2020-03-10-modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-1/modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-1_files/figure-html5/unnamed-chunk-13-1.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
 
-# If you’re young and healthy, all these cancellations and precautions are not about you!
-
-- Social distancing, staying home, washing your hands, etc. protects the vulnerable
-- Huge collective action problem!
+From [Tim Church's blog](https://timchurches.github.io/blog/posts/2020-03-10-modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-1/)
 
 ---
 # What can you do?
@@ -950,6 +948,13 @@ class: informative
 - You can read more about this change here:
   - [tidyverse blog post](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/)
   - [tidyr vignette](http://tidyr.tidyverse.org/articles/pivot.html)
+
+---
+# COVID19 references
+
+- [Monash factsheet](https://www.monash.edu/news/novel-corona-virus-fact-sheet/_nocache)
+- [Flatten the curve](https://www.flattenthecurve.com/)
+- [Johns Hopkins interactive map](https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
 
 
 ---

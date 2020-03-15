@@ -50,6 +50,7 @@ opts_chunk$set(echo = TRUE,
                collapse = TRUE,
                fig.height = 4,
                fig.width = 8,
+               fig.retina = 3,
                fig.align = "center",
                cache = FALSE)
 ```
@@ -69,6 +70,7 @@ class: transition
 ---
 class: transition
 # Your Turn: complete class survey
+Available now on Ed
 
 ---
 class: transition
@@ -182,6 +184,10 @@ class: refresher
 ]
 
 ---
+class: transition
+# (demo)
+
+---
 # Style guide
 
 > "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread." -- Hadley Wickham
@@ -287,13 +293,6 @@ ggplot(diamonds, mapping = aes(x = price)) +
 ```
 
 ---
-# Your Turn: ed
-
-- Go to ed and assess your understanding of code style (there may be some technical difficulty)
-
-
-
----
 background-image: url(images/allison-horst-dplyr-wrangling.png)
 background-size: contain
 background-position: 50% 50%
@@ -390,7 +389,7 @@ This was an actual experiment in Food Sciences at Iowa State University. The goa
 
 Twelve tasters were recruited to sample two chips from each batch, over a period of ten weeks. The same oil was kept for a period of 10 weeks! May be a bit gross by the end!
 
-This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
+This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data, and the evolution of the `tidyverse` tools. 
 
 
 ---
@@ -436,7 +435,7 @@ fries_long <- french_fries %>%
   mutate(type = as.factor(type))
 ```
 
-.left-code[
+..pull-left[
 ```{r name, eval = FALSE}
 fries_long <- french_fries %>% 
   pivot_longer(cols = potato:painty,
@@ -446,10 +445,10 @@ fries_long
 ```  
 ]
 
-.right-plot[
+.pull-right[
 ```{r name-out, ref.label = 'create-ff-long', echo = FALSE}
 ```
-
+]
 ---
 class: transition
 # `filter()`
@@ -596,6 +595,7 @@ french_fries %>%
 ```
 
 ---
+# `select()`
 
 .left-code[
 Inside `select()` you can use text-matching of the names like `starts_with()`, `ends_with()`, `contains()`, `matches()`, or `everything()`
@@ -614,7 +614,7 @@ french_fries %>%
 # `select()`: Using it
 
 .left-code[
-You can use `:` to choose variables in order of the columns
+You can use the colon, `:`, to choose variables in order of the columns
 ]
 
 --
@@ -842,10 +842,11 @@ class: transition
 ```{r fries-similar-ratings}
 fries_long %>% 
   group_by(type) %>%
-  summarise(m = mean(rating, 
-                     na.rm = TRUE), 
-            sd = sd(rating, 
-                    na.rm = TRUE)) %>%
+  summarise(
+    m = mean(rating, 
+             na.rm = TRUE), 
+    sd = sd(rating, 
+            na.rm = TRUE)) %>%
   arrange(-m)
 ```
 ]
@@ -871,10 +872,10 @@ ggplot(fries_long,
 ---
 # French Fries: Are reps like each other?
 
-```{r fries-spread}
+```{r fries-longer}
 fries_spread <- fries_long %>% 
-  spread(key = rep, 
-         value = rating)
+  pivot_wider(names_from = rep, 
+              values_from = rating)
   
 fries_spread
 ```
@@ -888,6 +889,7 @@ summarise(fries_spread,
 ```
 
 ---
+# French Fries:
 
 ```{r fries-spread-plot, out.width= "80%"}
   ggplot(fries_spread,
@@ -898,6 +900,7 @@ summarise(fries_spread,
 ```
 
 ---
+# French Fries:
 
 ```{r fries-spread-plot-out, echo = FALSE}
   ggplot(fries_spread,
@@ -942,12 +945,10 @@ Potato'y and buttery have better replication than the other scales, but there is
 Open `pisa.Rmd` on rstudio cloud.
 
 ---
+class: transition
+# Lab Quiz
 
-## Lab Quiz
-
-.vhuge[
 Time to take the lab quiz.
-]
 
 ???
 
@@ -964,6 +965,7 @@ tb %>% top_n(20)
 ```{r endslide, child="components/endslide.Rmd"}
 ```
 
+???
 
 ```{r allison-tidy-img, echo = FALSE, out.width = "50%"}
 include_graphics("images/horst_tidy.jpg")
@@ -977,8 +979,6 @@ Source: A drawing made by Alison Horst [@allison_horst](https://twitter.com/alli
 1. Receive information accurately
 2. Remember the information (long term memory)
 3. In such a way that you can reapply the information when appropriate
-
----
 
 # Your Turn:
 
@@ -1006,6 +1006,3 @@ Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-
 - it was really cold
 - the keyboard got stuck
 - "the value was missing"
-
-
----

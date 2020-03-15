@@ -38,7 +38,7 @@ generate_readings <- function(week, part){
 
 - Lecturer: Dr. Nicholas Tierney
 - Chief Examiner: Di Cook
-- Tutors: Steph Kobakian, Sherry Zhang, Cynthia Huang, Sarah Belet, Nitika Kandhari
+- Tutors: Steph Kobakian, Sherry Zhang, Sarah Belet, Nitika Kandhari
 
 This is the course website. This page shows information about the consultation times, MoVE, and Schedule and lecture notes.
 
@@ -88,7 +88,6 @@ All consultations are in **Menzies W1105**
 - Sarah Belet: Monday 3-4pm
 - Sherry Zhang: Friday 1-2pm
 - Nitika Kandhari: Tuesday 11:30am-12:30pm
-- Cynthia Huang: Thursday 11:30am-12:30pm
 - Nick Tierney: Monday 11am - 12pm
 - Nick Tierney: Wednesday 10:30 - 11:30am
 
