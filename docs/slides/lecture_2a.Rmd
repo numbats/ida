@@ -955,6 +955,11 @@ class: informative
 - [Monash factsheet](https://www.monash.edu/news/novel-corona-virus-fact-sheet/_nocache)
 - [Flatten the curve](https://www.flattenthecurve.com/)
 - [Johns Hopkins interactive map](https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
+- [Epidemiology modelling of COVID19](https://alhill.shinyapps.io/COVID19seir/)
+- [Simulation of flattening the curve](https://robertasmith.shinyapps.io/covid19_shiny/)
+- [COVID19 dashboard](https://ramikrispin.github.io/coronavirus_dashboard/)
+- [COVID19 Data](https://ramikrispin.github.io/coronavirus/)
+- [Dr. Norman Swan](https://www.youtube.com/watch?v=znJ9RD8gYsQ&feature=share&fbclid=IwAR3JBxaVw13dnlHVwMiFdlLjoyhmy2AroO6gmJj7zNwoa-ROBzZ6f9nzJtI)
 
 
 ---

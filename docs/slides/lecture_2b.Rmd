@@ -163,6 +163,12 @@ background-position: 50% 50%
 class: center, bottom, white
 
 ---
+class: transition
+# (demo)
+
+
+
+---
 class: refresher
 # recap
 
@@ -182,10 +188,6 @@ class: refresher
 - I have an assignment group
 - I have made contact with my assignment group
 ]
-
----
-class: transition
-# (demo)
 
 ---
 # Style guide
@@ -435,7 +437,7 @@ fries_long <- french_fries %>%
   mutate(type = as.factor(type))
 ```
 
-..pull-left[
+.pull-left[
 ```{r name, eval = FALSE}
 fries_long <- french_fries %>% 
   pivot_longer(cols = potato:painty,
