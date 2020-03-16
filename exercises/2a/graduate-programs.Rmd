@@ -1,0 +1,48 @@
+---
+title: "Graduate Programs"
+author: "Nicholas Tierney"
+date: "16/03/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(tidyverse)
+```
+
+```{r data-read-in}
+# grad <- read_csv("data/graduate-program")
+grad <- read_csv("exercises/2a/data/graduate-programs.csv")
+```
+
+```{r print-grad}
+grad
+```
+
+
+# What is the average number of graduate students per economics program?
+
+```{r avg-n-grad-students-}
+grad %>% 
+  # first we filter to only look at "economics
+  ## filter(subject == ___) %>% 
+  filter(subject == "economics") %>%
+  summarise(mean = mean(NumStud))
+```
+
+# What is the best description of the relationship between number of students and median time to degree?
+
+```{r relationship-students-degree}
+
+grad %>%
+  filter(subject == "economics") %>%
+  ggplot(aes(x = NumStud, 
+             y = MedianTimetoDegree)) +
+  geom_point() + 
+  theme(aspect.ratio = 1)
+
+```
+

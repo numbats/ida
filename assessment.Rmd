@@ -64,15 +64,16 @@ Information to complete the assignments is below:
 
 
 ```{r assignments}
-assignment_df <- data.frame(
+assignment_df <- tibble(
   Assignment = 1,
   `Due Date` = "2020/04/01 at 5pm",
-  Instructions = "link"
+  Instructions = "",
+  Zipfile = ""
 )
 
 assignment_df %>% 
 kable(escape = FALSE, 
-      align = c("l", "c", "l")) %>% 
+      align = c("l", "c", "l", "l")) %>% 
   kable_styling(bootstrap_options = "striped",
                 fixed_thead = T) %>% 
   column_spec(1, width = "0.5cm") %>% 

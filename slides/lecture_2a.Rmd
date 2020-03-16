@@ -78,7 +78,6 @@ class: transition middle
 - New virus in the coronavirus family
 - Officially named "SARS-COV-2"
 - Causes Respiratory disease named COVID-19
-- Originated in Wuhan, Hubei Province, China
 - Do not call it "Chinese Coronavirus" or "Kung Flu" or other xenophobic names!
 
 ---
@@ -145,7 +144,10 @@ Vietnam's awesome pop track
 - **Stay home if you are feeling unwell**
 - **Lectorials are now being recorded**
 - Monash is advising everyone to proceed as normal, unless you are feeling unwell
+- **if you are feeling unwell in any way do not come to university**
 - I am committed to help you all succeed and keep learning!
+- [Monash's COVID19 Updates](https://www.monash.edu/news/coronavirus-updates)
+- [Monash's COVID19 Fact sheet](https://www.monash.edu/news/novel-corona-virus-fact-sheet)
 
 ---
 class: refresher
