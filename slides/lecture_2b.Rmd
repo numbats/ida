@@ -61,22 +61,98 @@ opts_chunk$set(echo = TRUE,
 
 ---
 class: transition
+# Update on how the class is delivered
 
-# What is this song?
+---
+# How the class will now be delivered: Lectorials
 
-(you can use your phone!)
+- Lectorials are now recorded using Echo360
+- **Do not come into class**, listen to the lectorials online and complete the exercises on rstudio cloud or locally.
+
+---
+# How the class will now be delivered: Lab/quizzes
+
+These will still be posted weekly, but we will give you an extra day or two to complete them
+
+- Reading quizzes we expect you to complete before the lecture starts
+  - So, Reading quiz 2A should be completed prior to lecture 2A
+      - These will be closed shortly after lecture 2a starts (With some leeway as we transition into online classes to give you all a chance to get used to things)
+      
+- Lab quizzes require knowledge from the lecture - these need to be completed after the lecture
+  - So, lab quiz 2A should be completed after Lecture 2a
+    - Again with the same leeway as for reading quiz 2a above
+
+---
+# How the class will now be delivered
+
+## Assessignments
+
+- Assignment 1 will be posted today at the end of class
+- Assignments will be submitted online
+    - Please get in touch with us (if you haven’t already) if you are a group of 1, or cannot get in touch with your group members.
+
+## Other assessments
+
+- We will update you on this in more detail, but in short, these will be delivered and submitted online
+
+## Consult times
+
+These will now be delivered online via a link to a zoom meeting, or other online video meeting service
+
+---
+# There is a lot of change
+
+- There is a lot of change in the air, and things might seem uncertain.
+- I am committed to helping you all learn how to do data analysis.
+- Thank you all for your patience as we have changed this course. We are dealing with daily updates, and need to change on the fly.
+- Perhaps now more than ever it is becoming so very relevant to our daily lives that we understand data, and that we can communicate it to others.
+- Remember to get your information from reliable sources, like the [WHO](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public), the [Australian Government](https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-health-alert), and see the latest data from [Johns Hopkins](https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6).
+
+---
+
+# Practice the most effective strategies we know
+
+1. Wash your hands often, practice good cough & sneeze etiquette.
+2. Try to touch your face as little as possible (mouth, nose, and eyes).
+4. Practice social distancing (no hugs, kisses, handshakes, high fives)
+5. Do not attend concerts, stage plays, sporting events, or any other mass entertainment events.
+6. Refrain from visiting museums, exhibitions, movie theaters, night clubs, and other entertainment venues.
+7. Stay away from social gatherings and events, (club meetings, religious services, parties)
+8. Reduce travel to a minimum. Don't travel long distances if not absolutely necessary.
+9. Do not use public transportation if not absolutely necessary.
+
+---
+# Social distancing is hard
+
+- How do we know it works? 
+- We have data from the last pandemic, the spanish flu.
+- Places that practice social distancing vs those who did not had drastically different numbers:
+
+```{r show-spanish-flu, echo = FALSE}
+include_graphics("images/sf-social-distance.jpg")
+```
+
+(from [(Hatchett et al, 2007)](https://www.pnas.org/content/104/18/7582))
+
+---
+# There is a lot of change
+
+To brighten things up, here are two youtubers I’ve been watching lately to destress and have “COVID19 free time”
+
+- [Lofty Pursuits](https://www.youtube.com/watch?v=FYsqZXHVnI8)
+- [SteveMRE1989](https://www.youtube.com/watch?v=hkz6kGQWCHU&t=6s)
 
 
 ---
 class: transition
 # Your Turn: complete class survey
-Available now on Ed
+Available now on Ed, "Getting to know our class"
 
 ---
 class: transition
 # How to learn
 
-I want to some time to discuss ideas on learning, and how it ties into the course.
+I want to take some time to discuss ideas on learning, and how it ties into the course.
 
 
 ---
@@ -190,6 +266,45 @@ class: refresher
 ]
 
 ---
+# The "pipe" operator - `%>%`
+
+The symbol, `%>%` is referred to as the "pipe operator"
+
+What you need to know:
+
+- Read it as "then"
+- It passes the output along to the next function
+
+```
+data %>%  
+  select(age, height, hair_colour) %>% 
+  filter(nationality == "australian")
+```
+
+"
+Use the data, THEN 
+select the variables (columns), `age`, `height`, and `hair_colour` THEN
+filter so nationality is equal to "australian"
+"
+
+--
+
+That is all you need to know for the moment, but you can read [more here](https://r4ds.had.co.nz/pipes.html)
+
+---
+# Problem solving (demo)
+
+Some common questions you can ask yourself when something isn't working:
+
+- Have I got my data?
+- Does the thing exist? (Check environment)
+- Have I run the code from the top down to where I am now?
+- Did none of that work? (Now Restart R)
+- Is the column I want there?
+- Try using quotes "", or no quotes, or (last resort) backticks 
+
+---
+
 # Style guide
 
 > "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread." -- Hadley Wickham
@@ -424,7 +539,7 @@ head(french_fries)
 
 --
 
-This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
+This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the tidyverse set of tools 
 
 ---
 # Example: french-fries - pivoting into long form
@@ -447,10 +562,30 @@ fries_long
 ```  
 ]
 
+--
+
 .pull-right[
-```{r name-out, ref.label = 'create-ff-long', echo = FALSE}
+```{r name-out, ref.label = 'name', echo = FALSE}
 ```
 ]
+
+---
+# Example: french-fries - pivoting back
+
+.pull-left[
+```{r fries-long-wide}
+fries_long
+```
+]
+
+.pull-right[
+```{r fries-long-to-wide}
+fries_long %>% 
+  pivot_wider(names_from = type,
+              values_from = rating)
+```
+]
+
 ---
 class: transition
 # `filter()`
@@ -902,17 +1037,6 @@ summarise(fries_spread,
 ```
 
 ---
-# French Fries:
-
-```{r fries-spread-plot-out, echo = FALSE}
-  ggplot(fries_spread,
-         aes(x = `1`, 
-             y = `2`)) + 
-  geom_point() + 
-  labs(title = "Data is poor quality: the replicates do not look like each other!")
-```
-
----
 # French Fries: Replicates by rating type
 
 ```{r fries-group-summarise-cor}
@@ -936,7 +1060,43 @@ ggplot(fries_spread, aes(x=`1`, y=`2`)) +
 
 Potato'y and buttery have better replication than the other scales, but there is still a lot of variation from rep 1 to 2.
 
+---
+class: transition
 
+# When to use quotes? `"` `'`, nothing, or backtick?
+
+---
+
+# When to use quotes? `"` `'`, nothing, or backtick?
+
+- Use no quotes (bare variable names) when the variable exists
+- Otherwise use strings
+
+Example:
+```
+fries_long %>% 
+  pivot_wider(names_from = type,
+              values_from = rating)
+```
+
+vs
+
+```
+french_fries %>% 
+  pivot_longer(cols = potato:painty,
+               names_to = "type", 
+               values_to = "rating")
+```
+
+---
+
+# When to use quotes? `"` `'`, nothing, or backtick?
+
+Variables with unusual names  (starting with numbers, spaces, or containing special characters like `!@#$%^&*()-` need to be referenced with backticks:
+
+```
+data %>% select(`name with spaces`)
+```
 
 ---
 <iframe width="1040" height="650" src="https://www.youtube.com/embed/i4RGqzaNEtg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -951,60 +1111,3 @@ class: transition
 # Lab Quiz
 
 Time to take the lab quiz.
-
-???
-
-# `select()` example
-
-```{r select-tb-example}
-tb <- read_csv("data/TB_notifications_2018-03-18.csv") %>%
-  select(country, year, starts_with("new_sp_")) 
-tb %>% top_n(20)
-```
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
-
-???
-
-```{r allison-tidy-img, echo = FALSE, out.width = "50%"}
-include_graphics("images/horst_tidy.jpg")
-```
-
-Source: A drawing made by Alison Horst [@allison_horst](https://twitter.com/allison_horst?lang=en) 
-
-
-# Learning is where you:
-
-1. Receive information accurately
-2. Remember the information (long term memory)
-3. In such a way that you can reapply the information when appropriate
-
-# Your Turn:
-
-Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-noaa-data) 
-- "Which is the best description of the temperature units?"
-- "What is the best description of the precipitation units"
-- "What does -9999 mean?"
-
-
-???
-
-- "Which is the best description of the temperature units?"
-
-- degrees farehnheit F
-- degrees Kelvin K
-- "degrees C x10"
-
-"What is the best description of the precipitation units"
-
-- "mm x10"
-- inches
-
-"What does -9999 mean?"
-
-- it was really cold
-- the keyboard got stuck
-- "the value was missing"

@@ -1,5 +1,5 @@
 ---
-title: "Instructions for Assignment 1, Semester 2, 2019"
+title: "Instructions for Assignment 1, Semester 1, 2020"
 subtitle: "Victorian Crime Sales"
 author: "Nicholas Tierney"
 date: "`r format(Sys.Date(), '%A, %B %e %Y')`"

@@ -95,22 +95,96 @@ Department of Econometrics and Business Statistics
 
 ---
 class: transition
+# Update on how the class is delivered
 
-# What is this song?
+---
+# How the class will now be delivered: Lectorials
 
-(you can use your phone!)
+- Lectorials are now recorded using Echo360
+- **Do not come into class**, listen to the lectorials online and complete the exercises on rstudio cloud or locally.
+
+---
+# How the class will now be delivered: Lab/quizzes
+
+These will still be posted weekly, but we will give you an extra day or two to complete them
+
+- Reading quizzes we expect you to complete before the lecture starts
+  - So, Reading quiz 2A should be completed prior to lecture 2A
+      - These will be closed shortly after lecture 2a starts (With some leeway as we transition into online classes to give you all a chance to get used to things)
+      
+- Lab quizzes require knowledge from the lecture - these need to be completed after the lecture
+  - So, lab quiz 2A should be completed after Lecture 2a
+    - Again with the same leeway as for reading quiz 2a above
+
+---
+# How the class will now be delivered
+
+## Assessignments
+
+- Assignment 1 will be posted today at the end of class
+- Assignments will be submitted online
+    - Please get in touch with us (if you haven’t already) if you are a group of 1, or cannot get in touch with your group members.
+
+## Other assessments
+
+- We will update you on this in more detail, but in short, these will be delivered and submitted online
+
+## Consult times
+
+These will now be delivered online via a link to a zoom meeting, or other online video meeting service
+
+---
+# There is a lot of change
+
+- There is a lot of change in the air, and things might seem uncertain.
+- I am committed to helping you all learn how to do data analysis.
+- Thank you all for your patience as we have changed this course. We are dealing with daily updates, and need to change on the fly.
+- Perhaps now more than ever it is becoming so very relevant to our daily lives that we understand data, and that we can communicate it to others.
+- Remember to get your information from reliable sources, like the [WHO](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public), the [Australian Government](https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-health-alert), and see the latest data from [Johns Hopkins](https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6).
+
+---
+
+# Practice the most effective strategies we know
+
+1. Wash your hands often, practice good cough &amp; sneeze etiquette.
+2. Try to touch your face as little as possible (mouth, nose, and eyes).
+4. Practice social distancing (no hugs, kisses, handshakes, high fives)
+5. Do not attend concerts, stage plays, sporting events, or any other mass entertainment events.
+6. Refrain from visiting museums, exhibitions, movie theaters, night clubs, and other entertainment venues.
+7. Stay away from social gatherings and events, (club meetings, religious services, parties)
+8. Reduce travel to a minimum. Don't travel long distances if not absolutely necessary.
+9. Do not use public transportation if not absolutely necessary.
+
+---
+# Social distancing is hard
+
+- How do we know it works? 
+- We have data from the last pandemic, the spanish flu.
+- Places that practice social distancing vs those who did not had drastically different numbers:
+
+&lt;img src="images/sf-social-distance.jpg" width="569" style="display: block; margin: auto;" /&gt;
+
+(from [(Hatchett et al, 2007)](https://www.pnas.org/content/104/18/7582))
+
+---
+# There is a lot of change
+
+To brighten things up, here are two youtubers I’ve been watching lately to destress and have “COVID19 free time”
+
+- [Lofty Pursuits](https://www.youtube.com/watch?v=FYsqZXHVnI8)
+- [SteveMRE1989](https://www.youtube.com/watch?v=hkz6kGQWCHU&amp;t=6s)
 
 
 ---
 class: transition
 # Your Turn: complete class survey
-Available now on Ed
+Available now on Ed, "Getting to know our class"
 
 ---
 class: transition
 # How to learn
 
-I want to some time to discuss ideas on learning, and how it ties into the course.
+I want to take some time to discuss ideas on learning, and how it ties into the course.
 
 
 ---
@@ -224,6 +298,45 @@ class: refresher
 ]
 
 ---
+# The "pipe" operator - `%&gt;%`
+
+The symbol, `%&gt;%` is referred to as the "pipe operator"
+
+What you need to know:
+
+- Read it as "then"
+- It passes the output along to the next function
+
+```
+data %&gt;%  
+  select(age, height, hair_colour) %&gt;% 
+  filter(nationality == "australian")
+```
+
+"
+Use the data, THEN 
+select the variables (columns), `age`, `height`, and `hair_colour` THEN
+filter so nationality is equal to "australian"
+"
+
+--
+
+That is all you need to know for the moment, but you can read [more here](https://r4ds.had.co.nz/pipes.html)
+
+---
+# Problem solving (demo)
+
+Some common questions you can ask yourself when something isn't working:
+
+- Have I got my data?
+- Does the thing exist? (Check environment)
+- Have I run the code from the top down to where I am now?
+- Did none of that work? (Now Restart R)
+- Is the column I want there?
+- Try using quotes "", or no quotes, or (last resort) backticks 
+
+---
+
 # Style guide
 
 &gt; "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread." -- Hadley Wickham
@@ -379,10 +492,10 @@ class: transition
 ```r
 avail_pkg &lt;- available.packages()
 dim(avail_pkg)
-## [1] 15371    17
+## [1] 15383    17
 ```
 
-As of 2020-03-16 there are 15371 R packages available
+As of 2020-03-17 there are 15383 R packages available
 
 ---
 
@@ -391,15 +504,6 @@ As of 2020-03-16 there are 15371 R packages available
 
 ```r
 library(tidyverse)
-## ── Attaching packages ───────────────────────────────────────────── tidyverse 1.3.0 ──
-## ✓ ggplot2 3.3.0          ✓ purrr   0.3.3.9000
-## ✓ tibble  2.1.3          ✓ dplyr   0.8.5     
-## ✓ tidyr   1.0.2          ✓ stringr 1.4.0     
-## ✓ readr   1.3.1          ✓ forcats 0.5.0
-## ── Conflicts ──────────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter()     masks stats::filter()
-## x dplyr::group_rows() masks kableExtra::group_rows()
-## x dplyr::lag()        masks stats::lag()
 ```
 
 ---
@@ -484,7 +588,7 @@ french_fries
 
 --
 
-This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the plyr tools. 
+This data set was brought to R by Hadley Wickham, and was one of the problems that inspired the thinking about tidy data and the tidyverse set of tools 
 
 ---
 # Example: french-fries - pivoting into long form
@@ -502,9 +606,75 @@ fries_long
 ```
 ]
 
+--
+
 .pull-right[
 
+```
+## # A tibble: 3,480 x 6
+##     time treatment subject   rep type    rating
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1     1         1       3     1 potato     2.9
+##  2     1         1       3     1 buttery    0  
+##  3     1         1       3     1 grassy     0  
+##  4     1         1       3     1 rancid     0  
+##  5     1         1       3     1 painty     5.5
+##  6     1         1       3     2 potato    14  
+##  7     1         1       3     2 buttery    0  
+##  8     1         1       3     2 grassy     0  
+##  9     1         1       3     2 rancid     1.1
+## 10     1         1       3     2 painty     0  
+## # … with 3,470 more rows
+```
 ]
+
+---
+# Example: french-fries - pivoting back
+
+.pull-left[
+
+```r
+fries_long
+## # A tibble: 3,480 x 6
+##     time treatment subject   rep type    rating
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1     1         1       3     1 potato     2.9
+##  2     1         1       3     1 buttery    0  
+##  3     1         1       3     1 grassy     0  
+##  4     1         1       3     1 rancid     0  
+##  5     1         1       3     1 painty     5.5
+##  6     1         1       3     2 potato    14  
+##  7     1         1       3     2 buttery    0  
+##  8     1         1       3     2 grassy     0  
+##  9     1         1       3     2 rancid     1.1
+## 10     1         1       3     2 painty     0  
+## # … with 3,470 more rows
+```
+]
+
+.pull-right[
+
+```r
+fries_long %&gt;% 
+  pivot_wider(names_from = type,
+              values_from = rating)
+## # A tibble: 696 x 9
+##     time treatment subject   rep potato buttery grassy rancid painty
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1     1         1       3     1    2.9     0      0      0      5.5
+##  2     1         1       3     2   14       0      0      1.1    0  
+##  3     1         1      10     1   11       6.4    0      0      0  
+##  4     1         1      10     2    9.9     5.9    2.9    2.2    0  
+##  5     1         1      15     1    1.2     0.1    0      1.1    5.1
+##  6     1         1      15     2    8.8     3      3.6    1.5    2.3
+##  7     1         1      16     1    9       2.6    0.4    0.1    0.2
+##  8     1         1      16     2    8.2     4.4    0.3    1.4    4  
+##  9     1         1      19     1    7       3.2    0      4.9    3.2
+## 10     1         1      19     2   13       0      3.1    4.3   10.3
+## # … with 686 more rows
+```
+]
+
 ---
 class: transition
 # `filter()`
@@ -520,7 +690,7 @@ fries_long %&gt;%
   filter(subject == 10)
 ## # A tibble: 300 x 6
 ##     time treatment subject   rep type    rating
-##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
 ##  1     1         1      10     1 potato    11  
 ##  2     1         1      10     1 buttery    6.4
 ##  3     1         1      10     1 grassy     0  
@@ -546,7 +716,7 @@ Filtering requires comparison to find the subset of observations of interest.  W
 - `class %in% c("A", "B")` 
 - `!is.na(y)`
 
-<div class="countdown" id="timer_5e6ef00d" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
+<div class="countdown" id="timer_5e707251" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -604,7 +774,7 @@ Filter the french fries data to have:
 fries_long %&gt;% filter(time == 1)
 ## # A tibble: 360 x 6
 ##     time treatment subject   rep type    rating
-##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
 ##  1     1         1       3     1 potato     2.9
 ##  2     1         1       3     1 buttery    0  
 ##  3     1         1       3     1 grassy     0  
@@ -627,7 +797,7 @@ fries_long %&gt;% filter(time == 1)
 fries_long %&gt;% filter(treatment == 1)
 ## # A tibble: 1,160 x 6
 ##     time treatment subject   rep type    rating
-##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
 ##  1     1         1       3     1 potato     2.9
 ##  2     1         1       3     1 buttery    0  
 ##  3     1         1       3     1 grassy     0  
@@ -649,7 +819,7 @@ fries_long %&gt;% filter(treatment == 1)
 fries_long %&gt;% filter(treatment != 2)
 ## # A tibble: 2,320 x 6
 ##     time treatment subject   rep type    rating
-##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
 ##  1     1         1       3     1 potato     2.9
 ##  2     1         1       3     1 buttery    0  
 ##  3     1         1       3     1 grassy     0  
@@ -671,7 +841,7 @@ fries_long %&gt;% filter(treatment != 2)
 fries_long %&gt;% filter(time %in% c("1", "2", "3", "4"))
 ## # A tibble: 1,440 x 6
 ##     time treatment subject   rep type    rating
-##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
 ##  1     1         1       3     1 potato     2.9
 ##  2     1         1       3     1 buttery    0  
 ##  3     1         1       3     1 grassy     0  
@@ -825,7 +995,7 @@ class: transition
 - `select()` subject through to rating
 - drop subject
 
-<div class="countdown" id="timer_5e6eed44" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e707032" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -896,7 +1066,7 @@ Compute a new variable called `lrating` by taking a log of the rating
 
 
 
-<div class="countdown" id="timer_5e6eecb3" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e707042" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -913,7 +1083,7 @@ fries_long
 ```
 ## # A tibble: 6 x 6
 ##    time treatment subject   rep type    rating
-##   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;
+##   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
 ## 1     1         1       3     1 potato     2.9
 ## 2     1         1       3     1 buttery    0  
 ## 3     1         1       3     1 grassy     0  
@@ -954,7 +1124,7 @@ fries_long %&gt;%
   summarise(rating = mean(rating, na.rm=TRUE))
 ## # A tibble: 5 x 2
 ##   type    rating
-##   &lt;fct&gt;    &lt;dbl&gt;
+##   &lt;chr&gt;    &lt;dbl&gt;
 ## 1 buttery  1.82 
 ## 2 grassy   0.664
 ## 3 painty   2.52 
@@ -969,7 +1139,7 @@ class: transition
 - Compute the average rating by subject
 - Compute the average rancid rating per week
 
-<div class="countdown" id="timer_5e6eed5a" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e707052" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -1037,7 +1207,7 @@ fries_long %&gt;%
   summarise(rating = mean(rating, na.rm=TRUE)) 
 ## # A tibble: 5 x 2
 ##   type    rating
-##   &lt;fct&gt;    &lt;dbl&gt;
+##   &lt;chr&gt;    &lt;dbl&gt;
 ## 1 buttery  1.82 
 ## 2 grassy   0.664
 ## 3 painty   2.52 
@@ -1056,7 +1226,7 @@ fries_long %&gt;%
   arrange(rating)
 ## # A tibble: 5 x 2
 ##   type    rating
-##   &lt;fct&gt;    &lt;dbl&gt;
+##   &lt;chr&gt;    &lt;dbl&gt;
 ## 1 grassy   0.664
 ## 2 buttery  1.82 
 ## 3 painty   2.52 
@@ -1071,7 +1241,7 @@ class: transition
 - Arrange the average rating by type in decreasing order
 - Arrange the average subject rating in order lowest to highest.
 
-<div class="countdown" id="timer_5e6eef61" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e707319" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -1086,7 +1256,7 @@ fries_long %&gt;%
   arrange(desc(rating))
 ## # A tibble: 5 x 2
 ##   type    rating
-##   &lt;fct&gt;    &lt;dbl&gt;
+##   &lt;chr&gt;    &lt;dbl&gt;
 ## 1 potato   6.95 
 ## 2 rancid   3.85 
 ## 3 painty   2.52 
@@ -1129,7 +1299,7 @@ fries_long %&gt;%
   count(type, sort = TRUE)
 ## # A tibble: 5 x 2
 ##   type        n
-##   &lt;fct&gt;   &lt;int&gt;
+##   &lt;chr&gt;   &lt;int&gt;
 ## 1 buttery   696
 ## 2 grassy    696
 ## 3 painty    696
@@ -1144,7 +1314,7 @@ class: transition left
 - count the number of subjects
 - count the number of types
 
-<div class="countdown" id="timer_5e6eefe2" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e70738c" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -1169,7 +1339,7 @@ fries_long %&gt;%
   arrange(-m)
 ## # A tibble: 5 x 3
 ##   type        m    sd
-##   &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 potato  6.95   3.58
 ## 2 rancid  3.85   3.78
 ## 3 painty  2.52   3.39
@@ -1211,7 +1381,7 @@ fries_spread &lt;- fries_long %&gt;%
 fries_spread
 ## # A tibble: 1,740 x 6
 ##     time treatment subject type      `1`   `2`
-##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
 ##  1     1         1       3 potato    2.9  14  
 ##  2     1         1       3 buttery   0     0  
 ##  3     1         1       3 grassy    0     0  
@@ -1253,11 +1423,6 @@ summarise(fries_spread,
 &lt;img src="lecture_2b_files/figure-html/fries-spread-plot-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
-# French Fries:
-
-&lt;img src="lecture_2b_files/figure-html/fries-spread-plot-out-1.png" width="576" style="display: block; margin: auto;" /&gt;
-
----
 # French Fries: Replicates by rating type
 
 
@@ -1269,7 +1434,7 @@ fries_spread %&gt;%
                     use = "complete.obs"))
 ## # A tibble: 5 x 2
 ##   type        r
-##   &lt;fct&gt;   &lt;dbl&gt;
+##   &lt;chr&gt;   &lt;dbl&gt;
 ## 1 buttery 0.650
 ## 2 grassy  0.239
 ## 3 painty  0.479
@@ -1293,7 +1458,43 @@ ggplot(fries_spread, aes(x=`1`, y=`2`)) +
 
 Potato'y and buttery have better replication than the other scales, but there is still a lot of variation from rep 1 to 2.
 
+---
+class: transition
 
+# When to use quotes? `"` `'`, nothing, or backtick?
+
+---
+
+# When to use quotes? `"` `'`, nothing, or backtick?
+
+- Use no quotes (bare variable names) when the variable exists
+- Otherwise use strings
+
+Example:
+```
+fries_long %&gt;% 
+  pivot_wider(names_from = type,
+              values_from = rating)
+```
+
+vs
+
+```
+french_fries %&gt;% 
+  pivot_longer(cols = potato:painty,
+               names_to = "type", 
+               values_to = "rating")
+```
+
+---
+
+# When to use quotes? `"` `'`, nothing, or backtick?
+
+Variables with unusual names  (starting with numbers, spaces, or containing special characters like `!@#$%^&amp;*()-` need to be referenced with backticks:
+
+```
+data %&gt;% select(`name with spaces`)
+```
 
 ---
 &lt;iframe width="1040" height="650" src="https://www.youtube.com/embed/i4RGqzaNEtg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
@@ -1308,123 +1509,6 @@ class: transition
 # Lab Quiz
 
 Time to take the lab quiz.
-
-???
-
-# `select()` example
-
-
-```r
-tb &lt;- read_csv("data/TB_notifications_2018-03-18.csv") %&gt;%
-  select(country, year, starts_with("new_sp_")) 
-tb %&gt;% top_n(20)
-## # A tibble: 22 x 22
-##    country  year new_sp_m04 new_sp_m514 new_sp_m014 new_sp_m1524 new_sp_m2534
-##    &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
-##  1 Argent…  2008         11          58          69          633          611
-##  2 Argent…  2009          8          36          44          546          483
-##  3 Argent…  2011         50          93         143          664          657
-##  4 Argent…  2012          8          51          59          533          484
-##  5 Brazil   2010        130         168         298         4405         6381
-##  6 Brazil   2012        112         165         277         5027         6811
-##  7 Centra…  2010         23          55          78          379          633
-##  8 Centra…  2011         14          56          70          362          576
-##  9 Guinea…  2012          1           6           7          145          262
-## 10 Italy    2005          7           1           8           93          191
-## # … with 12 more rows, and 15 more variables: new_sp_m3544 &lt;dbl&gt;,
-## #   new_sp_m4554 &lt;dbl&gt;, new_sp_m5564 &lt;dbl&gt;, new_sp_m65 &lt;dbl&gt;, new_sp_mu &lt;dbl&gt;,
-## #   new_sp_f04 &lt;dbl&gt;, new_sp_f514 &lt;dbl&gt;, new_sp_f014 &lt;dbl&gt;, new_sp_f1524 &lt;dbl&gt;,
-## #   new_sp_f2534 &lt;dbl&gt;, new_sp_f3544 &lt;dbl&gt;, new_sp_f4554 &lt;dbl&gt;,
-## #   new_sp_f5564 &lt;dbl&gt;, new_sp_f65 &lt;dbl&gt;, new_sp_fu &lt;dbl&gt;
-```
-
----
-  
-
-background-image: url(images/bg1.jpg)
-background-size: cover
-class: hide-slide-number split-70
-count: false
-
-.column.shade_black[.content[
-
-&lt;br&gt;&lt;br&gt;
-
-# That's it!
-
-.bottom_abs.width100[
-
-Lecturer: Nicholas Tierney
-
-Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
-
-11th Mar 2020
-
-
-]
-
-&lt;br /&gt;
-This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
-
-&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
-
-
-]]
-
-
-
-&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
-&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
-&lt;svg class="clip-svg absolute"&gt;
-&lt;defs&gt;
-&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
-&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
-&lt;/clipPath&gt;
-&lt;/defs&gt;	
-&lt;/svg&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-???
-
-&lt;img src="images/horst_tidy.jpg" width="50%" style="display: block; margin: auto;" /&gt;
-
-Source: A drawing made by Alison Horst [@allison_horst](https://twitter.com/allison_horst?lang=en) 
-
-
-# Learning is where you:
-
-1. Receive information accurately
-2. Remember the information (long term memory)
-3. In such a way that you can reapply the information when appropriate
-
-# Your Turn:
-
-Go to the data source at this link: [bit.ly/dmac-noaa-data](https://bit.ly/dmac-noaa-data) 
-- "Which is the best description of the temperature units?"
-- "What is the best description of the precipitation units"
-- "What does -9999 mean?"
-
-
-???
-
-- "Which is the best description of the temperature units?"
-
-- degrees farehnheit F
-- degrees Kelvin K
-- "degrees C x10"
-
-"What is the best description of the precipitation units"
-
-- "mm x10"
-- inches
-
-"What does -9999 mean?"
-
-- it was really cold
-- the keyboard got stuck
-- "the value was missing"
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
