@@ -104,4 +104,4 @@ Note that the text that is written was originally written by Amelia, and you nee
 You can get the assignment two ways:
 
 1. At rstudio.cloud
-2. Downloaded via [this link]()
+2. Downloaded via [this link](https://ida.numbat.space/assignments/ida-assignment-1.zip)
