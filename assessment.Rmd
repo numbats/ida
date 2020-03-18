@@ -67,10 +67,8 @@ Information to complete the assignments is below:
 assignment_df <- tibble(
   Assignment = 1,
   `Due Date` = "2020/04/01 at 5pm",
-  Instructions = "",
-    # "[instructions](https://ida.numbat.space/assignments/assignment-1-instructions)",
-  Zipfile = ""
-    # "[zipfile](https://ida.numbat.space/assignments/assignment-1.zip)"
+  Instructions = "[instructions](https://ida.numbat.space/assignments/assignment-1-instructions)",
+  Zipfile = "[zipfile](https://ida.numbat.space/assignments/ida-assignment-1.zip)"
 )
 
 assignment_df %>% 
