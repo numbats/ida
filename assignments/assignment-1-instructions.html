@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Nicholas Tierney" />
+<meta name="author" content="Amelia Forcat &amp; YOUR NAME &amp; YOUR TEAM MEMBERS NAMES &amp; YOUR TEAM NAME" />
 
 
-<title>Instructions for Assignment 1, Semester 1, 2020</title>
+<title>Assignment 1, Semester 1, 2020</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,10 +375,10 @@ summary {
 
 
 
-<h1 class="title toc-ignore">Instructions for Assignment 1, Semester 1, 2020</h1>
+<h1 class="title toc-ignore">Assignment 1, Semester 1, 2020</h1>
 <h3 class="subtitle">Victorian Crime Sales</h3>
-<h4 class="author">Nicholas Tierney</h4>
-<h4 class="date">Monday, March 16 2020</h4>
+<h4 class="author">Amelia Forcat &amp; YOUR NAME &amp; YOUR TEAM MEMBERS NAMES &amp; YOUR TEAM NAME</h4>
+<h4 class="date">Wednesday, March 18 2020</h4>
 
 </div>
 
@@ -386,7 +386,7 @@ summary {
 <div id="instructions-to-students" class="section level1">
 <h1>Instructions to Students</h1>
 <p>This assignment is designed to simulate a scenario where you are taking over someone’s existing work, and continuing with it to draw some further insights.</p>
-<p>This is a real world dataset taken from the Crime Statistics Agency Victoria. <a href="https://www.crimestatistics.vic.gov.au/crime-statistics/latest-crime-data/download-data" class="uri">https://www.crimestatistics.vic.gov.au/crime-statistics/latest-crime-data/download-data</a>, specifically the data called “Data Tables - LGA Criminal Incidents Visualisation - year ending September 2019 (XLSX, 15.96 MB)”. The raw data is used for this assignment, with no changes made.</p>
+<p>This is a real world dataset taken from the Crime Statistics Agency Victoria. <a href="https://www.crimestatistics.vic.gov.au/crime-statistics/latest-crime-data/download-data" class="uri">https://www.crimestatistics.vic.gov.au/crime-statistics/latest-crime-data/download-data</a>, specifically the data called “Data Tables - LGA Criminal Incidents Visualisation - year ending September 2019 (XLSX, 15.96 MB)”. The data for this assignment is from Table 3, but is stored as a compressed csv file (“.csv.gz”) to make it easier to read and manage.</p>
 <p>You have just joined a consulting company as a data scientist. To give you some experience and guidance, you are performing a quick summary of the data, following along from guidance from Amelia, and some of the questions your manager has. This is not a formal report, but rather something you are giving to your manager that describes the data, and some interesting insights. We have written example text for the first section on monash, and would like you to explore another area. Our example writings are a good example of how to get full marks.</p>
 <p>Your colleague at your consulting firm, Amelia (in the text treatment below) has written some helpful hints throughout the assignment to help guide you.</p>
 <p>Questions that are work marks are indicated with <code>**</code> at the start and end of the question, as well as the number of marks in parenthesis.</p>
@@ -404,7 +404,7 @@ summary {
 </div>
 <div id="a-note-on-skills" class="section level2">
 <h2>A Note on skills</h2>
-<p>As of week 1, you have seen some of the code used here, but I do not expect you to know immediately what the code below does. This is a challenge for you! We will be covering skills on data summary and data visualisation in the next two weeks, but this assignment is designed to simulate a real life work situation - this means that there are some things where you need to “learn on the job”. But the vast majority of the assignment will cover things that you will have seen in class, or the readings.</p>
+<p>As of week 2, you have seen some of the code used here, but I do not expect you to know immediately what the code below does. This is a challenge for you! We will be covering skills on data summary and data visualisation in the next two weeks, but this assignment is designed to simulate a real life work situation - this means that there are some things where you need to “learn on the job”. But the vast majority of the assignment will cover things that you will have seen in class, or the readings.</p>
 <p>Remember, you can look up the help file for functions by typing <code>?function_name</code>. For example, <code>?mean</code>. Feel free to google questions you have about how to do other kinds of plots, and post on the ED if you have any questions about the assignment.</p>
 </div>
 <div id="how-to-complete-this-assignment." class="section level2">
@@ -442,7 +442,7 @@ ggplot()
 <p>You work as a data scientist in the well named consulting company, “Consulting for You”.</p>
 <p>It’s your second day at the company, and you’re taken to your desk. Your boss says to you:</p>
 <blockquote>
-<p>Amelia has managed to find this treasure trove of data - get this: crime statistics in Victoria for the past years! Unfortunately, Amelia just left on holiday to New Zealand, and won’t be back now for a while. They discovered this dataset the afternoon before they left on holiday, and got started on doing some data analysis.</p>
+<p>Amelia has managed to find this treasure trove of data - get this: crime statistics in Victoria for the past years! Unfortunately, Amelia just left on holiday to New Zealand, and now won’t be back now for a while. They discovered this dataset the afternoon before they left on holiday, and got started on doing some data analysis.</p>
 </blockquote>
 <blockquote>
 <p>We’ve got a meeting coming up soon where we need to discuss some new directions for the company, and we want you to tell us about this dataset and what we can do with it. We want to focus on <strong>monash</strong>, since we have a few big customers in that area, and then we want you to help us compare that whatever area has the highest burglary.</p>
@@ -459,13 +459,13 @@ ggplot()
 <p>From here, you are handed a USB stick. You load this into your computer, and you see a folder called “vic-crime”. In it is a folder called “data-raw”, and an Rmarkdown file. It contains the start of a data analysis. Your job is to explore the data and answer the questions in the document.</p>
 <p>Note that the text that is written was originally written by Amelia, and you need to make sure that their name is kept up top, and to pay attention to what they have to say in the document!</p>
 </div>
-<div id="assignment-location" class="section level1">
-<h1>Assignment location</h1>
-<ul>
-<li>You can find the assignment on the <code>rstudio.cloud</code> workspace, under the name: “assignment-1-2020-s1”</li>
-<li>It is also on the website as well, <a href="http://ida.numbat.space/assignment/assignment1.zip">here</a> if you would like to run it locally.</li>
-<li>To run it locally, you will need to install R and Rstudio on your laptop, I would recommend following instructions from here: <a href="https://r4ds.had.co.nz/introduction.html#prerequisites" class="uri">https://r4ds.had.co.nz/introduction.html#prerequisites</a></li>
-</ul>
+<div id="how-to-get-the-assignment" class="section level1">
+<h1>How to get the assignment</h1>
+<p>You can get the assignment two ways:</p>
+<ol style="list-style-type: decimal">
+<li>At rstudio.cloud</li>
+<li>Downloaded via <a href>this link</a></li>
+</ol>
 </div>
 
 

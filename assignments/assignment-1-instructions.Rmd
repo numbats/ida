@@ -1,16 +1,20 @@
 ---
-title: "Instructions for Assignment 1, Semester 1, 2020"
+title: "Assignment 1, Semester 1, 2020"
 subtitle: "Victorian Crime Sales"
-author: "Nicholas Tierney"
+author: "Amelia Forcat & YOUR NAME & YOUR TEAM MEMBERS NAMES & YOUR TEAM NAME"
 date: "`r format(Sys.Date(), '%A, %B %e %Y')`"
 output: html_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Instructions to Students
 
 This assignment is designed to simulate a scenario where you are taking over someone's existing work, and continuing with it to draw some further insights.
 
-This is a real world dataset taken from the Crime Statistics Agency Victoria.  https://www.crimestatistics.vic.gov.au/crime-statistics/latest-crime-data/download-data, specifically the data called "Data Tables - LGA Criminal Incidents Visualisation - year ending September 2019 (XLSX, 15.96 MB)". The raw data is used for this assignment, with no changes made.
+This is a real world dataset taken from the Crime Statistics Agency Victoria.  https://www.crimestatistics.vic.gov.au/crime-statistics/latest-crime-data/download-data, specifically the data called "Data Tables - LGA Criminal Incidents Visualisation - year ending September 2019 (XLSX, 15.96 MB)". The data for this assignment is from Table 3, but is stored as a compressed csv file (".csv.gz") to make it easier to read and manage.
 
 You have just joined a consulting company as a data scientist. To give you some experience and guidance, you are performing a quick summary of the data, following along from guidance from Amelia, and some of the questions your manager has. This is not a formal report, but rather something you are giving to your manager that describes the data, and some interesting insights. We have written example text for the first section on monash, and would like you to explore another area. Our example writings are a good example of how to get full marks.
 
@@ -34,10 +38,9 @@ This assignment will be worth 6% of your total grade, and is marked out of 18 ma
 # `**` What are the types of item divisions? How many are there? (0.5 Mark) `**`
 ```
 
-
 ## A Note on skills
 
-As of week 1, you have seen some of the code used here, but I do not expect you to know immediately what the code below does. This is a challenge for you! We will be covering skills on data summary and data visualisation in the next two weeks, but this assignment is designed to simulate a real life work situation - this means that there are some things where you need to "learn on the job". But the vast majority of the assignment will cover things that you will have seen in class, or the readings.
+As of week 2, you have seen some of the code used here, but I do not expect you to know immediately what the code below does. This is a challenge for you! We will be covering skills on data summary and data visualisation in the next two weeks, but this assignment is designed to simulate a real life work situation - this means that there are some things where you need to "learn on the job". But the vast majority of the assignment will cover things that you will have seen in class, or the readings.
 
 Remember, you can look up the help file for functions by typing `?function_name`. For example, `?mean`. Feel free to google questions you have about how to do other kinds of plots, and post on the ED if you have any questions about the assignment.
 
@@ -82,7 +85,7 @@ You work as a data scientist in the well named consulting company, "Consulting f
 
 It's your second day at the company, and you're taken to your desk. Your boss says to you:
 
-> Amelia has managed to find this treasure trove of data - get this: crime statistics in Victoria for the past years! Unfortunately, Amelia just left on holiday to New Zealand, and won't be back now for a while. They discovered this dataset the afternoon before they left on holiday, and got started on doing some data analysis.
+> Amelia has managed to find this treasure trove of data - get this: crime statistics in Victoria for the past years! Unfortunately, Amelia just left on holiday to New Zealand, and now won't be back now for a while. They discovered this dataset the afternoon before they left on holiday, and got started on doing some data analysis.
 
 > We've got a meeting coming up soon where we need to discuss some new directions for the company, and we want you to tell us about this dataset and what we can do with it. We want to focus on **monash**, since we have a few big customers in that area, and then we want you to help us compare that whatever area has the highest burglary.
 
@@ -96,8 +99,9 @@ From here, you are handed a USB stick. You load this into your computer, and you
 
 Note that the text that is written was originally written by Amelia, and you need to make sure that their name is kept up top, and to pay attention to what they have to say in the document!
 
-# Assignment location
+# How to get the assignment
 
-* You can find the assignment on the `rstudio.cloud` workspace, under the name: "assignment-1-2020-s1"
-* It is also on the website as well, [here](http://ida.numbat.space/assignment/assignment1.zip) if you would like to run it locally. 
-* To run it locally, you will need to install R and Rstudio on your laptop, I would recommend following instructions from here: https://r4ds.had.co.nz/introduction.html#prerequisites
+You can get the assignment two ways:
+
+1. At rstudio.cloud
+2. Downloaded via [this link]()
