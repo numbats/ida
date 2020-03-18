@@ -1107,6 +1107,42 @@ data %>% select(`name with spaces`)
 Open `pisa.Rmd` on rstudio cloud.
 
 ---
+# Assignment 1 
+
+**It will be launched later today**
+- Instructions to appear on ED and the course website
+
+**When is the assignment due?**
+
+- 1st April, 2020 5pm
+
+
+**How do I complete the assignment?**
+
+- You should complete as much of the assignment as you can by yourself
+- Then once you have done as much as you can, work with your group to 
+
+**I don't have a group / I can't get in contact with my group**
+
+- If you don't have a group, make sure you have filled in this form [here](https://forms.gle/XJGSByKDXgKXuxZb9) (it has also been posted on ED)
+- I will assign everyone into a group who has filled in the form 
+
+---
+# Assignment 1
+
+**How do I stay in touch with my group?**
+
+- Get in touch with your group and decide how you will work together
+  - you can use zoom through Monash to create video/audio group calls
+  - you could create a Slack team
+  - You can communicate via email, WhatsApp, Messenger, whatever you all agree on
+
+**How do I submit the assignment?**
+
+- You submit the assignment via ED - instructions to follow
+
+
+---
 class: transition
 # Lab Quiz
 

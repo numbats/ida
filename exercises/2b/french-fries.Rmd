@@ -14,8 +14,8 @@ library(tidyverse)
 Then, we read in the french fries data using `read_csv()`:
 
 ```{r read-fries}
-french_fries <- read_csv(here::here("exercises/2b/data/french_fries.csv"))
-# french_fries <- read_csv(here::here("data/french_fries.csv"))
+# french_fries <- read_csv(here::here("exercises/2b/data/french_fries.csv"))
+french_fries <- read_csv(here::here("data/french_fries.csv"))
 ```
 
 Now we get the data into long form:
@@ -33,29 +33,25 @@ Filter the french fries data to have:
 - only week 1
 
 ```{r fries-long-filter}
-fries_long %>% filter(time == 1)
-## fries_long %>% filter(time == __)
+fries_long %>% filter(time == __)
 ```
 
 - weeks 1-4 only
 
 ```{r fries-long-filter-1-4}
-fries_long %>% filter(time %in% c("1", "2", "3", "4"))
-## fries_long %>% filter(time %in% c(___))
+fries_long %>% filter(time %in% c(___))
 ```
 
 - oil type 1 (oil type is called treatment)
 
 ```{r fries-long-filter-oil}
-fries_long %>% filter(treatment == 1)
-## fries_long %>% filter(___ == ___)
+fries_long %>% filter(___ == ___)
 ```
 
 - oil types 1 and 3 but not 2
 
 ```{r fries-long-filter-oitl-2}
-fries_long %>% filter(treatment != 2)
-## fries_long %>% filter(___)
+fries_long %>% filter(___)
 ```
 
 # End of first example - wait until the next section.
@@ -65,23 +61,20 @@ fries_long %>% filter(treatment != 2)
 - choose time, treatment and rep
 
 ```{r fries-long-select}
-fries_long %>% select(time, treatment, rep)
-## fries_long %>% select(___, ___, ___)
+fries_long %>% select(___, ___, ___)
 ```
 
 - choose subject through to rating
 
 ```{r fries-long-select-colon}
-fries_long %>% select(subject:rating)
-## fries_long %>% select(___:___)
+fries_long %>% select(___:___)
 ```
 
 - drop subject
 
 
 ```{r fries-long-drop}
-fries_long %>% select(-___)
-# fries_long %>% select(-subject)
+fries_long %>% select(-subject)
 ```
 
 # Wait until next example
@@ -93,8 +86,7 @@ fries_long %>% select(-___)
 
 ```{r fries-long-mutate}
 fries_long %>%
-  mutate(lrating = log10(rating))
-  # mutate(lrating = log10(___))
+  mutate(lrating = log10(___))
 ```
 
 # Wait until next example
@@ -105,22 +97,17 @@ fries_long %>%
 
 ```{r fries-long-group-by}
 fries_long %>% 
-  group_by(subject) %>%
-  summarise(rating = mean(rating, na.rm=TRUE))
-  ## group_by(___) %>%
-  ## summarise(rating = mean(___, na.rm=TRUE))
+  group_by(___) %>%
+  summarise(rating = mean(___, na.rm=TRUE))
 ```
 
 - Compute the average rancid rating per week
 
 ```{r fries-long-filter-group-by}
 fries_long %>% 
-  filter(type == "rancid") %>%
-  group_by(time) %>%
-  summarise(rating = mean(rating, na.rm=TRUE))
-  ## filter(type == ___) %>%
-  ## group_by(___) %>%
-  ## summarise(rating = mean(___, na.rm=TRUE))
+  filter(type == ___) %>%
+  group_by(___) %>%
+  summarise(rating = mean(___, na.rm=TRUE))
 ```
 
 # `count()`
@@ -128,15 +115,13 @@ fries_long %>%
 - count the number of subjects
 
 ```{r fries-count-subject}
-fries_long %>% count(subject, sort=TRUE)
-## fries_long %>% count(___, sort=TRUE)
+fries_long %>% count(___, sort=TRUE)
 ```
 
 - count the number of types
 
 ```{r fries-count-type}
-fries_long %>% count(type)
-## fries_long %>% count(___)
+fries_long %>% count(___)
 ```
 
 # Using the skills we have learned to problem solve:
@@ -145,18 +130,12 @@ fries_long %>% count(type)
 
 ```{r fries-similar-ratings}
 fries_long %>% 
-  group_by(type) %>%
-  summarise(m = mean(rating, 
-                     na.rm = TRUE), 
-            sd = sd(rating, 
+  group_by(___) %>%
+  summarise(m = mean(___,
+                     na.rm = TRUE),
+            sd = sd(___,
                     na.rm = TRUE)) %>%
   arrange(-m)
-  ## group_by(___) %>%
-  ## summarise(m = mean(___, 
-  ##                    na.rm = TRUE), 
-  ##           sd = sd(___, 
-  ##                   na.rm = TRUE)) %>%
-  ## arrange(-m)
 ```
 
 

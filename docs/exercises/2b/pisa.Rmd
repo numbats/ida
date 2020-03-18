@@ -42,8 +42,8 @@ First we load the tidyverse, then read in the data using `read_rds` (rds is an R
 
 ```{r load-read}
 library(tidyverse)
-# pisa_au_raw <- read_rds("data/pisa_au.rds")
-pisa_au_raw <- read_rds(here::here("exercises/2b/data/pisa_au.rds"))
+pisa_au_raw <- read_rds("data/pisa_au.rds")
+# pisa_au_raw <- read_rds(here::here("exercises/2b/data/pisa_au.rds"))
 ```
 
 Let's take a look at the head of the data using the `head()` function, which shows the first 6 rows:
@@ -285,14 +285,10 @@ Coming back to the question: "How the STRATUM variable is processed to create th
 
 ```{r pisa-summary}
 pisa_au_tidy %>%
-  group_by(state) %>%
-  summarise(mean_wt = weighted.mean(x = math, 
+  group_by(___) %>%
+  ___(mean_wt = weighted.mean(x = math,
                                           w = stuweight)) %>%
-  arrange(-mean_wt)
-  ## group_by(___) %>%
-  ## ___(mean_wt = weighted.mean(x = math, 
-  ##                                         w = stuweight)) %>%
-  ## arrange(-___)
+  arrange(-___)
 ```
 
 Which state does best, on average, on math? 
@@ -314,14 +310,10 @@ First, let's calculate the mean for math by state and gender
 
 ```{r pisa-summarise}
 pisa_state_gender_math <- pisa_au_tidy %>%
-  group_by(state, 
-           gender) %>%
-  summarise(weighted_mean = weighted.mean(x = math, 
-                                          w = stuweight))
-  # ___(___, 
-  #     ___) %>%
-  # ___(weighted_mean = ___(x = ___, 
-  #                                         w = ___))
+  ___(___,
+      ___) %>%
+  ___(weighted_mean = ___(x = ___,
+                                          w = ___))
 
 pisa_state_gender_math
 ```
@@ -330,18 +322,15 @@ Next, let's `pivot_wider` one of the columns:
 
 ```{r pisa-spread}
 pisa_math_wide <- pisa_state_gender_math %>%
-  pivot_wider(names_from = gender,
-              values_from = weighted_mean)
-  ## ___(___ = gender,
-  ##        ___ = weighted_mean)
+  ___(___ = gender,
+         ___ = weighted_mean)
 ```
 
 Now, we need to calcluate the difference between male and female scores and arrange:
 
 ```{r male-female-diff}
 pisa_math_wide %>%
-mutate(math_diff = abs(female - male)) %>%
-# mutate(math_diff = abs(___ - ___)) %>%
+mutate(math_diff = abs(___ - ___)) %>%
   arrange(math_diff)
 ```
 
