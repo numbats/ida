@@ -62,9 +62,9 @@ Lecturer: *Nicholas Tierney*
 
 Department of Econometrics and Business Statistics
 
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
-16th March 2020
+21st March 2020
 
 &lt;br&gt;
 ]
@@ -91,11 +91,7 @@ Department of Econometrics and Business Statistics
 
 
 
----
-  
 
-
-# Learning Tips
 
 ---
 # Understanding learning
@@ -112,7 +108,11 @@ Department of Econometrics and Business Statistics
 
 &gt; "I'll never understand"
 
+
+
 &gt; "I just don't get programming"
+
+
 
 &gt; "I'm not a maths person"
 
@@ -125,7 +125,11 @@ Department of Econometrics and Business Statistics
 
 &gt; "I understand more than I did yesterday"
 
+
+
 &gt; "I can learn how to program"
+
+
 
 &gt; "Compared to this last week, I've learnt quite a bit!"
 
@@ -134,6 +138,8 @@ Department of Econometrics and Business Statistics
 
 
 ---
+class: transition
+
 # Overview for today
 
 - Going from tidy data to a data plot, using a grammar
@@ -209,7 +215,7 @@ class: transition
 # ggplot2 `\(\in\)` tidyverse
 
 .left-code[
-&lt;img src="images/ggplot2-part-of-tidyverse.png" width="1240" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/ggplot2-part-of-tidyverse.png" width="80%" style="display: block; margin: auto;" /&gt;
 ]
 
 .right-plot[
@@ -220,8 +226,6 @@ class: transition
 - (Source: [BloggoType](http://bloggotype.blogspot.com/2016/08/holiday-notes2-grammar-of-graphics.html))
 ]
 
-
-]
 
 ---
 background-image: url(images/grammar-of-graphics.png)
@@ -518,7 +522,7 @@ ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   scale_fill_brewer(palette="Dark2")
 ```
 
-&lt;img src="lecture_3a_files/figure-html/gg-show-100pct-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3a_files/figure-html/gg-show-100pct-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 --
 
@@ -666,7 +670,7 @@ ggplot(tb_au,
 * facet_grid(gender ~ age)
 ```
 
-&lt;img src="lecture_3a_files/figure-html/gg-separate-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3a_files/figure-html/gg-separate-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 class: transition
@@ -692,7 +696,7 @@ ggplot(tb_au,
   theme(axis.text = element_blank())
 ```
 
-&lt;img src="lecture_3a_files/figure-html/gg-rose-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3a_files/figure-html/gg-rose-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 # What do we learn?
@@ -713,7 +717,7 @@ ggplot(tb_au, aes(x = 1,
   facet_grid(gender ~ age) 
 ```
 
-&lt;img src="lecture_3a_files/figure-html/gg-rainbow-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3a_files/figure-html/gg-rainbow-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What do we see in the code??
@@ -741,7 +745,7 @@ ggplot(tb_au, aes(x = 1, y = count, fill = factor(year))) +
   theme(axis.text = element_blank())
 ```
 
-&lt;img src="lecture_3a_files/figure-html/gg-pie2-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3a_files/figure-html/gg-pie2-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 # What is different in the code?
@@ -755,22 +759,20 @@ class: transition
 - Pretty chart but not easy to interpret, or make comparisons across age groups. 
 
 ---
-
-## Why?
+# Why?
 
 [The various looks of David Bowie](https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif)
 
-.pull-left[
+
+.left-code[
+&lt;img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width:50%" /&gt;
+
+]
+
 - Using named plots, eg pie chart, bar chart, scatterplot, is like seeing animals in the zoo. 
 - The grammar of graphics allows you to define the mapping between variables in the data, with elements of the plot. 
 - It allows us to see and understand how plots are similar or different. 
 - And you can see how variations in the definition create variations in the plot.
-]
-
-.pull-right[
-&lt;img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width:50%" /&gt;
-
-]
 
 ---
 class: transition
@@ -790,56 +792,6 @@ class: transition
 - [Garret Aden Buie's gentle introduction to ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2/#1)
 - [Mine Çetinkaya-Rundel's introduction to ggplot using star wars.](https://github.com/rstudio-education/datascience-box/tree/master/slides/u1_d02-data-and-viz)
 
-
----
-  
-
-
-
-background-image: url(images/bg1.jpg)
-background-size: cover
-class: hide-slide-number split-70
-count: false
-
-.column.shade_black[.content[
-
-&lt;br&gt;&lt;br&gt;
-
-# That's it!
-
-.bottom_abs.width100[
-
-Lecturer: Nicholas Tierney
-
-Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  
-
-16th March 2020
-
-
-]
-
-&lt;br /&gt;
-This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
-
-&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
-
-
-]]
-
-
-
-&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
-&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
-&lt;svg class="clip-svg absolute"&gt;
-&lt;defs&gt;
-&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
-&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
-&lt;/clipPath&gt;
-&lt;/defs&gt;	
-&lt;/svg&gt;
-&lt;/div&gt;
-&lt;/div&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

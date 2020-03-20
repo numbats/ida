@@ -3,8 +3,8 @@ Week,Lecture,Date,HTML,PDF,Exercise,Topic,Readings,Assessment
 1,b,2020-03-11T00:00:00Z,lecture_1b.html,lecture_1b.pdf,ida-exercise-1b.zip,NA,NA,NA
 2,a,2020-03-16T00:00:00Z,lecture_2a.html,lecture_2a.pdf,ida-exercise-2a.zip,"Tidy data principles, reshaping your data into tidy form, and basic data wrangling",NA,NA
 2,b,2020-03-18T00:00:00Z,lecture_2b.html,lecture_2b.pdf,ida-exercise-2b.zip,NA,NA,NA
-3,a,2020-03-23T00:00:00Z,NA,NA,NA,"Plotting your data, and wrangling temporal data",NA,NA
-3,b,2020-03-25T00:00:00Z,NA,NA,NA,NA,NA,NA
+3,a,2020-03-23T00:00:00Z,lecture_3a.html,lecture_3a.pdf,ida-exercise-3a.zip,"Plotting your data, and wrangling temporal data",NA,NA
+3,b,2020-03-25T00:00:00Z,lecture_3b.html,lecture_3b.pdf,ida-exercise-3b.zip,NA,NA,NA
 4,a,2020-03-30T00:00:00Z,NA,NA,NA,"Advanced wrangling, joining tables, and advanced data visualisation",NA,NA
 4,b,2020-04-01T00:00:00Z,NA,NA,NA,NA,NA,Assignment 1
 5,a,2020-04-06T00:00:00Z,NA,NA,NA,Handling missing values and scraping data,NA,NA

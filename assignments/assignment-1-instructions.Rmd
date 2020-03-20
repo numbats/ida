@@ -105,3 +105,9 @@ You can get the assignment two ways:
 
 1. At rstudio.cloud
 2. Downloaded via [this link](https://ida.numbat.space/assignments/ida-assignment-1.zip)
+
+# How to submit the assignment
+
+1. Submit BOTH the Rmd and HTML files
+  - This means submitting "ida-assignment-1-GROUP-NAME.Rmd" and "ida-assignment-1-GROUP-NAME.html"
+2. Submit these on Ed

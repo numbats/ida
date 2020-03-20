@@ -3,8 +3,8 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 3, part B"
 subtitle: "Dates and Times"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
-date: "18th March 2020"
+email: "ETC1010.Clayton-x@monash.edu"
+date: "March 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -54,6 +54,7 @@ opts_chunk$set(echo = TRUE,
                collapse = TRUE,
                fig.height = 4,
                fig.width = 8,
+               fig.retina = 3,
                fig.align = "center",
                cache = FALSE)
 
@@ -61,13 +62,14 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ```
 
 ---
-  
-
 background-image: url(images/allison-horst-ggplot2-masterpiece.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
-.right.purple.large[Art by Allison Horst]
+
+.right.purple.small[
+Art by Allison Horst
+]
 
 ---
 class: refresher
@@ -78,34 +80,37 @@ background-image: url(images/allison-horst-lubridate.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
-.right.purple.large[Art by Allison Horst]
+.right.purple.small[
+Art by Allison Horst
+]
 
 ---
+class: transition
 # Overview
 
-.huge[
 - Working with dates
 - Constructing graphics
-]
 
 ---
 # Reminder re the assignment:
 
-.huge[
-- Due 5pm **week 6**
-- Submit by one person in the assignment group
+- Due 5pm **April 1st**
+- Submit by **one person** in the assignment group
 - ED > assessments > upload your `Rmd`, and `html`, files. 
 - **One per group**
-- **Remember to name your files as described in the submission**
-]
+- **Remember to name your files**
+- E.g., "etc1010-assignment-1-group-name.Rmd"
 
 ---
 # The challenges of working with dates and times
 
 - Conventional order of day, month, year is different across location
   - Australia: DD-MM-YYYY
+    - "21-02-2020"
   - America: MM-DD-YYYY
+    - "02-21-2020"
   - [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601): YYYY-MM-DD
+    - "2020-02-21"
 
 ---
 background-image: url(https://imgs.xkcd.com/comics/iso_8601.png)
@@ -124,9 +129,7 @@ class: center, bottom, white
 - Times are local, for us. Where are you?
 - Timezones!!!
 
-
----
-# The challenges of working with dates and times
+--
 
 - Representing time relative to it's type:
    - What day of the week is it? 
@@ -142,8 +145,7 @@ class: center, bottom, white
   - Days could be numbers of names. (1st day....Sunday? Monday?)
   - Days and Months have abbreviations. (Mon, Tue, Jan, Feb)
 
----
-# The challenges of working with dates and times
+--
 
 - Time can be relative: 
   - How many days until we go on holidays?
@@ -155,7 +157,9 @@ background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
 
-.right.purple.large[Art by Allison Horst]
+.right.purple.small[
+Art by Allison Horst
+]
 ---
 # Lubridate
 
@@ -170,8 +174,8 @@ class: center, bottom, white
 
 .right-plot[
 
-```{r show-lubridate, echo = FALSE}
-include_graphics("images/lubridate.jpg")
+```{r show-lubridate, echo = FALSE, out.width = "50%"}
+include_graphics("images/lubridate.png")
 ```
 ]
 
@@ -204,26 +208,30 @@ ymd("2019/08/10")
 
 --
 
-# yeah, wow, I was actually surprised this worked
-
 ```{r even-moar-ymd}
 ymd("??2019-.-08//10---")
 ```
 
+--
+
+## ....yeah, wow, I was actually surprised this worked
 
 ---
 # Change the letters, change the output
+
+# `mdy()` expects month, day, year. 
+
+--
 
 ```{r show-mdy}
 mdy("10/15/2019")
 ```
 
 --
-# `mdy()` expects month, day, year. 
-
---
 
 # `dmy()` expects day, month, year.
+
+--
 
 ```{r show-dmy}
 dmy("10/08/2019")
@@ -314,8 +322,7 @@ ymd_hms("2019-08-10 10:05:30",
   - A number. Does 1 mean... Sunday, Monday or even Saturday???
   - Or text or or abbreviated text. (Mon vs. Monday)
 
----
-# Many ways of saying similar things
+--
   
 - Talking with people we generally use day name:
   - Today is Friday, tomorrow is Saturday vs Today is 5 and tomorrow is 6.
@@ -323,17 +330,16 @@ ymd_hms("2019-08-10 10:05:30",
   - e.g., Saturday - Thursday is 2 days (6 - 4)
 
 ---
-# The Many ways to say Monday (Pt 1)
+# The Many ways to say Monday 
 
 ```{r wday-and-options}
 wday("2019-08-12")
 wday("2019-08-12", label = TRUE)
 ```
 
----
-# The Many ways to say Monday (Pt 2)
+--
 
-```{r}
+```{r many-monday}
 wday("2019-08-12", label = TRUE, abbr = FALSE)
 wday("2019-08-12", label = TRUE, week_start = 1)
 ```
@@ -364,41 +370,54 @@ yday("2019-08-10")
 ```
 
 ---
-# Our Turn:
+class: transition
+# Your Turn:
 
-- Open rstudio.cloud and check out Lecture 3B and follow along.
+Open rstudio.cloud exercise 3B and answer the questions about date
 
----
-## Example: pedestrian sensor
-
-```{r show-pedestrian-sensor, echo = FALSE, out.width = "100%"}
-include_graphics("images/sensors.png")
+```{r cd-4, echo = FALSE}
+library(countdown)
+countdown(minutes = 4,
+          font_size = "2em",
+          margin = "0.3em",
+          padding = "1px 1px")
 ```
+
 
 ---
 # [Melbourne pedestrian sensor portal](http://www.pedestrian.melbourne.vic.gov.au/):
+
+.pull-left[
+```{r show-pedestrian-sensor, echo = FALSE, out.width = "100%"}
+include_graphics("images/sensors.png")
+```
+]
+
+.pull-right[
 
 - Contains hourly counts of people walking around the city. 
 - Extract records for 2018 for the sensor at Melbourne Central
 - Use lubridate to extract different temporal components, so we can study the pedestrian patterns at this location. 
 
----
+]
 
+---
+# getting pedestrian count data with rwalkr
 ```{r rwalkr-load, eval = FALSE}
 library(rwalkr)
-walk_all <- melb_walk_fast(year = 2018)
-library(dplyr)
+walk_all <- melb_walk_fast(year = 2019)
 
 walk <- walk_all %>% filter(Sensor == "Melbourne Central")
-
-write_csv(walk, path = "data/walk_2018.csv")
+walk
 ```
 
 
-```{r read-walk}
+```{r read-walk, echo = FALSE}
 walk <- readr::read_csv("data/walk_2018.csv")
 walk
 ```
+
+
 
 ---
 # Let's think about the data structure.
@@ -429,7 +448,7 @@ walk
 ```
 
 ---
-# Create variables with these different temporal components. 
+# Add month and weekday information
 
 ```{r walk-tidy}
 walk_tidy <- walk %>%
@@ -494,13 +513,27 @@ How would you describe the pattern?
 - Similarly, months have different numbers of days.
 
 ---
+class: transition
 # Your Turn: Brainstorm in a group to answer these questions:
 
 1. Are pedestrian counts different depending on the month?
 2. Are pedestrian counts different depending on the day of the week?
 
+```{r cd-4-again, echo = FALSE}
+countdown(minutes = 4)
+```
+
+
 ---
 # What are the number of pedestrians per day?
+
+```{r walk-tidy-print}
+walk_tidy
+```
+
+---
+# What are the number of pedestrians per day?
+
 
 ```{r walk-day}
 walk_day <- walk_tidy %>% 
@@ -513,7 +546,35 @@ walk_day
 ---
 # What are the mean number of people per weekday?
 
+```{r walk-day-mutate}
+walk_day %>%
+  mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1))
+```
+
+---
+# What are the mean number of people per weekday?
+
+```{r walk-day-group-by}
+walk_day %>%
+  mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1)) %>% 
+  group_by(wday) 
+```
+
+---
+# What are the mean number of people per weekday?
+
 ```{r walk-day-summarise}
+walk_day %>%
+  mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1)) %>% 
+  group_by(wday) %>%
+  summarise(m = mean(day_count, na.rm = TRUE),
+            s = sd(day_count, na.rm = TRUE))
+```
+
+---
+# What are the mean number of people per weekday?
+
+```{r walk-day-all}
 walk_week_day <- walk_day %>%
   mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1)) %>% 
   group_by(wday) %>%
@@ -524,6 +585,8 @@ walk_week_day
 ```
 
 ---
+# What are the mean number of people per weekday?
+
 ```{r gg-walk-day, fig.width = 8, fig.height = 3}
 ggplot(walk_week_day) + 
   geom_errorbar(aes(x = wday, ymin = m - s, ymax = m + s)) +
@@ -533,6 +596,7 @@ ggplot(walk_week_day) +
 ```  
 
 ---
+class: transition
 # Distribution of counts
 
 Side-by-side boxplots show the distribution of counts over different temporal elements.
@@ -540,7 +604,7 @@ Side-by-side boxplots show the distribution of counts over different temporal el
 ---
 # Hour of the day
 
-```{r gg-time-count, fig.width = 8, fig.height = 3}
+```{r gg-time-count}
 ggplot(walk_tidy,
        aes(x = as.factor(Time), y = Count)) + 
   geom_boxplot()
@@ -549,7 +613,7 @@ ggplot(walk_tidy,
 ---
 # Day of the week
 
-```{r gg-walk-weekday-count, fig.width = 8, fig.height = 3}
+```{r gg-walk-weekday-count}
 ggplot(walk_tidy,
        aes(x = wday,
            y = Count)) +
@@ -559,7 +623,7 @@ ggplot(walk_tidy,
 ---
 # Month
 
-```{r gg-month-count-boxplot, cache = TRUE, , fig.width = 8, fig.height = 3}
+```{r gg-month-count-boxplot, cache = TRUE}
 ggplot(walk_tidy,
        aes(x = month, 
            y = Count)) + 
@@ -567,40 +631,34 @@ ggplot(walk_tidy,
 ```
 
 ---
+# Time series plots
 
+## Lines show consecutive hours of the day
 
-# Time series plots: Lines show consecutive hours of the day.
-
-```{r gg-time-count-line, cache = TRUE, , fig.width = 8, fig.height = 3}
+```{r gg-time-count-line, cache = TRUE}
 ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) + 
   geom_line()
 ```
 
 ---
-
-
 # By month
 
-```{r gg-time-count-by-date, fig.height=3, fig.width = 8}
+```{r gg-time-count-by-date}
 ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   geom_line() +
   facet_wrap( ~ month)
 ```
 
 ---
-
-
 # By week day
 
-```{r gg-time-count-line-facet-grid, fig.width = 8, fig.height = 3, cache = TRUE}
+```{r gg-time-count-line-facet-grid, fig.width = 14, fig.height = 6, cache = TRUE}
 ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   geom_line() +
   facet_grid(month ~ wday)
 ```
 
 ---
-
-
 # Calendar plots
 
 .left-code[
@@ -631,11 +689,8 @@ prettify(p1)
 ]
 
 ---
-
-
 # Holidays
 
-.pull-left[
 ```{r vic-hols}
 library(tsibble)
 library(sugrrants)
@@ -643,13 +698,6 @@ library(timeDate)
 vic_holidays <- holiday_aus(2018, state = "VIC")
 vic_holidays
 ```
-]
-
-.pull-right[
-
-![](images/tsibble.png)
-
-]
 
 ---
 
@@ -689,14 +737,11 @@ p2 <- ggplot(walk_holiday_calendar,
 ```
 
 ---
-
-
 # Holidays
 
-```{r show-calendar-plot-p2, echo = FALSE, fig.height = 4, fig.width = 8}
+```{r show-calendar-plot-p2, echo = FALSE, fig.width = 14, fig.height = 6}
 prettify(p2)
 ```
-
 
 ---
 
@@ -717,8 +762,3 @@ prettify(p2)
 - Take the lab quiz
 - Use the rest of the lab time to coordinate with your group on the first assignment.
 
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```

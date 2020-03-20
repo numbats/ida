@@ -8,6 +8,8 @@
     <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.3.5/countdown.js"></script>
     <!--
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
     -->
@@ -26,12 +28,11 @@
   
 
 
-background-color: #006DAE
-class: middle center hide-slide-number
-
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
-&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;br&gt;
@@ -39,7 +40,6 @@ class: middle center hide-slide-number
 .white[Press the **right arrow** to progress to the next slide!]
 
 ---
-
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -64,9 +64,9 @@ Lecturer: *Nicholas Tierney*
 
 Department of Econometrics and Business Statistics
 
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
-18th March 2020
+March 2020
 
 &lt;br&gt;
 ]
@@ -94,51 +94,55 @@ Department of Econometrics and Business Statistics
 
 
 ---
-  
-
-background-image: url(imgs.njtierney.com/allison-horst-ggplot2-masterpiece.png)
+background-image: url(images/allison-horst-ggplot2-masterpiece.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
-.right.purple.large[Art by Allison Horst]
+
+.right.purple.small[
+Art by Allison Horst
+]
 
 ---
 class: refresher
 # Try drawing a mental model of last lecture's material on ggplot2
 
 ---
-background-image: url(imgs.njtierney.com/allison-horst-lubridate.png)
+background-image: url(images/allison-horst-lubridate.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
-.right.purple.large[Art by Allison Horst]
+.right.purple.small[
+Art by Allison Horst
+]
 
 ---
+class: transition
 # Overview
 
-.huge[
 - Working with dates
 - Constructing graphics
-]
 
 ---
 # Reminder re the assignment:
 
-.huge[
-- Due 5pm **week 6**
-- Submit by one person in the assignment group
+- Due 5pm **April 1st**
+- Submit by **one person** in the assignment group
 - ED &gt; assessments &gt; upload your `Rmd`, and `html`, files. 
 - **One per group**
-- **Remember to name your files as described in the submission**
-]
+- **Remember to name your files**
+- E.g., "etc1010-assignment-1-group-name.Rmd"
 
 ---
 # The challenges of working with dates and times
 
 - Conventional order of day, month, year is different across location
   - Australia: DD-MM-YYYY
+    - "21-02-2020"
   - America: MM-DD-YYYY
+    - "02-21-2020"
   - [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601): YYYY-MM-DD
+    - "2020-02-21"
 
 ---
 background-image: url(https://imgs.xkcd.com/comics/iso_8601.png)
@@ -157,9 +161,7 @@ class: center, bottom, white
 - Times are local, for us. Where are you?
 - Timezones!!!
 
-
----
-# The challenges of working with dates and times
+--
 
 - Representing time relative to it's type:
    - What day of the week is it? 
@@ -175,20 +177,21 @@ class: center, bottom, white
   - Days could be numbers of names. (1st day....Sunday? Monday?)
   - Days and Months have abbreviations. (Mon, Tue, Jan, Feb)
 
----
-# The challenges of working with dates and times
+--
 
 - Time can be relative: 
   - How many days until we go on holidays?
   - How many working days?
 
 ---
-background-image: url(imgs.njtierney.com/allison-horst-lubridate.png)
+background-image: url(images/allison-horst-lubridate.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
 
-.right.purple.large[Art by Allison Horst]
+.right.purple.small[
+Art by Allison Horst
+]
 ---
 # Lubridate
 
@@ -203,12 +206,12 @@ class: center, bottom, white
 
 .right-plot[
 
-&lt;img src="images/lubridate.jpg" width="305" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/lubridate.png" width="50%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
 
-background-image: url(imgs.njtierney.com/allison-horst-lubridate-ymd.png)
+background-image: url(images/allison-horst-lubridate-ymd.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
@@ -240,17 +243,22 @@ ymd("2019/08/10")
 
 --
 
-# yeah, wow, I was actually surprised this worked
-
 
 ```r
 ymd("??2019-.-08//10---")
 ## [1] "2019-08-10"
 ```
 
+--
+
+## ....yeah, wow, I was actually surprised this worked
 
 ---
 # Change the letters, change the output
+
+# `mdy()` expects month, day, year. 
+
+--
 
 
 ```r
@@ -259,11 +267,10 @@ mdy("10/15/2019")
 ```
 
 --
-# `mdy()` expects month, day, year. 
-
---
 
 # `dmy()` expects day, month, year.
+
+--
 
 
 ```r
@@ -312,7 +319,7 @@ A list of acceptable time zones can be found [here](https://en.wikipedia.org/wik
 
 ```r
 today()
-## [1] "2020-03-02"
+## [1] "2020-03-20"
 ```
 
 --
@@ -320,7 +327,7 @@ today()
 
 ```r
 today(tz = "America/Los_Angeles")
-## [1] "2020-03-01"
+## [1] "2020-03-19"
 ```
 
 --
@@ -328,7 +335,7 @@ today(tz = "America/Los_Angeles")
 
 ```r
 now()
-## [1] "2020-03-02 09:43:22 AEDT"
+## [1] "2020-03-20 12:44:52 AEDT"
 ```
 
 --
@@ -336,7 +343,7 @@ now()
 
 ```r
 now(tz = "America/Los_Angeles")
-## [1] "2020-03-01 14:43:22 PST"
+## [1] "2020-03-19 18:44:52 PDT"
 ```
 
 ---
@@ -373,8 +380,7 @@ ymd_hms("2019-08-10 10:05:30",
   - A number. Does 1 mean... Sunday, Monday or even Saturday???
   - Or text or or abbreviated text. (Mon vs. Monday)
 
----
-# Many ways of saying similar things
+--
   
 - Talking with people we generally use day name:
   - Today is Friday, tomorrow is Saturday vs Today is 5 and tomorrow is 6.
@@ -382,7 +388,7 @@ ymd_hms("2019-08-10 10:05:30",
   - e.g., Saturday - Thursday is 2 days (6 - 4)
 
 ---
-# The Many ways to say Monday (Pt 1)
+# The Many ways to say Monday 
 
 
 ```r
@@ -393,8 +399,7 @@ wday("2019-08-12", label = TRUE)
 ## Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat
 ```
 
----
-# The Many ways to say Monday (Pt 2)
+--
 
 
 ```r
@@ -443,40 +448,45 @@ yday("2019-08-10")
 ```
 
 ---
-# Our Turn:
+class: transition
+# Your Turn:
 
-- Open rstudio.cloud and check out Lecture 3B and follow along.
+Open rstudio.cloud exercise 3B and answer the questions about date
 
----
-## Example: pedestrian sensor
+<div class="countdown" id="timer_5e7420fb" style="right:0;bottom:0;margin:0.3em;padding:1px 1px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
-&lt;img src="images/sensors.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # [Melbourne pedestrian sensor portal](http://www.pedestrian.melbourne.vic.gov.au/):
+
+.pull-left[
+&lt;img src="images/sensors.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
 
 - Contains hourly counts of people walking around the city. 
 - Extract records for 2018 for the sensor at Melbourne Central
 - Use lubridate to extract different temporal components, so we can study the pedestrian patterns at this location. 
 
----
+]
 
+---
+# getting pedestrian count data with rwalkr
 
 ```r
 library(rwalkr)
-walk_all &lt;- melb_walk_fast(year = 2018)
-library(dplyr)
+walk_all &lt;- melb_walk_fast(year = 2019)
 
 walk &lt;- walk_all %&gt;% filter(Sensor == "Melbourne Central")
-
-write_csv(walk, path = "data/walk_2018.csv")
+walk
 ```
 
 
 
-```r
-walk &lt;- readr::read_csv("data/walk_2018.csv")
-walk
+```
 ## # A tibble: 8,760 x 5
 ##    Sensor            Date_Time           Date        Time Count
 ##    &lt;chr&gt;             &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;
@@ -492,6 +502,8 @@ walk
 ## 10 Melbourne Central 2017-12-31 22:00:00 2018-01-01     9   326
 ## # … with 8,750 more rows
 ```
+
+
 
 ---
 # Let's think about the data structure.
@@ -537,7 +549,7 @@ walk
 ```
 
 ---
-# Create variables with these different temporal components. 
+# Add month and weekday information
 
 
 ```r
@@ -615,13 +627,42 @@ How would you describe the pattern?
 - Similarly, months have different numbers of days.
 
 ---
+class: transition
 # Your Turn: Brainstorm in a group to answer these questions:
 
 1. Are pedestrian counts different depending on the month?
 2. Are pedestrian counts different depending on the day of the week?
 
+<div class="countdown" id="timer_5e742022" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
 ---
 # What are the number of pedestrians per day?
+
+
+```r
+walk_tidy
+## # A tibble: 8,760 x 7
+##    Sensor            Date_Time           Date        Time Count month wday 
+##    &lt;chr&gt;             &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt;
+##  1 Melbourne Central 2017-12-31 13:00:00 2018-01-01     0  2996 Jan   Mon  
+##  2 Melbourne Central 2017-12-31 14:00:00 2018-01-01     1  3481 Jan   Mon  
+##  3 Melbourne Central 2017-12-31 15:00:00 2018-01-01     2  1721 Jan   Mon  
+##  4 Melbourne Central 2017-12-31 16:00:00 2018-01-01     3  1056 Jan   Mon  
+##  5 Melbourne Central 2017-12-31 17:00:00 2018-01-01     4   417 Jan   Mon  
+##  6 Melbourne Central 2017-12-31 18:00:00 2018-01-01     5   222 Jan   Mon  
+##  7 Melbourne Central 2017-12-31 19:00:00 2018-01-01     6   110 Jan   Mon  
+##  8 Melbourne Central 2017-12-31 20:00:00 2018-01-01     7   180 Jan   Mon  
+##  9 Melbourne Central 2017-12-31 21:00:00 2018-01-01     8   205 Jan   Mon  
+## 10 Melbourne Central 2017-12-31 22:00:00 2018-01-01     9   326 Jan   Mon  
+## # … with 8,750 more rows
+```
+
+---
+# What are the number of pedestrians per day?
+
 
 
 ```r
@@ -651,6 +692,76 @@ walk_day
 
 
 ```r
+walk_day %&gt;%
+  mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1))
+## # A tibble: 365 x 3
+##    Date       day_count wday 
+##    &lt;date&gt;         &lt;dbl&gt; &lt;ord&gt;
+##  1 2018-01-01     30832 Mon  
+##  2 2018-01-02     26136 Tue  
+##  3 2018-01-03     26567 Wed  
+##  4 2018-01-04     26532 Thu  
+##  5 2018-01-05     28203 Fri  
+##  6 2018-01-06     20845 Sat  
+##  7 2018-01-07     24052 Sun  
+##  8 2018-01-08     26530 Mon  
+##  9 2018-01-09     27116 Tue  
+## 10 2018-01-10     28203 Wed  
+## # … with 355 more rows
+```
+
+---
+# What are the mean number of people per weekday?
+
+
+```r
+walk_day %&gt;%
+  mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1)) %&gt;% 
+  group_by(wday) 
+## # A tibble: 365 x 3
+## # Groups:   wday [7]
+##    Date       day_count wday 
+##    &lt;date&gt;         &lt;dbl&gt; &lt;ord&gt;
+##  1 2018-01-01     30832 Mon  
+##  2 2018-01-02     26136 Tue  
+##  3 2018-01-03     26567 Wed  
+##  4 2018-01-04     26532 Thu  
+##  5 2018-01-05     28203 Fri  
+##  6 2018-01-06     20845 Sat  
+##  7 2018-01-07     24052 Sun  
+##  8 2018-01-08     26530 Mon  
+##  9 2018-01-09     27116 Tue  
+## 10 2018-01-10     28203 Wed  
+## # … with 355 more rows
+```
+
+---
+# What are the mean number of people per weekday?
+
+
+```r
+walk_day %&gt;%
+  mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1)) %&gt;% 
+  group_by(wday) %&gt;%
+  summarise(m = mean(day_count, na.rm = TRUE),
+            s = sd(day_count, na.rm = TRUE))
+## # A tibble: 7 x 3
+##   wday       m      s
+##   &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Mon   25590.  8995.
+## 2 Tue   26242.  8989.
+## 3 Wed   27627.  9535.
+## 4 Thu   27887.  8744.
+## 5 Fri   31544. 10239.
+## 6 Sat   30470.  9823.
+## 7 Sun   25296.  9024.
+```
+
+---
+# What are the mean number of people per weekday?
+
+
+```r
 walk_week_day &lt;- walk_day %&gt;%
   mutate(wday = wday(Date, label = TRUE, abbr = TRUE, week_start = 1)) %&gt;% 
   group_by(wday) %&gt;%
@@ -671,6 +782,8 @@ walk_week_day
 ```
 
 ---
+# What are the mean number of people per weekday?
+
 
 ```r
 ggplot(walk_week_day) + 
@@ -680,9 +793,10 @@ ggplot(walk_week_day) +
        y = "Average number of predestrians")
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-walk-day-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-walk-day-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
+class: transition
 # Distribution of counts
 
 Side-by-side boxplots show the distribution of counts over different temporal elements.
@@ -697,7 +811,7 @@ ggplot(walk_tidy,
   geom_boxplot()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 # Day of the week
@@ -710,7 +824,7 @@ ggplot(walk_tidy,
   geom_boxplot()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-walk-weekday-count-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-walk-weekday-count-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 # Month
@@ -723,12 +837,12 @@ ggplot(walk_tidy,
   geom_boxplot()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-month-count-boxplot-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-month-count-boxplot-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
+# Time series plots
 
-
-# Time series plots: Lines show consecutive hours of the day.
+## Lines show consecutive hours of the day
 
 
 ```r
@@ -736,11 +850,9 @@ ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   geom_line()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-line-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-line-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
-
-
 # By month
 
 
@@ -750,11 +862,9 @@ ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   facet_wrap( ~ month)
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-by-date-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-by-date-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
-
-
 # By week day
 
 
@@ -764,11 +874,9 @@ ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   facet_grid(month ~ wday)
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-line-facet-grid-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-line-facet-grid-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
-
-
 # Calendar plots
 
 .left-code[
@@ -798,11 +906,8 @@ prettify(p1)
 ]
 
 ---
-
-
 # Holidays
 
-.pull-left[
 
 ```r
 library(tsibble)
@@ -826,13 +931,6 @@ vic_holidays
 ## 11 Christmas Day    2018-12-25
 ## 12 Boxing Day       2018-12-26
 ```
-]
-
-.pull-right[
-
-![](images/tsibble.png)
-
-]
 
 ---
 
@@ -888,12 +986,9 @@ p2 &lt;- ggplot(walk_holiday_calendar,
 ```
 
 ---
-
-
 # Holidays
 
-&lt;img src="lecture_3b_files/figure-html/show-calendar-plot-p2-1.png" style="display: block; margin: auto;" /&gt;
-
+&lt;img src="lecture_3b_files/figure-html/show-calendar-plot-p2-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -914,54 +1009,6 @@ p2 &lt;- ggplot(walk_holiday_calendar,
 - Take the lab quiz
 - Use the rest of the lab time to coordinate with your group on the first assignment.
 
-
----
-  
-
-background-image: url(images/bg1.jpg)
-background-size: cover
-class: hide-slide-number split-70
-count: false
-
-.column.shade_black[.content[
-
-&lt;br&gt;&lt;br&gt;
-
-# That's it!
-
-.bottom_abs.width100[
-
-Lecturer: Nicholas Tierney
-
-Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
-
-18th March 2020
-
-
-]
-
-&lt;br /&gt;
-This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
-
-&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
-
-
-]]
-
-
-
-&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
-&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
-&lt;svg class="clip-svg absolute"&gt;
-&lt;defs&gt;
-&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
-&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
-&lt;/clipPath&gt;
-&lt;/defs&gt;	
-&lt;/svg&gt;
-&lt;/div&gt;
-&lt;/div&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
@@ -1018,6 +1065,42 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  /* Replace <script> tags in slides area to make them executable
+   *
+   * Runs after post-processing of markdown source into slides and replaces only
+   * <script>s on the last slide of continued slides using the .has-continuation
+   * class added by xaringan. Finally, any <script>s in the slides area that
+   * aren't executed are commented out.
+   */
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container:not(.has-continuation) script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+  var scriptsNotExecuted = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container.has-continuation script'
+  );
+  if (!scriptsNotExecuted.length) return;
+  for (var i = 0; i < scriptsNotExecuted.length; i++) {
+    var comment = document.createComment(scriptsNotExecuted[i].outerHTML)
+    scriptsNotExecuted[i].parentElement.replaceChild(comment, scriptsNotExecuted[i])
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -1035,17 +1118,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

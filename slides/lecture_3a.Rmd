@@ -3,8 +3,8 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 3, part A"
 subtitle: "Data Visualisation"
 author: "Nicholas Tierney"
-email: ""
-date: "16th March 2020"
+email: "ETC1010.Clayton-x@monash.edu"
+date: "21st March 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -53,6 +53,7 @@ opts_chunk$set(echo = TRUE,
                collapse = TRUE,
                fig.height = 4,
                fig.width = 8,
+               fig.retina = 3,
                fig.align = "center",
                cache = FALSE)
 
@@ -60,8 +61,6 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 
 ```
 
----
-  
 ```{r read-tb, echo = FALSE}
 tb <- read_csv(here::here("slides",
                           "data",
@@ -97,8 +96,6 @@ mutate(age =
             age == "65" ~ "65+"))
 ```
 
-# Learning Tips
-
 ---
 # Understanding learning
 
@@ -114,7 +111,11 @@ mutate(age =
 
 > "I'll never understand"
 
+
+
 > "I just don't get programming"
+
+
 
 > "I'm not a maths person"
 
@@ -127,7 +128,11 @@ mutate(age =
 
 > "I understand more than I did yesterday"
 
+
+
 > "I can learn how to program"
+
+
 
 > "Compared to this last week, I've learnt quite a bit!"
 
@@ -136,6 +141,8 @@ mutate(age =
 
 
 ---
+class: transition
+
 # Overview for today
 
 - Going from tidy data to a data plot, using a grammar
@@ -193,7 +200,7 @@ class: transition
 # ggplot2 $\in$ tidyverse
 
 .left-code[
-```{r ggplot-in-tidyverse, echo = FALSE}
+```{r ggplot-in-tidyverse, echo = FALSE, out.width = "80%"}
 include_graphics("images/ggplot2-part-of-tidyverse.png")
 ```
 ]
@@ -206,8 +213,6 @@ include_graphics("images/ggplot2-part-of-tidyverse.png")
 - (Source: [BloggoType](http://bloggotype.blogspot.com/2016/08/holiday-notes2-grammar-of-graphics.html))
 ]
 
-
-]
 
 ---
 background-image: url(images/grammar-of-graphics.png)
@@ -589,7 +594,7 @@ ggplot(tb_au,
 ---
 # Rainbow charts?
 
-```{r gg-rainbow, echo=TRUE, out.width = "100%"}
+```{r gg-rainbow, echo=TRUE, out.width = "60%"}
 ggplot(tb_au, aes(x = 1, 
                   y = count, 
                   fill = factor(year))) + #<<
@@ -634,22 +639,20 @@ class: transition
 - Pretty chart but not easy to interpret, or make comparisons across age groups. 
 
 ---
-
-## Why?
+# Why?
 
 [The various looks of David Bowie](https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif)
 
-.pull-left[
+
+.left-code[
+<img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width:50%" />
+
+]
+
 - Using named plots, eg pie chart, bar chart, scatterplot, is like seeing animals in the zoo. 
 - The grammar of graphics allows you to define the mapping between variables in the data, with elements of the plot. 
 - It allows us to see and understand how plots are similar or different. 
 - And you can see how variations in the definition create variations in the plot.
-]
-
-.pull-right[
-<img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width:50%" />
-
-]
 
 ---
 class: transition
@@ -669,8 +672,3 @@ class: transition
 - [Garret Aden Buie's gentle introduction to ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2/#1)
 - [Mine Çetinkaya-Rundel's introduction to ggplot using star wars.](https://github.com/rstudio-education/datascience-box/tree/master/slides/u1_d02-data-and-viz)
 
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
