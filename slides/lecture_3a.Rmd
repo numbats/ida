@@ -4,7 +4,7 @@ week: "Week 3, part A"
 subtitle: "Data Visualisation"
 author: "Nicholas Tierney"
 email: "ETC1010.Clayton-x@monash.edu"
-date: "21st March 2020"
+date: "March 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -185,8 +185,14 @@ class: transition
 ---
 # Data Visualisation
 
-.blockquote[
+.blockquote.pull-left[
 "The simple graph has brought more information to the data analyst’s mind than any other device." — John Tukey
+]
+
+.pull-right[
+```{r show-john, echo = FALSE, out.width = "100%"}
+include_graphics("images/john-tukey.jpg")
+```
 ]
 
 ---

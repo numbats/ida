@@ -70,7 +70,7 @@ walk_all <- melb_walk_fast(year = 2019)
 walk <- walk_all %>% filter(Sensor == "Melbourne Central")
 
 # write_csv(walk, path = "exercises/3b/data/walk_2019.csv")
-write_csv(walk, path = "data/walk_2019.csv")
+# write_csv(walk, path = "data/walk_2019.csv")
 ```
 
 ```{r read-walk}
