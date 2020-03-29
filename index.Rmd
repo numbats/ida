@@ -102,7 +102,7 @@ There are no lectorials during the midsemester break.
 
 ```{r read-create-sheet, eval = FALSE}
 # to be run interactively when google sheet is updated
-google_schedule <- read_sheet("https://docs.google.com/spreadsheets/d/1OmwIYBtuedFICwqXToTNx1xRRoDO0ZjjVjumvmg-TYU/edit#gid=0")
+google_schedule <- read_sheet("https://docs.google.com/spreadsheets/d/1OmwIYBtuedFICwqXToTNx1xRRoDO0ZjjVjumvmg-TYU/edit#gid=0") 
 
 write_csv(google_schedule, path = "materials/schedule.csv")
 ```
@@ -134,7 +134,8 @@ schedule <-  read_csv("materials/schedule.csv") %>%
   # generate readings
   mutate(Readings = map2_chr(Week, Lecture, generate_readings)) 
 
-midsem_break <- 10 # after which week (but there are 2 lectures per week)
+teaching_break <- 4
+midsem_break <- 8 # after which week (but there are 2 lectures per week)
 
 schedule %>% 
   kable(escape = FALSE, 
@@ -145,6 +146,10 @@ schedule %>%
   column_spec(2, width = "1cm") %>% 
   column_spec(3, width = "3cm") %>% 
   column_spec(4, width = "1cm") %>% 
+  group_rows(group_label = "Teaching Pause", 
+             start_row = teaching_break + 1, 
+             end_row = teaching_break, 
+             label_row_css = "background-color: #d9e1e8;") %>% 
   group_rows(group_label = "Midsemester Break", 
              start_row = midsem_break + 1, 
              end_row = midsem_break, 
