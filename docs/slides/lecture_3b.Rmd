@@ -4,7 +4,7 @@ week: "Week 3, part B"
 subtitle: "Dates and Times"
 author: "Nicholas Tierney"
 email: "ETC1010.Clayton-x@monash.edu"
-date: "March 2020"
+date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -94,7 +94,7 @@ class: transition
 ---
 # Reminder re the assignment:
 
-- Due 5pm **April 1st**
+- Due 5pm **April 8th**
 - Submit by **one person** in the assignment group
 - ED > assessments > upload your `Rmd`, and `html`, files. 
 - **One per group**
@@ -246,10 +246,7 @@ If you add a time zone, what changes?
 ymd("2019-08-10", tz = "Australia/Melbourne")
 ```
 
----
-# What happens if you try to specify different time zones?
-
-.pull-left[
+--
 
 ```{r add-tz-ymd}
 ymd("2019-08-10", 
@@ -259,13 +256,10 @@ ymd("2019-08-10",
     tz = "America/Los_Angeles")
 ```
 
-]
+--
 
-.pull-right[
+A list of acceptable time zones can be found [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (google "wiki timezone database" to find this later :) )
 
-A list of acceptable time zones can be found [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (google wiki timezone database)
-
-]
 
 ---
 # Timezones another way:
@@ -332,15 +326,29 @@ ymd_hms("2019-08-10 10:05:30",
 ---
 # The Many ways to say Monday 
 
+--
+
+The numbered day of the week, or with a label
+
 ```{r wday-and-options}
 wday("2019-08-12")
+
 wday("2019-08-12", label = TRUE)
 ```
 
 --
 
+The day with a label, and no abbreviation
+
 ```{r many-monday}
 wday("2019-08-12", label = TRUE, abbr = FALSE)
+```
+
+--
+
+The day with a label, and no abbreviation, and week starting on Monday, rather than Sunday
+
+```{r many-monday-week-start}
 wday("2019-08-12", label = TRUE, week_start = 1)
 ```
 
@@ -516,6 +524,8 @@ How would you describe the pattern?
 class: transition
 # Your Turn: Brainstorm in a group to answer these questions:
 
+(testing out zoom "breakout groups")
+
 1. Are pedestrian counts different depending on the month?
 2. Are pedestrian counts different depending on the day of the week?
 
@@ -604,7 +614,7 @@ Side-by-side boxplots show the distribution of counts over different temporal el
 ---
 # Hour of the day
 
-```{r gg-time-count}
+```{r gg-time-count, fig.width = 14, fig.height = 6}
 ggplot(walk_tidy,
        aes(x = as.factor(Time), y = Count)) + 
   geom_boxplot()
@@ -613,7 +623,7 @@ ggplot(walk_tidy,
 ---
 # Day of the week
 
-```{r gg-walk-weekday-count}
+```{r gg-walk-weekday-count, fig.width = 14, fig.height = 6}
 ggplot(walk_tidy,
        aes(x = wday,
            y = Count)) +
@@ -623,7 +633,7 @@ ggplot(walk_tidy,
 ---
 # Month
 
-```{r gg-month-count-boxplot, cache = TRUE}
+```{r gg-month-count-boxplot, cache = TRUE, fig.width = 14, fig.height = 6}
 ggplot(walk_tidy,
        aes(x = month, 
            y = Count)) + 
@@ -635,7 +645,7 @@ ggplot(walk_tidy,
 
 ## Lines show consecutive hours of the day
 
-```{r gg-time-count-line, cache = TRUE}
+```{r gg-time-count-line, cache = TRUE, fig.width = 14, fig.height = 6}
 ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) + 
   geom_line()
 ```
@@ -643,7 +653,7 @@ ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
 ---
 # By month
 
-```{r gg-time-count-by-date}
+```{r gg-time-count-by-date, fig.width = 14, fig.height = 6}
 ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   geom_line() +
   facet_wrap( ~ month)

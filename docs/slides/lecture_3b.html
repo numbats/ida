@@ -66,7 +66,7 @@ Department of Econometrics and Business Statistics
 
 <span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
-March 2020
+April 2020
 
 &lt;br&gt;
 ]
@@ -126,7 +126,7 @@ class: transition
 ---
 # Reminder re the assignment:
 
-- Due 5pm **April 1st**
+- Due 5pm **April 8th**
 - Submit by **one person** in the assignment group
 - ED &gt; assessments &gt; upload your `Rmd`, and `html`, files. 
 - **One per group**
@@ -289,10 +289,7 @@ ymd("2019-08-10", tz = "Australia/Melbourne")
 ## [1] "2019-08-10 AEST"
 ```
 
----
-# What happens if you try to specify different time zones?
-
-.pull-left[
+--
 
 
 ```r
@@ -305,13 +302,10 @@ ymd("2019-08-10",
 ## [1] "2019-08-10 PDT"
 ```
 
-]
+--
 
-.pull-right[
+A list of acceptable time zones can be found [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (google "wiki timezone database" to find this later :) )
 
-A list of acceptable time zones can be found [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (google wiki timezone database)
-
-]
 
 ---
 # Timezones another way:
@@ -319,7 +313,7 @@ A list of acceptable time zones can be found [here](https://en.wikipedia.org/wik
 
 ```r
 today()
-## [1] "2020-03-20"
+## [1] "2020-03-30"
 ```
 
 --
@@ -327,7 +321,7 @@ today()
 
 ```r
 today(tz = "America/Los_Angeles")
-## [1] "2020-03-19"
+## [1] "2020-03-29"
 ```
 
 --
@@ -335,7 +329,7 @@ today(tz = "America/Los_Angeles")
 
 ```r
 now()
-## [1] "2020-03-20 12:44:52 AEDT"
+## [1] "2020-03-30 13:20:49 AEDT"
 ```
 
 --
@@ -343,7 +337,7 @@ now()
 
 ```r
 now(tz = "America/Los_Angeles")
-## [1] "2020-03-19 18:44:52 PDT"
+## [1] "2020-03-29 19:20:49 PDT"
 ```
 
 ---
@@ -390,10 +384,15 @@ ymd_hms("2019-08-10 10:05:30",
 ---
 # The Many ways to say Monday 
 
+--
+
+The numbered day of the week, or with a label
+
 
 ```r
 wday("2019-08-12")
 ## [1] 2
+
 wday("2019-08-12", label = TRUE)
 ## [1] Mon
 ## Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat
@@ -401,11 +400,21 @@ wday("2019-08-12", label = TRUE)
 
 --
 
+The day with a label, and no abbreviation
+
 
 ```r
 wday("2019-08-12", label = TRUE, abbr = FALSE)
 ## [1] Monday
 ## 7 Levels: Sunday &lt; Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; ... &lt; Saturday
+```
+
+--
+
+The day with a label, and no abbreviation, and week starting on Monday, rather than Sunday
+
+
+```r
 wday("2019-08-12", label = TRUE, week_start = 1)
 ## [1] Mon
 ## Levels: Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat &lt; Sun
@@ -453,7 +462,7 @@ class: transition
 
 Open rstudio.cloud exercise 3B and answer the questions about date
 
-<div class="countdown" id="timer_5e7420fb" style="right:0;bottom:0;margin:0.3em;padding:1px 1px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_5e815996" style="right:0;bottom:0;margin:0.3em;padding:1px 1px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -630,10 +639,12 @@ How would you describe the pattern?
 class: transition
 # Your Turn: Brainstorm in a group to answer these questions:
 
+(testing out zoom "breakout groups")
+
 1. Are pedestrian counts different depending on the month?
 2. Are pedestrian counts different depending on the day of the week?
 
-<div class="countdown" id="timer_5e742022" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e815b0f" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -811,7 +822,7 @@ ggplot(walk_tidy,
   geom_boxplot()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
 # Day of the week
@@ -824,7 +835,7 @@ ggplot(walk_tidy,
   geom_boxplot()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-walk-weekday-count-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-walk-weekday-count-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
 # Month
@@ -837,7 +848,7 @@ ggplot(walk_tidy,
   geom_boxplot()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-month-count-boxplot-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-month-count-boxplot-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
 # Time series plots
@@ -850,7 +861,7 @@ ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   geom_line()
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-line-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-line-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
 # By month
@@ -862,7 +873,7 @@ ggplot(walk_tidy, aes(x = Time, y = Count, group = Date)) +
   facet_wrap( ~ month)
 ```
 
-&lt;img src="lecture_3b_files/figure-html/gg-time-count-by-date-1.png" width="576" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_3b_files/figure-html/gg-time-count-by-date-1.png" width="1008" style="display: block; margin: auto;" /&gt;
 
 ---
 # By week day
