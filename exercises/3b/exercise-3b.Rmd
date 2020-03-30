@@ -11,6 +11,11 @@ library(rwalkr)
 library(lubridate)
 ```
 
+# What to do if you are stuck?
+
+* Read through the lecture slides again, they most likely have an answer to these questions!
+* Take the question and copy-paste it into google, adding "lubridate" to the google query.
+
 # Play with dates
 
 - Convert something of the format "2020-01-20" into a date?
