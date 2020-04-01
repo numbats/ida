@@ -79,8 +79,8 @@ walk <- walk_all %>% filter(Sensor == "Melbourne Central")
 ```
 
 ```{r read-walk}
-# walk <- read_csv("data/walk_2019.csv")
-walk <- read_csv("exercises/3b/data/walk_2019.csv")
+walk <- read_csv("data/walk_2019.csv")
+# walk <- read_csv("exercises/3b/data/walk_2019.csv")
 walk
 ```
 
@@ -113,3 +113,8 @@ walk_both <- bind_rows(___,
 
 
 ## Can you match these with known events, found from web searching?
+
+# Extension exercises (to be covered at a later time)
+
+## Can you summarise this into weekly information?
+##
