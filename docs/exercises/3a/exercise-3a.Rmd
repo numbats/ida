@@ -19,14 +19,14 @@ Pull a copy of the Melbourne pedestrian sensor data for March, 2020, using the `
 * So, "01012000" would be the First of January, 2000.
 
 ```{r read-data, eval = FALSE}
-library(rwalkr)
-library(lubridate)
-
-start_date <- dmy("01-02-2020")
-end_date <- dmy("30-03-2020")
-
-walk_raw <- melb_walk(from = start_date,
-                      to = end_date)
+# library(rwalkr)
+# library(lubridate)
+# 
+# start_date <- dmy("01-02-2020")
+# end_date <- dmy("30-03-2020")
+# 
+# walk_raw <- melb_walk(from = start_date,
+#                       to = end_date)
 ```
 
 There are many sensors that are measured by the pedestrian tracking syste. You can find out more information about the data by looking up the helpfil for the `melb_walk` function by typing `?melb_walk`.
@@ -54,7 +54,7 @@ write_csv(walk_raw,
 
 ```{r read-data-in}
 library(readr)
-walk_tidy <- read_csv(file = "data/walk-feb-march-2020.csv.gz")
+walk_tidy <- read_csv(file = "exercises/3a/data/walk-feb-march-2020.csv.gz")
 ```
 
 # Make a side-by-side boxplot of pedestrian counts by sensor. 
@@ -74,11 +74,20 @@ There are many observations presented with `geom_point()`!
 Try using `geom_boxplot()` instead to summarise this information.
 
 ```{r gg-walk-boxplot}
-ggplot(___,
-       aes(x = ___,
-           y = ___)) +
-  geom_***
+ggplot(walk_tidy,
+       aes(x = Sensor,
+           y = Count)) +
+  geom_boxplot()
 ```
+
+```{r}
+library(ggplot2)
+ggplot(walk_tidy,
+       aes(x = Count)) +
+  geom_histogram() + 
+  facet_wrap(~Sensor)
+```
+
 
 ## Describe what you learn from the boxplot.
 
@@ -87,20 +96,20 @@ ggplot(___,
 Hint - read the previous description of the `dmy` function to work out how to choose the date.
 
 ```{r create-first-march}
+library(lubridate)
 walk_first_march <- walk_tidy %>%
-  filter(Date >= dmy(___), 
-         Date <= dmy(___))
+  filter(Date >= dmy("01-03-2020"), 
+         Date <= dmy("08-03-2020"))
 ```
 
 # Using the first week data, make line plots of Count by Date_Time, separately for each sensor. 
 
 ```{r gg-first-week}
 ggplot(walk_first_march,
-       aes(x = ___,
-           y = ___)) +
+       aes(x = Date_Time,
+           y = Count)) +
   geom_line() +
-  facet_wrap(~Sensor,
-             ncol = 1)
+  facet_wrap(~Sensor, ncol = 1)
 ```
 
 ## What do you learn?
@@ -111,4 +120,28 @@ ggplot(walk_first_march,
 
 1. Look at all the data of March, do you see any differences in the pedestrian counts over the past weeks as the Government has implemented Social Distancing policies? 
 
-2. Compare the pedestrian count data from March 2020 to March 2019, (either using the code above to download  or from the "data" folder) and explore some of the other patterns in other stations.
+```{r}
+library(dplyr)
+library(lubridate)
+walk_tidy_month <- walk_tidy %>% 
+  mutate(month = month(Date),
+         shutdown_start = Date > ymd("2020-03-16"))
+
+
+  ggplot(aes(x = Date_Time,
+             y = Count)) +
+  geom_line() + 
+  facet_wrap(~Sensor) +
+  geom_hline(aes(yintercept = date_of_gvt),
+             colour = "red")
+```
+
+
+2. Compare the pedestrian count data from March 2020 to March 2019, (either using the code above to download  or from the "data" folder) and exploresome of the other patterns in other stations.
+
+
+```{r}
+walk_march_2020 <- 
+walk_march_2019 <- 
+```
+

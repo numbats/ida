@@ -3,8 +3,8 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 4, part B"
 subtitle: "Advanced topics in data visualisation"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
-date: "28th Mar 2020"
+email: "ETC1010.Clayton-x@monash.edu"
+date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -640,8 +640,3 @@ p +
 - Winston Chang (2012) [Cookbook for R](graphics cookbook)
 - Antony Unwin (2014) [Graphical Data Analysis](http://www.gradaanwr.net)
 - Naomi Robbins (2013) [Creating More Effective Charts](http://www.nbr-graphs.com)
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```

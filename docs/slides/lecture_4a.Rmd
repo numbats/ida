@@ -3,8 +3,8 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 4, part A"
 subtitle: "Relational data, and joins"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
-date: "23rd March 2020"
+email: "ETC1010.Clayton-x@monash.edu"
+date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -59,13 +59,7 @@ opts_chunk$set(echo = TRUE,
 
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ```
----
 
-class: transition
-
-# While the song is playing...
-
-Draw a mental model / concept map of last weeks lecture content
 
 ---
 class: refresher
@@ -79,6 +73,8 @@ class: refresher
 ---
 class: refresher
 # Recap: ggplot mental model
+
+- Note: take a moment to try this out yourself.
 
 .center.middle.huge[
 [demo]
@@ -361,8 +357,3 @@ include_graphics("images/joins_using_coat.jpg")
 # References
 
 - Chapter 13 of R4DS
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
