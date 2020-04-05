@@ -35,7 +35,8 @@ Complete these exercises about the `nycflights13` data using wrangling operation
 Here is some example code:
 
 ```{r}
-map <- read_rds("data/map.rds")
+map <- read_rds(here::here("exercises/4a/data/map.rds"))
+# map <- read_rds("data/map.rds")
 
 airports %>% filter(faa == "LGA")
 

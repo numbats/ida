@@ -97,16 +97,6 @@ N4YRAA_latlon <- N4YRAA_latlon %>% arrange(FL_DATE, DEP_TIME)
 
 # Map it
 
-NOTE: THIS CODE DOES NOT NEED TO RUN. It is for illustrative purposes only, to show you how to get google maps info.
-
-```{r eval=FALSE}
-# Need to use a registered google account to get map
-register_google("XXX")
-map <- get_map(c(lon = -92.20562, lat = 36.20259), zoom = 5)
-write_rds(map, "data/map.rds")
-```
-
-
 ```{r}
 library(ggmap)
 library(lubridate)
@@ -169,3 +159,15 @@ ggmap(map) +
 
 - Go to rstudio.cloud
 - Open `nycflights.Rmd` and complete exercises
+
+
+# References
+
+If you are interested in learning how to create a google map, here is some example code that shows you the general process for downloading and writing a map.
+
+```{r eval=FALSE}
+# # Need to use a registered google account to get map
+# register_google("XXX")
+# map <- get_map(c(lon = -92.20562, lat = 36.20259), zoom = 5)
+# write_rds(map, "data/map.rds")
+```
