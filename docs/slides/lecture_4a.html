@@ -99,13 +99,14 @@ class: refresher
 # Recap
 
 - consultation hours
+- Quiz due dates (They close at 4pm on Thursdays)
 - ggplot
 - tidy data
 - drawing mental models
 
 ---
 class: refresher
-# Recap: ggplot mental model
+# Recap: dates and times
 
 - Note: take a moment to try this out yourself.
 
@@ -289,11 +290,11 @@ weather
 ---
 # Your turn: go to rstudio.cloud
 
-- Load the `Lahman` package, which contains multiple tables of baseball data.
+- Open `lahman.Rmd`, which contains multiple tables of baseball data.
 - What key(s) connect the batting table with the salary table?
 - Can you draw out a diagram of the connections amongst the tables?
 
-<div class="countdown" id="timer_5e89ce91" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
+<div class="countdown" id="timer_5e8abfa5" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -407,6 +408,12 @@ airlines
 ## 15 WN      Southwest Airlines Co.     
 ## 16 YV      Mesa Airlines Inc.
 ```
+
+---
+# Concept map of tables and joins from the text
+
+&lt;img src="images/relational-nycflights.png" width="80%" style="display: block; margin: auto;" /&gt;
+
 
 ---
 # Combine `airlines` &amp; `flights` using `left_join()`

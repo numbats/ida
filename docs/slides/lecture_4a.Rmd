@@ -66,13 +66,14 @@ class: refresher
 # Recap
 
 - consultation hours
+- Quiz due dates (They close at 4pm on Thursdays)
 - ggplot
 - tidy data
 - drawing mental models
 
 ---
 class: refresher
-# Recap: ggplot mental model
+# Recap: dates and times
 
 - Note: take a moment to try this out yourself.
 
@@ -179,7 +180,7 @@ include_graphics("images/relational-nycflights.png")
 ---
 # Your turn: go to rstudio.cloud
 
-- Load the `Lahman` package, which contains multiple tables of baseball data.
+- Open `lahman.Rmd`, which contains multiple tables of baseball data.
 - What key(s) connect the batting table with the salary table?
 - Can you draw out a diagram of the connections amongst the tables?
 
@@ -271,6 +272,14 @@ flights
 ```{r print-airlines-again}
 airlines
 ```
+
+---
+# Concept map of tables and joins from the text
+
+```{r show-nycflights-graphic-again, echo = FALSE, out.width = "80%"}
+include_graphics("images/relational-nycflights.png")
+```
+
 
 ---
 # Combine `airlines` & `flights` using `left_join()`

@@ -17,12 +17,6 @@ Complete these exercises about the `nycflights13` data using wrangling operation
 
 ## 1b. Add the airport locations (lat, long) of the origin and destination to the flights data 
 
-## 1c. Pull a google map, and plot it
-
-
-## 1d. Draw lines connecting origin to destination airports on the map
-
-
 # 2. Does wind direction, when windspeed is stronger, affect the operations at the airport? Generally cross winds affect airport operations. If the wind is reasonably strong and blowing across the runway, there are likely to be more delays. It could be helpful if you can find maps of the three airports in NYC to check how many runways they have, and the orientation of them.
 
 
@@ -35,8 +29,6 @@ Complete these exercises about the `nycflights13` data using wrangling operation
 Here is some example code:
 
 ```{r}
-map <- read_rds("data/map.rds")
-
 airports %>% filter(faa == "LGA")
 
 delta <- flights %>%
@@ -45,26 +37,12 @@ delta <- flights %>%
   mutate(orig_lon = -73.9, orig_lat = 40.8)
 ```
 
-
-```{r}
-# map <- get_map(c(lon = -92.20562, lat = 36.20259), zoom = 4)
-library(ggmap)
-ggmap(map) +
-  geom_segment(data = delta,
-    aes(x = orig_lon,
-        xend = lon,
-        y = orig_lat,
-        yend = lat),
-    color = "navyblue",
-    alpha = 0.2)
-```
-
-
 ```{r}
 flgt_weath <- flights %>%
   filter(origin == "LGA") %>%
   left_join(weather, by = c("origin", "time_hour")) %>%
   filter(wind_speed > 25)
+
 ggplot(flgt_weath, aes(x = wind_dir, y = dep_delay)) +
   # geom_point(alpha=0.1) +
   geom_smooth(se = FALSE)

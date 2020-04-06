@@ -13,14 +13,15 @@ library(tidyverse)
 # First: load in the plane and airline data
 
 ```{r load-plane}
-plane_N4YRAA <- read_csv("data/plane_N4YRAA.csv")
+# plane_N4YRAA <- read_csv("data/plane_N4YRAA.csv")
+plane_N4YRAA <- read_csv(here::here("exercises/4a/data/plane_N4YRAA.csv"))
 glimpse(plane_N4YRAA)
 ```
 
 # Load Airline travel, airport location
 
 ```{r read-airports}
-airport_raw <- read_csv("data/airports.csv")
+airport_raw <- read_csv(here::here("exercises/4a/data/airports.csv"))
 airport_raw %>%
   select(AIRPORT, 
          LATITUDE, 
@@ -72,7 +73,6 @@ N4YRAA_latlon %>%
 
 The variables ORIGIN_LATITUDE, ORIGIN_LONGITUDE, DISPLAY_AIRPORT_NAME are added to corresponding row in the plane_N4YRAA table.
 
-
 # Add destination locations
 
 - Added spatial coordinates (lat, lon) for the origin airport
@@ -102,8 +102,8 @@ library(ggmap)
 library(lubridate)
 library(ggthemes)
 
-map <- read_rds("data/map.rds")
-# load("data/map.rda")
+# map <- read_rds("data/map.rds")
+map <- read_rds(here::here("exercises/4a/data/map.rds"))
 
 N4YRAA_latlon_2017_05_06 <- N4YRAA_latlon %>%
   filter(FL_DATE == ymd("2017-05-06"))
@@ -165,8 +165,9 @@ ggmap(map) +
 
 If you are interested in learning how to create a google map, here is some example code that shows you the general process for downloading and writing a map.
 
-```{r eval=FALSE}
+```{r reference-on-how-to-download-ggmap, eval=FALSE}
 # # Need to use a registered google account to get map
+# If you are interested in learning how to create a google map, here is some example code that shows you the general process for downloading and writing a map.
 # register_google("XXX")
 # map <- get_map(c(lon = -92.20562, lat = 36.20259), zoom = 5)
 # write_rds(map, "data/map.rds")

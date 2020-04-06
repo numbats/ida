@@ -5,8 +5,8 @@ Week,Lecture,Date,HTML,PDF,Exercise,Topic,Readings,Assessment
 2,b,2020-03-18T00:00:00Z,lecture_2b.html,lecture_2b.pdf,ida-exercise-2b.zip,NA,NA,NA
 3,a,2020-03-30T00:00:00Z,lecture_3a.html,lecture_3a.pdf,ida-exercise-3a.zip,"Plotting your data, and wrangling temporal data",NA,NA
 3,b,2020-04-01T00:00:00Z,lecture_3b.html,lecture_3b.pdf,ida-exercise-3b.zip,NA,NA,NA
-4,a,2020-04-06T00:00:00Z,lecture_4a.html,NA,NA,"Advanced wrangling, joining tables, and advanced data visualisation",NA,NA
-4,b,2020-04-08T00:00:00Z,lecture_4b.html,NA,NA,NA,NA,Assignment 1
+4,a,2020-04-06T00:00:00Z,lecture_4a.html,lecture_4a.pdf,ida-exercise-4a.zip,"Advanced wrangling, joining tables, and advanced data visualisation",NA,NA
+4,b,2020-04-08T00:00:00Z,lecture_4b.html,lecture_4b.pdf,NA,NA,NA,Assignment 1
 5,a,2020-04-20T00:00:00Z,NA,NA,NA,Handling missing values and scraping data,NA,NA
 5,b,2020-04-22T00:00:00Z,NA,NA,NA,NA,NA,NA
 6,a,2020-04-27T00:00:00Z,NA,NA,NA,"Introduction to modeling, and programming",NA,NA

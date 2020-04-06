@@ -24,3 +24,9 @@ glimpse(Salaries)
 
 
 # Can you draw out a diagram of the connections amongst the tables?
+
+```{r names-of-both}
+names(Batting)
+names(Salaries)
+```
+
