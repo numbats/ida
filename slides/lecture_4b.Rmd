@@ -72,8 +72,6 @@ class: refresher
 # recap
 
 - Joins
-- venn diagrams
-- feedback
 
 ---
 
@@ -86,12 +84,187 @@ include_graphics("images/joins_using_coat.jpg")
 ---
 # Upcoming Due Dates
 
-- Assignment 1: ...
-- Other due dates?
-- Stay tuned on ED for the upcoming dates
+- Assignment 1: Due April 8 at 5pm (Today!)
+
+```{r read-in, include = FALSE}
+gap_life <- read_csv(here::here("slides/data/gap_life.csv"))
+gap_life_au <- read_csv(here::here("slides/data/gap_life_au.csv"))
+gap_income <- read_csv(here::here("slides/data/gap_income.csv"))
+gap_income_au <- read_csv(here::here("slides/data/gap_income_au.csv"))
+gap_co2 <- read_csv(here::here("slides/data/gap_co2.csv"))
+gap_co2_au <- read_csv(here::here("slides/data/gap_co2_au.csv"))
+
+```
 
 ---
 
+# Exploring life expectancy and income
+
+We want to plot life expectancy vs income, but there's a problem:
+
+.pull-left[
+```{r print-gap-life-au}
+gap_life_au
+```
+]
+
+.pull-right[
+```{r print-gap-income-au}
+gap_income_au
+```
+]
+
+---
+
+# We need them in the same dataframe!
+
+We could try `bind_cols()`, to bind dataframes columns together
+
+```{r bind-cols}
+bind_cols(gap_life_au,
+          gap_income_au)
+```
+
+---
+
+# But this has problems:
+
+1. It produces messy output (country1, year1)
+2. It doesn't work if the data doesn't have the same number of rows
+
+
+```{r problems, echo = FALSE}
+bind_cols(gap_life_au,
+          gap_income_au)
+```
+
+---
+
+# How to bind data?
+
+For example, how do we add this co2 data to income or life?
+
+```{r}
+gap_co2_au
+```
+
+
+---
+
+# How to bind data?
+
+We can't use `bind_cols()`
+
+```{r bind-cols-error, eval = FALSE}
+bind_cols(gap_co2_au,
+          gap_income_au)
+```
+
+```
+Error: Argument 2 must be length 3, not 9
+```
+
+--
+
+We could think about a more complex approach using `filter`, and so on...
+
+--
+
+But surely this must be a problem that we encounter in data analysis?
+
+--
+
+Someone must have thought of a solution to this before?
+
+--
+
+
+They did! **Joins**!
+
+---
+
+# Joins!
+
+We can use ` left_join()` to combine the income and life expectancy data
+
+```{r}
+left_join(x = gap_income_au,
+          y = gap_life_au,
+          by = c("country", "year"))
+```
+
+---
+
+# Add co2 data with another join:
+
+We get missings for co2, because we don't have c02 values for 2015 and beyond.
+
+```{r another-join}
+left_join(x = gap_income_au,
+          y = gap_life_au,
+          by = c("country", "year")) %>% 
+  left_join(gap_co2_au,
+            by = c("country", "year"))
+```
+
+
+---
+
+# So now we can combine that together like so:
+
+```{r}
+gap_au <- left_join(x = gap_income_au,
+          y = gap_life_au,
+          by = c("country", "year")) %>% 
+  left_join(gap_co2_au,
+            by = c("country", "year"))
+
+gap_au
+```
+
+---
+
+# Now we can make a plot!
+
+```{r plot, fig.height = 8, fig.width = 12, out.width = "60%"}
+ggplot(gap_au,
+       aes(x = gdp,
+           y = life_expectancy)) + 
+  geom_point()
+```
+
+---
+
+# Your Turn: go to exercises on rstudio.cloud 
+
+open "joins.Rmd"
+
+Discuss with your partner why these two joins produce different results?
+
+.pull-left[
+```{r}
+left_join(gap_co2_au,
+          gap_life_au)
+```
+]
+
+.pull-right[
+```{r}
+left_join(gap_life_au,
+          gap_co2_au)
+```
+]
+
+---
+class: transition
+# Your Turn: 
+
+What happens when we add data from New Zealand into the mix? 
+
+How can you join that data together?
+
+---
+class: transition
 
 # Making effective data plots
 
@@ -604,6 +777,12 @@ p +
 - Other packages such as `xkcd`, `skittles`, `wesanderson`, `beyonce`, `ochre`, ....
 
 ---
+background-image: url(images/munzer-hierarchy.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
+
+---
 # Hierarchy of mappings
 
 1. Position - common scale (BEST): axis system
@@ -623,13 +802,13 @@ p +
 - lab quiz open (requires answering questions from Lab exercise)
 - go to rstudio.cloud and check out exercise 4-B
 - If you want to use R / Rstudio on your laptop:
-  - Install R + Rstudio (see )
+  - Install R + Rstudio (see [Stuart Lee's instructions](https://github.com/sa-lee/installr))
   - open R
   - type the following:
   ```r
   # install.packages("usethis")
   library(usethis)
-  use_course("bit.ly/ida-2020-exercise-4b.zip")
+  use_course("https://ida.numbat.space/exercises/4b/ida-exercise-4b.zip")
   ```
 
 ---
