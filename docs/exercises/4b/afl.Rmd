@@ -37,7 +37,6 @@ glimpse(teams)
 glimpse(players)
 ```
 
-
 # Using the teams dataset, make a barchart of the **total kicks** by **club**.  What do you learn?
 
 ```{r barchart-total-kicks}
@@ -51,14 +50,10 @@ ggplot(teams,
 
 ```{r barchart-total-kicks-reorder}
 ggplot(___,
-       aes(x = reorder(club, kicks_tot),
-           y = ___)) + 
+       aes(x = ___,
+           y = reorder(club, kicks_tot))) + 
   geom_col()
 ```
-
-
-## Now, make the plot again, but sort from highest to lowest, and flip the plot with `coord_flip()`. How did this help make it easier to see what was going on?
-
 
 ```{r barchart-total-kicks-flip}
 ggplot(___,
@@ -82,7 +77,7 @@ ggplot(___,
   theme(aspect.ratio = 1)
 ```
 
-##  Use the `plotly` package to make the plot interactive (with the `ggplotly` function). Report the name of the team(s) that has(ve) the highest on both variables.
+##  Use the `plotly` package to make the previous plot interactive (with the `ggplotly` function). Report the name of the team(s) that has(ve) the highest on both variables.
 
 ```{r plotly}
 library(plotly)
