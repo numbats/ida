@@ -137,3 +137,28 @@ gap_income
 gap_co2
 ```
 
+```{r}
+left_join(gap_co2,
+          gap_income,
+          c("country", "year")) %>% 
+  left_join(gap_life)
+
+left_join(x = gap_co2,
+          y = gap_income,
+          by = c("country", "year")) %>% 
+  left_join(x = .,
+            y = gap_life)
+
+left_join(x = gap_co2,
+          y = gap_income,
+          by = c("country", "year")) %>% 
+  left_join(y = gap_life)
+```
+
+
+```{r}
+left_join(gap_life,
+          gap_income,
+          by = c("country", "year"))
+```
+
