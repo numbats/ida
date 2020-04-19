@@ -3,8 +3,8 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 5, part A"
 subtitle: "Missing Data"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
-date: "3rd April 2020"
+email: "ETC1010.Clayton-x@monash.edu"
+date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -51,8 +51,10 @@ opts_chunk$set(echo = TRUE,
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
-               fig.height = 4,
+               fig.height = 5,
                fig.width = 8,
+               out.width = "80%",
+               fig.retina = 2,
                fig.align = "center",
                cache = FALSE)
 
@@ -87,7 +89,7 @@ dat_sf_clean <- readr::read_rds(here::here("slides/data/dat_sf_clean.rds"))
 ---
 class: transition
 
-While the song is playing...
+# While the song is playing...
 
 Draw a mental model / concept map of last lectures content on data visualisation.
 
@@ -100,14 +102,17 @@ class: refresher
 - advanced data vis
 
 ---
-class: transition
-# Motivation
+# (My) Motivation for missing data
 
-Why would I want to deal with missing data?
+```{r show-missing-data, out.width = "50%", echo = FALSE}
+include_graphics("images/missing-data-paper.jpg")
+```
+
+_From ["Using decision trees to understand structure in missing data "](https://bmjopen.bmj.com/content/5/6/e007450.full)_
 
 ???
 
-I was handed a dataset in my PhD that had more than 65% of the data missing. 
+I was handed a dataset in my PhD which had more than 65% of the data missing. 
 We had to spend quite a bit of time exploring the missingness relationships and
 the whole process was very frustrating, this inspired me to develop methods for
 exploring missing data, which ended up being a substantial part of my thesis
@@ -115,17 +120,21 @@ exploring missing data, which ended up being a substantial part of my thesis
 But today we are going to talk about some example weather data from Melbourne.
 
 ---
-class: center, middle
+class: center
 # Example
 
-### San Francisco weather data 
-### || Date | Wind | Temp ||
-### Using the R package: [`GSODR`](https://github.com/ropensci/gsodr)
-### [(Global Surface Summary of the Day)](https://data.noaa.gov/dataset/global-surface-summary-of-the-day-gsod)
 
-### Written by Adam Sparks
+San Francisco weather data 
 
-### github.com/ropensci/GSODR
+|| Date | Wind | Temp ||
+
+Using the R package: [`GSODR`](https://github.com/ropensci/gsodr)
+
+[(Global Surface Summary of the Day)](https://data.noaa.gov/dataset/global-surface-summary-of-the-day-gsod)
+
+Written by Adam Sparks
+
+github.com/ropensci/GSODR
 ---
 
 ```{r sf-intro-temp-data, out.width = "100%", echo = FALSE, fig.width = 8, fig.height = 5}
@@ -141,7 +150,20 @@ ggplot(
 ```
 
 ---
-# Why data was missing
+class: transition
+
+# Your Turn: These gaps are missing values! What are some reasons this might be a problem?
+
+---
+
+# Some thoughts
+
+- What is missing? 
+- Why are they missing?
+- How can we summarise and explore this?
+
+---
+# One way to show missing data
 
 ```{r sf-final-miss-mech, out.width = "90%", echo = FALSE}
 ggplot(
@@ -154,7 +176,7 @@ ggplot(
   geom_miss_point()
 ```
 
-???f
+???
 
 So here we can create a graphic where we can see the data that are present are in blue, and the data that are missing are in red. What we see here then is that the data that are missing for air temperature are in red here, but are actually measured only beyond gust speeds of 8 kpmh
 
@@ -176,14 +198,7 @@ It might seem obvious to point out the precise mechanism for generating the miss
 ---
 class: transition
 
-# What dealing with missing data looks like in a paper
-
----
-
-background-image: url(images/narnia-doppel.jpg)
-background-size: contain 
-background-position: 50% 50%
-class: center, bottom, inverse
+# What people think dealing with missing data looks like
 
 ---
 
@@ -196,7 +211,7 @@ class: center, bottom, inverse
 ---
 class: transition
 
-What dealing with missing data actually looks like
+# What dealing with missing data actually looks like
 
 ---
 
@@ -207,11 +222,9 @@ background-position: 50% 50%
 class: center, bottom, inverse
 
 ---
-class: inverse, center, middle
+class: transition
 
-.vvhuge[
-What I want dealing with missing data to be like
-]
+# What I want dealing with missing data to be like
 
 
 ---
@@ -223,12 +236,10 @@ background-position: 50% 50%
 class: center, bottom, inverse
 
 ---
-class: inverse, middle, center
-
 # Learn more
 
 ```{r learn-more, echo = FALSE, out.width = "70%"}
-knitr::include_graphics("https://njtierney.updog.co/img/hex-visdat-and-naniar.png")
+knitr::include_graphics("https://imgs.njtierney.com/hex-visdat-and-naniar.png")
 ```
 
 .pull-left[
@@ -288,6 +299,7 @@ x <- c(1, NA, 3, NA, NA, 5)
 ```
 
 ```r
+library(naniar)
 any_na(x)
 ```
 
@@ -376,6 +388,146 @@ sum(heights, na.rm = TRUE)
 
 Use this power `responsibly`!
 
+---
+
+# Dangers of removing missing values
+
+You can remove most of or all of your data:
+
+```{r diagonal, echo = FALSE}
+dat_df <- data.frame(x = 1:9,
+                     y = 1:9,
+                     z = 1:9)
+
+dat_df$x[1:3] <- NA
+dat_df$y[4:6] <- NA
+dat_df$z[7:9] <- NA
+
+knitr::kable(dat_df)
+```
+
+---
+
+# Dangers of removing missing values
+
+You can remove most of or all of your data:
+
+```{r vis-miss-dat-df, out.width = "80%"}
+vis_miss(dat_df)
+```
+
+---
+
+# Dangers of removing missing values
+
+You can remove most of or all of your data:
+
+```{r}
+na.omit(dat_df)
+```
+
+--
+
+wat?
+
+---
+
+# `na.omit` / `na.rm` = listwise delection
+
+|  x|  y|  z|
+|--:|--:|--:|
+| ~~NA~~|  ~~1~~|  ~~1~~|
+| ~~NA~~|  ~~2~~|  ~~2~~|
+| ~~NA~~|  ~~3~~|  ~~3~~|
+|  ~~4~~| ~~NA~~|  ~~4~~|
+|  ~~5~~| ~~NA~~|  ~~5~~|
+|  ~~6~~| ~~NA~~|  ~~6~~|
+|  ~~7~~|  ~~7~~| ~~NA~~|
+|  ~~8~~|  ~~8~~| ~~NA~~|
+|  ~~9~~|  ~~9~~| ~~NA~~|
+
+---
+
+# `na.omit` / `na.rm` = listwise delection
+
+|  x|  y|  z|
+|--:|--:|--:|
+| ~~NA~~|  ~~1~~|  ~~1~~|
+| ~~NA~~|  ~~2~~|  ~~2~~|
+| ~~NA~~|  ~~3~~|  ~~3~~|
+|  4| NA|  4|
+|  5| NA|  5|
+|  6| NA|  6|
+|  7|  7| NA|
+|  8|  8| NA|
+|  9|  9| NA|
+
+---
+
+# `na.omit` / `na.rm` = listwise delection
+
+|  x|  y|  z|
+|--:|--:|--:|
+| ~~NA~~|  ~~1~~|  ~~1~~|
+| ~~NA~~|  ~~2~~|  ~~2~~|
+| ~~NA~~|  ~~3~~|  ~~3~~|
+|  ~~4~~| ~~NA~~|  ~~4~~|
+|  ~~5~~| ~~NA~~|  ~~5~~|
+|  ~~6~~| ~~NA~~|  ~~6~~|
+|  7|  7| NA|
+|  8|  8| NA|
+|  9|  9| NA|
+
+---
+
+# `na.omit` / `na.rm` = listwise delection
+
+|  x|  y|  z|
+|--:|--:|--:|
+| ~~NA~~|  ~~1~~|  ~~1~~|
+| ~~NA~~|  ~~2~~|  ~~2~~|
+| ~~NA~~|  ~~3~~|  ~~3~~|
+|  ~~4~~| ~~NA~~|  ~~4~~|
+|  ~~5~~| ~~NA~~|  ~~5~~|
+|  ~~6~~| ~~NA~~|  ~~6~~|
+|  ~~7~~|  ~~7~~| ~~NA~~|
+|  ~~8~~|  ~~8~~| ~~NA~~|
+|  ~~9~~|  ~~9~~| ~~NA~~|
+
+---
+class: transition
+
+# Takehome: 
+
+- na.rm or na.omit can remove entire rows containing missings
+- This is bad because you can lose data - sometimes all your data! This might not be what you anticipate!
+- It can also mean that you are removing / censoring observations.
+
+--
+
+Example:
+
+---
+# Dangers of removing missing values
+
+You can introduce bias - what happens when you remove the NAs? 
+
+```{r inside-outside, echo = FALSE}
+df_inside <- 
+data.frame(temp = c(27, 26, NA, 29, NA, 20, 21, 24),
+           location = c("inside", 
+                        "inside", 
+                        "outside", 
+                        "inside", 
+                        "outside", 
+                        "outside",
+                        "outside",
+                        "inside"))
+
+kable(df_inside)
+```
+
+
 
 ???
 
@@ -395,13 +547,13 @@ This is because we don't know the sum of a number and NA.
 - Open rstudio.cloud
 - go to `exercise-5a-intro-missing.Rmd`
 - If you want to use R / Rstudio on your laptop:
-  - Install R + Rstudio (see )
-  - open R
+  - Install R + Rstudio (see [Stuart Lee's Guide](https://github.com/sa-lee/installr))
+  - open RStudio
   - type the following:
   ```r
   # install.packages("usethis")
   library(usethis)
-  use_course("bit.ly/ida-2020-exercise-5a.zip")
+  use_course("https://ida.numbat.space/exercises/5a/ida-exercise-5a.zip")
   ```
 
 ---
@@ -675,15 +827,7 @@ class: middle
 ---
 class: transition
 
-Principles of Tidy _Missing_ Data
-
-
----
-class: transition
-# The Shadowlands
-
-
-Representing Missing values
+# Representing _Missing_ values in a _Tidy_ Way
 
 ---
 # Tidy Data
@@ -699,7 +843,7 @@ One value per cell
 
 .pull-right[
 ```{r fig.align='center', out.width="100%", echo = FALSE}
-knitr::include_graphics("ex-tidy-data.png")
+knitr::include_graphics("images/ex-tidy-data.png")
 ```
 ]
 
@@ -708,7 +852,7 @@ knitr::include_graphics("ex-tidy-data.png")
 
 # Data Shadow
 
-.huge.pull-left[
+.pull-left[
 Variable ends in NA
 
 Values are missing (NA) or not (!NA)
@@ -716,19 +860,16 @@ Values are missing (NA) or not (!NA)
 
 .pull-right[
 ```{r fig.align='center', out.width = "100%", echo = FALSE}
-knitr::include_graphics("ex-shadow-data.png")
+knitr::include_graphics("images/ex-shadow-data.png")
 ```
 ]
 
 ---
- center middle
+class: center middle
 
 # Tidy Missing Data 
 
-
-
 `bind_shadow(data)`
-]
 
 ```{r fig.align='center', out.width = "60%", echo = FALSE}
 knitr::include_graphics("images/ex-tidy-missing-data.png")
@@ -889,9 +1030,10 @@ Imputation is the process of filling in missing values with some other estimate
 ---
 # What about this imputation thing? 
 
-```{r echo = TRUE, warning = FALSE, out.width = "70%"}
+```{r echo = TRUE, warning = FALSE, out.width = "60%", fig.width = 10, fig.height =4}
 
 dat_sf_clean %>%  
+  as.data.frame() %>% 
   simputation::impute_lm(temp_avg ~ wind_speed_max) %>% #<<
   ggplot(aes(x = date,
              y = temp_avg)) + 
@@ -909,10 +1051,12 @@ Where are the imputed values?
 ---
 # Tidy Missing Data reveals the imputations!
 
-```{r echo = TRUE, message=FALSE, warning = FALSE, out.width = "60%"}
+```{r echo = TRUE, message=FALSE, warning = FALSE, out.width = "60%", fig.width = 10, fig.height =4}
 
 bind_shadow(dat_sf_clean) %>% #<<
+  as.data.frame() %>% 
   simputation::impute_lm(temp_avg ~ wind_speed_max + date) %>%
+  as_tibble() %>% 
   ggplot(aes(x = date,
              y = temp_avg,
              colour  = temp_avg_NA)) + #<<
@@ -926,6 +1070,7 @@ bind_shadow(dat_sf_clean) %>% #<<
 
 ```{r echo = TRUE, message=FALSE, warning = FALSE, out.width = "60%"}
 bind_shadow(dat_sf_clean) %>% #<<
+  as.data.frame() %>% 
   simputation::impute_lm(temp_avg ~ wind_speed_max) %>%
   ggplot(aes(x = temp_avg,
              fill = wind_speed_max_NA)) +  #<<
@@ -1002,6 +1147,7 @@ ggplot(oceanbuoys,
 ```{r gg-show-warning-out, ref.label = 'gg-show-warning', echo = FALSE, out.width = "100%"}
 
 ```
+]
 
 ???
 
@@ -1024,6 +1170,7 @@ ggplot(oceanbuoys,
 ```{r gg-ocean-show-geom-miss-out, ref.label = 'gg-ocean-show-geom-miss', echo = FALSE, out.width = "100%"}
 
 ```
+]
 
 ---
 # Facet By year
@@ -1209,17 +1356,6 @@ What do we learn?
 
 - lab quiz open (requires answering questions from Lab exercise)
 - go to rstudio.cloud and finish final exercise
-- If you want to use R / Rstudio on your laptop:
-  - Install R + Rstudio (see )
-  - open R
-  - type the following:
-  ```r
-  # install.packages("usethis")
-  library(usethis)
-  use_course("dmac.netlify.com/lectures/lecture4b/exercise/exercise-5a.zip")
-  ```
-]
-
 
 ---
 
@@ -1230,8 +1366,3 @@ What do we learn?
 - [naniar](http://naniar.njtierney.com/)
 - [visdat](http://visdat.njtierney.com/)
 
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```

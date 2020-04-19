@@ -41,26 +41,18 @@ glimpse(players)
 
 ```{r barchart-total-kicks}
 ggplot(teams,
-       aes(x = ___,
-           y = ___)) + 
+       aes(x = kicks_tot,
+           y = club)) + 
   geom_col()
 ```
 
 # Take that same barplot and reorder the club by `kicks_tot`, what changes?
 
 ```{r barchart-total-kicks-reorder}
-ggplot(___,
-       aes(x = ___,
+ggplot(teams,
+       aes(x = kicks_tot,
            y = reorder(club, kicks_tot))) + 
   geom_col()
-```
-
-```{r barchart-total-kicks-flip}
-ggplot(___,
-       aes(x = reorder(___, ___),
-           y = ___)) + 
-  geom_col() + 
-  coord_flip()
 ```
 
 # To compare teams, should you use average or total numbers? Explain your thinking.
@@ -70,9 +62,9 @@ ggplot(___,
 # Make a scatterplot of average kicks by average handballs. Use an aspect ratio of 1. What do you learn?
 
 ```{r gg-kicks-handballs}
-ggplot(___,
-       aes(___,
-           ___)) + 
+ggplot(teams,
+       aes(kicks_avg,
+           handballs_avg)) + 
   geom_point() + 
   theme(aspect.ratio = 1)
 ```
@@ -81,9 +73,9 @@ ggplot(___,
 
 ```{r plotly}
 library(plotly)
-ggplot(___,
-       aes(___,
-           ___,
+ggplot(teams,
+       aes(kicks_avg,
+           handballs_avg,
            # this label option gets passed to ggplotly
            label = club)) + 
   geom_point() + 
