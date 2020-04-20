@@ -36,6 +36,7 @@ ___(___)
 Using the `airquality` dataset, use `group_by()` to create summaries for each variable and case, by each `Month`.
 
 ## Hint
+
 * Pass `Month` into the `group_by()` function.
 * Then use the `miss_var_summary()` and `miss_case_summary()` function.
 
@@ -70,7 +71,11 @@ Also, don't forget to group by `Month`, using `group_by(Month)` like this: `airq
 
 ```{r}
 # Tabulate missingness in each variable and case of the `airquality` dataset
+
+# variables
 ___(airquality)
+
+# cases
 ___(___)
 
 # Tabulate the missingness in each variable, grouped by Month, in the `airquality` dataset

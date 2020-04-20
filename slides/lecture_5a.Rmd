@@ -503,10 +503,6 @@ class: transition
 - This is bad because you can lose data - sometimes all your data! This might not be what you anticipate!
 - It can also mean that you are removing / censoring observations.
 
---
-
-Example:
-
 ---
 # Dangers of removing missing values
 
@@ -1022,6 +1018,7 @@ ggplot(dat_sf_clean,
 ```
 
 ---
+class: transition
 # Exploring imputed values
 
 
@@ -1083,13 +1080,6 @@ bind_shadow(dat_sf_clean) %>% #<<
 
 ```{r print-tao}
 oceanbuoys
-```
-
----
-# Start looking at missing values
-
-```{r visdat-ocean}
-vis_dat(oceanbuoys)
 ```
 
 ---

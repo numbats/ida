@@ -56,10 +56,13 @@ Use `gg_miss_case(riskfactors)` to get started, and `gg_miss_case(riskfactors, f
 
 ```{r}
 # Visualise the number of missings in cases using `gg_miss_case()`
-gg_miss_case(___)
+gg_miss_case()
 
 # Explore the number of missings in cases using `gg_miss_case()` and facet by the variable `education`
 gg_miss_case(___, facet = ___)
+# Note: You might get a warning that says
+#> Factor `education` contains implicit NA, consider using `forcats::fct_explicit_na`
+# this is OK - it is to do with how NA values are recorded in the data, and is not an error.
 
 # Visualise the number of missings in variables using `gg_miss_var()`
 gg_miss_var(___)

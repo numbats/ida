@@ -47,6 +47,9 @@ output:
 library(tidyverse)
 library(knitr)
 library(kableExtra)
+library(tuneR)
+library(gridExtra)
+library(countdown)
 opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,

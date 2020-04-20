@@ -54,6 +54,7 @@ Using the example dataframe of heights and weights `dat_hw`:
 
 ```{r setup-new-data}
 # need to make height and weight related to each other.
+set.seed(2020-04-01)
 dat_hw <- data.frame(weight = rnorm(100, mean = 85, sd = 15),
                      height = rnorm(100, mean = 1.7, sd = 1))
 

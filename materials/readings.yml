@@ -37,7 +37,7 @@ Week 5:
       - "[Exploring Imputed Values](http://naniar.njtierney.com/articles/exploring-imputed-values.html)"
       - "[Gallery of Missing Data Visualisations](http://naniar.njtierney.com/articles/naniar-visualisation.html)"
     b:
-      - "[rvest R package for web scraping README](https://rvest.tidyverse.org/index.html)"
+      - "[Harvesting the web with rvest](https://rvest.tidyverse.org/articles/harvesting-the-web.html)"
       - "[rvest description of selectorGadget](https://rvest.tidyverse.org/articles/selectorgadget.html)"
 Week 6:
   Topic: Introduction to modeling, and programming
