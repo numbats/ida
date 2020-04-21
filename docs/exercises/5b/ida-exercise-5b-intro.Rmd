@@ -1,0 +1,45 @@
+---
+title: "simple-scrape"
+author: "Nicholas Tierney"
+date: "21/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(tidyverse)
+library(rvest)
+library(httr)
+library(here)
+```
+
+# simple example of `read_html`
+
+# Let's read it in with `read_html`
+
+```{r read-html}
+example <- read_html(here::here("data/example.html"))
+example
+```
+
+
+- We have two parts - head and body - which makes sense based on `example.html`
+
+# Now let's get the title
+
+```{r read-html-title}
+example %>% 
+  html_nodes("title")
+```
+
+# Now let's get the paragraph text
+
+```{r read-html-para}
+example %>% 
+  html_nodes("p")
+```
+
+# You can look at the `example.html` file if you want to see the data!

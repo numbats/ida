@@ -1,0 +1,57 @@
+---
+title: "ida-exercise-5b-extension"
+date: "21/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Cricket data
+
+Using the information from this vignette here: https://docs.ropensci.org/cricketdata/
+
+## Use the cricketdata package to extract the T20 batting data of male players for your two favorite countries.
+
+```{r}
+library(cricketdata)
+
+```
+
+
+## Between 2010 and 2015, which country has the better record? Explain the reason for your answer, and your analysis choices.
+
+```{r}
+
+```
+
+
+
+# Extension Example: Crossrates 
+
+An example we have seen is the cross rates data available at [https://openexchangerates.org/](https://openexchangerates.org/). To access this data you need to:
+
+1. Get a free plan from https://openexchangerates.org/signup/free
+2. Tell this function your API key -- `Sys.setenv("OER_KEY" = "your-key-here")`
+
+Then you can access the data using a command like:
+
+```
+u <- sprintf(
+    "https://openexchangerates.org/api/historical/%s.json?app_id=%s",
+    day, Sys.getenv("OER_KEY")
+  )
+res <- jsonlite::fromJSON(u)
+```
+
+There's a nice help page here: https://gist.github.com/njtierney/0fe2daa11292e046f83fec7d8e9a8164
+
+## Pull the crossrates for the month of August 2018
+
+```{r}
+
+```
+
+## Make a plot to compare the crossrates for AUD, EUR, GBP, NZD, JPY. Make a descriptive summary of what you learn.

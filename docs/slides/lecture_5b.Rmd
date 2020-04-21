@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 5, part B"
 subtitle: "Week of introduction"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -50,12 +50,16 @@ library(kableExtra)
 library(tuneR)
 library(gridExtra)
 library(countdown)
+library(httr)
+library(rvest)
 opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
-               fig.height = 4,
+               fig.height = 5,
                fig.width = 8,
+               out.width = "80%",
+               fig.retina = 2,
                fig.align = "center",
                cache = FALSE)
 
@@ -85,22 +89,21 @@ df_wav_stats <- tibble(
 ```
 
 ---
-
-background-image: url(https://www.kdnuggets.com/images/cartoon-turkey-data-science.jpg)
-background-size: contain
-background-position: 50% 50%
-class: left, white
-
-While the song is playing...
+class: transition
+# While the song is playing...
 
 Draw a mental model / concept map of last lectures content on Missing Data.
 
 
 ---
+
+background-image: url(https://www.kdnuggets.com/images/cartoon-turkey-data-science.jpg)
+background-size: contain
+background-position: 50% 50%
+
+---
 # Overview
 
-- Assignment comments
-- Exam / study advice
 - Different file formats
     - Audio / binary
 - Web data
@@ -109,75 +112,22 @@ Draw a mental model / concept map of last lectures content on Missing Data.
     - JSON
 
 ---
-# Assignment 2 notes
-
-- Some questions might seem a bit strange - this is normal! 
-- Sometimes you can't answer the exact question with the data you have.
-- It might be frustrating - that's OK!
-- Steer away from the idea of "correct code" and reframe this as "code thta works". There is no one answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
-
----
-# Assignment 2 notes
-
-- For the last two question about combining the crime data with income data, **Rest assured** there is no "trick" - the data isn't perfect here. 
-- Our marking advice: Describe how you think the solution you have provided helps answer the question.
-  - Show us a plot
-  - Explain what you see in the plot - what do you think we can learn from the information we have?
-  - Describe what other information you might like to have
-
----
-# Learning technique: study
-
-- Practice previous exam in exam conditions (last semester's exam is on dmac.netlify.com)
-
---
-
-- Think up exam questions, write them down
-
---
-
-- Practice explaining concepts - either out aloud by yourself, in the mirror, to a friend, to an empty room. Saying things out aloud builds better connections.
-
----
-# Learning technique: in exam
-
---
-
-- Peruse the exam before starting
-
---
-
-- Take off one shoe (My high school teacher claimed this worked)
-
---
-
-- Number questions in order from easy-hard - start with the easiest one first
-
---
-
-- Work out a marks : minutes ratio. (e.g.,60 marks with 60 minutes means one mark per minute)
-
----
+class: transition
 # Recap on some tricky topics
 
-- assignment ("gets" - `<-`)
-- pipes (from the textbook)
+- pipes `%>%` ("then")
+- assignment `<-` ("gets")
 
 ---
 # The pipe operator: `%>%`
 
-.pull-left
 - Code to tell a story about a little bunny foo foo (borrowed from https://r4ds.had.co.nz/pipes.html):
 - Using functions for each verb: `hop()`, `scoop()`, `bop()`.
 
-]
-
-.pull-right[
 > Little bunny Foo Foo
 Went hopping through the forest
 Scooping up the field mice
 And bopping them on the head
-]
 
 ---
 # Approach: Intermediate steps
@@ -187,8 +137,6 @@ foo_foo_1 <- hop(foo_foo, through = forest)
 foo_foo_2 <- scoop(foo_foo_1, up = field_mice)
 foo_foo_3 <- bop(foo_foo_2, on = head)
 ```
-
---
 
 - Main downside: forces you to name each intermediate element. 
 - Sometimes these steps form natural names. If this is the case - go ahead.
@@ -203,10 +151,6 @@ foo_foo_1 <- hop(foo_foo, through = forest)
 foo_foo_2 <- scoop(foo_foo_1, up = field_mice)
 foo_foo_3 <- bop(foo_foo_2, on = head)
 ```
-]
-
---
-
 - Code is cluttered with unimportant names
 - Suffix has to be carefully incremented on each line.
 - I've done this! 
@@ -220,8 +164,6 @@ foo_foo <- hop(foo_foo, through = forest)
 foo_foo <- scoop(foo_foo, up = field_mice)
 foo_foo <- bop(foo_foo, on = head)
 ```
-
---
 
 - Overwrite originals instead of creating intermediate objects 
 - Less typing (and less thinking). Less likely to make mistakes?
@@ -240,9 +182,6 @@ bop(
   on = head
 )
 ```
-]
-
---
 
 - You need to read inside-out, and right-to-left.
 - Arguments are spread far apart
@@ -288,17 +227,73 @@ foo_foo %>%
 - read more at: https://r4ds.had.co.nz/pipes.html 
 
 ---
-# Take 3 minutes to discuss these two concepts with your table
+class: transition
 
+# Assignment `<-`
 
-- What are pipes
-- What is assignment?
+"gets"
 
-```{r cd-three-pipes}
+---
+# Assignment
 
+We can perform calculations in R:
+
+```r
+1 + 1
+read_csv("data.csv")
 ```
 
 ---
+# Assignment
+
+But what if we want to use that information later?
+
+```r
+1 + 1
+read_csv("data.csv")
+```
+
+---
+# Assignment
+
+We can assign these things to an object using `<-`
+
+This reads as "gets".
+
+```r
+x <- 1 + 1
+my_data <- read_csv("data.csv")
+```
+
+--
+
+- x 'gets' 1+1
+- my_data 'gets' the output of read_csv...
+---
+# Assignment
+
+Then we can use those things in other calculations
+
+```r
+x <- 1 + 1
+my_data <- read_csv("data.csv")
+
+x * x
+
+my_data %>% 
+  select(age, height, weight) %>% 
+  mutate(bmi = weight / height^2)
+```
+
+---
+class: transition
+# Take 3 minutes to discuss these two concepts with your breakout room
+
+- What are pipes `%>%`
+- What is assignment? `<-`
+
+---
+class: transition
 # The many shapes and sizes of data
 
 ---
@@ -452,9 +447,9 @@ a structured dataset.
 1. Screen scraping: extract data from source code of website, with html parser (easy) or regular expression matching (less easy).
 2. Web APIs (application programming interface): website offers a set of structured http  requests that return JSON or XML files.
 - Why R? It includes all tools necessary to do web scraping, familiarity, direct analysis of data... But python, perl, java are also efficient tools.
-]
 
 ---
+class: transition
 # Web Scraping with `rvest` and `polite`
 
 ---
@@ -474,7 +469,109 @@ Most of the data on the web is still largely available as HTML - while it is str
 ```
 
 ---
-# rvest + polite: Simplify processing and manipulating HTML data
+# What if we want to extract parts of this text out?
+
+```html
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p align="center">Hello world!</p>
+  </body>
+</html>
+```
+
+--
+
+- `read_html()`: read HTML in (like `read_csv` and co!)
+
+--
+
+- `html_nodes()`: select specified nodes from the HTML document using CSS selectors.
+
+---
+# Let's read it in with `read_html`
+
+```{r read-html}
+example <- read_html(here::here("slides/data/example.html"))
+example
+```
+
+--
+
+- We have two parts - head and body - which makes sense:
+
+```html
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p align="center">Hello world!</p>
+  </body>
+</html>
+```
+
+
+
+---
+# Now let's get the title
+
+```{r read-html-title}
+example %>% 
+  html_nodes("title")
+```
+
+--
+
+```html
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p align="center">Hello world!</p>
+  </body>
+</html>
+```
+
+
+---
+# Now let's get the paragraph text
+
+```{r read-html-para}
+example %>% 
+  html_nodes("p")
+```
+
+--
+
+```html
+<html>
+  <head>
+    <title>This is a title</title>
+  </head>
+  <body>
+    <p align="center">Hello world!</p>
+  </body>
+</html>
+```
+
+
+---
+# Rough summary
+
+- `read_html` - read in a html file
+- `html_nodes` - select the parts of the html file we want to look at
+    - This requires knowing about the website structure
+    - But it turns out website are much...much more complicated than out little example file
+
+---
+class: transition
+# rvest + polite: 
+
+Simplify processing and manipulating HTML data
 
 - `bow()` - check if the data can be scraped appropriately
 - `scrape()` - scrape website data (with nice defaults)
@@ -488,6 +585,10 @@ Most of the data on the web is still largely available as HTML - while it is str
 - Using a tool called selector gadget to **help** identify the html elements of interest
 - Does this by constructing a css selector which can be used to subset the html document.
 
+---
+# SelectorGadget: css selectors
+
+.small[
 Selector          |  Example         |     Description
 ------------      |------------------|      ------------------------------------------------
 element           |  `p`             |      Select all &lt;p&gt; elements
@@ -497,10 +598,10 @@ element>element   |  `div > p`       |      Select all &lt;p&gt; elements with &
 \#id              |  `.name`         |      Select all elements with id="name"
 [attribute]       |  `[class]`       |      Select all elements with a class attribute
 [attribute=value] |  `[class=title]` |      Select all elements with class="title"
+]
 
 ---
 # SelectorGadget
-
 
 - SelectorGadget: Open source tool that eases CSS selector generation and discovery
 - Install the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) 
@@ -517,18 +618,14 @@ CSS selector for your needs.
 ---
 # Top 250 movies on IMDB
 
-.left-code
 Take a look at the source code, look for the tag `table` tag:
 <br>
 http://www.imdb.com/chart/top
-]
 
 
-.right-plot[
 ```{r show-imdb-top-img, echo = FALSE}
 include_graphics("images/imdb_top_250.png")
 ```
-]
 
 
 ---
@@ -550,9 +647,20 @@ bow("http://www.facebook.com")
 ---
 # Join in
 
-Go to [rstudio.cloud](https://rstudio.cloud/) $\rightarrow$ Lecture 5B $\rightarrow$ Make a copy $\rightarrow$ `lecture-5B.Rmd`
+- Go to [rstudio.cloud](https://rstudio.cloud/) $\rightarrow$ ida-exercise-5a
+- If you want to use R / Rstudio on your laptop:
+  - Install R + Rstudio (see [Stuart Lee's Guide](https://github.com/sa-lee/installr))
+  - open RStudio
+  - type the following:
+
+```r
+# install.packages("usethis")
+library(usethis)
+use_course("https://ida.numbat.space/exercises/5b/ida-exercise-5b.zip")
+```
 
 ---
+
 # Demo
 
 Let's go to http://www.imdb.com/chart/top
@@ -623,8 +731,8 @@ imdb_data %>%
 imdb_data %>%
   html_nodes(".secondaryInfo") %>%
   html_text() %>%
-  str_replace("\\(", "") %>% # remove (
-  str_replace("\\)", "") %>% # remove )
+  str_remove("\\(") %>% # remove (
+  str_remove("\\)") %>% # remove )
   as.numeric()
 
 ```
@@ -647,8 +755,8 @@ imdb_data %>%
 years <- imdb_data %>%
   html_nodes(".secondaryInfo") %>%
   html_text() %>%
-  str_replace("\\(", "") %>% # remove (
-  str_replace("\\)", "") %>% # remove )
+  str_remove("\\(") %>% # remove (
+  str_remove("\\)") %>% # remove )
   as.numeric()
 
 ```
@@ -707,7 +815,7 @@ imdb_top_250
 ---
 
 ```{r print-top-table, echo=FALSE, results='asis'}
-imdb_top_250 %>% head(15) %>% rbind(rep("...", 3)) %>% kable(format = "html")
+imdb_top_250 %>% head(9) %>% rbind(rep("...", 3)) %>% kable(format = "html")
 ```
 
 ---
@@ -753,19 +861,14 @@ imdb_top_250 %>%
 imdb_top_250 %>%
   mutate(
     rank = 1:nrow(imdb_top_250)
-  ) %>% head(15) %>% rbind(rep("...", 3)) %>% kable(format = "html")
+  ) %>% head(9) %>% rbind(rep("...", 3)) %>% kable(format = "html")
 ```
 
 
 ---
-class: transition
+# Your Turn: Which 1995 movies made the list?
 
-# Your Turn
-
-How would you go about answering this question: Which 1995 movies made the list?
-
----
-
+--
 
 ```{r imdb-filter}
 imdb_top_250 %>% 
@@ -773,10 +876,7 @@ imdb_top_250 %>%
 ```
 
 ---
-# Your turn
-
-
-How would you go about answering this question: Which years have the most movies on the list?
+# Your turn:  Which years have the most movies on the list?
 
 --
 
@@ -789,10 +889,7 @@ imdb_top_250 %>%
 ```
 
 ---
-# Your Turn
-
-
-How would you go about creating this visualization: Visualize the average yearly score for movies that made it on the top 250 list over time.
+# Your Turn: Visualize top 250 yearly mean score over time
 
 --
 
@@ -883,7 +980,3 @@ People write R packages to access online data! Check out:
 - [fitzRoy for AFL data](https://github.com/jimmyday12/fitzRoy/)
 - [Top 40 lists of R packages by Joe Rickert](https://rviews.rstudio.com/2019/07/24/june-2019-top-40-r-packages/) - they usually include a "data" section.
 
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```

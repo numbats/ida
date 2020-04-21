@@ -23,11 +23,11 @@ Using the `any_na()` and `are_na()` tools, identify which values are missing.
 
 ```{r}
 # Create x, a vector, with values NA, NaN, Inf, ".", and "missing"
-x <- c(___, ___, ___, ___, ___)
+x <- c(NA, NaN, Inf, ".", "missing")
 
 # Use any_na() and are_na() on to explore the missings
-any_na(___)
-are_na(___)
+any_na(x)
+are_na(x)
 ```
 
 ## How many missing values are there?
@@ -100,5 +100,5 @@ NA | FALSE
 Remember that for the most part any calculation using `NA` returns `NA` - this is contrasted with a few cases:
 
 * `NA | TRUE` returns TRUE - this is one of the rare exceptions when working with NA values in R, it is a good one to be aware of.
-* `NA | FALSE` returns FALSE - this is one of the rare exceptions when working with NA values in R, it is a good one to be aware of.
+* `NA | FALSE` returns NA - this is one of the rare exceptions when working with NA values in R, it is a good one to be aware of.
 

@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 6, part B"
 subtitle: "Functions"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -92,7 +92,7 @@ Discuss:
 ```
 
 ---
-# A Mantra: When you start a new project \- Open a new RStudio project
+# Mantra: Start a new project \- Open a new RStudio project
 
 - This section is heavily influenced by [Jenny Bryan's great blog post on project based workflows.](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/)
 - Sometimes this is the first line of an R Script or R markdown file.
@@ -213,7 +213,7 @@ class: transition
 # Demo
 
 ---
-# Rstudio projects help keep related work together in the same place.
+# Rstudio projects keep related work together.
 
 - Keep all your files together
 - Set the working directory to the project directory
@@ -294,7 +294,7 @@ setwd("C:\Users\jenny\path\that\only\I\have")
 # Aside: How to create an RStudio project
 
 - Go to [section 5.12 of rmarkdown for scientists](https://rmd4sci.njtierney.com/workflow.html#aside-creating-an-rstudio-project)
-]
+
 
 ---
 # Summary of file paths and rstudio projects
@@ -321,7 +321,7 @@ include_graphics("https://m.media-amazon.com/images/M/MV5BZGExYjQzNTQtNGNhMi00Ym
 ```
 
 ---
-# How many episodes are there of Stranger Things?
+# How many episodes in Stranger Things?
 
 ```{r st-episode-count}
 st_episode <- 
@@ -336,7 +336,7 @@ st_episode
 ```
 
 ---
-# How many episodes of stranger things? And ... Mindhunter? 
+# How many episodes in Stranger Things? And Mindhunter? 
 
 ```{r mh-scrape}
 st_episode <- bow("https://www.imdb.com/title/tt4574334/") %>%
@@ -522,8 +522,7 @@ scrape_episode(got)
 
 > "There are only two hard things in Computer Science: cache invalidation and naming things." - Phil Karlton
 
----
-# Naming functions (it's hard)
+--
 
 - Names should be short but clearly evoke what the function does
 
@@ -535,9 +534,7 @@ scrape_episode(got)
 
 - Multi-word names should be separated by underscores (`snake_case` as opposed to `camelCase`)
 
----
-# Naming functions (it's hard!)
-
+--
 
 - A family of functions should be named similarly (`scrape_title`, `scrape_episode`, `scrape_genre`, etc.)
 
@@ -573,7 +570,7 @@ scrape_show_info <- function(x){
 ```
 
 ---
-
+# Scraping show info
 
 ```{r scrape-all-show-info}
 scrape_show_info(st)
@@ -586,19 +583,16 @@ scrape_show_info(twd)
 ```{r scrape-show-info-examle, eval=FALSE}
 scrape_show_info <- function(x){
 
-  title <- x %>%
-    html_node("#title-overview-widget h1") %>%
+  title <- x %>% html_node("#title-overview-widget h1") %>%
     html_text() %>%
     str_trim()
 
-  runtime <- x %>%
-    html_node("time") %>%
+  runtime <- x %>% html_node("time") %>%
     html_text() %>%
     str_replace("\\n", "") %>%
     str_trim()
   
-  genres <- x %>%
-    html_nodes(".txt-block~ .canwrap a") %>%
+  genres <- x %>% html_nodes(".txt-block~ .canwrap a") %>%
     html_text() %>%
     str_trim() %>%
     paste(collapse = ", ")
@@ -661,7 +655,6 @@ class: transition
 - You now have a function that will scrape the relevant info on shows given its URL. 
 - Where can we get a list of URLs of top 100 most popular TV shows on IMDB? 
 - Write the code for doing this in your teams.
-]
 
 ---
 # Automation
@@ -810,8 +803,3 @@ Take the lab quiz!
 - functions chapter of r4DS
 - iteration section of r4ds
 - [lists section in advanced R](https://adv-r.hadley.nz/vectors-chap.html#lists)
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```

@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 6, part A"
 subtitle: "Style, file paths, & functions"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -66,7 +66,7 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 - Some questions might seem a bit strange - this is normal! 
 - Sometimes you can't answer the exact question with the data you have.
 - It might be frustrating - that's OK!
-- Steer away from the idea of "correct code" and reframe this as "code thta works". There is no one answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
+- Steer away from the idea of "correct code" and reframe this as "code that works". There is no one single answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
 
 ---
 # Assignment 2 notes

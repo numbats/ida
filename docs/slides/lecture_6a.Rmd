@@ -3,7 +3,7 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 6, part A"
 subtitle: "Style, file paths, & functions"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+email: "ETC1010.Clayton-x@monash.edu"
 date: "April 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -58,6 +58,57 @@ opts_chunk$set(echo = TRUE,
 
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ```
+
+
+---
+# Assignment 2 notes
+
+- Some questions might seem a bit strange - this is normal! 
+- Sometimes you can't answer the exact question with the data you have.
+- It might be frustrating - that's OK!
+- Steer away from the idea of "correct code" and reframe this as "code that works". There is no one single answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
+
+---
+# Assignment 2 notes
+
+- For the last two question about combining the crime data with income data, **Rest assured** there is no "trick" - the data isn't perfect here. 
+- Our marking advice: Describe how you think the solution you have provided helps answer the question.
+  - Show us a plot
+  - Explain what you see in the plot - what do you think we can learn from the information we have?
+  - Describe what other information you might like to have
+
+---
+# Learning technique: study
+
+- Practice previous exam in exam conditions (last semester's exam is on dmac.netlify.com)
+
+--
+
+- Think up exam questions, write them down
+
+--
+
+- Practice explaining concepts - either out aloud by yourself, in the mirror, to a friend, to an empty room. Saying things out aloud builds better connections.
+
+---
+# Learning technique: in exam
+
+--
+
+- Peruse the exam before starting
+
+--
+
+- Take off one shoe (My high school teacher claimed this worked)
+
+--
+
+- Number questions in order from easy-hard - start with the easiest one first
+
+--
+
+- Work out a marks : minutes ratio. (e.g.,60 marks with 60 minutes means one mark per minute)
+
 
 ---
 

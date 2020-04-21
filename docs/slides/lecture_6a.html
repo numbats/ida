@@ -26,12 +26,11 @@
   
 
 
-background-color: #006DAE
-class: middle center hide-slide-number
-
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
-&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;br&gt;
@@ -39,7 +38,6 @@ class: middle center hide-slide-number
 .white[Press the **right arrow** to progress to the next slide!]
 
 ---
-
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -64,7 +62,7 @@ Lecturer: *Nicholas Tierney*
 
 Department of Econometrics and Business Statistics
 
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
 April 2020
 
@@ -91,6 +89,57 @@ April 2020
 
 
 
+
+
+
+---
+# Assignment 2 notes
+
+- Some questions might seem a bit strange - this is normal! 
+- Sometimes you can't answer the exact question with the data you have.
+- It might be frustrating - that's OK!
+- Steer away from the idea of "correct code" and reframe this as "code that works". There is no one single answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
+
+---
+# Assignment 2 notes
+
+- For the last two question about combining the crime data with income data, **Rest assured** there is no "trick" - the data isn't perfect here. 
+- Our marking advice: Describe how you think the solution you have provided helps answer the question.
+  - Show us a plot
+  - Explain what you see in the plot - what do you think we can learn from the information we have?
+  - Describe what other information you might like to have
+
+---
+# Learning technique: study
+
+- Practice previous exam in exam conditions (last semester's exam is on dmac.netlify.com)
+
+--
+
+- Think up exam questions, write them down
+
+--
+
+- Practice explaining concepts - either out aloud by yourself, in the mirror, to a friend, to an empty room. Saying things out aloud builds better connections.
+
+---
+# Learning technique: in exam
+
+--
+
+- Peruse the exam before starting
+
+--
+
+- Take off one shoe (My high school teacher claimed this worked)
+
+--
+
+- Number questions in order from easy-hard - start with the easiest one first
+
+--
+
+- Work out a marks : minutes ratio. (e.g.,60 marks with 60 minutes means one mark per minute)
 
 
 ---
@@ -135,123 +184,6 @@ April 2020
 - (Intro to) Using functions
 
 ---
-# Style guide
-
-
-&gt; "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread." -- Hadley Wickham
-
-- Style guide for this course is based on the Tidyverse style guide: http://style.tidyverse.org/
-- There's more to it than what we'll cover today, we'll mention more as we introduce more functionality, and do a recap later in the semester
-
----
-# File names and code chunk labels
-
-- Do not use spaces in file names, use `-` or `_` to separate words
-- Use all lowercase letters
-
-
-```r
-# Good
-ucb-admit.csv
-
-# Bad
-UCB Admit.csv
-```
-
----
-# Object names
-
-- Use `_` to separate words in object names
-- Use informative but short object names
-- Do not reuse object names within an analysis
-
-
-```r
-# Good
-acs_employed
-
-# Bad
-acs.employed
-acs2
-acs_subset
-acs_subsetted_for_males
-```
-
----
-# Spacing
-
-
-- Put a space before and after all infix operators (=, +, -, &lt;-, etc.), and when naming arguments in function calls. 
-- Always put a space after a comma, and never before (just like in regular English).
-
-
-```r
-# Good
-average &lt;- mean(feet / 12 + inches, na.rm = TRUE)
-
-# Bad
-average&lt;-mean(feet/12+inches,na.rm=TRUE)
-```
-
----
-# ggplot
-
-- Always end a line with `+`
-- Always indent the next line
-
-
-```r
-# Good
-ggplot(diamonds, mapping = aes(x = price)) +
-  geom_histogram()
-
-# Bad
-ggplot(diamonds,mapping=aes(x=price))+geom_histogram()
-```
-
----
-# Long lines
-
-- Limit your code to 80 characters per line. This fits comfortably on a printed page with a reasonably sized font.
-- Take advantage of RStudio editor's auto formatting for indentation at line breaks.
-
----
-# Assignment
-
-- Use `&lt;-` not `=`
-
-
-```r
-# Good
-x &lt;- 2
-
-# Bad
-x = 2
-```
-
----
-# Quotes
-
-Use `"`, not `'`, for quoting text. The only exception is when the text already contains double quotes and no single quotes.
-
-
-```r
-ggplot(diamonds, mapping = aes(x = price)) +
-  geom_histogram() +
-  # Good
-  labs(title = "`Shine bright like a diamond`",
-  # Good
-       x = "Diamond prices",
-  # Bad
-       y = 'Frequency')
-```
-
----
-# Your Turn: ed
-
-- Go to ed and assess your understanding of code style (there may be some technical difficulty)
-
----
 # File Paths and organising yourself
 
 - It's important when you start working on your own machine that you understand _file storage hygiene_. 
@@ -269,7 +201,7 @@ Discuss:
 2. Possible challenges that might arise when maintaining your project
 
 ---
-# A Mantra: When you start a new project \- Open a new RStudio project
+# A Mantra: Start a new project \- start an RStudio project
 
 - This section is heavily influenced by [Jenny Bryan's great blog post on project based workflows.](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/)
 - Sometimes this is the first line of an R Script or R markdown file.
@@ -338,7 +270,8 @@ users
                └── demo-gapminder.Rmd
 ```
 
---
+---
+# What even is a file path
 
 - To read in the `gapminder.csv` file, you might need to write code like this:
 
@@ -365,11 +298,7 @@ class: transition
 
 `"/Users/miles/etc1010/week1/data/health.csv"`
 
----
-class: transition
-# Your Turn
-
-- What would be the result of using the following code in `demo-gapminder.Rmd`, and then using the code, and then moving this to another location, say inside your C drive?
+- and the result of using the below code in `demo-gapminder.Rmd`, then using the code, and then moving this to another location, say inside your C drive?
 
 ```r
 setwd("Downloads/etc1010/week1/week1.Rmd)
@@ -475,7 +404,6 @@ setwd("C:\Users\jenny\path\that\only\I\have")
 # Aside: How to create an RStudio project
 
 - Go to [section 5.12 of rmarkdown for scientists](https://rmd4sci.njtierney.com/workflow.html#aside-creating-an-rstudio-project)
-]
 
 ---
 # Summary of file paths and rstudio projects
@@ -532,6 +460,8 @@ twd_episode &lt;- got %&gt;%
 ---
   
 
+
+
 background-image: url(images/bg1.jpg)
 background-size: cover
 class: hide-slide-number split-70
@@ -548,7 +478,7 @@ count: false
 Lecturer: Nicholas Tierney
 
 Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC1010.Clayton-x@monash.edu
 
 April 2020
 
@@ -632,6 +562,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -649,17 +605,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
