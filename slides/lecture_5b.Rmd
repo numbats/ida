@@ -632,8 +632,7 @@ include_graphics("images/imdb_top_250.png")
 # First check to make sure you're allowed!
 
 ```{r show-robots-text, warning=FALSE}
-# install.packages("remotes")
-# remotes::install_github("dmi3kno/polite")
+# install.packages("polite")
 library(polite)
 bow("http://www.imdb.com")
 ```

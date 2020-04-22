@@ -74,7 +74,6 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 
 # Announcements
 
-- Some of the lecture slides don't load on a web browser
 - Current alternative for viewing: Download the HTML or the RMD for the moment and view locally.
 - I'm in the process of sorting it out
 
@@ -229,6 +228,42 @@ While the readings aren't assessed, **they provide great information that will c
 Remember that these are to help you focus, I can't give you the exam, but I can help tell you what is important.
 
 Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+# Learning technique: study
+
+- Practice previous exam in exam conditions (last semester's exam is on dmac.netlify.com)
+
+--
+
+- Think up exam questions, write them down
+
+--
+
+- Practice explaining concepts - either out aloud by yourself, in the mirror, to a friend, to an empty room. Saying things out aloud builds better connections.
+
+---
+# Learning technique: in exam
+
+--
+
+- Peruse the exam before starting
+
+--
+
+- Take off one shoe (My high school teacher claimed this worked)
+
+--
+
+- Number questions in order from easy-hard - start with the easiest one first
+
+--
+
+- Work out a marks : minutes ratio. (e.g.,60 marks with 60 minutes means one mark per minute)
+
+
+---
+
 
 ---
 # On a more personal note

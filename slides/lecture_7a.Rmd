@@ -72,6 +72,25 @@ color_palette <- list(gray = "#999999",
 ```
 
 ---
+# Assignment 2 notes
+
+- Some questions might seem a bit strange - this is normal! 
+- Sometimes you can't answer the exact question with the data you have.
+- It might be frustrating - that's OK!
+- Steer away from the idea of "correct code" and reframe this as "code that works". There is no one single answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
+
+---
+# Assignment 2 notes
+
+- For the last two question about combining the crime data with income data, **Rest assured** there is no "trick" - the data isn't perfect here. 
+- Our marking advice: Describe how you think the solution you have provided helps answer the question.
+  - Show us a plot
+  - Explain what you see in the plot - what do you think we can learn from the information we have?
+  - Describe what other information you might like to have
+
+
+
+---
 class: refresher
 # Recap
 

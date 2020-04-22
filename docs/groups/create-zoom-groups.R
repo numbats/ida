@@ -21,6 +21,8 @@ zoom_rooms <- groups %>%
                     length.out = 37)) %>% 
   tidyr::unnest(cols = c(data)) %>% 
   select(room, email_address) %>% 
+  tibble::add_row(room = 7, email_address = "rejitha.ravindra@monash.edu") %>% 
+  tibble::add_row(room = 7, email_address = "isab0001@student.monash.edu ") %>% 
   mutate(room = paste0("room ", room)) %>% 
   setNames(zoom_col_names)
 
