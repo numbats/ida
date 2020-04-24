@@ -68,19 +68,18 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ---
 # Upcoming due dates
 
-- Practical Exam: 16th October (see practice exam on ida)
-- Project: 18th October (See examples of past projects)
+- Assignment 2: 13th May (Released this week)
+- Practical Exam: 3rd June
+- Project: 8th October (See examples of past projects in assessments)
 
 ---
 # Practical Exam?
 
 - A live data analysis
 - 1 Hour 
-- See example on website
 
 ---
 # Project?
-
 
 - Collect / find your own data
 - Clean the data
@@ -92,8 +91,7 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ---
 # Lecture Overview
 
-
-- Coding style
+- Organising your own folders
 - File paths and Rstudio projects
 - (Intro to) Using functions
 
@@ -103,16 +101,58 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 - It's important when you start working on your own machine that you understand _file storage hygiene_. 
 - It helps prevent unexpected problems and makes you more productive 
 - You'll spend less time fighting against strange file paths. 
-- Not sure what a file path is? We'll explain that as well.
+- Not sure what a file path is? We will explain that as well!
 
 ---
 class: transition
-# Your Turn
+# Your Turn: Breakout groups
 
-Discuss:
+1. What your normal "workflow" is for starting a new project / assessment
+2. Possible challenges that might arise when maintaining your project / assessment
+3. What is a file path?
 
-1. What your normal "workflow" is for starting a new project
-2. Possible challenges that might arise when maintaining your project
+---
+# What even is a file path?
+  
+- This all might be a bit confusing if you don't know what a file path is.
+- A file path is: "the machine-readable directions to where files on your computer live." 
+- So, this file path:
+
+```
+/Users/njtierney/rmd4sci-materials/demo-gapminder.Rmd
+```
+
+Describes the location of the file "demo-gapminder.Rmd". 
+
+
+---
+# What even is a file path
+
+We could visualise this path:
+
+```
+/Users/njtierney/rmd4sci-materials/demo-gapminder.Rmd
+```
+
+as:
+
+```
+users
+  └── njtierney
+        └──  rmd4sci-materials
+               └── demo-gapminder.Rmd
+```
+
+---
+# What even is a file path
+
+- To read in the `gapminder.csv` file, you might need to write code like this:
+
+```r
+gapminder <- read_csv("/Users/njtierney/Desktop/rmd4sci-materials/data/gapminder.csv")
+```
+ 
+This is a problem, because this is not portable code.
 
 ---
 # A Mantra: Start a new project \- start an RStudio project
@@ -143,57 +183,14 @@ data <- read_csv("c:/really/long/file/path/to/this/directory/data/mydata.csv")
 ```
 
 ---
-# What even is a file path?
+# Using `setwd()`
 
 - This has the effect of **making the file paths work in your file**
-- This is a problem because, among other things, using `setwd()` like this:
+- This is a problem because, among other things, using `setwd()`:
   -  Has 0% chance of working on someone else's machine (**this includes you in >6 months**)
   - Your file is not self-contained and portable. (Think: _"What if this folder moved to /Downloads, or onto another machine?"_)
 - To get this to work, you need to hand edit the file path to your machine. 
 - This is painful. And when you do this all the time, it gets old, fast.
-
----
-# What even is a file path?
-  
-- This all might be a bit confusing if you don't know what a file path is.
-- A file path is: "the machine-readable directions to where files on your computer live." 
-- So, this file path:
-
-```
-/Users/njtierney/rmd4sci-materials/demo-gapminder.Rmd
-```
-
-Describes the location of the file "demo-gapminder.Rmd". 
-
-
----
-# What even is a file path
-
-We could visualise the path
-
-```
-/Users/njtierney/rmd4sci-materials/demo-gapminder.Rmd
-```
-
-as:
-
-```
-users
-  └── njtierney
-        └──  rmd4sci-materials
-               └── demo-gapminder.Rmd
-```
-
----
-# What even is a file path
-
-- To read in the `gapminder.csv` file, you might need to write code like this:
-
-```r
-gapminder <- read_csv("/Users/njtierney/Desktop/rmd4sci-materials/data/gapminder.csv")
-```
- 
-This is a problem, because this is not portable code.
 
 --
 
@@ -206,7 +203,7 @@ gapminder <- read_csv("data/gapminder.csv")
 ---
 class: transition
 
-# Your Turn
+# Your Turn: Whole class discussion
 
 - (1-2 minutes) What folders are above the `health.csv` file in the following given file path? 
 
@@ -220,7 +217,6 @@ setwd("Downloads/etc1010/week1/week1.Rmd)
 
 ---
 # Is there an answer to the madness?
-
 
 - This file path situation is a real pain. 
 - Is there an answer to the madness?
@@ -330,6 +326,68 @@ In this lesson we've:
 - How to construct full file paths with the `here` package
 
 ---
+class: transition 
+# Recommendations on how to file structure in ETC1010
+
+---
+# File structures for class
+
+Approach 1:  Folder per week
+
+```
+/Users/njtierney/etc1010/week_1/
+```
+
+```
+users
+  └── njtierney
+      └──  etc1010
+            └── etc1010.Rproj
+            └── week_1
+                └── lecture_1.html
+                └── lecture_1.pdf
+                └── ida-exercise-1.Rmd
+                └── data
+                    └── file.csv
+            └── week_2
+                └── lecture_2.html
+                └── lecture_2.pdf
+                └── ida-exercise-2.Rmd
+                └── data
+                    └── file.csv
+                
+```
+
+---
+# File structures for class
+
+Approach 2: flater structure
+
+```
+/Users/njtierney/etc1010/
+```
+
+```
+users
+  └── njtierney
+      └──  etc1010
+            └── etc1010.Rproj
+            └── lecture_1.html
+            └── lecture_1.pdf
+            └── ida-exercise-1.Rmd
+            └── data
+                └── data.csv
+```
+
+---
+class: transition
+
+# Remember: There is no one true "correct" file format
+
+It's just important to have a system
+
+
+---
 class: motivator
 
 # Motivating Functions
@@ -369,8 +427,6 @@ twd_episode <- got %>%
 
 - Down the line: Improve your reach as a data scientist by writing functions (and packages!) that others use
 
-
 ---
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
+
+# Take the lab quiz!

@@ -66,251 +66,10 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 class: refresher
 # Recap
 
-- style (it's important!)
-- ed quiz
-
----
-# File Paths and organising yourself
-
-- It's important when you start working on your own machine that you understand _file storage hygiene_. 
-- It helps prevent unexpected problems and makes you more productive 
-- You'll spend less time fighting against strange file paths. 
-- Not sure what a file path is? We'll explain that as well.
+- File Paths
 
 ---
 class: transition
-
-# Your Turn
-
-Discuss:
-
-1. What your normal "workflow" is for starting a new project
-2. Possible challenges that might arise when maintaining your project
-
-```{r cd-your-turn, echo = FALSE}
-# countdown(minutes = 2, play_sound = TRUE)
-```
-
----
-# Mantra: Start a new project \- Open a new RStudio project
-
-- This section is heavily influenced by [Jenny Bryan's great blog post on project based workflows.](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/)
-- Sometimes this is the first line of an R Script or R markdown file.
-
-```r
-setwd("c:/really/long/file/path/to/this/directory)
-```
-- What do you think the `setwd` code does?
-
----
-# What does `setwd()` do?
-
-- "set my working directory to this specific working directory".
-- It means that you can read in data and other things like this:
-
-```r
-data <- read_csv("data/mydata.csv")
-```
-
-- Instead of
-
-```r
-data <- read_csv("c:/really/long/file/path/to/this/directory/data/mydata.csv")
-```
-
----
-# What does `setwd()` do?
-
-- This has the effect of **making the file paths work in your file**
-- This is a problem because, among other things, using `setwd()` like this:
-  -  Has 0% chance of working on someone else's machine (**this includes you in >6 months**)
-  - Your file is not self-contained and portable. (Think: _"What if this folder moved to /Downloads, or onto another machine?"_)
-- To get this to work, you need to hand edit the file path to your machine. 
-- This is painful. And when you do this all the time, it gets old, fast.
-
----
-# What even is a file path?
-  
-- The machine-readable directions to where files on your computer live.
-- So, this file path:
-
-```
-/Users/njtierney/rmd4sci-materials/demo-gapminder.Rmd
-```
-
-Describes the location of the file "demo-gapminder.Rmd". 
-
----
-# What even is a file path?
-
-We could visualise the path
-
-```
-/Users/njtierney/rmd4sci-materials/demo-gapminder.Rmd
-```
-
-as:
-
-```
-users
-  └── njtierney
-        └──  rmd4sci-materials
-               └── demo-gapminder.Rmd
-```
----
-# What even is a file path?
-
-- To read in the `gapminder.csv` file, you might need to write code like this:
-
-```r
-gapminder <- read_csv("/Users/njtierney/Desktop/rmd4sci-materials/data/gapminder.csv")
-```
- 
-This is a problem, because this is not portable code.
-
---
-
-It has ZERO chance of working on someone else's machine
-
----
-If you have an RStudio project file inside the `rmd4sci-materials` folder, you can instead write the following:
-
-```r
-gapminder <- read_csv("data/gapminder.csv")
-```
-
----
-# Your Turn
-
-- What folders are above the `health.csv` file in the following given file path? 
-
-`"/Users/miles/etc1010/week1/data/health.csv"`
-
-- What would be the result of using the following code in `demo-gapminder.Rmd`, and then using the code, and then moving this to another location, say inside your C drive?
-
-```r
-setwd("Downloads/etc1010/week1/week1.Rmd)
-```
-
----
-# Is there an answer to the madness?
-
-- This file path situation is a real pain. 
-
---
-
-Yes!
-
-When you start on a new idea, new research project, paper... Anything new. It should start its life as an **rstudio project**. 
----
-class: transition
-# One more time: say it with me
-
-When you start on a new idea, new research project, paper... Anything new. It should start its life as an **rstudio project**. 
-
----
-class: transition
-# Demo
-
----
-# Rstudio projects keep related work together.
-
-- Keep all your files together
-- Set the working directory to the project directory
-- Starts a new session of R
-- Restore previously edited files into the editor tabs
-- Restore other rstudio settings
-- Allow for multiple R projects open at the same time.d
-
----
-# Rstudio projects help keep you sane, because:
-
-- Projects are independent. 
-- You can work on different projects at the same time. 
-- Objects & functions created in one project won't impact another.  
-- You can refer to your data and other projects in a consistent way.
-
----
-# Rstudio projects help keep you sane, because:
-
-And finally, the big one
-
-**RStudio projects help resolve file path problems**, because they automatically set the working directory to the location of the rstudio project.
-
----
-class: transition
-# A Bit more on file paths
-
----
-# The "here" package
-
-- RStudio projects help resolve file path problems
-- In some cases you might have many folders in your r project. To help navigate them appropriately, you can use the `here` package to provide the full path directory, in a compact way.
-
-```{r show-here}
-here::here("exercise")
-```
-
----
-# The `here` package
-
-```{r show-here-exercise}
-here::here("exercise", "lecture-6b-exercise.Rmd")
-```
-
----
-# The `here` package
-
-```r
-here::here("exercise", "lecture-6b-exercise.Rmd")
-```
-
-You can read the above `here` code as:
-
-> In the folder `exercise`, there is a file called `lecture-6b-exercise.Rmd`. Can you please give me the full path to that file? 
-
----
-# The `here` package
-
-This is really handy for a few reasons:
-
-1. It makes file paths _completely_ portable
-1. Rmarkdown documents have a special way of looking for files, this helps eliminate file path pain.
-1. If you decide to not use RStudio projects, you have code that will work on _any machine_
-
----
-# Remember
-
-> If the first line of your R script is 
-
-```
-setwd("C:\Users\jenny\path\that\only\I\have")
-```
-> I will come into your office and SET YOUR COMPUTER ON FIRE 🔥.
-
--- Jenny Bryan
-
----
-# Aside: How to create an RStudio project
-
-- Go to [section 5.12 of rmarkdown for scientists](https://rmd4sci.njtierney.com/workflow.html#aside-creating-an-rstudio-project)
-
-
----
-# Summary of file paths and rstudio projects
-
-So far we have:
-
-- Learnt what file paths are
-- How to setup an rstudio project
-- How to construct full file paths with the `here` package
-
----
-# Go to ed and finish quiz 6b
-
----
-class: transition
-
 # Motivating Functions
 
 ---
@@ -609,19 +368,16 @@ scrape_show_info <- function(x){
   
 y <- bow(x) %>% scrape()
 
-  title <- y %>%
-    html_node("#title-overview-widget h1") %>%
+  title <- y %>% html_node("#title-overview-widget h1") %>%
     html_text() %>%
     str_trim()
 
-  runtime <- y %>%
-    html_node("time") %>%
+  runtime <- y %>% html_node("time") %>%
     html_text() %>%
     str_replace("\\n", "") %>%
     str_trim()
 
-  genres <- y %>%
-    html_nodes(".txt-block~ .canwrap a") %>%
+  genres <- y %>% html_nodes(".txt-block~ .canwrap a") %>%
     html_text() %>%
     str_trim() %>%
     paste(collapse = ", ")
@@ -672,11 +428,9 @@ urls
 ```
 
 ---
-# Automation
+# Automation: Go to each page, scrape show info 
 
-# Go to each page, scrape show info 
-
-- Now we need a way to programatically direct R to each page on the `urls` list and run the `scrape_show_info` function on that page.
+- Programatically direct R to each page on the `urls` list and run  `scrape_show_info`
 
 ```{r scrape-each}
 scrape_show_info(urls[1])
