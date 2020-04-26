@@ -49,15 +49,16 @@ Week 6:
       - "[Introduction to programming](https://r4ds.had.co.nz/program-intro.html)"
       - "[Pipes (`%>%`)](https://r4ds.had.co.nz/pipes.html)"
       - "[Functions](https://r4ds.had.co.nz/functions.html)"
+      - "[Vectors](https://r4ds.had.co.nz/vectors.html)"
+      - "[Iteration](https://r4ds.had.co.nz/iteration.html)"
 Week 7:
   Topic: Intermediate models and programming
   Readings:
     a:
-      - "[Vectors](https://r4ds.had.co.nz/vectors.html)"
-      - "[Iteration](https://r4ds.had.co.nz/iteration.html)"
-    b:     
       - "[Building Models](https://r4ds.had.co.nz/model-building.html)"
       - "[Many Models](http://r4ds.had.co.nz/many-models.html)"
+    b:     
+      - "none"
 Week 8: 
   Topic: Analysing text data
   Readings:
