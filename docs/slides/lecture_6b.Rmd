@@ -67,6 +67,39 @@ class: refresher
 # Recap
 
 - File Paths
+- functions
+
+---
+# Assignment 1
+
+- You all did really well! I'm so proud.
+- Sherry marked the exams and had the following to say:
+
+---
+# Assignment 1
+
+- Good:  
+    - People have successfully knitted the .rmd document into an html file that combines all  the code, text and R outputs - This is a big achievement for people using R the first time!
+    - Most people answer questions well 
+    - In answering the second last question, we do have 2-3 groups go beyond the question and analyse the extra spreadsheet using tidy verbs and produce some insights - well done those groups!
+
+---
+
+# Assignment 1
+
+- To be improved:
+    - Most groups forget to factorise the year in the n_incident vs. year plot. It doesn’t make sense to display a year label of "2017.5" in the plot. 
+
+
+- Clarification: 
+    - In the question "Can you tell me what each row represents, and what each of the columns measure", I give marks to groups that answer "each row represents an observation, ...", but this is a sloppy answer from my view because in our dataset, it is really "each row represents an observation of the number of incidents" rather than "each row represents an observation of one incident". Those who answer the latter lose 0.5 marks.
+
+---
+
+# Assignment 2
+
+- Currently under review from the tutors, this will be released by Friday
+- You will all get Two weeks from the release date - this will be updated in the assessment.
 
 ---
 class: transition
@@ -191,7 +224,7 @@ st_episode <- st %>%
 ---
 # Turn the code into a function
 
-Pick a short but informative **name**, preferably a verb.
+Pick a short but informative **name**, preferably a verb, but not always
 
 <br>
 <br>
@@ -199,7 +232,7 @@ Pick a short but informative **name**, preferably a verb.
 <br>
 
 ```r
-scrape_episode <- 
+episodes <- 
   
   
   
@@ -217,7 +250,7 @@ scrape_episode <-
 <br>
 
 ```{r example-scrape-formals, eval=FALSE}
-scrape_episode <- function(x){
+episodes <- function(x){
   
   
   
@@ -233,8 +266,8 @@ scrape_episode <- function(x){
 - List inputs, or **arguments**, to the function inside `function`. If we had more the call would look like `function(x, y, z)`.
 - Place the **code** you have developed in body of the function, a `{` block that immediately follows `function(...)`.
 
-```{r first-scrape-episode-fun}
-scrape_episode <- function(x){
+```{r first-scrape-episodes-fun}
+episodes <- function(x){
   x %>%
     html_nodes(".np_right_arrow .bp_sub_heading") %>%
     html_text() %>%
@@ -246,8 +279,8 @@ scrape_episode <- function(x){
 ---
 # Turn your code into a function
 
-```{r first-scrape-episode-fun-print}
-scrape_episode <- function(x){
+```{r first-scrape-episodes-fun-print}
+episodes <- function(x){
   x %>%
     html_nodes(".np_right_arrow .bp_sub_heading") %>%
     html_text() %>%
@@ -256,8 +289,8 @@ scrape_episode <- function(x){
 }
 ```
 
-```{r scrape-episode-st-show}
-scrape_episode(st)
+```{r scrape-episodes-st-show}
+episodes(st)
 ```
 
 ---
@@ -266,14 +299,14 @@ scrape_episode(st)
 - Number of episodes in The Walking Dead
 
 ```{r scrape-epi-twd}
-scrape_episode(twd)
+episodes(twd)
 ```
 
 
 - Number of episodes in Game of Thrones
 
 ```{r scrape-epi-got}
-scrape_episode(got)
+episodes(got)
 ```
 
 ---
@@ -295,7 +328,7 @@ scrape_episode(got)
 
 --
 
-- A family of functions should be named similarly (`scrape_title`, `scrape_episode`, `scrape_genre`, etc.)
+- A family of functions should be named similarly (`title`, `episodes`, `genre`, etc.)
 
 --
 
@@ -366,7 +399,7 @@ scrape_show_info <- function(x){
 ```{r scrape-show-info-add-bow}
 scrape_show_info <- function(x){
   
-y <- bow(x) %>% scrape()
+y <- bow(x) %>% scrape() #<<
 
   title <- y %>% html_node("#title-overview-widget h1") %>%
     html_text() %>%

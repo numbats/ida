@@ -85,8 +85,10 @@ scrape_show_info <- function(x){
     paste(collapse = ", ")
   tibble(title = title, runtime = runtime, genres = genres)
 }
+```
 
 
+```{r}
 st %>%
   html_nodes("#title-overview-widget .subtext") %>%
   html_text() %>%
@@ -106,8 +108,71 @@ library(glue)
 web_stubs <- tv_html %>%
   html_nodes(".titleColumn a") %>%
   html_attr("href") %>%
-  paste("http://www.imdb.com/", ., sep = " ")
+  paste("http://www.imdb.com", ., sep = "")
 ```
+
+```{r}
+scrape_show_info(web_stubs[1])
+web_stubs[2]
+
+web_stubs[1]
+top_show_check_1 <- bow(web_stubs[1])
+top_show_data_1 <- scrape(top_show_check)
+scrape_show_info(top_show_data_1)
+
+top_show_check_2 <- bow(web_stubs[2])
+top_show_data_2 <- scrape(top_show_check_2)
+scrape_show_info(top_show_data_2)
+
+top_show_check_3 <- bow(web_stubs[3])
+top_show_data_3 <- scrape(top_show_check_3)
+scrape_show_info(top_show_data_3)
+
+bow_scrape_show_info <- function(x){
+  bow(x) %>% scrape() %>% scrape_show_info()
+}
+
+bow_scrape_show_info(web_stubs[1])
+bow_scrape_show_info(web_stubs[2])
+bow_scrape_show_info(web_stubs[3])
+```
+
+# Why `()` and `[]`
+
+`()` are used for functions - so `mean(x)` runs the function `mean` on `x`.
+`[]` are used for indexing. so `x[1]` gets the first thing from x.
+
+```{r}
+x <- 1:10
+x[1]
+x[2]
+x[1:2]
+```
+
+ 
+
+```{r}
+
+
+title <- 
+  x %>%
+    html_node("#title-overview-widget h1") %>%
+    html_text() %>%
+    str_trim()
+  runtime <- x %>%
+    html_node("time") %>%
+    html_text() %>%
+    str_replace("\\n", "") %>%
+    str_trim()
+  genres <- x %>%
+    html_nodes(".txt-block~ .canwrap a") %>%
+    html_text() %>%
+    str_trim() %>%
+    paste(collapse = ", ")
+  tibble(title = title, runtime = runtime, genres = genres)
+```
+
+
 
 ## Examine each of the *first three* (or however many you can get through) tv show subpage to also obtain genre and runtime.
 

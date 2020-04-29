@@ -59,6 +59,7 @@ opts_chunk$set(echo = TRUE,
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ```
 
+---
 
 # Recap
 
