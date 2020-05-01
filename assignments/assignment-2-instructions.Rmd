@@ -1,0 +1,118 @@
+---
+title: "Assignment 2, Semester 1, 2020"
+author: "Amelia Forcat & YOUR NAME & YOUR TEAM MEMBERS NAMES & YOUR TEAM NAME"
+date: "`r format(Sys.Date(), '%A, %B %e %Y')`"
+output: html_document
+---
+
+# Instructions to Students
+
+This assignment is designed to simulate a scenario where you are given a dataset, and taking over someone's existing work, and continuing with it to draw some further insights. This aspect of it is similar to Assignment 1, but it will provide less scaffolding, and ask you to draw more insights, as well as do more communication.
+
+Your previous submission of crime data was well received!
+
+You've now been given a different next task to work on.  Your colleague at your consulting firm, Amelia (in the text treatment below) has written some helpful hints throughout the assignment to help guide you.
+
+Questions that are worth marks are indicated with "Q" at the start and end of the question, as well as the number of marks in parenthesis. For example
+
+```
+## Q1A some text (0.5 marks)
+```
+
+Is question one, part A, worth 0.5 marks
+
+## Marking + Grades
+
+This assignment will be worth 6% of your total grade, and is marked out of 58 marks total.
+
+* 9 Marks for grammar and clarity. You must write in complete sentences and do a spell check.
+* 9 Marks for presentation of the data visualisations
+
+* 40 marks for the questions
+  * Part 1: 7 Marks 
+  * Park 2: 17 Marks 
+  * Park 3: 16 Marks 
+
+* Your marks will be weighted according to peer evaluation.
+
+## A Note on skills
+
+As of week 6, you have seen most of the code for parts 1 - 2 that needs to be used here, and Week 7 will give you the skills to complete part 3. I do not expect you to know immediately what the code below does - this is a challenge for you! We will be covering skills on modelling in the next weeks, but this assignment is designed to simulate a real life work situation - this means that there are some things where you need to "learn on the job". But the vast majority of the assignment will cover things that you will have seen in class, or the readings.
+
+Remember, you can look up the help file for functions by typing `?function_name`. For example, `?mean`. Feel free to google questions you have about how to do other kinds of plots, and post on the ED if you have any questions about the assignment.
+
+## How to complete this assignment.
+
+To complete the assignment you will need to fill in the blanks for function names, arguments, or other names. These sections are marked with `***` or `___`. **At a minimum, your assignment should be able to be "knitted" using the `knit` button for your Rmarkdown document.**
+
+If you want to look at what the assignment looks like in progress, but you do not have valid R code in all the R code chunks, remember that you can set the chunk options to `eval = FALSE` like so:
+
+````markdown
+```{r this-chunk-will-not-run, eval = FALSE}`r''`
+ggplot()
+```
+````
+
+If you do this, please remember to ensure that you remove this chunk option or set it to `eval = TRUE` when you submit the assignment, to ensure all your R code runs.
+
+You will be completing this assignment in your assigned groups. A reminder regarding our recommendations for completing group assignments:
+
+ * Each member of the group completes the entire assignment, as best they can.
+ * Group members compare answers and combine it into one document for the final submission. 
+
+Your assignments will be peer reviewed, and results checked for reproducibility. This means:
+
+* 25% of the assignment grade will come from peer evaluation. 
+* Peer evaluation is an important learning tool. 
+
+Each student will be randomly assigned another team's submission to provide feedback on three things: 
+
+  1. Could you reproduce the analysis? 
+  2. Did you learn something new from the other team's approach?
+  3. What would you suggest to improve their work?
+
+## Due Date
+
+This assignment is due in by 4pm on Monday 18th May. You will submit the assignment via ED. Please change the file name to include your teams name. For example, if you are team `dplyr`, your assignment file name could read: "assignment-2-2020-s1-team-dplyr.Rmd"
+
+# Treatment
+
+You work as a data scientist in the well named consulting company, "Consulting for You".
+
+On your second day at the company, you impressed the team with your work on crime data. Your boss says to you:
+
+> Amelia has managed to find **yet another** treasure trove of data - get this: pedestrian count data in inner city Melbourne! Amelia is still in New Zealand, and now won't be back now for a while. They discovered this dataset the afternoon before they left on holiday, and got started on doing some data analysis.
+
+> We've got a meeting coming up soon where we need to discuss some new directions for the company, and we want you to tell us about this dataset and what we can do with it. 
+
+> Most Importantly, can you get this to me by **Monday 18th May, COB** (COB = Close of Business at 5pm).
+
+> I've given this dataset to some of the other new hire data scientists as well, you'll all be working as a team on this dataset. I'd like you to all try and work on the questions separately, and then combine your answers together to provide the best results.
+
+From here, you are handed a USB stick. You load this into your computer, and you see a folder called "melbourne-walk". In it is a folder called "data-raw", and an Rmarkdown file. It contains the start of a data analysis. Your job is to explore the data and answer the questions in the document.
+
+Note that the text that is written was originally written by Amelia, and you need to make sure that their name is kept up top, and to pay attention to what they have to say in the document!
+
+# Overview
+
+The City of Melbourne has sensors set up in strategic locations across the inner city to keep hourly tallies of pedestrians. The data is updated on a monthly basis and available for download from [Melbourne Open Data Portal](https://data.melbourne.vic.gov.au/Transport/Pedestrian-Counting-System-2009-to-Present-counts-/b2ak-trbp). The **rwalkr** package provides an API in R to easily access sensor counts and geographic locations. 
+
+There are three parts to this work:
+
+1. Data wrangling and data visualisation of the pedestrian data
+2. Joining data together weather data
+3. Performing preliminary modelling
+
+
+# How to get the assignment
+
+You can get the assignment two ways:
+
+1. At rstudio.cloud
+2. Downloaded via [this link](https://ida.numbat.space/assignments/ida-assignment-2.zip)
+
+# How to submit the assignment
+
+1. Submit BOTH the Rmd and HTML files
+  - This means submitting "ida-assignment-1-GROUP-NAME.Rmd" and "ida-assignment-2-GROUP-NAME.html"
+2. Submit these on Ed

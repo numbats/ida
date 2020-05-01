@@ -24,23 +24,3 @@ groups <- read_sheet("https://docs.google.com/spreadsheets/d/1YZAhzZvrPyIPHsTl0M
 ```{r print-dt, echo = FALSE}
 DT::datatable(groups)
 ```
-
-```{r create-zoom-groups}
-
-zoom_col_names <- c("Pre-assign Room Name",
-                    "Email Address")
-
-zoom_rooms <- groups %>% 
-  group_by(group) %>% 
-  tidyr::nest() %>%
-  ungroup() %>% 
-  mutate(room = rep(x = 1:9,
-                    length.out = 37)) %>% 
-  tidyr::unnest(cols = c(data)) %>% 
-  select(room, email_address) %>% 
-  mutate(room = paste0("room ", room)) %>% 
-  setNames(zoom_col_names)
-  
-write_csv(zoom_rooms, 
-```
-

@@ -35,7 +35,7 @@ assessment_df <- data.frame(
                  "Each class period",
                  "Week 4 (8th April)",
                  # "Week 6 (20th April)",
-                 "Week 8 (13th May)",
+                 "Week 9 (18th May)",
                  "Week 11 (3rd June)",
                  "Week 12 (8th June)",
                  "TBA")
@@ -65,10 +65,16 @@ Information to complete the assignments is below:
 
 ```{r assignments}
 assignment_df <- tibble(
-  Assignment = 1,
-  `Due Date` = "2020/04/08 at 5pm",
-  Instructions = "[instructions](https://ida.numbat.space/assignments/assignment-1-instructions)",
-  Zipfile = "[zipfile](https://ida.numbat.space/assignments/ida-assignment-1.zip)"
+  Assignment = c(1, 2),
+  `Due Date` = c("2020/04/08 at 5pm",
+                 "2020/05/18 at 4pm"),
+  Instructions = c(
+    "[instructions](https://ida.numbat.space/assignments/assignment-1-instructions)",
+    "[instructions](https://ida.numbat.space/assignments/assignment-2-instructions)"),
+  Zipfile = c(
+    "[zipfile](https://ida.numbat.space/assignments/ida-assignment-1.zip)",
+    "[zipfile](https://ida.numbat.space/assignments/ida-assignment-2.zip)"
+  )
 )
 
 assignment_df %>% 
