@@ -73,7 +73,7 @@ Each student will be randomly assigned another team's submission to provide feed
 
 ## Due Date
 
-This assignment is due in by 4pm on Monday 18th May. You will submit the assignment via ED. Please change the file name to include your teams name. For example, if you are team `dplyr`, your assignment file name could read: "assignment-2-2020-s1-team-dplyr.Rmd"
+This assignment is due in by **4pm on Monday 18th May**. You will submit the assignment via ED. Please change the file name to include your teams name. For example, if you are team `dplyr`, your assignment file name could read: "assignment-2-2020-s1-team-dplyr.Rmd"
 
 # Treatment
 
@@ -85,7 +85,7 @@ On your second day at the company, you impressed the team with your work on crim
 
 > We've got a meeting coming up soon where we need to discuss some new directions for the company, and we want you to tell us about this dataset and what we can do with it. 
 
-> Most Importantly, can you get this to me by **Monday 18th May, COB** (COB = Close of Business at 5pm).
+> Most Importantly, can you get this to me by **Monday 18th May, 4pm**.
 
 > I've given this dataset to some of the other new hire data scientists as well, you'll all be working as a team on this dataset. I'd like you to all try and work on the questions separately, and then combine your answers together to provide the best results.
 
