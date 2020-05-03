@@ -3,8 +3,8 @@ title: "ETC1010: Introduction to Data Analysis"
 week: "Week 7, part A"
 subtitle: "Linear Models"
 author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
-date: "April 2020"
+email: "ETC1010.Clayton-x@monash.edu"
+date: "May 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -54,6 +54,7 @@ opts_chunk$set(echo = TRUE,
                collapse = TRUE,
                fig.height = 4,
                fig.width = 8,
+               fig.retina = 2,
                out.width = "100%",
                fig.align = "center",
                cache = FALSE)
@@ -74,21 +75,11 @@ color_palette <- list(gray = "#999999",
 ---
 # Assignment 2 notes
 
-- Some questions might seem a bit strange - this is normal! 
-- Sometimes you can't answer the exact question with the data you have.
-- It might be frustrating - that's OK!
 - Steer away from the idea of "correct code" and reframe this as "code that works". There is no one single answer - remember the Tower of Babel example from the start of class, there are many ways to do the same thing in R.
-
----
-# Assignment 2 notes
-
-- For the last two question about combining the crime data with income data, **Rest assured** there is no "trick" - the data isn't perfect here. 
 - Our marking advice: Describe how you think the solution you have provided helps answer the question.
   - Show us a plot
   - Explain what you see in the plot - what do you think we can learn from the information we have?
   - Describe what other information you might like to have
-
-
 
 ---
 class: refresher
@@ -99,35 +90,19 @@ class: refresher
 - map
 
 ---
-
+class: transition
 # Today: The language of models
 
 ---
 # Modelling
 
-
 - Use models to explain the relationship between variables and to make predictions
 
 - For now we focus on **linear** models (but remember there are other types of models too!)
-]
 
----
-class: transition
-
-# Packages
-
-.left-code[
-![](images/tidyverse.png)
-
-![](images/broom.png)
-]
-
-.right-plot[
 - You're familiar with the tidyverse:
 
 - The broom package takes the messy output of built-in functions in R, such as `lm`, and turns them into tidy data frames.
-
-]
 
 ---
 class: transition
@@ -171,7 +146,7 @@ PhD students in the Duke Art, Law, and Markets Initiative in 2013
 ---
 # Auctions back in the day
 
-```{r auctions-include, echo = FALSE}
+```{r auctions-include, echo = FALSE, out.width = "80%"}
 include_graphics("images/old-auction.png")
 ```
 
@@ -180,7 +155,7 @@ Pierre-Antoine de Machy, Public Sale at the Hôtel Bullion, Musée Carnavalet, P
 ---
 # Paris auction market
 
-```{r paris-auction-market, echo = FALSE}
+```{r paris-auction-market, echo = FALSE, out.width = "80%"}
 include_graphics("images/auction-trend-paris.png")
 ```
 
@@ -192,7 +167,7 @@ class: transition
 ---
 # Prices: Describe the distribution of prices of paintings.
 
-```{r gg-price, fig.height = 3.5}
+```{r gg-price}
 ggplot(data = pp, aes(x = price)) +
   geom_histogram(binwidth = 1000)
 ```
@@ -241,7 +216,7 @@ ggplot(data = pp, aes(x = Width_in, y = Height_in)) +
 ```
 
 ---
-# Visualizing the linear model (without the measure of uncertainty around the line)
+# Visualizing the linear model (without uncertainty)
 
 ```{r gg-point-lm-no-se, warning = FALSE, fig.height = 2.25, fig.width=5}
 ggplot(data = pp, aes(x = Width_in, y = Height_in)) +
@@ -317,17 +292,21 @@ The plot below displays the relationship between height and width of paintings. 
 ---
 # Landscape vs portait paintings
 
-.pull-left
+<!-- .pull-left[ -->
+
 - Landscape painting is the depiction in art of landscapes – natural scenery such as mountains, valleys, trees, rivers, and forests, especially where the main subject is a wide view – with its elements arranged into a coherent composition.<sup>1</sup>
 
 - Landscape paintings tend to be wider than longer.
-]
 
-.pull-right
+<!-- ] -->
+
+<!-- .pull-right[ -->
 
 - Portrait painting is a genre in painting, where the intent is to depict a human subject.<sup>2</sup>
 
 - Portrait paintings tend to be longer than wider.
+
+<!-- ] -->
 
 .footnote[
 [1] Source: Wikipedia, [Landscape painting](https://en.wikipedia.org/wiki/Landscape_painting)
@@ -402,10 +381,6 @@ class: transition
 m_ht_wt <- lm(Height_in ~ Width_in, data = pp)
 m_ht_wt
 ```
-
---
-
-<br>
 
 ---
 # Model of height and width
@@ -538,7 +513,8 @@ pp %>%
 # Relationship between height and school
 
 ```{r fit-school}
-(m_ht_sch <- lm(Height_in ~ school_pntg, data = pp))
+m_ht_sch <- lm(Height_in ~ school_pntg, data = pp)
+m_ht_sch
 ```
  
 --
@@ -634,16 +610,8 @@ trend, temperatures this spring have risen. Consider this: On February 6th it wa
 degrees. Today it hit almost 80. At this rate, by August it will be 220 degrees. So 
 clearly folks the climate debate rages on."<sup>1</sup>  <br>
 Stephen Colbert, April 6th, 2010
-]
 
 (OpenIntro Statistics. "Extrapolation is treacherous." OpenIntro Statistics.)
-
----
-# Aside: How to make equations
-
-Make sure we explicitly flag this as extension material (maybe a special “orange/red” slide class to flag this.
-
-
 
 ---
 class: transition
@@ -680,6 +648,32 @@ Roughly 68% of the variability in heights of paintings can be explained by their
 glance(m_ht_lands)$r.squared
 ```
 
+
+---
+# Aside: How to make equations
+
+You do not need to know how to do this to pass the course,
+
+**however**, If you're interested in how to make equations, they are denoted with `$` inside paragraphs, and `$$` for full line equations.
+
+```
+$$
+\frac{1}{2}
+$$
+```
+
+Gives
+
+$$
+\frac{1}{2}
+$$
+
+They are based on $\LaTeX$, and if you'd like to learn more, see:
+
+- [math section of rmd4sci](https://rmd4sci.njtierney.com/math.html)
+- [Equations in bookdown](https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html#equations)
+- [List of LaTeX mathematical symbols](https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols)
+
 ---
 class: transition
 # Your Turn: go to rstudio.cloud
@@ -688,8 +682,3 @@ class: transition
 # References
 
 - [data science in a box](https://datasciencebox.org/)
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```

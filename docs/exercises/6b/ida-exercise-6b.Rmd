@@ -8,6 +8,7 @@ output: html_document
 library(tidyverse)
 library(polite)
 library(rvest)
+library(janitor)
 ```
 
 # Scrape the list of most popular TV shows on IMDB: http://www.imdb.com/chart/tvmeter
@@ -16,13 +17,15 @@ library(rvest)
 tv_url <- "http://www.imdb.com/chart/tvmeter"
 tv_data <- bow(tv_url) %>% scrape()
 
-library(janitor)
-tv_tables <-tv_data %>%
+
+tv_tables <- tv_data %>%
   html_table()
 
+class(tv_tables)
+class(tv_tables[[1]])
 # extract the first list
-tv_list <- tv_tables[[1]] %>%
-  clean_names() %>%
+tv_list <- tv_tables[[1]] %>% 
+  clean_names() %>% 
   select(-x,
          -x_2,
          -your_rating) %>%
@@ -31,7 +34,10 @@ tv_list <- tv_tables[[1]] %>%
            into = c("title", "year"),
            sep = "\n") %>%
   # extract number from year
-  mutate(year = parse_number(year)) 
+  mutate(year = parse_number(year)) %>% 
+  as_tibble()
+
+tv_list
 ```
 
 ## get urls for each show
@@ -42,7 +48,7 @@ tv_html <- bow("http://www.imdb.com/chart/tvmeter") %>% scrape()
 urls <- tv_html %>%
   html_nodes(".titleColumn a") %>%
   html_attr("href") %>%
-  paste("http://www.imdb.com/", ., "sep" = "")
+  paste("http://www.imdb.com", ., sep = "")
 
 urls
 ```
@@ -79,35 +85,67 @@ scrape_show_info <- function(url){
   }
 ```
 
+```{r}
+html_data <- bow("https://www.imdb.com/title/tt6468322/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=332cb927-0342-42b3-815c-f9124e84021d&pf_rd_r=RB58VS7MN6KGDR657CGS&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=tvmeter&ref_=chttvm_tt_1") %>% scrape()
+
+html_data %>% 
+  html_nodes(".article#titleStoryLine a") %>% 
+  html_text()
+```
+
+
+```{r}
+scrape_show_info(urls[1])
+scrape_show_info(urls[2])
+scrape_show_info(urls[3])
+```
+
+
 ## decompose the steps of `scrape_show_info` into smaller steps, to make individual functions that scrape title, runtime, and genres
 
 ```{r}
-scrape_title <- function(url){
-  
+title <- function(html){
+  html %>%
+    html_node("#title-overview-widget h1") %>%
+    html_text() %>%
+    str_trim()  
+}
+
+
+runtime <- function(html){
+  html %>%
+    html_node("time") %>%
+    html_text() %>%
+    str_replace("\\n", "") %>%
+    str_trim()
   
 }
 
-scrape_runtime <- function(url){
-  
+genre <- function(html){
+  html %>%
+    html_nodes(".txt-block~ .canwrap a") %>%
+    html_text() %>%
+    str_trim() %>%
+    paste(collapse = ", ")
   
 }
 
-scrape_genre <- function(url){
+show_info <- function(url){
   
-  
-}
+  html <- bow(url) %>% scrape()
 
-scrape_show_info <- function(url){
- 
-  title <- scrape_title(url)
-  runtime <- scrape_runtime(url)
-  genre <- scrape_genre(url)
+  title <- title(html)
+  runtime <- runtime(html)
+  genre <- genre(html)
   
   tibble(title = title, 
          runtime = runtime, 
          genre = genre)
    
 }
+
+show_info(urls[1])
+
 
 ```
 
