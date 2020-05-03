@@ -4,12 +4,12 @@
     <title>ETC1010: Introduction to Data Analysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Nicholas Tierney" />
-    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
-    <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
-    <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
-    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
-    <script src="libs/countdown-0.3.5/countdown.js"></script>
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="libs/fontawesome/js/fontawesome-all.min.js"></script>
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
     <!--
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
     -->
@@ -151,20 +151,18 @@ pp
 ##  8 L176… L1764 7       0.115  L       1764 F             O          F          
 ##  9 L176… L1764 8       0.131  L       1764 X             O          I          
 ## 10 L176… L1764 9       0.148  L       1764 D/FL          O          D/FL       
-## # … with 3,383 more rows, and 52 more variables: diff_origin &lt;dbl&gt;,
-## #   logprice &lt;dbl&gt;, price &lt;dbl&gt;, count &lt;dbl&gt;, subject &lt;chr&gt;,
-## #   authorstandard &lt;chr&gt;, artistliving &lt;dbl&gt;, authorstyle &lt;chr&gt;, author &lt;chr&gt;,
-## #   winningbidder &lt;chr&gt;, winningbiddertype &lt;chr&gt;, endbuyer &lt;chr&gt;, Interm &lt;dbl&gt;,
-## #   type_intermed &lt;chr&gt;, Height_in &lt;dbl&gt;, Width_in &lt;dbl&gt;, Surface_Rect &lt;dbl&gt;,
-## #   Diam_in &lt;dbl&gt;, Surface_Rnd &lt;dbl&gt;, Shape &lt;chr&gt;, Surface &lt;dbl&gt;,
-## #   material &lt;chr&gt;, mat &lt;chr&gt;, materialCat &lt;chr&gt;, quantity &lt;dbl&gt;,
-## #   nfigures &lt;dbl&gt;, engraved &lt;dbl&gt;, original &lt;dbl&gt;, prevcoll &lt;dbl&gt;,
-## #   othartist &lt;dbl&gt;, paired &lt;dbl&gt;, figures &lt;dbl&gt;, finished &lt;dbl&gt;,
-## #   lrgfont &lt;dbl&gt;, relig &lt;dbl&gt;, landsALL &lt;dbl&gt;, lands_sc &lt;dbl&gt;,
-## #   lands_elem &lt;dbl&gt;, lands_figs &lt;dbl&gt;, lands_ment &lt;dbl&gt;, arch &lt;dbl&gt;,
-## #   mytho &lt;dbl&gt;, peasant &lt;dbl&gt;, othgenre &lt;dbl&gt;, singlefig &lt;dbl&gt;,
-## #   portrait &lt;dbl&gt;, still_life &lt;dbl&gt;, discauth &lt;dbl&gt;, history &lt;dbl&gt;,
-## #   allegory &lt;dbl&gt;, pastorale &lt;dbl&gt;, other &lt;dbl&gt;
+## # … with 3,383 more rows, and 52 more variables: diff_origin &lt;dbl&gt;, logprice &lt;dbl&gt;,
+## #   price &lt;dbl&gt;, count &lt;dbl&gt;, subject &lt;chr&gt;, authorstandard &lt;chr&gt;, artistliving &lt;dbl&gt;,
+## #   authorstyle &lt;chr&gt;, author &lt;chr&gt;, winningbidder &lt;chr&gt;, winningbiddertype &lt;chr&gt;,
+## #   endbuyer &lt;chr&gt;, Interm &lt;dbl&gt;, type_intermed &lt;chr&gt;, Height_in &lt;dbl&gt;, Width_in &lt;dbl&gt;,
+## #   Surface_Rect &lt;dbl&gt;, Diam_in &lt;dbl&gt;, Surface_Rnd &lt;dbl&gt;, Shape &lt;chr&gt;, Surface &lt;dbl&gt;,
+## #   material &lt;chr&gt;, mat &lt;chr&gt;, materialCat &lt;chr&gt;, quantity &lt;dbl&gt;, nfigures &lt;dbl&gt;,
+## #   engraved &lt;dbl&gt;, original &lt;dbl&gt;, prevcoll &lt;dbl&gt;, othartist &lt;dbl&gt;, paired &lt;dbl&gt;,
+## #   figures &lt;dbl&gt;, finished &lt;dbl&gt;, lrgfont &lt;dbl&gt;, relig &lt;dbl&gt;, landsALL &lt;dbl&gt;,
+## #   lands_sc &lt;dbl&gt;, lands_elem &lt;dbl&gt;, lands_figs &lt;dbl&gt;, lands_ment &lt;dbl&gt;, arch &lt;dbl&gt;,
+## #   mytho &lt;dbl&gt;, peasant &lt;dbl&gt;, othgenre &lt;dbl&gt;, singlefig &lt;dbl&gt;, portrait &lt;dbl&gt;,
+## #   still_life &lt;dbl&gt;, discauth &lt;dbl&gt;, history &lt;dbl&gt;, allegory &lt;dbl&gt;, pastorale &lt;dbl&gt;,
+## #   other &lt;dbl&gt;
 ```
 
 ---
@@ -338,31 +336,22 @@ residuals, those below or above the line?
 ???
 
 The plot below displays the relationship between height and width of paintings. It  uses a lower alpha level for the points than the previous plots we looked at. 
+
 ---
 # Landscape vs portait paintings
 
-&lt;!-- .pull-left[ --&gt;
-
 - Landscape painting is the depiction in art of landscapes – natural scenery such as mountains, valleys, trees, rivers, and forests, especially where the main subject is a wide view – with its elements arranged into a coherent composition.&lt;sup&gt;1&lt;/sup&gt;
-
 - Landscape paintings tend to be wider than longer.
-
-&lt;!-- ] --&gt;
-
-&lt;!-- .pull-right[ --&gt;
 
 - Portrait painting is a genre in painting, where the intent is to depict a human subject.&lt;sup&gt;2&lt;/sup&gt;
 
 - Portrait paintings tend to be longer than wider.
-
-&lt;!-- ] --&gt;
 
 .footnote[
 [1] Source: Wikipedia, [Landscape painting](https://en.wikipedia.org/wiki/Landscape_painting)
 
 [2] Source: Wikipedia, [Portait painting](https://en.wikipedia.org/wiki/Portrait_painting)
 ]
-
 
 ---
 # Multiple explanatory variables
@@ -422,7 +411,7 @@ library(countdown)
 countdown(minutes = 6)
 ```
 
-<div class="countdown" id="timer_5eae3cd8" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5eaeb7db" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">06</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -579,10 +568,10 @@ m_ht_sch
 ## lm(formula = Height_in ~ school_pntg, data = pp)
 ## 
 ## Coefficients:
-##     (Intercept)  school_pntgD/FL     school_pntgF     school_pntgG  
-##          14.000            2.329           10.197            1.650  
-##    school_pntgI     school_pntgS     school_pntgX  
-##          10.287           30.429            2.869
+##     (Intercept)  school_pntgD/FL     school_pntgF     school_pntgG     school_pntgI  
+##          14.000            2.329           10.197            1.650           10.287  
+##    school_pntgS     school_pntgX  
+##          30.429            2.869
 ```
  
 --
@@ -694,10 +683,10 @@ model.
 ```r
 broom::glance(m_ht_wt)
 ## # A tibble: 1 x 11
-##   r.squared adj.r.squared sigma statistic p.value    df  logLik    AIC    BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1     0.683         0.683  8.30     6749.       0     2 -11083. 22173. 22191.
-## # … with 2 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+##   r.squared adj.r.squared sigma statistic p.value    df  logLik    AIC    BIC deviance
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1     0.683         0.683  8.30     6749.       0     2 -11083. 22173. 22191.  216055.
+## # … with 1 more variable: df.residual &lt;int&gt;
 broom::glance(m_ht_wt)$r.squared # extract R-squared
 ## [1] 0.6829468
 ```
@@ -707,7 +696,7 @@ Roughly 68% of the variability in heights of paintings can be explained by their
 ---
 # Obtaining `\(R^2\)` in R
 
-- Height vs. lanscape features
+- Height vs. landscape features
 
 
 ```r
@@ -723,17 +712,7 @@ You do not need to know how to do this to pass the course,
 
 **however**, If you're interested in how to make equations, they are denoted with `$` inside paragraphs, and `$$` for full line equations.
 
-```
-$$
-\frac{1}{2}
-$$
-```
-
-Gives
-
-$$
-\frac{1}{2}
-$$
+- `$ \frac{1}{2} $` Gives $ \frac{1}{2}$.
 
 They are based on `\(\LaTeX\)`, and if you'd like to learn more, see:
 

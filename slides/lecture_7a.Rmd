@@ -289,31 +289,22 @@ ggplot(data = pp, aes(x = Width_in, y = Height_in)) +
 ???
 
 The plot below displays the relationship between height and width of paintings. It  uses a lower alpha level for the points than the previous plots we looked at. 
+
 ---
 # Landscape vs portait paintings
 
-<!-- .pull-left[ -->
-
 - Landscape painting is the depiction in art of landscapes – natural scenery such as mountains, valleys, trees, rivers, and forests, especially where the main subject is a wide view – with its elements arranged into a coherent composition.<sup>1</sup>
-
 - Landscape paintings tend to be wider than longer.
-
-<!-- ] -->
-
-<!-- .pull-right[ -->
 
 - Portrait painting is a genre in painting, where the intent is to depict a human subject.<sup>2</sup>
 
 - Portrait paintings tend to be longer than wider.
-
-<!-- ] -->
 
 .footnote[
 [1] Source: Wikipedia, [Landscape painting](https://en.wikipedia.org/wiki/Landscape_painting)
 
 [2] Source: Wikipedia, [Portait painting](https://en.wikipedia.org/wiki/Portrait_painting)
 ]
-
 
 ---
 # Multiple explanatory variables
@@ -642,7 +633,7 @@ Roughly 68% of the variability in heights of paintings can be explained by their
 ---
 # Obtaining $R^2$ in R
 
-- Height vs. lanscape features
+- Height vs. landscape features
 
 ```{r glance-lands}
 glance(m_ht_lands)$r.squared
@@ -656,17 +647,7 @@ You do not need to know how to do this to pass the course,
 
 **however**, If you're interested in how to make equations, they are denoted with `$` inside paragraphs, and `$$` for full line equations.
 
-```
-$$
-\frac{1}{2}
-$$
-```
-
-Gives
-
-$$
-\frac{1}{2}
-$$
+- `$ \frac{1}{2} $` Gives $ \frac{1}{2}$.
 
 They are based on $\LaTeX$, and if you'd like to learn more, see:
 
