@@ -1,0 +1,297 @@
+---
+title: "Exercise 7a Intro"
+author: "your name"
+date: "04/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(mvtnorm)
+library(broom)
+library(janitor)
+```
+
+# Using and interpreting linear models
+
+We will use a subset of the paris paintings dataset from lecture.
+
+```{r pp}
+paintings <- read_csv(
+  here::here("exercises/7a/data/paris-paintings.csv")
+  # here::here("data/paris-paintings.csv")
+  ) %>% 
+  clean_names() %>% 
+  select(price, logprice, 
+         ends_with("_in"), # measurements
+         is_landscape = lands_all, # whether a picture is landscape
+         school_pntg, # school that painting comes from
+         arch:other # the genre of the painting
+  )
+```
+
+Before fitting a model, let's plot the data.
+
+```{r gg-height-width}
+measurements_scatter <- ggplot(paintings,
+                               aes(x = width_in,
+                                   y = height_in)) +
+  geom_point(alpha = 0.2)
+measurements_scatter
+```
+
+## Fit and tidy
+
+The simple linear regression is of the form:
+
+$$y_i=\beta_0+\beta_1x_{i}+\varepsilon_i, ~~~ i=1, \dots, n$$
+
+To begin we are asking, how much variation in painting heights, the $y$ is
+explained by varation in  painting widths, $x$.
+
+```{r lm-fit}
+mod_heights <- lm(height_in ~ width_in, data = paintings)
+mod_heights
+```
+
+The formula `response ~ explanatory` specifies the reponse variable and explanatory variable from the data. In this case the response is height 
+in inches and the explanatory variable is width_in. Note that by
+default the `lm()` function will include the intercept term.
+
+We can extract components of the regression line using the `broom` package.
+The function `tidy()` will extract the estimated coeffecients as a tidy table.
+
+```{r coef-tidy}
+coef_mod_heights <- tidy(mod_heights)
+coef_mod_heights
+```
+
+The fitted model has the following functional form:
+
+$$\widehat{\text{height_in}} = 3.62 + 0.78\text{width_in}$$
+
+The coeffecients can be interpreted as 
+
+**Slope:** For each additional inch the painting is wider, the height is expected
+to be higher, on average, by 0.78 inches.
+
+**Intercept:** Paintings that are 0 inches wide are expected to be 3.62 inches high, on average. (Question: Does this make sense?)
+
+We can draw our fitted linear model with `geom_smooth(method = "lm")`
+
+```{r measure-smooth}
+measurements_scatter +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## Diagnostics and augment
+
+The residuals from the model are the difference between the observed value
+and the fitted value. The residuals and fitted values can be extracted using `augment()` function from `broom`:
+
+```{r residuals}
+mod_heights_diagnostics <- augment(mod_heights)
+mod_heights_diagnostics
+```
+
+We can visualise the residuals directly on the scatter plot:
+
+```{r vis-res}
+measurements_scatter +
+  geom_smooth(method = "lm", se = FALSE) +
+  # overlay fitted values
+  geom_point(data = mod_heights_diagnostics, 
+             aes(y = .fitted), 
+             color = "blue", 
+             alpha = 0.2) +
+  # draw a line segment from the fitted value to observed value
+  geom_segment(data = mod_heights_diagnostics, 
+               aes(xend = width_in, y = .fitted, yend = height_in),
+               color = "blue",
+               alpha = 0.2)
+```
+
+Another way of visualising of residuals to produce a scatterplot of the fitted values against the residuals:
+
+```{r fitted-residuals}
+ggplot(mod_heights_diagnostics,
+       aes(x = .fitted, y = .resid)) +
+  geom_point()
+```
+
+Remember the assumptions of the linear model from lecture. What are they?
+Are they met from this plot?
+
+There are several observations with negative residuals, where the observed
+height is much smaller than the fitted value of height for a given width.
+
+Are there also observations with large positive residuals? What do they mean?
+
+## How good is your fit? and glance
+
+- $R^2$ is a common measurement of strength of linear model fit.
+- $R^2$ tells us % variability in response explained by model.
+
+We can extract model fit summaries using `glance()`
+
+```{r r2}
+mod_heights_summary <- glance(mod_heights)
+mod_heights_summary
+```
+
+The $R^2$ value here can be interpreted as the proportion of variance in
+heights explained by width. That is approximately 68% of variance in heights
+is explained by widths.
+
+
+## Your turn
+
+Constuct a linear model of heights as a function of one of the categorical genre variables, say `still_life`. Go through the process of interpretation, and checking the fit. Remember to set the variable to be a factor
+before running the model. 
+
+```{r mod-still-life}
+paintings <- paintings %>% 
+  mutate(--- = factor(---))
+
+mod_heights_sl <- lm(height_in ~ ---, data = paintings)
+tidy(---)
+```
+
+How does it compare to the model we created above?
+
+```{r model-glance-bind}
+mod_heights_sl_summary <- glance(mod_heights_sl)
+mod_summary_all <- bind_rows(
+  first = mod_heights_summary,
+  second = mod_heights_sl_summary,
+  .id = "model"
+)
+
+mod_summary_all
+```
+
+Try fitting and checking one more model of heights yourself, 
+here are some helpful pointers for using the formula syntax, when adding more variables.
+
+- `y ~ x1+x2+x3` three explanatory variables to be used to model response,
+- `y ~ x - 1` specifies to force model to go through 0, that $b_0$ will be set to 0.
+
+
+# Aside: what's the difference between correlation and regression?
+
+- Linear association between two variables can be described by correlation, **but** 
+- a multiple regression model can describe linear relationship between a response variable and **many** explanatory variables. 
+
+For two variables $X, Y$, correlation is:
+
+$$r=\frac{\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}} = \frac{cov(X,Y)}{s_xs_y}$$
+
+## Correlation
+
+```{r build-cor, echo=FALSE}
+df <- tibble(r = seq(-0.9, 0.9, 0.1))
+
+vfun <- function(df) {
+  vc <- matrix(c(1, df$r, df$r, 1), ncol=2, byrow=TRUE)
+  d <- as_tibble(rmvnorm(100, mean=c(0,0), vc))
+  return(d)
+}
+
+smp <- df %>%
+  split(.$r) %>%
+  map(vfun)
+
+smp_df <- bind_rows(smp) %>% mutate(r = rep(df$r, rep(100, 19)))
+
+ggplot(smp_df,
+       aes(x = V1, y = V2)) + 
+  geom_point(alpha = 0.5) +
+  facet_wrap(~ r, 
+             ncol = 5, 
+             labeller = "label_both") +
+  theme(aspect.ratio = 1) +
+  labs(x = "X",
+       y = "Y")
+```
+
+## Simple regression
+
+$$y_i=\beta_0+\beta_1x_{i}+\varepsilon_i, ~~~ i=1, \dots, n$$
+
+where (least squares) estimates for $\beta_0, \beta_1$ are:
+
+$$b_1 = r\frac{s_y}{s_x}, ~~~~~~~~ b_0=\bar{y}-b_1\bar{x}$$
+
+Slope is related to correlation, but it also depends on the
+variation of observations, in both of the variables. 
+
+```{r slope-corr, echo=FALSE}
+b1 <- smp %>%
+  map_dbl(~ coefficients(lm(V2 ~ V1, data = .x))[2])
+
+sample_r <- smp %>%
+  map_dbl(~ cor(.x$V1, .x$V2))
+
+df2 <- tibble(b1 = b1, rs = sample_r, r = names(b1), V1 = 0, V2 = 4) %>%
+  mutate(r = fct_relevel(r, as.character(df$r)))
+
+smp_df$r <- fct_relevel(as.character(smp_df$r), as.character(df$r))
+
+ggplot(smp_df, 
+       aes(x = V1, 
+           y = V2)) + 
+  geom_point(alpha = 0.5) +
+  facet_wrap(~r, 
+             ncol = 5, 
+             labeller = "label_both") +
+  theme(aspect.ratio = 1) + 
+  geom_smooth(method = "lm") +
+  labs(x = "X",
+       y = "Y") +
+  geom_text(data = df2,
+    aes(x = V1,
+        y = V2,
+        label = paste0("b1=", 
+                       b1 = round(b1, 2), 
+                       ", r=", 
+                       r = round(rs, 2))),
+    size = 3)
+```
+
+
+### Multiple regression model
+
+$$y_i=\beta_0+\beta_1x_{i1}+\dots +\beta_px_{ip}+\varepsilon_i, ~~~ i=1, \dots, n$$
+where $\varepsilon$ is a sample from a normal distribution, $N(0, \sigma^2)$.
+
+### What a model says
+
+- The fitted model allows us to predict a value for the response, e.g.
+    - Suppose $\widehat{y}=2+3x+x^2-2x^3$, then for $x=0.5, \widehat{y}=2+3*0.5+0.5^2-2*0.5^3=3.5$
+    - Suppose $\widehat{y}=3\exp(2x)$, then for $x=-1, \widehat{y}=3\exp(2*(-1))=0.406$
+- How useful the model prediction is depends on the residual error. If the model explains little of the relationship then the residual error will be large and predictions less useful.
+- Predictions within the domain of the explanatory variables used to fit the model will be more reliable than **extrapolating** outside the domain. Particularly this is true for nonlinear models. 
+
+```{r cor-quiz, echo=FALSE}
+library(mvtnorm)
+df1 <- rmvnorm(100, sigma=matrix(c(1,0.6,0.6,1),
+               ncol=2, byrow=TRUE))
+df2 <- rmvnorm(100, sigma=matrix(c(1,-0.7,-0.7,1),
+               ncol=2, byrow=TRUE))
+df3 <- rmvnorm(100, sigma=matrix(c(1,0.4,0.4,1),
+               ncol=2, byrow=TRUE))
+df <- data.frame(x1=c(df1[,1], df2[,1], df3[,1]), 
+                 x2=c(df1[,2], df2[,2], df3[,2]), 
+                 group=c(rep("A", 100), rep("B", 100), rep("C", 100)))
+ggplot(df, aes(x=x1, y=x2)) + geom_point() +
+  facet_wrap(~group) +
+  theme(aspect.ratio=1)
+
+```
+
+### Questions
+
+- Which plot has correlation about -0.7?
+- Which plot has correlation about 0.6?
+- Which plot has correlation about 0.4?

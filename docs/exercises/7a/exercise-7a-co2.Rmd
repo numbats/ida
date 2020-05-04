@@ -1,0 +1,231 @@
+---
+title: "Lecture 7A Exercises"
+author: "your name"
+output: html_document
+---
+```{r setup}
+library(tidyverse)
+library(lubridate)
+library(broom)
+```
+
+## Let's fit a model to CO2
+
+The Scripps CO2 program records atmospheric carbon dioxide measurements
+from sampled since 1957 at various stations around the world along the same
+longitude (why?) This link 
+https://scrippsco2.ucsd.edu/data/atmospheric_co2/sampling_stations.html
+shows the different stations and provides links to the data. 
+
+We have extracted and downloaded data for the South Pole. 
+If you have a look at this csv file, at what line does the data start?
+```{r data-read}
+co2_spo <- read_csv(
+  # here::here("exercises/7a/data/daily_merge_co2_spo.csv"), 
+  here::here("data/daily_merge_co2_spo.csv"),
+                    col_names = c("date", 
+                                  "time", 
+                                  "day", 
+                                  "decdate", 
+                                  "n", 
+                                  "flg", 
+                                  "co2"), 
+                    skip = 69) %>%
+  mutate(lat = -90.0, 
+         lon = 0, 
+         stn = "spo") %>%
+  filter(flg == 0) %>% # the flag recognises whether the value is accepted
+  mutate(date = ymd(date)) %>%
+#   First we re-scale to start from 1 until the number of days in the time frame. 
+  mutate(day0 = day - min(day))
+
+co2_spo
+```
+
+### Task: plot date against co2 with points
+
+```{r gg-co2-spo}
+ggplot(co2_spo, 
+       aes(x = date, y = co2)) + 
+  geom_point()
+```
+
+### Task: fit a linear model, using `day` variable as the explanatory variable. 
+
+And now tidy it up
+
+```{r lm-day}
+co2_day_fit <- lm(co2 ~ day, data = co2_spo)
+tidy(---)
+```
+
+# calculate the summary of day0 and day to compare `day` against `day0`
+
+```{r lm-summary}
+summary(co2_spo$day)
+summary(co2_spo$day0)
+```
+
+# Question: "What is range of dates of this data?"
+
+- The variables, day and day0 range from ...
+
+## Task: fit a linear model, predicting co2 using day0
+
+```{r fit-co2}
+co2_fit <- lm(co2 ~ day0, data = co2_spo)
+co2_fit
+```
+
+Now we tidy up the output and store information on the intercept and slope so we can describe the fit
+
+```{r tidy-up}
+library(broom)
+tidy_co2_fit <- tidy(---)
+tidy_co2_fit
+int <- round(tidy_co2_fit$estimate[1], 4)
+slope <- round(tidy_co2_fit$estimate[2], 4)
+```
+
+Then the fitted model will be:
+
+$$\widehat{co2}=$$ `r int` + `r slope`.
+
+# Task: Predict from the model
+
+- For day0 = 10000 
+- the model predicts co2 to be `r int`+`r slope`*10000 = `r int + slope * 10000`. 
+
+## Question: What date is day0=10000? (Hint: use filter and select on the data to work it out)"
+
+
+# Plot the model
+
+We can use the `augment` function to extract residuals and fitted values, and pointwise diagnostics
+
+```{r augmented-model2}
+co2_model <- augment(co2_fit, co2_spo)
+
+co2_model
+```
+
+plot the date and co2 with points and add in the line
+
+```{r augmented-model}
+ggplot(co2_model, 
+       aes(x = date, 
+           y = co2)) + 
+  geom_point() + 
+  geom_line(aes(y = .fitted), colour = "blue")
+```
+
+### Examine residuals
+
+- **Residuals** are calculated for each observed $y$ by computing the difference: $y_i-\widehat{y_i}$.
+
+- Plotting the residuals against fitted values (or x in simple linear models) can reveal problems with the fit.
+
+```{r residuals-date}
+ggplot(co2_model, 
+       aes(x = date, 
+           y = .resid)) + 
+  geom_point() 
+```
+
+# Assessment of fit
+
+- The relationship between co2 and day0 is nonlinear!
+- The linear model does a reasonable job of explaining the increasing trend over time, but it especially mismatches the observed data at the ends, and middle of the time period.
+
+### Your turn add a quadtratic term
+
+- Try to add a quadratic term (in day0), or more, to the model to improve the fit. You may want to centre the day0 values, or even standardise them, to get a nice quadratic form. 
+- Repeat a similar process to what you have seen earlier when exploring model fit
+
+```{r daysq-mod }
+co2_sq <- co2_spo %>%
+  mutate(day0sq = (day0-median(day0))^2)
+
+co2_fit2 <- lm(co2 ~ day0 + day0sq, data = co2_sq)
+
+tidy(---)
+```
+
+## Plot the model fit 
+
+```{r daysq-mod}
+co2_model2 <- augment(---, co2_sq)
+
+ggplot(co2_model2, 
+       aes(x = date, y = co2)) + 
+  geom_point() + 
+  geom_line(aes(y = ---), colour="blue")
+```
+
+
+## Plot the residuals
+
+```{r daysq-resid}
+ggplot(co2_model2, 
+       aes(x = .fitted, y = .resid)) + 
+  geom_point()
+```
+
+
+## Your Turn: Predict co2 at another location
+
+Using your model, built using values collected the south pole sensor, see how well it fits values from Point Barrow, Alaska. 
+
+1. Download the data. You can use almost the same code as for SPO but check the file name at https://scrippsco2.ucsd.edu/data/atmospheric_co2/ptb. See here:
+
+https://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/merged_in_situ_and_flask/daily/daily_merge_co2_ptb.csv
+
+```{r read-ptb}
+co2_ptb <- read_csv(
+  file = ---,
+                    col_names = c("date", 
+                                  "time", 
+                                  "day", 
+                                  "decdate", 
+                                  "n",
+                                  "flg", 
+                                  "co2"), 
+                    skip = 69) %>%
+  mutate(lat = 71.3, 
+         lon = 156.6, 
+         stn = "ptb") %>%
+  filter(flg == 0) %>%
+  mutate(date = ymd(date)) %>% 
+  mutate(day0 = day - min(co2_spo$day))
+```
+
+
+2. The code below is a way to fit new data to the previously fit `co2_fit2`. You need to ensure you have the same variables as the data used in `co2_fit2` (the data used to fit that was called `co2_sq`)
+
+```{r augment}
+co2_ptb_sq <- co2_ptb %>% 
+  mutate(co2_sq = ___)
+co2_model_ptb <- augment(co2_fit2, newdata = co2_ptb)
+```
+
+3. Plot the data, and overlay the fitted model. You can use code like this.
+
+```{r}
+ggplot(co2_model_ptb, aes(x=date, y=co2)) + 
+  geom_point() + 
+  geom_line(aes(y=.fitted), colour="blue")
+```
+
+
+## Extension exercise
+
+
+### Seasonality
+
+- If you plot the residuals on a short time frame, you can see that there is some seasonality. Values are high in spring, and low in autumn! 
+- Brainstorm with your table members - yes, please talk with each other - ideas on how to fit a model that takes seasonality into account. There are multiple solutions, and maybe some that we haven't thought of.
+
+```{r eval=FALSE, echo=FALSE}
+ggplot(filter(co2_model2, year(date)>2002, year(date)<2005), aes(x=date, y=.std.resid)) + 
+  geom_point()
+```
