@@ -156,7 +156,6 @@ gg_xy_cor <- function(data, cor = NULL){
 ---
 # Overview
 
-- Feedback from the tests
 - What is $R^2$
   - (pull examples from exercise)
 - short exercise in class to calculate correlation and r2 and answer questions

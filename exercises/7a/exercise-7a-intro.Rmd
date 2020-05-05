@@ -19,8 +19,8 @@ We will use a subset of the paris paintings dataset from lecture.
 
 ```{r pp}
 paintings <- read_csv(
-  here::here("exercises/7a/data/paris-paintings.csv")
-  # here::here("data/paris-paintings.csv")
+  here::here("data/paris-paintings.csv")
+  # here::here("exercises/7a/data/paris-paintings.csv")
   ) %>% 
   clean_names() %>% 
   select(price, logprice, 
@@ -88,7 +88,12 @@ measurements_scatter +
 ## Diagnostics and augment
 
 The residuals from the model are the difference between the observed value
-and the fitted value. The residuals and fitted values can be extracted using `augment()` function from `broom`:
+and the fitted value. 
+
+residuals = observed - fitted
+residuals = observed - predicted
+
+The residuals and fitted values can be extracted using `augment()` function from `broom`:
 
 ```{r residuals}
 mod_heights_diagnostics <- augment(mod_heights)
@@ -152,10 +157,10 @@ before running the model.
 
 ```{r mod-still-life}
 paintings <- paintings %>% 
-  mutate(--- = factor(---))
+  mutate(still_life = factor(still_life))
 
-mod_heights_sl <- lm(height_in ~ ---, data = paintings)
-tidy(---)
+mod_heights_sl <- lm(height_in ~ still_life, data = paintings)
+tidy(mod_heights_sl)
 ```
 
 How does it compare to the model we created above?

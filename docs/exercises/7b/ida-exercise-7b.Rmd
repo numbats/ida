@@ -1,13 +1,15 @@
 ---
-title: "Exercise 7A"
+title: "Exercise 7B Part One"
 author: "YOUR NAME"
 output: html_document
 ---
 
 ```{r}
 library(tidyverse)
+library(broom)
 ```
 
+Goals:
 
 - Fit the models to all countries
 - Pick your favourite country (not Australia), print the coefficients, and make a hand sketch of the the model fit.
@@ -22,9 +24,6 @@ library(tidyverse)
 
 
 <iframe width="1008" height="567" src="https://www.youtube.com/embed/jbkSRLYSojo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
----
-class: bg-main1
 
 # R package: `gapminder`
 
@@ -48,25 +47,20 @@ gapminder %>%
 
 # "How has life expectancy changed over years, for each country?"
 
-.huge[
 - There generally appears to be an increase in life expectancy
 - A number of countries have big dips from the 70s through 90s
 - a cluster of countries starts off with low life expectancy but ends up close to the highest by the end of the period.
-]
-
 
 # Gapminder: Australia
 
-.huge[
 Australia was already had one of the top life expectancies in the 1950s.
-]
+
 
 ```{r gapminder-oz}
 oz <- gapminder %>% filter(country == "Australia")
 
 oz
 ```
-
 
 # Gapminder: Australia
 
@@ -76,7 +70,6 @@ ggplot(data = oz,
            y = lifeExp)) + 
   geom_line() 
 ```
-
 
 # Gapminder: Australia
 
@@ -91,23 +84,16 @@ oz_lm
 tidy(oz_lm)
 ```
 
-.huge[
 $$\widehat{lifeExp} = -376.1163 - 0.2277~year$$
-]
-
 
 # center year
 
-.huge[
 Let us treat 1950 is the first year, so for model fitting we are going to shift year to begin in 1950, makes interpretability easier.
-]
 
 ```{r center-eyar}
 gap <- gapminder %>% mutate(year1950 = year - 1950)
 oz <- gap %>%  filter(country == "Australia")
 ```
-
-
 
 # model for centered year
 
@@ -118,14 +104,11 @@ oz_lm
 ```
 
 
-
 ```{r tidy-oz-gapminder-centered-year}
 tidy(oz_lm)
 ```
 
-.huge[
 $$\widehat{lifeExp} = 67.9 +  0.2277~year$$
-]
 
 ```{r oz-gapminder-augment, fig.height=3, fig.width=8}
 oz_aug <- augment(oz_lm, oz)
@@ -158,10 +141,8 @@ ggplot(data = oz_aug,
 
 # Making inferences from this
 
-.huge[
 - Life expectancy has increased 2.3 years every decade, on average. 
 - There was a slow period from 1960 through to 1972, probably related to mortality during the Vietnam war.
-]
 
 
 # Can we fit for New Zealand?
@@ -191,8 +172,6 @@ italy_lm
 ```
 
 # Is there a better way?
-
-
 
 # Like, what if we wanted to fit a model for ALL countries?
 
@@ -236,9 +215,7 @@ lm_algeria <- lm(lifeExp ~ year1950, data = by_country$data[[3]])
 
 # A case for map???
 
-.huge[
 `map(<data object>, <function>)`
-]
 
 
 # A case for map???
@@ -252,8 +229,6 @@ map(by_country$data, function(x){
 mapped_lm
 ```
 
-
-
 # Map inside the data?
 
 ```{r map-country}
@@ -266,7 +241,6 @@ country_model <- by_country %>%
 country_model
 ```
 
-
 # A case for map (shorthand function)
 
 ```{r map-country-short}
@@ -276,13 +250,11 @@ country_model <- by_country %>%
 country_model
 ```
 
-
 # where's the model?
 
 ```{r print-model}
 country_model$model[[1]]
 ```
-
 
 # we need to summarise this content?
 
@@ -321,8 +293,9 @@ country_coefs
 
 ```{r tidy-unnested-coefs}
 tidy_country_coefs <- country_coefs %>%
-  spread(key = term, 
-         value = estimate) %>%
+  pivot_wider(id_cols = c(term, country, continent), 
+              names_from =  term,
+              values_from = estimate) %>%
   rename(intercept = `(Intercept)`)
 
 tidy_country_coefs
@@ -367,6 +340,7 @@ p2 <- ggplot(country_aug) +
 ```
 
 ```{r plot-print-gapminder, fig.height = 4}
+library(gridExtra)
 grid.arrange(p1, p2, ncol=2)
 ```
 
@@ -383,9 +357,6 @@ p <- ggplot(tidy_country_coefs,
              size = 2) +
   scale_color_brewer(palette = "Dark2")
 ```
-
----
-class: bg-main1
 
 ```{r ggplotly-aug-data}
 library(plotly)
@@ -448,72 +419,4 @@ gg_bad_fit
 ```
 
 Each of these countries had been moving on a nice trajectory of increasing life expectancy, and then suffered a big dip during the time period.
-
-
-
-
-## Your turn: new data - fertility data
-
--Using the fertility data from the [gapminder web site](https://www.gapminder.org/data/) (in data/ folder)
-- Conduct the same analysis as previous, but for life expectancy.
-- Find unusual countries
-
-The code below will help you read in the data and process it, but you will need to make some changes to do the full analysis.
-
-```{r read-data}
-library(readxl)
-library(janitor)
-fertility_raw <- read_xlsx("data-raw/indicator-undata-total-fertility.xlsx") %>%
-  clean_names() %>%
-  rename(country = total_fertility_rate)
-```
-
-You will need to gather the data into longer form, use the `gather` function. 
-
-You should know how to do the rest from your experience with past assignments.
-
-```{r tidy-fertility}
-fertility <- fertility_raw %>% 
-  gather(key = year, 
-                value = fertility, 
-                -country) %>%
-  mutate(year = parse_number(year)) %>%
-  filter(year > 1950) %>%
-  mutate(year1950 = year - 1950)
-```
-
-
-plot the fertility data for each year
-
-```{r eval=FALSE}
-ggplot(fertility, 
-       aes(x = year, 
-           y = fertility, 
-           group = country)) +
-  geom_line(alpha=0.1)
-```
-
-# How has fertility changed over years? For each country?
-
-## How has fertility changed in Australia?
-
-## Center the year variable, using 1950 as the centerpoint
-
-## Fit a model for Australia
-
-## Explore model fit for Australia
-
-## How has fertility increased every year / decade in Australia?
-
-## How well does the model fit?
-
-## Fit a linear model for all countries
-
-## Plot the model fit against the data in two plots
-
-## plot the model coefficients with plotly
-
-## Summarise what you have learned from the model coefficients
-
-## Find those countries with the worst fit
 

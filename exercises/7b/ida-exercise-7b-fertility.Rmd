@@ -1,0 +1,88 @@
+---
+title: "Exercise 7B Part Two"
+author: "YOUR NAME"
+output: html_document
+---
+
+```{r pkgs}
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+
+## Your turn: new data - fertility data
+
+- Using the fertility data from the [gapminder web site](https://www.gapminder.org/data/) (in data/ folder)
+- This contains data of number of babies born per woman
+- You can find this out by exploring the data in the aforementioned gapminder website (https://www.gapminder.org/data/documentation/gd008/)
+-  Conduct the same analysis as in the gapminder example from the lecture ( ida-exercise-7b.Rmd), but for life expectancy.
+- Find unusual countries
+
+The code below will help you read in the data and process it, but you will need to make some changes to do the full analysis.
+
+```{r read-data}
+fertility_raw <- read_xlsx(
+  "data-raw/indicator-undata-total-fertility.xlsx"
+  ) %>%
+  clean_names() %>%
+  rename(country = total_fertility_rate)
+
+fertility_raw
+```
+
+You will need to pivot the data into longer form, using the `pivot_longer` function. 
+
+You should know how to do the rest from your experience with past assignments.
+
+```{r tidy-fertility}
+fertility <-
+  fertility_raw %>%
+  pivot_longer(cols = ___, # everything but country,
+               # what is the name of the new variable we are changing the
+               # column of names to?
+               names_to = ___,
+               # What is the name of the column we are changing the values to?
+               values_to = ___) %>%
+  extract out the year information
+  mutate(year = ___) %>%
+  # filter so we only look at years above 1950
+  filter( ___) %>%
+  # center year around 1950
+  mutate(year1950 = ___)
+```
+
+plot the fertility data for each year
+
+```{r eval=FALSE}
+ggplot(fertility, 
+       aes(x = year, 
+           y = babies_per_woman, 
+           group = country)) +
+  geom_line(alpha=0.1)
+```
+
+Now try and answer these questions below. You can use the examples in `ida-exercise-7b.Rmd` to help you answer these questions.
+
+# How has fertility changed over years? For each country?
+
+## How has fertility changed in Australia?
+
+## Fit a model for Australia
+
+## Explore model fit for Australia
+
+## How has fertility increased every year / decade in Australia?
+
+## How well does the model fit?
+
+## Fit a linear model for all countries
+
+## Plot the model fit against the data in two plots
+
+## plot the model coefficients with plotly
+
+## Summarise what you have learned from the model coefficients
+
+## Find those countries with the worst fit
+
