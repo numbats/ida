@@ -26,12 +26,11 @@
   
 
 
-background-color: #006DAE
-class: middle center hide-slide-number
-
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
-&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;br&gt;
@@ -39,7 +38,6 @@ class: middle center hide-slide-number
 .white[Press the **right arrow** to progress to the next slide!]
 
 ---
-
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -66,7 +64,7 @@ Department of Econometrics and Business Statistics
 
 <span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
 
-April 2020
+May 2020
 
 &lt;br&gt;
 ]
@@ -93,6 +91,8 @@ April 2020
 
 
 
+---
+class: refresher
 # recap
 
 - linear models (are awesome)
@@ -101,15 +101,14 @@ April 2020
 ---
 # Announcements
 
-- Assignment 3
+- Assignment
 - Project
-- Peer review marking open (soon!)
-- No class on September 27 (AFL day)
 
 ---
-# Tidytext analysis
-
-&lt;img src="images/text_analysis.png" width="1365" style="display: block; margin: auto;" /&gt;
+background-image: url(images/text_analysis.png)
+background-size: contain
+background-position: 50% 50%
+class: center, bottom, white
 
 ---
 # Why text analysis?
@@ -136,6 +135,8 @@ In addition to `tidyverse` we will be using three other packages today
 
 ```r
 library(tidytext)
+library(remotes)
+# remotes::install_github("Josiahparry/genius")
 library(genius)
 library(gutenbergr)
 ```
@@ -192,11 +193,9 @@ text_df
 
 ```r
 text_df %&gt;%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "words" # default option
-  ) 
+  unnest_tokens(output = word,
+                input = text,
+                token = "words") # default option
 ## # A tibble: 49 x 2
 ##     line word     
 ##    &lt;int&gt; &lt;chr&gt;    
@@ -219,11 +218,9 @@ text_df %&gt;%
 
 ```r
 text_df %&gt;%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "characters"
-  )
+  unnest_tokens(output = word,
+                input = text,
+                token = "characters")
 ## # A tibble: 171 x 2
 ##     line word 
 ##    &lt;int&gt; &lt;chr&gt;
@@ -246,12 +243,10 @@ text_df %&gt;%
 
 ```r
 text_df %&gt;%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "ngrams",
-    n = 2
-  )
+  unnest_tokens(output = word,
+                input = text,
+                token = "ngrams",
+                n = 2)
 ## # A tibble: 43 x 2
 ##     line word          
 ##    &lt;int&gt; &lt;chr&gt;         
@@ -274,12 +269,10 @@ text_df %&gt;%
 
 ```r
 text_df %&gt;%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "ngrams",
-    n = 3
-  )
+  unnest_tokens(output = word,
+                input = text,
+                token = "ngrams",
+                n = 3)
 ## # A tibble: 37 x 2
 ##     line word              
 ##    &lt;int&gt; &lt;chr&gt;             
@@ -338,18 +331,18 @@ od_num_five &lt;- genius_album(
 
 od_num_five
 ## # A tibble: 310 x 4
-##    track_title        track_n  line lyric                                       
-##    &lt;chr&gt;                &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                       
-##  1 Waiting For The S…       1     1 This will be an uncertain time for us my lo…
-##  2 Waiting For The S…       1     2 I can hear the echo of your voice in my head
-##  3 Waiting For The S…       1     3 Singing my love                             
-##  4 Waiting For The S…       1     4 I can see your face there in my hands my lo…
-##  5 Waiting For The S…       1     5 I have been blessed by your grace and care …
-##  6 Waiting For The S…       1     6 Singing my love                             
-##  7 Waiting For The S…       1     7 There's a place for us sitting here waiting…
-##  8 Waiting For The S…       1     8 And it calls me back into the safe arms tha…
-##  9 Waiting For The S…       1     9 For every step you're further away from me …
-## 10 Waiting For The S…       1    10 I grow more unsteady on my feet my love     
+##    track_n  line lyric                                         track_title      
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                         &lt;chr&gt;            
+##  1       1     1 This will be an uncertain time for us my love Waiting For The …
+##  2       1     2 I can hear the echo of your voice in my head  Waiting For The …
+##  3       1     3 Singing my love                               Waiting For The …
+##  4       1     4 I can see your face there in my hands my love Waiting For The …
+##  5       1     5 I have been blessed by your grace and care m… Waiting For The …
+##  6       1     6 Singing my love                               Waiting For The …
+##  7       1     7 There's a place for us sitting here waiting … Waiting For The …
+##  8       1     8 And it calls me back into the safe arms that… Waiting For The …
+##  9       1     9 For every step you're further away from me m… Waiting For The …
+## 10       1    10 I grow more unsteady on my feet my love       Waiting For The …
 ## # … with 300 more rows
 ```
 
@@ -359,25 +352,23 @@ od_num_five
 
 ```r
 powderfinger &lt;- od_num_five %&gt;%
-  mutate(
-    artist = "Powderfinger",
-    album = "Odyssey Number Five"
-  )
+  mutate(artist = "Powderfinger",
+         album = "Odyssey Number Five")
 
 powderfinger
 ## # A tibble: 310 x 6
-##    track_title     track_n  line lyric                       artist   album     
-##    &lt;chr&gt;             &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;    &lt;chr&gt;     
-##  1 Waiting For Th…       1     1 This will be an uncertain … Powderf… Odyssey N…
-##  2 Waiting For Th…       1     2 I can hear the echo of you… Powderf… Odyssey N…
-##  3 Waiting For Th…       1     3 Singing my love             Powderf… Odyssey N…
-##  4 Waiting For Th…       1     4 I can see your face there … Powderf… Odyssey N…
-##  5 Waiting For Th…       1     5 I have been blessed by you… Powderf… Odyssey N…
-##  6 Waiting For Th…       1     6 Singing my love             Powderf… Odyssey N…
-##  7 Waiting For Th…       1     7 There's a place for us sit… Powderf… Odyssey N…
-##  8 Waiting For Th…       1     8 And it calls me back into … Powderf… Odyssey N…
-##  9 Waiting For Th…       1     9 For every step you're furt… Powderf… Odyssey N…
-## 10 Waiting For Th…       1    10 I grow more unsteady on my… Powderf… Odyssey N…
+##    track_n  line lyric                       track_title     artist   album     
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;     
+##  1       1     1 This will be an uncertain … Waiting For Th… Powderf… Odyssey N…
+##  2       1     2 I can hear the echo of you… Waiting For Th… Powderf… Odyssey N…
+##  3       1     3 Singing my love             Waiting For Th… Powderf… Odyssey N…
+##  4       1     4 I can see your face there … Waiting For Th… Powderf… Odyssey N…
+##  5       1     5 I have been blessed by you… Waiting For Th… Powderf… Odyssey N…
+##  6       1     6 Singing my love             Waiting For Th… Powderf… Odyssey N…
+##  7       1     7 There's a place for us sit… Waiting For Th… Powderf… Odyssey N…
+##  8       1     8 And it calls me back into … Waiting For Th… Powderf… Odyssey N…
+##  9       1     9 For every step you're furt… Waiting For Th… Powderf… Odyssey N…
+## 10       1    10 I grow more unsteady on my… Waiting For Th… Powderf… Odyssey N…
 ## # … with 300 more rows
 ```
 
@@ -438,18 +429,18 @@ powderfinger_lyrics &lt;- powderfinger %&gt;%
 
 powderfinger_lyrics
 ## # A tibble: 2,077 x 6
-##    track_title         track_n  line artist       album               word     
-##    &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five this     
-##  2 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five will     
-##  3 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five be       
-##  4 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five an       
-##  5 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five uncertain
-##  6 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five time     
-##  7 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five for      
-##  8 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five us       
-##  9 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five my       
-## 10 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five love     
+##    track_n  line track_title         artist       album               word     
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
+##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five this     
+##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five will     
+##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five be       
+##  4       1     1 Waiting For The Sun Powderfinger Odyssey Number Five an       
+##  5       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
+##  6       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
+##  7       1     1 Waiting For The Sun Powderfinger Odyssey Number Five for      
+##  8       1     1 Waiting For The Sun Powderfinger Odyssey Number Five us       
+##  9       1     1 Waiting For The Sun Powderfinger Odyssey Number Five my       
+## 10       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
 ## # … with 2,067 more rows
 ```
 
@@ -558,18 +549,18 @@ get_stopwords(source = "smart")
 ```r
 powderfinger_lyrics
 ## # A tibble: 2,077 x 6
-##    track_title         track_n  line artist       album               word     
-##    &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five this     
-##  2 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five will     
-##  3 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five be       
-##  4 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five an       
-##  5 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five uncertain
-##  6 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five time     
-##  7 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five for      
-##  8 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five us       
-##  9 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five my       
-## 10 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five love     
+##    track_n  line track_title         artist       album               word     
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
+##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five this     
+##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five will     
+##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five be       
+##  4       1     1 Waiting For The Sun Powderfinger Odyssey Number Five an       
+##  5       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
+##  6       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
+##  7       1     1 Waiting For The Sun Powderfinger Odyssey Number Five for      
+##  8       1     1 Waiting For The Sun Powderfinger Odyssey Number Five us       
+##  9       1     1 Waiting For The Sun Powderfinger Odyssey Number Five my       
+## 10       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
 ## # … with 2,067 more rows
 ```
 
@@ -583,18 +574,18 @@ stopwords_smart &lt;- get_stopwords(source = "smart")
 powderfinger_lyrics %&gt;%
   anti_join(stopwords_smart)
 ## # A tibble: 645 x 6
-##    track_title         track_n  line artist       album               word     
-##    &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five uncertain
-##  2 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five time     
-##  3 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five love     
-##  4 Waiting For The Sun       1     2 Powderfinger Odyssey Number Five hear     
-##  5 Waiting For The Sun       1     2 Powderfinger Odyssey Number Five echo     
-##  6 Waiting For The Sun       1     2 Powderfinger Odyssey Number Five voice    
-##  7 Waiting For The Sun       1     2 Powderfinger Odyssey Number Five head     
-##  8 Waiting For The Sun       1     3 Powderfinger Odyssey Number Five singing  
-##  9 Waiting For The Sun       1     3 Powderfinger Odyssey Number Five love     
-## 10 Waiting For The Sun       1     4 Powderfinger Odyssey Number Five face     
+##    track_n  line track_title         artist       album               word     
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
+##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
+##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
+##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
+##  4       1     2 Waiting For The Sun Powderfinger Odyssey Number Five hear     
+##  5       1     2 Waiting For The Sun Powderfinger Odyssey Number Five echo     
+##  6       1     2 Waiting For The Sun Powderfinger Odyssey Number Five voice    
+##  7       1     2 Waiting For The Sun Powderfinger Odyssey Number Five head     
+##  8       1     3 Waiting For The Sun Powderfinger Odyssey Number Five singing  
+##  9       1     3 Waiting For The Sun Powderfinger Odyssey Number Five love     
+## 10       1     4 Waiting For The Sun Powderfinger Odyssey Number Five face     
 ## # … with 635 more rows
 ```
 
@@ -644,6 +635,7 @@ powderfinger_lyrics %&gt;%
 ```
 
 ---
+# What are the most common words?
 
 &lt;img src="lecture_8a_files/figure-html/gg-common-words-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -774,7 +766,7 @@ powderfinger_lyrics %&gt;%
 ---
 # Visualising sentiments
 
-&lt;img src="lecture_8a_files/figure-html/gg-sentiment-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_8a_files/figure-html/gg-sentiment-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Visualising sentiments
@@ -800,7 +792,7 @@ powderfinger_lyrics %&gt;%
 ```
 
 ---
-
+class: transition
 # Comparing lyrics across artists
 
 ---
@@ -830,20 +822,20 @@ ldoc &lt;- bind_rows(powderfinger,
                   midnight)
 
 ldoc
-## # A tibble: 1,048 x 6
-##    track_title     track_n  line lyric                       artist   album     
-##    &lt;chr&gt;             &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;    &lt;chr&gt;     
-##  1 Waiting For Th…       1     1 This will be an uncertain … Powderf… Odyssey N…
-##  2 Waiting For Th…       1     2 I can hear the echo of you… Powderf… Odyssey N…
-##  3 Waiting For Th…       1     3 Singing my love             Powderf… Odyssey N…
-##  4 Waiting For Th…       1     4 I can see your face there … Powderf… Odyssey N…
-##  5 Waiting For Th…       1     5 I have been blessed by you… Powderf… Odyssey N…
-##  6 Waiting For Th…       1     6 Singing my love             Powderf… Odyssey N…
-##  7 Waiting For Th…       1     7 There's a place for us sit… Powderf… Odyssey N…
-##  8 Waiting For Th…       1     8 And it calls me back into … Powderf… Odyssey N…
-##  9 Waiting For Th…       1     9 For every step you're furt… Powderf… Odyssey N…
-## 10 Waiting For Th…       1    10 I grow more unsteady on my… Powderf… Odyssey N…
-## # … with 1,038 more rows
+## # A tibble: 882 x 6
+##    track_n  line lyric                       track_title     artist   album     
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;     
+##  1       1     1 This will be an uncertain … Waiting For Th… Powderf… Odyssey N…
+##  2       1     2 I can hear the echo of you… Waiting For Th… Powderf… Odyssey N…
+##  3       1     3 Singing my love             Waiting For Th… Powderf… Odyssey N…
+##  4       1     4 I can see your face there … Waiting For Th… Powderf… Odyssey N…
+##  5       1     5 I have been blessed by you… Waiting For Th… Powderf… Odyssey N…
+##  6       1     6 Singing my love             Waiting For Th… Powderf… Odyssey N…
+##  7       1     7 There's a place for us sit… Waiting For Th… Powderf… Odyssey N…
+##  8       1     8 And it calls me back into … Waiting For Th… Powderf… Odyssey N…
+##  9       1     9 For every step you're furt… Waiting For Th… Powderf… Odyssey N…
+## 10       1    10 I grow more unsteady on my… Waiting For Th… Powderf… Odyssey N…
+## # … with 872 more rows
 ```
 
 ---
@@ -855,20 +847,20 @@ ldoc_lyrics &lt;- ldoc %&gt;%
   unnest_tokens(word, lyric)
 
 ldoc_lyrics
-## # A tibble: 7,620 x 6
-##    track_title         track_n  line artist       album               word     
-##    &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five this     
-##  2 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five will     
-##  3 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five be       
-##  4 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five an       
-##  5 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five uncertain
-##  6 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five time     
-##  7 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five for      
-##  8 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five us       
-##  9 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five my       
-## 10 Waiting For The Sun       1     1 Powderfinger Odyssey Number Five love     
-## # … with 7,610 more rows
+## # A tibble: 6,365 x 6
+##    track_n  line track_title         artist       album               word     
+##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
+##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five this     
+##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five will     
+##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five be       
+##  4       1     1 Waiting For The Sun Powderfinger Odyssey Number Five an       
+##  5       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
+##  6       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
+##  7       1     1 Waiting For The Sun Powderfinger Odyssey Number Five for      
+##  8       1     1 Waiting For The Sun Powderfinger Odyssey Number Five us       
+##  9       1     1 Waiting For The Sun Powderfinger Odyssey Number Five my       
+## 10       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
+## # … with 6,355 more rows
 ```
 
 ---
@@ -879,20 +871,20 @@ ldoc_lyrics
 ldoc_lyrics %&gt;%
   anti_join(stopwords_smart) %&gt;%
   count(artist, word, sort = TRUE) # alternative way to sort
-## # A tibble: 1,081 x 3
-##    artist            word          n
-##    &lt;chr&gt;             &lt;chr&gt;     &lt;int&gt;
-##  1 The White Stripes girl         35
-##  2 The White Stripes home         33
-##  3 The Midnight      lost         32
-##  4 The White Stripes button       26
-##  5 The White Stripes love         26
-##  6 The Midnight      boy          25
-##  7 The White Stripes cold         24
-##  8 The Midnight      kids         20
-##  9 The White Stripes good         20
-## 10 The Midnight      strangers    19
-## # … with 1,071 more rows
+## # A tibble: 890 x 3
+##    artist            word        n
+##    &lt;chr&gt;             &lt;chr&gt;   &lt;int&gt;
+##  1 The White Stripes girl       35
+##  2 The White Stripes home       33
+##  3 The White Stripes cold       24
+##  4 The White Stripes love       23
+##  5 The Midnight      kids       20
+##  6 The White Stripes good       20
+##  7 Powderfinger      back       16
+##  8 Powderfinger      time       15
+##  9 Powderfinger      waiting    13
+## 10 The Midnight      woah       13
+## # … with 880 more rows
 ```
 
 ---
@@ -904,20 +896,20 @@ ldoc_lyrics_counts &lt;- ldoc_lyrics %&gt;%
   count(artist, word, sort = TRUE)
 
 ldoc_lyrics_counts
-## # A tibble: 1,619 x 3
+## # A tibble: 1,378 x 3
 ##    artist            word      n
 ##    &lt;chr&gt;             &lt;chr&gt; &lt;int&gt;
-##  1 The White Stripes to      139
-##  2 The White Stripes the     124
-##  3 The White Stripes i       120
-##  4 The White Stripes you     116
-##  5 The Midnight      the     108
-##  6 The White Stripes do      102
-##  7 Powderfinger      the      93
-##  8 The White Stripes a        89
-##  9 The White Stripes and      82
-## 10 Powderfinger      you      77
-## # … with 1,609 more rows
+##  1 The White Stripes to      121
+##  2 The White Stripes i       111
+##  3 The White Stripes you     106
+##  4 The White Stripes the     105
+##  5 The White Stripes do      102
+##  6 Powderfinger      the      93
+##  7 Powderfinger      you      77
+##  8 The White Stripes and      73
+##  9 The White Stripes a        72
+## 10 The Midnight      the      60
+## # … with 1,368 more rows
 ```
 
 ---
@@ -931,7 +923,9 @@ ldoc_lyrics_counts
 tf-idf is about comparing **documents** within a **collection**.
 
 ---
-# Calculating tf-idf: Perhaps not that exciting... What's the issue?
+# Calculating tf-idf: 
+
+Perhaps not that exciting... What's the issue?
 
 
 ```r
@@ -939,20 +933,20 @@ ldoc_words &lt;- ldoc_lyrics_counts %&gt;%
   bind_tf_idf(term = word, document = artist, n = n)
 
 ldoc_words
-## # A tibble: 1,619 x 6
+## # A tibble: 1,378 x 6
 ##    artist            word      n     tf   idf tf_idf
 ##    &lt;chr&gt;             &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-##  1 The White Stripes to      139 0.0366     0      0
-##  2 The White Stripes the     124 0.0326     0      0
-##  3 The White Stripes i       120 0.0316     0      0
-##  4 The White Stripes you     116 0.0305     0      0
-##  5 The Midnight      the     108 0.0620     0      0
-##  6 The White Stripes do      102 0.0268     0      0
-##  7 Powderfinger      the      93 0.0448     0      0
-##  8 The White Stripes a        89 0.0234     0      0
-##  9 The White Stripes and      82 0.0216     0      0
-## 10 Powderfinger      you      77 0.0371     0      0
-## # … with 1,609 more rows
+##  1 The White Stripes to      121 0.0357     0      0
+##  2 The White Stripes i       111 0.0328     0      0
+##  3 The White Stripes you     106 0.0313     0      0
+##  4 The White Stripes the     105 0.0310     0      0
+##  5 The White Stripes do      102 0.0301     0      0
+##  6 Powderfinger      the      93 0.0448     0      0
+##  7 Powderfinger      you      77 0.0371     0      0
+##  8 The White Stripes and      73 0.0216     0      0
+##  9 The White Stripes a        72 0.0213     0      0
+## 10 The Midnight      the      60 0.0666     0      0
+## # … with 1,368 more rows
 ```
 
 ---
@@ -963,25 +957,26 @@ ldoc_words
 ldoc_words %&gt;%
   bind_tf_idf(term = word, document = artist, n = n) %&gt;%
   arrange(-tf_idf)
-## # A tibble: 1,619 x 6
-##    artist            word          n      tf   idf  tf_idf
-##    &lt;chr&gt;             &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-##  1 The Midnight      kids         20 0.0115  1.10  0.0126 
-##  2 The Midnight      strangers    19 0.0109  1.10  0.0120 
-##  3 The Midnight      woah         13 0.00746 1.10  0.00820
-##  4 The White Stripes button       26 0.00684 1.10  0.00751
-##  5 The Midnight      lost         32 0.0184  0.405 0.00745
-##  6 The Midnight      was          32 0.0184  0.405 0.00745
-##  7 The White Stripes her          25 0.00658 1.10  0.00723
-##  8 The Midnight      monsters     11 0.00631 1.10  0.00694
-##  9 The White Stripes cold         24 0.00631 1.10  0.00694
-## 10 The White Stripes oh           63 0.0166  0.405 0.00672
-## # … with 1,609 more rows
+## # A tibble: 1,378 x 6
+##    artist            word            n      tf   idf  tf_idf
+##    &lt;chr&gt;             &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+##  1 The Midnight      kids           20 0.0222   1.10 0.0244 
+##  2 The Midnight      woah           13 0.0144   1.10 0.0159 
+##  3 The Midnight      bedroom        10 0.0111   1.10 0.0122 
+##  4 The Midnight      monsters       10 0.0111   1.10 0.0122 
+##  5 The Midnight      spare          10 0.0111   1.10 0.0122 
+##  6 The White Stripes girl           35 0.0103   1.10 0.0114 
+##  7 The Midnight      america         9 0.00999  1.10 0.0110 
+##  8 The Midnight      sentimental     9 0.00999  1.10 0.0110 
+##  9 The White Stripes her            25 0.00738  1.10 0.00811
+## 10 The White Stripes cold           24 0.00709  1.10 0.00778
+## # … with 1,368 more rows
 ```
 
 ---
+# Re-calculating tf-idf
 
-&lt;img src="lecture_8a_files/figure-html/gg-tf-idf-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_8a_files/figure-html/gg-tf-idf-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Your Turn:
@@ -992,7 +987,7 @@ ldoc_words %&gt;%
   - Musicals: "Les Miserables" or "Wicked"
 
 ---
-, middle, center
+class: transition
 
 # Part Two: Tidy Text analysis on Books
 
@@ -1003,7 +998,7 @@ The [Gutenberg project](http://www.gutenberg.org/wiki/Main_Page) provides the te
 
 Let's explore The Origin of the Species by Charles Darwin using the `gutenbergr` R package.
 
----
+--
 
 We need to know the `id` of the book, which means looking this up online anyway. 
 - The first edition is `1228`
@@ -1056,9 +1051,7 @@ darwin1$text &lt;- removeNumbers(darwin1$text)
 - remove the stop words
 - count the words
 - find the length of the words
-]
 
-.pull-right[
 
 ```r
 darwin1_words &lt;- darwin1 %&gt;%
@@ -1066,7 +1059,12 @@ darwin1_words &lt;- darwin1 %&gt;%
   anti_join(stop_words) %&gt;%
   count(word, sort = TRUE) %&gt;%
   mutate(len = str_length(word))
+```
+]
 
+.pull-right[
+
+```r
 darwin1_words
 ## # A tibble: 6,395 x 3
 ##    word          n   len
@@ -1103,22 +1101,15 @@ quantile(
 ---
 # Analyse tokens
 
-.left-code[
 
 ```r
 darwin1_words %&gt;%
-  top_n(n = 20,
-        wt = n) %&gt;%
-  ggplot(aes(x = n,
-             y = fct_reorder(word, n))) +
-  geom_point() +
-  ylab("")
+  top_n(n = 20, wt = n) %&gt;%
+  ggplot(aes(x = n, y = fct_reorder(word, n))) +
+  geom_point() + labs(y = "")
 ```
-]
 
-.right-plot[
-&lt;img src="lecture_8a_files/figure-html/gg-analyse-text-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-]
+&lt;img src="lecture_8a_files/figure-html/gg-analyse-text-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Download and tokenize the 6th edition.
@@ -1133,6 +1124,7 @@ darwin6$text &lt;- removeNumbers(darwin6$text)
 ---
 # show tokenized words
 
+.pull-left[
 
 ```r
 darwin6_words &lt;- darwin6 %&gt;%
@@ -1140,7 +1132,12 @@ darwin6_words &lt;- darwin6 %&gt;%
   anti_join(stop_words) %&gt;%
   count(word, sort = TRUE) %&gt;%
   mutate(len = str_length(word))
+```
+]
 
+.pull-right[
+
+```r
 darwin6_words
 ## # A tibble: 8,335 x 3
 ##    word          n   len
@@ -1157,9 +1154,10 @@ darwin6_words
 ## 10 nature      325     6
 ## # … with 8,325 more rows
 ```
+]
 
 ---
-
+# show tokenized words
 
 ```r
 quantile(darwin6_words$n, probs = seq(0.9, 1, 0.01))
@@ -1170,17 +1168,15 @@ quantile(darwin6_words$n, probs = seq(0.9, 1, 0.01))
 ```
 
 ---
-
+# show tokenized words
 
 ```r
 darwin6_words %&gt;%
-  top_n(n = 20,
-        wt = n) %&gt;%
-  ggplot(aes(x = n, y = fct_reorder(word, n))) + geom_point() +
-  ylab("")
+  top_n(n = 20, wt = n) %&gt;%
+  ggplot(aes(x = n, y = fct_reorder(word, n))) + geom_point() + labs(y = "")
 ```
 
-&lt;img src="lecture_8a_files/figure-html/gg-second-edition-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_8a_files/figure-html/gg-second-edition-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Compare the word frequency
@@ -1277,7 +1273,7 @@ E.g, A novel in a collection of novels, a website in a collection of websites.
 `$$tf_idf = tf\times idf$$`
 
 ---
-
+# TF IDF
 
 ```r
 darwin &lt;- bind_rows("first" = darwin1_words, 
@@ -1326,7 +1322,7 @@ darwin_tf_idf %&gt;% arrange(desc(tf_idf))
 ```
 
 ---
-
+# TF IDF
 
 ```r
 gg_darwin_1_vs_6 &lt;-
@@ -1352,7 +1348,7 @@ darwin_tf_idf %&gt;%
 
 ---
 
-&lt;img src="lecture_8a_files/figure-html/gg-rawin-tf-idf-out-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_8a_files/figure-html/gg-rawin-tf-idf-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What do we learn?
@@ -1394,54 +1390,6 @@ Work your way through the [comparison of physics books](https://www.tidytextmini
 - Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial
 - Dr. Julia Silge and Dr. David Robinson: https://www.tidytextmining.com/
 - Josiah Parry: https://github.com/JosiahParry/genius
-
----
-  
-
-background-image: url(images/bg1.jpg)
-background-size: cover
-class: hide-slide-number split-70
-count: false
-
-.column.shade_black[.content[
-
-&lt;br&gt;&lt;br&gt;
-
-# That's it!
-
-.bottom_abs.width100[
-
-Lecturer: Nicholas Tierney
-
-Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
-
-April 2020
-
-
-]
-
-&lt;br /&gt;
-This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
-
-&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
-
-
-]]
-
-
-
-&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
-&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
-&lt;svg class="clip-svg absolute"&gt;
-&lt;defs&gt;
-&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
-&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
-&lt;/clipPath&gt;
-&lt;/defs&gt;	
-&lt;/svg&gt;
-&lt;/div&gt;
-&lt;/div&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
@@ -1498,6 +1446,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -1515,17 +1489,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

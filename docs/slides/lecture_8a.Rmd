@@ -4,7 +4,7 @@ week: "Week 8, part A"
 subtitle: "Text analysis"
 author: "Nicholas Tierney"
 email: "nicholas.tierney@monash.edu"
-date: "April 2020"
+date: "May 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -50,11 +50,12 @@ library(kableExtra)
 library(textdata)
 library(tm)
 
-opts_chunk$set(echo = TRUE,   
+knitr::opts_chunk$set(echo = TRUE,   
                out.width = "100%",
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
+               fig.retina = 2,
                fig.height = 4,
                fig.width = 8,
                fig.align = "center",
@@ -75,12 +76,9 @@ class: refresher
 
 - Assignment
 - Project
-- Peer review marking
 
 ---
-# Tidytext analysis
-
-background-image: uurl(images/text_analysis.png)
+background-image: url(images/text_analysis.png)
 background-size: contain
 background-position: 50% 50%
 class: center, bottom, white
@@ -109,6 +107,8 @@ In addition to `tidyverse` we will be using three other packages today
 
 ```{r list-pkgs}
 library(tidytext)
+library(remotes)
+# remotes::install_github("Josiahparry/genius")
 library(genius)
 library(gutenbergr)
 ```
@@ -147,11 +147,9 @@ text_df
 
 ```{r unnest-tokens}
 text_df %>%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "words" # default option
-  ) 
+  unnest_tokens(output = word,
+                input = text,
+                token = "words") # default option
 ```
 
 ---
@@ -159,11 +157,9 @@ text_df %>%
 
 ```{r unnest-tokens-chars}
 text_df %>%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "characters"
-  )
+  unnest_tokens(output = word,
+                input = text,
+                token = "characters")
 ```
 
 ---
@@ -171,12 +167,10 @@ text_df %>%
 
 ```{r unnest-tokens-ngram-2}
 text_df %>%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "ngrams",
-    n = 2
-  )
+  unnest_tokens(output = word,
+                input = text,
+                token = "ngrams",
+                n = 2)
 ```
 
 ---
@@ -184,12 +178,10 @@ text_df %>%
 
 ```{r unnest-tokens-ngram-3}
 text_df %>%
-  unnest_tokens(
-    output = word,
-    input = text,
-    token = "ngrams",
-    n = 3
-  )
+  unnest_tokens(output = word,
+                input = text,
+                token = "ngrams",
+                n = 3)
 ```
 
 ---
@@ -241,10 +233,8 @@ od_num_five
 
 ```{r save-powderfinger}
 powderfinger <- od_num_five %>%
-  mutate(
-    artist = "Powderfinger",
-    album = "Odyssey Number Five"
-  )
+  mutate(artist = "Powderfinger",
+         album = "Odyssey Number Five")
 
 powderfinger
 ```
@@ -361,6 +351,7 @@ powderfinger_lyrics %>%
 ```
 
 ---
+# What are the most common words?
 
 ```{r gg-common-words-out, ref.label = 'gg-common-words', echo = FALSE, out.width = "100%"}
 ```
@@ -459,7 +450,7 @@ powderfinger_lyrics %>%
 ```
 
 ---
-
+class: transition
 # Comparing lyrics across artists
 
 ---
@@ -529,7 +520,9 @@ $$idf(\text{term}) = \ln{\left(\frac{n_{\text{documents}}}{n_{\text{documents co
 tf-idf is about comparing **documents** within a **collection**.
 
 ---
-# Calculating tf-idf: Perhaps not that exciting... What's the issue?
+# Calculating tf-idf: 
+
+Perhaps not that exciting... What's the issue?
 
 ```{r calc-tf-idf}
 ldoc_words <- ldoc_lyrics_counts %>%
@@ -548,6 +541,7 @@ ldoc_words %>%
 ```
 
 ---
+# Re-calculating tf-idf
 
 ```{r gg-tf-idf, echo=FALSE,message=FALSE, fig.height = 5}
 ldoc_words %>%
@@ -621,16 +615,18 @@ darwin1$text <- removeNumbers(darwin1$text)
 - remove the stop words
 - count the words
 - find the length of the words
-]
 
-.pull-right[
 ```{r tokenize-text}
 darwin1_words <- darwin1 %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>%
   count(word, sort = TRUE) %>%
   mutate(len = str_length(word))
+```
+]
 
+.pull-right[
+```{r tokenize-text-print}
 darwin1_words
 ```
 ]
@@ -648,23 +644,12 @@ quantile(
 ---
 # Analyse tokens
 
-.left-code[
-```{r gg-analyse-text, eval = FALSE}
+```{r gg-analyse-text}
 darwin1_words %>%
-  top_n(n = 20,
-        wt = n) %>%
-  ggplot(aes(x = n,
-             y = fct_reorder(word, n))) +
-  geom_point() +
-  ylab("")
+  top_n(n = 20, wt = n) %>%
+  ggplot(aes(x = n, y = fct_reorder(word, n))) +
+  geom_point() + labs(y = "")
 ```  
-]
-
-.right-plot[
-```{r gg-analyse-text-out, ref.label = 'gg-analyse-text', echo = FALSE, out.width = "100%"}
-
-```
-]
 
 ---
 # Download and tokenize the 6th edition.
@@ -678,15 +663,21 @@ darwin6$text <- removeNumbers(darwin6$text)
 ---
 # show tokenized words
 
+.pull-left[
 ```{r table-second-edition}
 darwin6_words <- darwin6 %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>%
   count(word, sort = TRUE) %>%
   mutate(len = str_length(word))
+```
+]
 
+.pull-right[
+```{r table-second-edition-print}
 darwin6_words
 ```
+]
 
 ---
 # show tokenized words
@@ -698,10 +689,8 @@ quantile(darwin6_words$n, probs = seq(0.9, 1, 0.01))
 # show tokenized words
 ```{r gg-second-edition}
 darwin6_words %>%
-  top_n(n = 20,
-        wt = n) %>%
-  ggplot(aes(x = n, y = fct_reorder(word, n))) + geom_point() +
-  ylab("")
+  top_n(n = 20, wt = n) %>%
+  ggplot(aes(x = n, y = fct_reorder(word, n))) + geom_point() + labs(y = "")
 ```
 
 ---
@@ -864,8 +853,3 @@ Work your way through the [comparison of physics books](https://www.tidytextmini
 - Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial
 - Dr. Julia Silge and Dr. David Robinson: https://www.tidytextmining.com/
 - Josiah Parry: https://github.com/JosiahParry/genius
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
