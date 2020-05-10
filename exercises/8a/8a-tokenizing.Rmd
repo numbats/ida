@@ -1,0 +1,88 @@
+---
+title: "Tokenizing text"
+author: "Your Name"
+date: "10/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidytext)
+```
+
+# Tokenising text
+
+```{r}
+text <- c("This will be an uncertain time for us my love",
+          "I can hear the echo of your voice in my head",
+          "Singing my love",
+          "I can see your face there in my hands my love",
+          "I have been blessed by your grace and care my love",
+          "Singing my love")
+
+text
+text_df <- tibble(line = seq_along(text), text = text)
+
+text_df
+```
+
+`unnest_tokens` takes a character vector and unests into a tidy data frame.
+
+What's going on these examples?
+
+```{r}
+text_df %>%
+  unnest_tokens(
+    output = word,
+    input = text,
+    token = "words" # default option
+  ) 
+```
+
+```{r}
+text_df %>%
+  unnest_tokens(
+    output = word,
+    input = text,
+    token = "characters"
+  )
+```
+
+```{r}
+text_df %>%
+  unnest_tokens(
+    output = word,
+    input = text,
+    token = "ngrams",
+    n = 2
+  )
+```
+
+```{r}
+text_df %>%
+  unnest_tokens(
+    output = word,
+    input = text,
+    token = "ngrams",
+    n = 3
+  )
+```
+
+## Your Turn
+
+Use `unnest_tokens` to help you answer the following questions from
+the two paragraphs of text below:
+
+```{r}
+dickens <- "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way - in short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only."
+
+burns <- c("This is a thousand monkeys working at a thousand typewriters. Soon, they'll have finished the greatest novel known to man. 
+'All right, let's see... It was the best of times, it was the BLURST of times?' You stupid monkey.")
+
+quotes_df <- tibble(from = c("Dickens", "Simpsons"),
+                    text = c(dickens, burns))
+```
+
+How many words are in each quote?
+
+How man times does the trigram `it was the` occur?

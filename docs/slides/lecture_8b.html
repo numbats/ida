@@ -28,12 +28,11 @@
   
 
 
-background-color: #006DAE
-class: middle center hide-slide-number
-
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
-&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;br&gt;
@@ -41,7 +40,6 @@ class: middle center hide-slide-number
 .white[Press the **right arrow** to progress to the next slide!]
 
 ---
-
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -68,7 +66,7 @@ Department of Econometrics and Business Statistics
 
 <span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
 
-April 2020
+May 2020
 
 &lt;br&gt;
 ]
@@ -118,7 +116,7 @@ class: refresher
 ---
 # Remember linear regression?
 
-&lt;img src="lecture_8b_files/figure-html/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_8b_files/figure-html/unnamed-chunk-1-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 # Interaction between quantitative and categorical variables
@@ -193,7 +191,7 @@ pisa_au %&gt;%
 # Interaction between quantitative and categorical variables
 
 
-&lt;img src="lecture_8b_files/figure-html/read-pisa-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_8b_files/figure-html/read-pisa-1.png" width="576" style="display: block; margin: auto;" /&gt;
 
 ---
 # There are two possible models:
@@ -299,7 +297,7 @@ library(countdown)
 countdown(minutes = 5)
 ```
 
-<div class="countdown" id="timer_5e5cf3a6" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5eb7b738" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -595,14 +593,14 @@ emma_afinn
 emma_nrc %&gt;% count(sentiment) %&gt;% mutate(n / sum(n))
 ## # A tibble: 2 x 3
 ##   sentiment     n `n/sum(n)`
-##   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
+## * &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
 ## 1 negative   4473      0.321
 ## 2 positive   9471      0.679
 
 emma_bing %&gt;% count(sentiment) %&gt;% mutate(n / sum(n))
 ## # A tibble: 2 x 3
 ##   sentiment     n `n/sum(n)`
-##   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
+## * &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
 ## 1 negative   4809      0.402
 ## 2 positive   7157      0.598
 ```
@@ -620,7 +618,7 @@ emma_afinn %&gt;%
   mutate(n / sum(n))
 ## # A tibble: 2 x 3
 ##   sentiment     n `n/sum(n)`
-##   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
+## * &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
 ## 1 negative   4429      0.406
 ## 2 positive   6472      0.594
 ```
@@ -1067,6 +1065,8 @@ We need to break text of each tweet into words, tag words with sentiments, and m
 ---
   
 
+
+
 background-image: url(images/bg1.jpg)
 background-size: cover
 class: hide-slide-number split-70
@@ -1085,7 +1085,7 @@ Lecturer: Nicholas Tierney
 Department of Econometrics and Business Statistics&lt;br&gt;
 <span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
 
-April 2020
+May 2020
 
 
 ]
@@ -1173,6 +1173,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -1190,17 +1216,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

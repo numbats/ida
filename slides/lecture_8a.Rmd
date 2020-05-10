@@ -1,9 +1,9 @@
 ---
-title: "ETC1010: Introduction to Data Analysis"
+title: "ETC5510: Introduction to Data Analysis"
 week: "Week 8, part A"
 subtitle: "Text analysis"
-author: "Nicholas Tierney"
-email: "nicholas.tierney@monash.edu"
+author: "Nicholas Tierney & Stuart Lee"
+email: "ETC5510.Clayton-x@monash.edu"
 date: "May 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
@@ -50,15 +50,16 @@ library(kableExtra)
 library(textdata)
 library(tm)
 
-knitr::opts_chunk$set(echo = TRUE,   
+opts_chunk$set(echo = TRUE,   
                out.width = "100%",
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
-               fig.retina = 2,
                fig.height = 4,
+               fig.retina = 2,
                fig.width = 8,
                fig.align = "center",
+               dpi = 300,
                cache = FALSE)
 
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
@@ -76,20 +77,15 @@ class: refresher
 
 - Assignment
 - Project
-
----
-background-image: url(images/text_analysis.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
+- Peer review marking
 
 ---
 # Why text analysis?
 
-- To use the realtors text description to improve the Melbourne housing price model
+- Predict Melbourne house prices from realtor descriptions
 - Determine the extent of public discontent with train stoppages in Melbourne
 - The differences between Darwin's first edition of the Origin of the Species and the 6th edition
-- Does the sentiment of posts on Newcastle Jets public facebook page reflect their win/los record?
+- Does the sentiment of posts on Newcastle Jets public facebook page reflect their win/loss record?
 
 ---
 # Typical Process
@@ -107,9 +103,6 @@ In addition to `tidyverse` we will be using three other packages today
 
 ```{r list-pkgs}
 library(tidytext)
-library(remotes)
-# remotes::install_github("Josiahparry/genius")
-library(genius)
 library(gutenbergr)
 ```
 
@@ -145,134 +138,192 @@ text_df
 ---
 # What is tidy text?
 
-```{r unnest-tokens}
+.left-code[
+```{r unnest-tokens, eval = FALSE}
 text_df %>%
   unnest_tokens(output = word,
                 input = text,
                 token = "words") # default option
+```  
+]
+
+.right-plot[
+```{r unnest-tokens-out, ref.label = 'unnest-tokens', echo = FALSE, out.width = "100%"}
+
 ```
+]
 
 ---
 # What is unnesting?
 
-```{r unnest-tokens-chars}
+.left-code[
+```{r unnest-tokens-chars, eval = FALSE}
 text_df %>%
   unnest_tokens(output = word,
                 input = text,
                 token = "characters")
+```  
+]
+
+.right-plot[
+```{r unnest-tokens-chars-out, ref.label = 'unnest-tokens-chars', echo = FALSE}
+
 ```
+]
 
 ---
 # What is unnesting - ngrams length 2
 
-```{r unnest-tokens-ngram-2}
+.left-code[
+```{r unnest-tokens-ngram-2, eval = FALSE}
 text_df %>%
   unnest_tokens(output = word,
                 input = text,
                 token = "ngrams",
                 n = 2)
+```  
+]
+
+.right-plot[
+```{r unnest-tokens-ngram-2-out, ref.label = 'unnest-tokens-ngram-2', echo = FALSE}
+
 ```
+]
 
 ---
 # What is unnesting - ngrams length 3
 
-```{r unnest-tokens-ngram-3}
+.left-code[
+```{r unnest-tokens-ngram-3, eval = FALSE}
 text_df %>%
   unnest_tokens(output = word,
                 input = text,
                 token = "ngrams",
                 n = 3)
+```  
+]
+
+.right-plot[
+```{r unnest-tokens-ngram-3-out, ref.label = 'unnest-tokens-ngram-3', echo = FALSE, out.width = "100%"}
+
 ```
+]
 
 ---
 class: transition
 
-# Analyzing lyrics of one artist
+# Your Turn:
+
+Complete "8a-tokenizing.Rmd"
 
 ---
-# Let's get more data
+class: transition
 
-We'll use the `genius` package to get song lyric data from [Genius](https://genius.com/).
-
-- `genius_album()` allows you to download the lyrics for an entire album in a 
-tidy format. 
+# Analyzing user reviews for Animal Crossing: New Horizons
 
 ---
-# getting more data
+# About the data
 
-- Input: Two arguments: `artists` and `album`. If it gives you issues check that you have the album name and
-artists as specified on [Genius](https://genius.com/).
+- User and critic reviews for the game [Animal Crossing](https://www.nintendo.com/games/detail/animal-crossing-new-horizons-switch/) scraped from Metacritc
 
-- Output: A tidy data frame with three columns:
-    - `title`: track name
-    - `track_n`: track number
-    - `text`: lyrics
+- This data comes from a [#TidyTuesday challenge](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-05-05/readme.md). 
+
+
 
 ---
-# [Greatest Australian Album of all time (as voted by triple J)](https://www.abc.net.au/triplej/hottest100/alltime/11/countdown/cd_1.htm)
+# What do the user reviews look like?
 
-```{r show-powderfinger-website, echo = FALSE, out.width = "90%"}
-include_graphics("images/powderfinger.png")
+```{r, echo = TRUE}
+acnh_user_reviews <- read_tsv(here::here("slides/data/acnh_user_reviews.tsv"))
+glimpse(acnh_user_reviews)
 ```
 
 
 ---
-# Greatest Australian Album of all time (as voted by triple J)
+# Let's look at the grade distrubtion
 
-```{r powderfinger-album, cache=TRUE}
-od_num_five <- genius_album(
-  artist = "Powderfinger",
-  album = "Odyssey Number Five"
-)
+```{r review-grades, echo = FALSE}
+acnh_user_reviews %>% 
+  count(grade) %>% 
+  ggplot(aes(x = grade, y = n )) +
+  geom_col()
+```
 
-od_num_five
+
+---
+# Read a few of the positive reviews
+
+.left_code[
+```{r pos-reviews, echo = TRUE, eval = FALSE}
+set.seed(1999)
+acnh_user_reviews %>% 
+  filter(grade > 8) %>% 
+  sample_n(3) %>% 
+  pull(text)
+```
+]
+
+.pull_right[
+```{r ref.label="pos-reviews", eval = TRUE, echo = FALSE}
+```
+]
+
+
+---
+# And some negative reviews
+
+.left_code[
+```{r neg-reviews, echo = TRUE, eval = FALSE }
+set.seed(2099)
+acnh_user_reviews %>% 
+  filter(grade == 0) %>% 
+  sample_n(3) %>% 
+  pull(text)
+```
+]
+
+.pull_right[
+```{r ref.label="neg-reviews", eval = TRUE, echo = FALSE}
+```
+]
+
+---
+# Looks like the scraping is messed up a bit
+
+Long reviews are compressed from the scraping procedure...
+```{r,}
+acnh_user_reviews_parsed <- acnh_user_reviews %>% 
+  mutate(text = str_remove(text, "Expand$"))
+```
+
+We will remove these characters from the text..
+
+---
+# Tidy up the reviews!
+
+```{r unnest-tokens-acnh}
+user_reviews_words <- acnh_user_reviews_parsed %>%
+  unnest_tokens(output = word, input = text)
+
+user_reviews_words
 ```
 
 ---
-# Save for later
+# Distribution of words per review?
 
-```{r save-powderfinger}
-powderfinger <- od_num_five %>%
-  mutate(artist = "Powderfinger",
-         album = "Odyssey Number Five")
-
-powderfinger
-```
-
----
-# What songs are in the album?
-
-```{r distinct-songs}
-powderfinger %>% distinct(track_title)
-```
-
----
-# How long are the lyrics in Powderfinger's songs?
-
-```{r powderfinger-n-lines}
-powderfinger %>%
-  count(track_title) %>%
-  arrange(-n)
-```
-
----
-# Tidy up the lyrics!
-
-```{r unnest-tokens-powderfinger}
-powderfinger_lyrics <- powderfinger %>%
-  unnest_tokens(output = word,
-                input = lyric)
-
-powderfinger_lyrics
+```{r word-histogram, out.width="90%"}
+user_reviews_words %>% 
+  count(user_name) %>% 
+  ggplot(aes(x = n)) +
+  geom_histogram()
 ```
 
 ---
 # What are the most common words?
 
 ```{r common-words}
-powderfinger_lyrics %>%
-  count(word) %>%
-  arrange(-n)
+user_reviews_words %>%
+  count(word, sort = TRUE)
 ```
 
 ---
@@ -308,7 +359,8 @@ get_stopwords(source = "smart")
 # What are the most common words?
 
 ```{r repeat}
-powderfinger_lyrics
+user_reviews_words %>%
+  count(word, sort = TRUE)
 ```
 
 ---
@@ -317,25 +369,38 @@ powderfinger_lyrics
 ```{r stopwords-anti-join}
 stopwords_smart <- get_stopwords(source = "smart")
 
-powderfinger_lyrics %>%
-  anti_join(stopwords_smart)
+user_reviews_words %>%
+  anti_join(stopwords_smart) 
+```
+
+---
+## Aside: the anti-join
+
+- A type of filtering join, will return all rows on the left when there
+are no matches on the right
+- Only keeps columns on the left 
+
+---
+## As a picture
+
+```{r animate-anti-join, echo = FALSE, out.width = "50%"}
+include_graphics("gifs/anti-join.gif")
 ```
 
 ---
 # What are the most common words?
 
 ```{r stopwords-anti-join-complete}
-powderfinger_lyrics %>%
+user_reviews_words %>%
   anti_join(stopwords_smart) %>%
-  count(word) %>%
-  arrange(-n)
+  count(word, sort = TRUE) 
 ```
 
 ---
 # What are the most common words?
 
 ```{r gg-common-words, eval=FALSE}
-powderfinger_lyrics %>%
+user_reviews_words %>%
   anti_join(stopwords_smart) %>%
   count(word) %>%
   arrange(-n) %>%
@@ -344,17 +409,28 @@ powderfinger_lyrics %>%
   geom_col() +
   coord_flip() +
   theme_minimal() +
-  labs(title = "Frequency of Powderfinger's lyrics",
-       subtitle = "`Back` tops the chart",
+  labs(title = "Frequency of words in user reviews",
+       subtitle = "",
        y = "",
        x = "")
 ```
 
 ---
-# What are the most common words?
 
 ```{r gg-common-words-out, ref.label = 'gg-common-words', echo = FALSE, out.width = "100%"}
 ```
+
+---
+class: transition
+
+# Your turn: 
+
+Complete "8a-stopwords.Rmd"
+
+---
+class: transition
+
+# Sentiment Analysis
 
 ---
 # Sentiment analysis
@@ -394,24 +470,44 @@ get_sentiments(lexicon = "loughran")
 ]
 
 ---
-# Sentiments in Powderfinger's lyrics
+# Sentiments in the reviews
 
-```{r sentiment-powderfinger}
+```{r sentiment-reviews}
 sentiments_bing <- get_sentiments("bing")
 
-powderfinger_lyrics %>%
+user_reviews_words %>%
   inner_join(sentiments_bing) %>%
-  count(sentiment, word) %>%
-  arrange(-n)
+  count(sentiment, word, sort = TRUE) 
 ```
 
 ---
 # Visualising sentiments
 
-```{r gg-sentiment, echo=FALSE, message=FALSE}
-powderfinger_lyrics %>%
+```{r gg-sentiment, echo=TRUE, message=FALSE, eval = FALSE}
+user_reviews_words %>%
   inner_join(sentiments_bing) %>%
-  count(sentiment, word) %>%
+  count(sentiment, word, sort = TRUE) %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  ggplot(aes(fct_reorder(word, n), n, fill = sentiment)) +
+  geom_col() +
+  coord_flip() +
+  facet_wrap(~sentiment, scales = "free") +
+  theme_minimal() +
+  labs(
+    title = "Sentiments in user reviews",
+    x = ""
+  )
+```
+
+---
+# Visualising sentiments
+
+```{r gg-sentiment2, echo = FALSE}
+user_reviews_words %>%
+  inner_join(sentiments_bing) %>%
+  count(sentiment, word, sort = TRUE) %>%
   arrange(desc(n)) %>%
   group_by(sentiment) %>%
   top_n(10) %>%
@@ -422,425 +518,189 @@ powderfinger_lyrics %>%
   facet_wrap(~sentiment, scales = "free") +
   theme_minimal() +
   labs(
-    title = "Sentiments in Powderfinger's lyrics",
+    title = "Sentiments in user reviews",
     x = ""
   )
 ```
 
----
-# Visualising sentiments
 
-```{r gg-sentiment2, eval = FALSE}
-powderfinger_lyrics %>%
-  inner_join(sentiments_bing) %>%
-  count(sentiment, word) %>%
-  arrange(desc(n)) %>%
-  group_by(sentiment) %>%
-  top_n(10) %>%
-  ungroup() %>%
-  ggplot(aes(fct_reorder(word, n), n, fill = sentiment)) +
-  geom_col() +
-  coord_flip() +
-  facet_wrap(~sentiment, scales = "free") +
-  theme_minimal() +
-  labs(
-    title = "Sentiments in Powderfinger's lyrics",
-    x = ""
-  )
+---
+
+# Common words over grades 
+
+```{r common-user-words-stop}
+user_reviews_words %>%
+  anti_join(stopwords_smart) %>%
+  count(grade, word, sort = TRUE) 
+```
+
+---
+# Common review words by grade - With stop words:
+
+```{r common-user-words}
+user_reviews_words %>%
+  count(grade, word, sort = TRUE)
 ```
 
 ---
 class: transition
-# Comparing lyrics across artists
 
----
+# Your turn: 
 
-# Get more data: The White Stripes & The Midnight
-
-```{r get-artists, cache=TRUE}
-stripes <- genius_album(artist = "The White Stripes",
-                        album = "Elephant") %>%
-  mutate(artist = "The White Stripes",
-         album = "Elephant")
-
-midnight <- genius_album(artist = "The Midnight",
-                         album = "Kids") %>%
-  mutate(artist = "The Midnight",
-         album = "Kids")
-```
-
----
-# Combine data:
-
-```{r combine-data}
-ldoc <- bind_rows(powderfinger,
-                  stripes,
-                  midnight)
-
-ldoc
-```
-
----
-# LDOC lyrics
-
-```{r ldoc-lyrics}
-ldoc_lyrics <- ldoc %>%
-  unnest_tokens(word, lyric)
-
-ldoc_lyrics
-```
-
----
-# Common LDOC lyrics - Without stop words:
-
-```{r common-LDOC-lyrics}
-ldoc_lyrics %>%
-  anti_join(stopwords_smart) %>%
-  count(artist, word, sort = TRUE) # alternative way to sort
-```
-
----
-# Common LDOC lyrics - With stop words:
-
-```{r common-ldoc}
-ldoc_lyrics_counts <- ldoc_lyrics %>%
-  count(artist, word, sort = TRUE)
-
-ldoc_lyrics_counts
-```
+Complete "8a-sentiment.Rmd"
 
 ---
 # What is a document about?
 
+## How do we measure the importance of a word to a document in a collection of documents?
+
+i.e a novel in a collection of novels or a review in a set of reviews...
+
+We combine the following statistics:
+
 - Term frequency
 - Inverse document frequency
 
-$$idf(\text{term}) = \ln{\left(\frac{n_{\text{documents}}}{n_{\text{documents containing term}}}\right)}$$
+---
 
-tf-idf is about comparing **documents** within a **collection**.
+# Term frequency
+
+The raw frequency of a word $w$ in a document $d$. It is a function of the word and the document. 
+
+$$tf(w, d) = \frac{\text{count of w in d}}{\text{total count in d}} $$
 
 ---
-# Calculating tf-idf: 
+# Term frequency
 
-Perhaps not that exciting... What's the issue?
+For our reviews a document is a single user's review.
+
+```{r doc-example}
+document <- user_reviews_words %>% 
+    anti_join(stopwords_smart) %>% 
+    filter(user_name == "Discoduckasaur")
+document
+```
+
+
+---
+# Term frequency
+
+The term frequency for each word is the number of times that word occurs
+divided by the total number of words in the document.
+
+.pull-left[
+```{r tf}
+tbl_tf <- document %>% 
+  count(word, sort = TRUE) %>% 
+  mutate(tf = n / sum(n))
+```
+]
+
+.pull-right[
+
+```{r tf-print}
+tbl_tf %>% 
+  arrange(desc(tf))
+```
+]
+---
+
+## Inverse-document frequency
+
+The inverse document frequency tells how common or rare a word is accross a collection of documents. It is a function of a word $w$, and the collection of documents $\mathcal{D}$.
+
+$$idf(w, \mathcal{D}) = \log{\left(\frac{\text{size of } \mathcal{D}}{\text{number of documents that contain } w}\right)}$$
+---
+
+## Inverse document frequency
+
+For the reviews data set, our collection is all the reviews. You could
+compute this in a somewhat roundabout as follows:
+
+```{r idf}
+tbl_idf <- user_reviews_words %>% 
+    anti_join(stopwords_smart) %>%
+    mutate(collection_size = n_distinct(user_name)) %>% 
+    group_by(collection_size, word) %>% 
+    summarise(times_word_used = n_distinct(user_name)) %>% 
+    mutate(freq = collection_size / times_word_used,
+           idf = log(freq)) 
+arrange(tbl_idf, idf)
+```
+
+---
+## Putting it together term frequency, inverse document frequency
+
+Multiply tf and idf together. This is a function of a word $w$, a document $d$,
+and the collection of documents $\mathcal{D}$:
+
+$$ tf\_idf(w, d, \mathcal{D}) = tf(w,d) \times idf(w, \mathcal{D})$$
+High value of $tf\_idf$ that a word has a high frequency within a document
+but is quite rare over all documents. Likewise if a word occurs in a lot
+of documents idf will be close to zero, so $tf\_idf$ will be small.
+
+---
+## Putting it together, tf-idf 
+
+We illustrate the example for a single user review:
+
+```{r tf-idf}
+tbl_tf %>% 
+    left_join(tbl_idf) %>% 
+    select(word, tf, idf) %>% 
+    mutate(tf_idf = tf * idf) %>% 
+    arrange(desc(tf_idf))
+```
+---
+# Calculating tf-idf: Perhaps not that exciting...
+
+Instead of rolling our own, we can use `tidytext`
 
 ```{r calc-tf-idf}
-ldoc_words <- ldoc_lyrics_counts %>%
-  bind_tf_idf(term = word, document = artist, n = n)
+user_reviews_counts <- user_reviews_words %>%
+      anti_join(stopwords_smart) %>% 
+      count(user_name, word, sort = TRUE) %>% 
+      bind_tf_idf(term = word, document = user_name, n = n)
 
-ldoc_words
+user_reviews_counts
 ```
 
 ---
-# Re-calculating tf-idf
 
-```{r re-calc-tf-odf}
-ldoc_words %>%
-  bind_tf_idf(term = word, document = artist, n = n) %>%
-  arrange(-tf_idf)
-```
+# What words were important to (a sample of) users that had positive reviews?
 
----
-# Re-calculating tf-idf
+```{r gg-tf-idf, echo=FALSE,message=FALSE}
+pos_reviews <- acnh_user_reviews_parsed %>% 
+    select(user_name, grade) %>% 
+    filter(grade > 8) %>% 
+    sample_n(3)
 
-```{r gg-tf-idf, echo=FALSE,message=FALSE, fig.height = 5}
-ldoc_words %>%
-  group_by(artist) %>%
-  top_n(10) %>%
+user_reviews_counts_pos <- user_reviews_counts %>%
+  inner_join(pos_reviews, by = "user_name") 
+
+user_reviews_counts_pos %>% 
+  group_by(user_name) %>%
+  top_n(10, wt = tf_idf) %>%
   ungroup() %>%
-  ggplot(aes(fct_reorder(word, tf_idf), tf_idf, fill = artist)) +
+  ggplot(aes(fct_reorder(word, tf_idf), tf_idf, fill = user_name)) +
   geom_col(show.legend = FALSE) + 
   coord_flip() +
-  facet_wrap(~artist, ncol = 1, scales = "free") +
+  facet_wrap(~user_name, ncol = 1, scales = "free") +
   scale_y_continuous() +
   theme_minimal() +
-  labs(x = NULL, y = "tf-idf") +
-  ylim(c(0, 0.015))
+  labs(x = NULL, y = "tf-idf")
 ```
-
----
-# Your Turn:
-
-- go to rstudio.cloud and repeat the analyses done in the lecture for your own artists.
-- some suggestions:
-  - Daft Punk's "Discovery" or "Random Access Memories"
-  - Musicals: "Les Miserables" or "Wicked"
 
 ---
 class: transition
 
-# Part Two: Tidy Text analysis on Books
+# Your Turn
+
+Complete "8a-animal-crossing.Rmd"
+  - This time we will look at critics reviews
 
 ---
-# Getting some books to study
-
-The [Gutenberg project](http://www.gutenberg.org/wiki/Main_Page) provides the text of over 57000 books free online. 
-
-Let's explore The Origin of the Species by Charles Darwin using the `gutenbergr` R package.
-
---
-
-We need to know the `id` of the book, which means looking this up online anyway. 
-- The first edition is `1228`
-- The sixth edition is `2009`
-
----
-# Packages used
-
-- We need the `tm` package to remove numbers from the page, and `gutenbergr` to access the books.
-
-```{r load-extra-pkgs}
-# The tm package is needed because the book has numbers
-# in the text, that need to be removed, and the
-# install.packages("tm")
-library(tm)
-library(gutenbergr)
-```
-
----
-# Download darwin
-
-```{r download-darwin}
-darwin1 <- gutenberg_download(1228)
-darwin1
-# remove the numbers from the text
-darwin1$text <- removeNumbers(darwin1$text)
-```
-
----
-# Tokenize
-
-.pull-left[
-- break into one word per line
-- remove the stop words
-- count the words
-- find the length of the words
-
-```{r tokenize-text}
-darwin1_words <- darwin1 %>%
-  unnest_tokens(word, text) %>%
-  anti_join(stop_words) %>%
-  count(word, sort = TRUE) %>%
-  mutate(len = str_length(word))
-```
-]
-
-.pull-right[
-```{r tokenize-text-print}
-darwin1_words
-```
-]
-
----
-# Analyse tokens
-
-```{r analyse-text}
-quantile(
-  darwin1_words$n,
-  probs = seq(0.9, 1, 0.01)
-)
-```
-
----
-# Analyse tokens
-
-```{r gg-analyse-text}
-darwin1_words %>%
-  top_n(n = 20, wt = n) %>%
-  ggplot(aes(x = n, y = fct_reorder(word, n))) +
-  geom_point() + labs(y = "")
-```  
-
----
-# Download and tokenize the 6th edition.
-
-```{r dl-second-edition}
-darwin6 <- gutenberg_download(2009)
-
-darwin6$text <- removeNumbers(darwin6$text)
-```
-
----
-# show tokenized words
-
-.pull-left[
-```{r table-second-edition}
-darwin6_words <- darwin6 %>%
-  unnest_tokens(word, text) %>%
-  anti_join(stop_words) %>%
-  count(word, sort = TRUE) %>%
-  mutate(len = str_length(word))
-```
-]
-
-.pull-right[
-```{r table-second-edition-print}
-darwin6_words
-```
-]
-
----
-# show tokenized words
-```{r quantile-second-edition}
-quantile(darwin6_words$n, probs = seq(0.9, 1, 0.01))
-```
-
----
-# show tokenized words
-```{r gg-second-edition}
-darwin6_words %>%
-  top_n(n = 20, wt = n) %>%
-  ggplot(aes(x = n, y = fct_reorder(word, n))) + geom_point() + labs(y = "")
-```
-
----
-# Compare the word frequency
-
-.left-code[
-```{r full-join-darwin}
-darwin <- full_join(
-  darwin1_words, 
-  darwin6_words, 
-  by = "word"
-  ) %>%
-  rename(
-    n_ed1 = n.x, 
-    len_ed1 = len.x, 
-    n_ed6 = n.y, 
-    len_ed6 = len.y
-    )
-```
-]
-
-.right-plot[
-```{r full-join-darwin-out}
-darwin
-```
-]
-
-
----
-# plot the word frequency
-
-.left-code[
-```{r plot-word-freq, eval = FALSE}
-ggplot(darwin, 
-            aes(x = n_ed1, 
-                y = n_ed6, 
-                label = word)) +
-  geom_abline(intercept = 0, 
-              slope = 1) +
-  geom_point(alpha = 0.5) +
-  xlab("First edition") + 
-  ylab("6th edition") +
-  scale_x_log10() + 
-  scale_y_log10() + 
-  theme(aspect.ratio = 1)
-```
-]
-
-.right-plot[
-```{r plot-word-freq-out, ref.label = 'plot-word-freq', echo = FALSE, out.width = "100%"}
-
-```
-]
-
----
-# Your turn:
-
-- Does it look like the 6th edition was an expanded version of the first?
-- What word is most frequent in both editions?
-- Find some words that are not in the first edition but appear in the 6th.
-- Find some words that are used the first edition but not in the 6th.
-- Using a linear regression model find the top few words that appear more often than expected, based on the frequency in the first edition. Find the top few words that appear less often than expected. 
-
----
-# Book comparison
-
-Idea: Find the important words for the content of each document by decreasing the weight of commonly used words and increasing the weight for words that are not used very much in a collection or corpus of documents.
-
----
-# Term frequency, inverse document frequency (`tf_idf`).
-
-Helps measure word importance of a document in a collection of documents.
-
-E.g, A novel in a collection of novels, a website in a collection of websites.
-
-$$tf_{word} = \frac{Number~of~times~word~t~appears~in~a~document}{Total~number~of~words~in~the~document}$$
-
-$$idf_{word} = log \frac{number~of~documents}{number~of~documents~word~appears~in}$$
-
-$$tf_idf = tf\times idf$$
-
----
-# TF IDF
-```{r bind-rows-darwin}
-darwin <- bind_rows("first" = darwin1_words, 
-                    "sixth" = darwin6_words,
-                    .id = "edition")
-
-darwin
-```
-
----
-# TF IDF
-
-```{r darwin-tf-idf}
-darwin_tf_idf <- darwin %>% bind_tf_idf(word, edition, n)
-
-darwin_tf_idf %>% arrange(desc(tf_idf))
-```
-
----
-# TF IDF
-```{r gg-rawin-tf-idf}
-gg_darwin_1_vs_6 <-
-darwin_tf_idf %>%
-  arrange(desc(tf_idf)) %>%
-  mutate(word = factor(word,
-                       levels = rev(unique(word)))) %>%
-  group_by(edition) %>%
-  top_n(15) %>%
-  ungroup() %>%
-  ggplot(aes(x = word, 
-             y = tf_idf, 
-             fill = edition)) +
-  geom_col(show.legend = FALSE) +
-  labs(x = NULL, 
-       y = "tf-idf") +
-  facet_wrap(~edition, 
-             ncol = 2, 
-             scales = "free") +
-  coord_flip() + 
-  scale_fill_brewer(palette = "Dark2")
-```  
-
----
-
-```{r gg-rawin-tf-idf-out, echo = FALSE}
-gg_darwin_1_vs_6
-```
-
----
-# What do we learn?
-
-- Mr Mivart appears in the 6th edition, multiple times
-
-```{r show-mivart}
-str_which(darwin6$text, "Mivart")
-darwin6[5435, ]
-```
-
----
-# What do we learn?
-
-- Prof title is used more often in the 6th edition
-- There is a tendency for latin names 
-- Mistletoe was mispelled in the 1st edition
-
----
-# Lab exercise 
-
+# Lab exercise (bonus!)
 
 Text Mining with R has an example comparing historical physics textbooks:  *Discourse on Floating Bodies* by Galileo Galilei, *Treatise on Light* by Christiaan Huygens, *Experiments with Alternate Currents of High Potential and High Frequency* by Nikola Tesla, and *Relativity: The Special and General Theory* by Albert Einstein. All are available on the Gutenberg project. 
 
@@ -850,6 +710,6 @@ Work your way through the [comparison of physics books](https://www.tidytextmini
 # Thanks
 
 - Dr. Mine Çetinkaya-Rundel
-- Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial
+- Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial and
+https://juliasilge.com/blog/animal-crossing/ 
 - Dr. Julia Silge and Dr. David Robinson: https://www.tidytextmining.com/
-- Josiah Parry: https://github.com/JosiahParry/genius

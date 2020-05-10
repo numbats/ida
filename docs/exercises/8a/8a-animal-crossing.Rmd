@@ -1,0 +1,41 @@
+---
+title: "Tidy text analysis of Animal Crossing"
+author: "Your Name"
+date: "10/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidytext)
+```
+
+# Your turn: Analysing reviews of a video game
+
+This is a continuation of the example we looked at in the lecture:
+
+- User and critic reviews for the game [Animal Crossing](https://www.nintendo.com/games/detail/animal-crossing-new-horizons-switch/) scraped from Metacritc
+
+- This data comes from a [#TidyTuesday challenge](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-05-05/readme.md). 
+
+We can read the data into R directly using the following URLs:
+
+_(Note this requires an internet connection to work)_
+
+```{r}
+critics <- readr::read_tsv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/critic.tsv')
+
+user_reviews <- readr::read_tsv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/user_reviews.tsv')
+```
+
+Go through the process of using the critics data to look at the following:
+
+- what are the most used words over the collection of reviews?
+- what are the most used words, after removing stop words?
+- plot the distrubtion of word frequencies over the collection of reviews
+- what is the longest review? what is the shortest review?
+- Using the "afinn" add sentiment values to each word in a review
+  - for each publication compute the average sentiment for the review
+  - are longer reviews more positive?
+  - do the grades correlate with the review score, are there any reviews
+  with negative sentiments but high scores?

@@ -1,0 +1,88 @@
+---
+title: "Tidy text analysis"
+author: "Your Name"
+date: "10/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidytext)
+```
+
+
+```{r}
+text <- c("This will be an uncertain time for us my love",
+          "I can hear the echo of your voice in my head",
+          "Singing my love",
+          "I can see your face there in my hands my love",
+          "I have been blessed by your grace and care my love",
+          "Singing my love")
+
+text
+text_df <- tibble(line = seq_along(text), text = text)
+
+text_df
+```
+
+# Stop Words
+
+- In computing, stop words are words which are filtered out before or after processing of natural language data (text).
+- They usually refer to the most common words in a language, but there is not a single list of stop words used by all natural language processing tools.
+
+Let's look at the list of stop words from the tidytext package
+
+```{r}
+stopwords_english <- get_stopwords()
+stopwords_english
+```
+
+And an alternative dictionary of stop words
+
+```{r}
+stopwords_smart <- get_stopwords(source = "smart")
+stopwords_smart
+```
+
+In the sentence "This will be an uncertain time for us my love", how many 
+stop words are there.
+
+```{r}
+uncertain <- text_df %>% 
+  filter(line == 1) %>% 
+  unnest_tokens(word, text) 
+uncertain
+```
+
+Remove the stop words with an anti join from `dplyr`
+
+```{r}
+uncertain %>% 
+  anti_join(stopwords_english)
+```
+
+Using the quotes data frame below earlier, answer the following questions:
+
+```{r}
+dickens <- "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way - in short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only."
+
+burns <- c("This is a thousand monkeys working at a thousand typewriters. Soon, they'll have finished the greatest novel known to man. 
+'All right, let's see... It was the best of times, it was the BLURST of times?' You stupid monkey.")
+
+quotes_df <- tibble(from = c("Dickens", "Simpsons"),
+                    text = c(dickens, burns))
+```
+
+- How many words are in each quote after removing stop words?
+
+```{r}
+
+```
+
+
+- What is the most frequent word in the quotes after removing stop words? 
+
+```{r}
+
+```
+

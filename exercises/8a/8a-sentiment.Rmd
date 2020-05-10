@@ -1,0 +1,62 @@
+---
+title: "Sentiment"
+author: "Your Name"
+date: "10/05/2020"
+output: html_document
+---
+
+## Sentiment
+
+- One way to analyze the sentiment of a text is to consider the text as a combination of its individual words 
+
+- and the sentiment content of the whole text as the sum of the sentiment content of the individual words
+
+- essentially a dictionary where different words are categorised either as
+positive or negative or on a numeric scale
+
+```{r}
+afinn <- get_sentiments("afinn") # numeric
+bing <- get_sentiments("bing") # categorical
+```
+
+
+After tokenising into words, use a left/inner join to get the words sentiments.
+
+Here's what the sentiment "This will be an uncertain time for us my love"
+
+```{r}
+
+text <- c("This will be an uncertain time for us my love",
+          "I can hear the echo of your voice in my head",
+          "Singing my love",
+          "I can see your face there in my hands my love",
+          "I have been blessed by your grace and care my love",
+          "Singing my love")
+
+text
+text_df <- tibble(line = seq_along(text), text = text)
+
+text_df
+```
+
+
+```{r}
+text_df %>% 
+  filter(line == 1) %>% 
+  unnest_tokens(word, text) %>% 
+  left_join(afinn)
+```
+
+```{r}
+text_df %>% 
+  filter(line == 1) %>% 
+  unnest_tokens(word, text) %>% 
+  left_join(bing)
+```
+
+## Your turn
+
+Using the quotes we looked at above use the "afinn" lexicon to compute the
+average sentiment of each quote. Which one is considered more positive?
+
+

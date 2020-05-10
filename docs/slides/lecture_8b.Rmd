@@ -4,7 +4,7 @@ week: "Week 8, part B"
 subtitle: "Text analysis and linear models"
 author: "Nicholas Tierney"
 email: "nicholas.tierney@monash.edu"
-date: "April 2020"
+date: "May 2020"
 pdflink: ""
 bgimg: "images/bg1.jpg"
 output:
@@ -52,11 +52,12 @@ library(lubridate)
 library(gridExtra)
 library(plotly)
 library(broom)
-opts_chunk$set(echo = TRUE,   
+knitr::opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
                fig.height = 4,
+               fig.retina = 2,
                fig.width = 8,
                fig.align = "center",
                cache = FALSE)

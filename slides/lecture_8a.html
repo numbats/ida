@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>ETC1010: Introduction to Data Analysis</title>
+    <title>ETC5510: Introduction to Data Analysis</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Nicholas Tierney" />
+    <meta name="author" content="Nicholas Tierney &amp; Stuart Lee" />
     <script src="libs/header-attrs-2.1/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
@@ -48,7 +48,7 @@ count: false
 
 &lt;br&gt;
 
-# .monash-blue.outline-text[ETC1010: Introduction to Data Analysis]
+# .monash-blue.outline-text[ETC5510: Introduction to Data Analysis]
 
 &lt;h2 class="monash-blue2 outline-text" style="font-size: 30pt!important;"&gt;Week 8, part A&lt;/h2&gt;
 
@@ -58,11 +58,11 @@ count: false
 
 .bottom_abs.width100[
 
-Lecturer: *Nicholas Tierney*
+Lecturer: *Nicholas Tierney &amp; Stuart Lee*
 
 Department of Econometrics and Business Statistics
 
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  ETC5510.Clayton-x@monash.edu
 
 May 2020
 
@@ -103,20 +103,15 @@ class: refresher
 
 - Assignment
 - Project
-
----
-background-image: url(images/text_analysis.png)
-background-size: contain
-background-position: 50% 50%
-class: center, bottom, white
+- Peer review marking
 
 ---
 # Why text analysis?
 
-- To use the realtors text description to improve the Melbourne housing price model
+- Predict Melbourne house prices from realtor descriptions
 - Determine the extent of public discontent with train stoppages in Melbourne
 - The differences between Darwin's first edition of the Origin of the Species and the 6th edition
-- Does the sentiment of posts on Newcastle Jets public facebook page reflect their win/los record?
+- Does the sentiment of posts on Newcastle Jets public facebook page reflect their win/loss record?
 
 ---
 # Typical Process
@@ -135,9 +130,6 @@ In addition to `tidyverse` we will be using three other packages today
 
 ```r
 library(tidytext)
-library(remotes)
-# remotes::install_github("Josiahparry/genius")
-library(genius)
 library(gutenbergr)
 ```
 
@@ -190,12 +182,19 @@ text_df
 ---
 # What is tidy text?
 
+.left-code[
 
 ```r
 text_df %&gt;%
   unnest_tokens(output = word,
                 input = text,
                 token = "words") # default option
+```
+]
+
+.right-plot[
+
+```
 ## # A tibble: 49 x 2
 ##     line word     
 ##    &lt;int&gt; &lt;chr&gt;    
@@ -211,16 +210,24 @@ text_df %&gt;%
 ## 10     1 love     
 ## # … with 39 more rows
 ```
+]
 
 ---
 # What is unnesting?
 
+.left-code[
 
 ```r
 text_df %&gt;%
   unnest_tokens(output = word,
                 input = text,
                 token = "characters")
+```
+]
+
+.right-plot[
+
+```
 ## # A tibble: 171 x 2
 ##     line word 
 ##    &lt;int&gt; &lt;chr&gt;
@@ -236,10 +243,12 @@ text_df %&gt;%
 ## 10     1 e    
 ## # … with 161 more rows
 ```
+]
 
 ---
 # What is unnesting - ngrams length 2
 
+.left-code[
 
 ```r
 text_df %&gt;%
@@ -247,6 +256,12 @@ text_df %&gt;%
                 input = text,
                 token = "ngrams",
                 n = 2)
+```
+]
+
+.right-plot[
+
+```
 ## # A tibble: 43 x 2
 ##     line word          
 ##    &lt;int&gt; &lt;chr&gt;         
@@ -262,10 +277,12 @@ text_df %&gt;%
 ## 10     2 i can         
 ## # … with 33 more rows
 ```
+]
 
 ---
 # What is unnesting - ngrams length 3
 
+.left-code[
 
 ```r
 text_df %&gt;%
@@ -273,6 +290,12 @@ text_df %&gt;%
                 input = text,
                 token = "ngrams",
                 n = 3)
+```
+]
+
+.right-plot[
+
+```
 ## # A tibble: 37 x 2
 ##     line word              
 ##    &lt;int&gt; &lt;chr&gt;             
@@ -288,184 +311,169 @@ text_df %&gt;%
 ## 10     2 can hear the      
 ## # … with 27 more rows
 ```
+]
 
 ---
 class: transition
 
-# Analyzing lyrics of one artist
+# Your Turn:
+
+Complete "8a-tokenizing.Rmd"
 
 ---
-# Let's get more data
+class: transition
 
-We'll use the `genius` package to get song lyric data from [Genius](https://genius.com/).
-
-- `genius_album()` allows you to download the lyrics for an entire album in a 
-tidy format. 
+# Analyzing user reviews for Animal Crossing: New Horizons
 
 ---
-# getting more data
+# About the data
 
-- Input: Two arguments: `artists` and `album`. If it gives you issues check that you have the album name and
-artists as specified on [Genius](https://genius.com/).
+- User and critic reviews for the game [Animal Crossing](https://www.nintendo.com/games/detail/animal-crossing-new-horizons-switch/) scraped from Metacritc
 
-- Output: A tidy data frame with three columns:
-    - `title`: track name
-    - `track_n`: track number
-    - `text`: lyrics
+- This data comes from a [#TidyTuesday challenge](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-05-05/readme.md). 
 
----
-# [Greatest Australian Album of all time (as voted by triple J)](https://www.abc.net.au/triplej/hottest100/alltime/11/countdown/cd_1.htm)
-
-&lt;img src="images/powderfinger.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
-# Greatest Australian Album of all time (as voted by triple J)
+# What do the user reviews look like?
 
 
 ```r
-od_num_five &lt;- genius_album(
-  artist = "Powderfinger",
-  album = "Odyssey Number Five"
-)
-
-od_num_five
-## # A tibble: 310 x 4
-##    track_n  line lyric                                         track_title      
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                         &lt;chr&gt;            
-##  1       1     1 This will be an uncertain time for us my love Waiting For The …
-##  2       1     2 I can hear the echo of your voice in my head  Waiting For The …
-##  3       1     3 Singing my love                               Waiting For The …
-##  4       1     4 I can see your face there in my hands my love Waiting For The …
-##  5       1     5 I have been blessed by your grace and care m… Waiting For The …
-##  6       1     6 Singing my love                               Waiting For The …
-##  7       1     7 There's a place for us sitting here waiting … Waiting For The …
-##  8       1     8 And it calls me back into the safe arms that… Waiting For The …
-##  9       1     9 For every step you're further away from me m… Waiting For The …
-## 10       1    10 I grow more unsteady on my feet my love       Waiting For The …
-## # … with 300 more rows
+acnh_user_reviews &lt;- read_tsv(here::here("slides/data/acnh_user_reviews.tsv"))
+glimpse(acnh_user_reviews)
+## Rows: 2,999
+## Columns: 4
+## $ grade     &lt;dbl&gt; 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,…
+## $ user_name &lt;chr&gt; "mds27272", "lolo2178", "Roachant", "Houndf", "ProfessorFox", "tb…
+## $ text      &lt;chr&gt; "My gf started playing before me. No option to create my own isla…
+## $ date      &lt;date&gt; 2020-03-20, 2020-03-20, 2020-03-20, 2020-03-20, 2020-03-20, 2020…
 ```
 
+
 ---
-# Save for later
+# Let's look at the grade distrubtion
+
+&lt;img src="lecture_8a_files/figure-html/review-grades-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Read a few of the positive reviews
+
+.left_code[
+
+```r
+set.seed(1999)
+acnh_user_reviews %&gt;% 
+  filter(grade &gt; 8) %&gt;% 
+  sample_n(3) %&gt;% 
+  pull(text)
+```
+]
+
+.pull_right[
+
+```
+## [1] "The game is absolutely fantastic and everything we have been waiting for for seven long years. The ability to truly customize your island and all of the quality of life upgrade make this game so very worth the money. It’s a slow relaxing game that any fan of past Animal Crossing games would love."                                                  
+## [2] "I've never played an Animal Crossing before and I can't stop playing it now! Amazing! there are lots of things to do! The characters are all charming, you can visit other islands, customize everything...It's a infinit game. People who are giving 0 problably never played the game. And a 0 ?? come on guys, not everybody will like it but a 0?"      
+## [3] "This review contains spoilers, click expand to view.                                                                                            Ich liebe alles an diesem Spiel. Auch das neue Craften ist so eine gute idee gewesen. Die Musik ist auch wie in allen Vorgängern schön und beruhigend. Es fühlt sich einfach an ein perfektes Spiel… Expand"
+```
+]
+
+
+---
+# And some negative reviews
+
+.left_code[
+
+```r
+set.seed(2099)
+acnh_user_reviews %&gt;% 
+  filter(grade == 0) %&gt;% 
+  sample_n(3) %&gt;% 
+  pull(text)
+```
+]
+
+.pull_right[
+
+```
+## [1] "It's just a typical mobile grind-game with time-wall. And poor interface. Worst game of the year."                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+## [2] "One island per console, very family friendly. How unbelievably greedy by Nintendo."                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+## [3] "Separate islands for each profile should be a given. I'm not buying another switch just to have my own island. I'm also not going to play on my kid's island because it's not my island. This limitation should be in bold print and all caps on the cover of this game so people know what they're walking into. Nintendo will do nothing to address this and as a lifelong Nintendo player it's crazySeparate islands for each profile should be a given. I'm not buying another switch just to have my own island. I'm also not going to play on my kid's island because it's not my island. This limitation should be in bold print and all caps on the cover of this game so people know what they're walking into. Nintendo will do nothing to address this and as a lifelong Nintendo player it's crazy frustrating. Never looked at Metacritic in my life, but heard this is where to go to vent.… Expand"
+```
+]
+
+---
+# Looks like the scraping is messed up a bit
+
+Long reviews are compressed from the scraping procedure...
+
+```r
+acnh_user_reviews_parsed &lt;- acnh_user_reviews %&gt;% 
+  mutate(text = str_remove(text, "Expand$"))
+```
+
+We will remove these characters from the text..
+
+---
+# Tidy up the reviews!
 
 
 ```r
-powderfinger &lt;- od_num_five %&gt;%
-  mutate(artist = "Powderfinger",
-         album = "Odyssey Number Five")
+user_reviews_words &lt;- acnh_user_reviews_parsed %&gt;%
+  unnest_tokens(output = word, input = text)
 
-powderfinger
-## # A tibble: 310 x 6
-##    track_n  line lyric                       track_title     artist   album     
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;     
-##  1       1     1 This will be an uncertain … Waiting For Th… Powderf… Odyssey N…
-##  2       1     2 I can hear the echo of you… Waiting For Th… Powderf… Odyssey N…
-##  3       1     3 Singing my love             Waiting For Th… Powderf… Odyssey N…
-##  4       1     4 I can see your face there … Waiting For Th… Powderf… Odyssey N…
-##  5       1     5 I have been blessed by you… Waiting For Th… Powderf… Odyssey N…
-##  6       1     6 Singing my love             Waiting For Th… Powderf… Odyssey N…
-##  7       1     7 There's a place for us sit… Waiting For Th… Powderf… Odyssey N…
-##  8       1     8 And it calls me back into … Waiting For Th… Powderf… Odyssey N…
-##  9       1     9 For every step you're furt… Waiting For Th… Powderf… Odyssey N…
-## 10       1    10 I grow more unsteady on my… Waiting For Th… Powderf… Odyssey N…
-## # … with 300 more rows
+user_reviews_words
+## # A tibble: 362,729 x 4
+##    grade user_name date       word   
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt;  
+##  1     4 mds27272  2020-03-20 my     
+##  2     4 mds27272  2020-03-20 gf     
+##  3     4 mds27272  2020-03-20 started
+##  4     4 mds27272  2020-03-20 playing
+##  5     4 mds27272  2020-03-20 before 
+##  6     4 mds27272  2020-03-20 me     
+##  7     4 mds27272  2020-03-20 no     
+##  8     4 mds27272  2020-03-20 option 
+##  9     4 mds27272  2020-03-20 to     
+## 10     4 mds27272  2020-03-20 create 
+## # … with 362,719 more rows
 ```
 
 ---
-# What songs are in the album?
+# Distribution of words per review?
 
 
 ```r
-powderfinger %&gt;% distinct(track_title)
-## # A tibble: 11 x 1
-##    track_title              
-##    &lt;chr&gt;                    
-##  1 Waiting For The Sun      
-##  2 My Happiness             
-##  3 The Metre                
-##  4 Like A Dog               
-##  5 Odyssey #5               
-##  6 Up &amp; Down &amp; Back Again   
-##  7 My Kind Of Scene         
-##  8 These Days               
-##  9 We Should Be Together Now
-## 10 Thrilloilogy             
-## 11 Whatever Makes You Happy
+user_reviews_words %&gt;% 
+  count(user_name) %&gt;% 
+  ggplot(aes(x = n)) +
+  geom_histogram()
 ```
 
----
-# How long are the lyrics in Powderfinger's songs?
-
-
-```r
-powderfinger %&gt;%
-  count(track_title) %&gt;%
-  arrange(-n)
-## # A tibble: 11 x 2
-##    track_title                   n
-##    &lt;chr&gt;                     &lt;int&gt;
-##  1 Up &amp; Down &amp; Back Again       46
-##  2 My Happiness                 40
-##  3 These Days                   35
-##  4 Like A Dog                   33
-##  5 Thrilloilogy                 32
-##  6 My Kind Of Scene             31
-##  7 The Metre                    30
-##  8 We Should Be Together Now    27
-##  9 Waiting For The Sun          21
-## 10 Whatever Makes You Happy     11
-## 11 Odyssey #5                    4
-```
-
----
-# Tidy up the lyrics!
-
-
-```r
-powderfinger_lyrics &lt;- powderfinger %&gt;%
-  unnest_tokens(output = word,
-                input = lyric)
-
-powderfinger_lyrics
-## # A tibble: 2,077 x 6
-##    track_n  line track_title         artist       album               word     
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five this     
-##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five will     
-##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five be       
-##  4       1     1 Waiting For The Sun Powderfinger Odyssey Number Five an       
-##  5       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
-##  6       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
-##  7       1     1 Waiting For The Sun Powderfinger Odyssey Number Five for      
-##  8       1     1 Waiting For The Sun Powderfinger Odyssey Number Five us       
-##  9       1     1 Waiting For The Sun Powderfinger Odyssey Number Five my       
-## 10       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
-## # … with 2,067 more rows
-```
+&lt;img src="lecture_8a_files/figure-html/word-histogram-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What are the most common words?
 
 
 ```r
-powderfinger_lyrics %&gt;%
-  count(word) %&gt;%
-  arrange(-n)
-## # A tibble: 451 x 2
+user_reviews_words %&gt;%
+  count(word, sort = TRUE)
+## # A tibble: 13,454 x 2
 ##    word      n
 ##    &lt;chr&gt; &lt;int&gt;
-##  1 the      93
-##  2 you      77
-##  3 i        55
-##  4 and      54
-##  5 to       48
-##  6 it       42
-##  7 in       39
-##  8 a        38
-##  9 for      33
-## 10 me       32
-## # … with 441 more rows
+##  1 the   17739
+##  2 to    11857
+##  3 game   8769
+##  4 and    8740
+##  5 a      8330
+##  6 i      7211
+##  7 is     6858
+##  8 this   5777
+##  9 of     5383
+## 10 it     4711
+## # … with 13,444 more rows
 ```
 
 ---
@@ -547,21 +555,22 @@ get_stopwords(source = "smart")
 
 
 ```r
-powderfinger_lyrics
-## # A tibble: 2,077 x 6
-##    track_n  line track_title         artist       album               word     
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five this     
-##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five will     
-##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five be       
-##  4       1     1 Waiting For The Sun Powderfinger Odyssey Number Five an       
-##  5       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
-##  6       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
-##  7       1     1 Waiting For The Sun Powderfinger Odyssey Number Five for      
-##  8       1     1 Waiting For The Sun Powderfinger Odyssey Number Five us       
-##  9       1     1 Waiting For The Sun Powderfinger Odyssey Number Five my       
-## 10       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
-## # … with 2,067 more rows
+user_reviews_words %&gt;%
+  count(word, sort = TRUE)
+## # A tibble: 13,454 x 2
+##    word      n
+##    &lt;chr&gt; &lt;int&gt;
+##  1 the   17739
+##  2 to    11857
+##  3 game   8769
+##  4 and    8740
+##  5 a      8330
+##  6 i      7211
+##  7 is     6858
+##  8 this   5777
+##  9 of     5383
+## 10 it     4711
+## # … with 13,444 more rows
 ```
 
 ---
@@ -571,47 +580,58 @@ powderfinger_lyrics
 ```r
 stopwords_smart &lt;- get_stopwords(source = "smart")
 
-powderfinger_lyrics %&gt;%
-  anti_join(stopwords_smart)
-## # A tibble: 645 x 6
-##    track_n  line track_title         artist       album               word     
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
-##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
-##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
-##  4       1     2 Waiting For The Sun Powderfinger Odyssey Number Five hear     
-##  5       1     2 Waiting For The Sun Powderfinger Odyssey Number Five echo     
-##  6       1     2 Waiting For The Sun Powderfinger Odyssey Number Five voice    
-##  7       1     2 Waiting For The Sun Powderfinger Odyssey Number Five head     
-##  8       1     3 Waiting For The Sun Powderfinger Odyssey Number Five singing  
-##  9       1     3 Waiting For The Sun Powderfinger Odyssey Number Five love     
-## 10       1     4 Waiting For The Sun Powderfinger Odyssey Number Five face     
-## # … with 635 more rows
+user_reviews_words %&gt;%
+  anti_join(stopwords_smart) 
+## # A tibble: 145,444 x 4
+##    grade user_name date       word   
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt;  
+##  1     4 mds27272  2020-03-20 gf     
+##  2     4 mds27272  2020-03-20 started
+##  3     4 mds27272  2020-03-20 playing
+##  4     4 mds27272  2020-03-20 option 
+##  5     4 mds27272  2020-03-20 create 
+##  6     4 mds27272  2020-03-20 island 
+##  7     4 mds27272  2020-03-20 guys   
+##  8     4 mds27272  2020-03-20 2nd    
+##  9     4 mds27272  2020-03-20 player 
+## 10     4 mds27272  2020-03-20 start  
+## # … with 145,434 more rows
 ```
+
+---
+## Aside: the anti-join
+
+- A type of filtering join, will return all rows on the left when there
+are no matches on the right
+- Only keeps columns on the left 
+
+---
+## As a picture
+
+&lt;img src="gifs/anti-join.gif" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What are the most common words?
 
 
 ```r
-powderfinger_lyrics %&gt;%
+user_reviews_words %&gt;%
   anti_join(stopwords_smart) %&gt;%
-  count(word) %&gt;%
-  arrange(-n)
-## # A tibble: 286 x 2
+  count(word, sort = TRUE) 
+## # A tibble: 12,938 x 2
 ##    word         n
 ##    &lt;chr&gt;    &lt;int&gt;
-##  1 back        16
-##  2 time        15
-##  3 waiting     13
-##  4 coming      10
-##  5 slowly      10
-##  6 days         9
-##  7 love         9
-##  8 creeping     8
-##  9 grace        8
-## 10 place        8
-## # … with 276 more rows
+##  1 game      8769
+##  2 island    3974
+##  3 switch    2214
+##  4 play      2176
+##  5 player    1844
+##  6 nintendo  1694
+##  7 console   1489
+##  8 crossing  1371
+##  9 animal    1369
+## 10 people    1045
+## # … with 12,928 more rows
 ```
 
 ---
@@ -619,7 +639,7 @@ powderfinger_lyrics %&gt;%
 
 
 ```r
-powderfinger_lyrics %&gt;%
+user_reviews_words %&gt;%
   anti_join(stopwords_smart) %&gt;%
   count(word) %&gt;%
   arrange(-n) %&gt;%
@@ -628,16 +648,27 @@ powderfinger_lyrics %&gt;%
   geom_col() +
   coord_flip() +
   theme_minimal() +
-  labs(title = "Frequency of Powderfinger's lyrics",
-       subtitle = "`Back` tops the chart",
+  labs(title = "Frequency of words in user reviews",
+       subtitle = "",
        y = "",
        x = "")
 ```
 
 ---
-# What are the most common words?
 
 &lt;img src="lecture_8a_files/figure-html/gg-common-words-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+class: transition
+
+# Your turn: 
+
+Complete "8a-stopwords.Rmd"
+
+---
+class: transition
+
+# Sentiment Analysis
 
 ---
 # Sentiment analysis
@@ -737,46 +768,39 @@ get_sentiments(lexicon = "loughran")
 ]
 
 ---
-# Sentiments in Powderfinger's lyrics
+# Sentiments in the reviews
 
 
 ```r
 sentiments_bing &lt;- get_sentiments("bing")
 
-powderfinger_lyrics %&gt;%
+user_reviews_words %&gt;%
   inner_join(sentiments_bing) %&gt;%
-  count(sentiment, word) %&gt;%
-  arrange(-n)
-## # A tibble: 70 x 3
+  count(sentiment, word, sort = TRUE) 
+## # A tibble: 1,622 x 3
 ##    sentiment word         n
 ##    &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;
-##  1 positive  like        15
-##  2 negative  slowly      10
-##  3 positive  love         9
-##  4 negative  creeping     8
-##  5 positive  grace        8
-##  6 positive  welcome      8
-##  7 positive  right        7
-##  8 positive  happy        6
-##  9 positive  enough       5
-## 10 positive  well         5
-## # … with 60 more rows
+##  1 positive  like      1357
+##  2 positive  fun        760
+##  3 positive  great      661
+##  4 positive  progress   556
+##  5 positive  good       486
+##  6 positive  enjoy      405
+##  7 positive  love       403
+##  8 positive  best       368
+##  9 negative  bad        316
+## 10 positive  amazing    304
+## # … with 1,612 more rows
 ```
-
----
-# Visualising sentiments
-
-&lt;img src="lecture_8a_files/figure-html/gg-sentiment-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Visualising sentiments
 
 
 ```r
-powderfinger_lyrics %&gt;%
+user_reviews_words %&gt;%
   inner_join(sentiments_bing) %&gt;%
-  count(sentiment, word) %&gt;%
-  arrange(desc(n)) %&gt;%
+  count(sentiment, word, sort = TRUE) %&gt;%
   group_by(sentiment) %&gt;%
   top_n(10) %&gt;%
   ungroup() %&gt;%
@@ -786,598 +810,281 @@ powderfinger_lyrics %&gt;%
   facet_wrap(~sentiment, scales = "free") +
   theme_minimal() +
   labs(
-    title = "Sentiments in Powderfinger's lyrics",
+    title = "Sentiments in user reviews",
     x = ""
   )
 ```
 
 ---
-class: transition
-# Comparing lyrics across artists
+# Visualising sentiments
+
+&lt;img src="lecture_8a_files/figure-html/gg-sentiment2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
 
 ---
 
-# Get more data: The White Stripes &amp; The Midnight
+# Common words over grades 
 
 
 ```r
-stripes &lt;- genius_album(artist = "The White Stripes",
-                        album = "Elephant") %&gt;%
-  mutate(artist = "The White Stripes",
-         album = "Elephant")
-
-midnight &lt;- genius_album(artist = "The Midnight",
-                         album = "Kids") %&gt;%
-  mutate(artist = "The Midnight",
-         album = "Kids")
-```
-
----
-# Combine data:
-
-
-```r
-ldoc &lt;- bind_rows(powderfinger,
-                  stripes,
-                  midnight)
-
-ldoc
-## # A tibble: 882 x 6
-##    track_n  line lyric                       track_title     artist   album     
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;     
-##  1       1     1 This will be an uncertain … Waiting For Th… Powderf… Odyssey N…
-##  2       1     2 I can hear the echo of you… Waiting For Th… Powderf… Odyssey N…
-##  3       1     3 Singing my love             Waiting For Th… Powderf… Odyssey N…
-##  4       1     4 I can see your face there … Waiting For Th… Powderf… Odyssey N…
-##  5       1     5 I have been blessed by you… Waiting For Th… Powderf… Odyssey N…
-##  6       1     6 Singing my love             Waiting For Th… Powderf… Odyssey N…
-##  7       1     7 There's a place for us sit… Waiting For Th… Powderf… Odyssey N…
-##  8       1     8 And it calls me back into … Waiting For Th… Powderf… Odyssey N…
-##  9       1     9 For every step you're furt… Waiting For Th… Powderf… Odyssey N…
-## 10       1    10 I grow more unsteady on my… Waiting For Th… Powderf… Odyssey N…
-## # … with 872 more rows
-```
-
----
-# LDOC lyrics
-
-
-```r
-ldoc_lyrics &lt;- ldoc %&gt;%
-  unnest_tokens(word, lyric)
-
-ldoc_lyrics
-## # A tibble: 6,365 x 6
-##    track_n  line track_title         artist       album               word     
-##      &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;               &lt;chr&gt;    
-##  1       1     1 Waiting For The Sun Powderfinger Odyssey Number Five this     
-##  2       1     1 Waiting For The Sun Powderfinger Odyssey Number Five will     
-##  3       1     1 Waiting For The Sun Powderfinger Odyssey Number Five be       
-##  4       1     1 Waiting For The Sun Powderfinger Odyssey Number Five an       
-##  5       1     1 Waiting For The Sun Powderfinger Odyssey Number Five uncertain
-##  6       1     1 Waiting For The Sun Powderfinger Odyssey Number Five time     
-##  7       1     1 Waiting For The Sun Powderfinger Odyssey Number Five for      
-##  8       1     1 Waiting For The Sun Powderfinger Odyssey Number Five us       
-##  9       1     1 Waiting For The Sun Powderfinger Odyssey Number Five my       
-## 10       1     1 Waiting For The Sun Powderfinger Odyssey Number Five love     
-## # … with 6,355 more rows
-```
-
----
-# Common LDOC lyrics - Without stop words:
-
-
-```r
-ldoc_lyrics %&gt;%
+user_reviews_words %&gt;%
   anti_join(stopwords_smart) %&gt;%
-  count(artist, word, sort = TRUE) # alternative way to sort
-## # A tibble: 890 x 3
-##    artist            word        n
-##    &lt;chr&gt;             &lt;chr&gt;   &lt;int&gt;
-##  1 The White Stripes girl       35
-##  2 The White Stripes home       33
-##  3 The White Stripes cold       24
-##  4 The White Stripes love       23
-##  5 The Midnight      kids       20
-##  6 The White Stripes good       20
-##  7 Powderfinger      back       16
-##  8 Powderfinger      time       15
-##  9 Powderfinger      waiting    13
-## 10 The Midnight      woah       13
-## # … with 880 more rows
+  count(grade, word, sort = TRUE) 
+## # A tibble: 29,010 x 3
+##    grade word         n
+##    &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt;
+##  1     0 game      2989
+##  2     0 island    1783
+##  3    10 game      1685
+##  4     0 switch    1058
+##  5     0 play      1027
+##  6     0 player     921
+##  7     0 nintendo   902
+##  8     1 game       898
+##  9     9 game       802
+## 10     0 console    738
+## # … with 29,000 more rows
 ```
 
 ---
-# Common LDOC lyrics - With stop words:
+# Common review words by grade - With stop words:
 
 
 ```r
-ldoc_lyrics_counts &lt;- ldoc_lyrics %&gt;%
-  count(artist, word, sort = TRUE)
-
-ldoc_lyrics_counts
-## # A tibble: 1,378 x 3
-##    artist            word      n
-##    &lt;chr&gt;             &lt;chr&gt; &lt;int&gt;
-##  1 The White Stripes to      121
-##  2 The White Stripes i       111
-##  3 The White Stripes you     106
-##  4 The White Stripes the     105
-##  5 The White Stripes do      102
-##  6 Powderfinger      the      93
-##  7 Powderfinger      you      77
-##  8 The White Stripes and      73
-##  9 The White Stripes a        72
-## 10 The Midnight      the      60
-## # … with 1,368 more rows
+user_reviews_words %&gt;%
+  count(grade, word, sort = TRUE)
+## # A tibble: 33,237 x 3
+##    grade word      n
+##    &lt;dbl&gt; &lt;chr&gt; &lt;int&gt;
+##  1     0 the    5865
+##  2     0 to     4421
+##  3     0 game   2989
+##  4    10 the    2896
+##  5     0 and    2767
+##  6     0 a      2663
+##  7     0 i      2656
+##  8     0 is     2304
+##  9     0 this   2171
+## 10     9 the    1913
+## # … with 33,227 more rows
 ```
+
+---
+class: transition
+
+# Your turn: 
+
+Complete "8a-sentiment.Rmd"
 
 ---
 # What is a document about?
 
+## How do we measure the importance of a word to a document in a collection of documents?
+
+i.e a novel in a collection of novels or a review in a set of reviews...
+
+We combine the following statistics:
+
 - Term frequency
 - Inverse document frequency
 
-`$$idf(\text{term}) = \ln{\left(\frac{n_{\text{documents}}}{n_{\text{documents containing term}}}\right)}$$`
+---
 
-tf-idf is about comparing **documents** within a **collection**.
+# Term frequency
+
+The raw frequency of a word `\(w\)` in a document `\(d\)`. It is a function of the word and the document. 
+
+$$tf(w, d) = \frac{\text{count of w in d}}{\text{total count in d}} $$
 
 ---
-# Calculating tf-idf: 
+# Term frequency
 
-Perhaps not that exciting... What's the issue?
+For our reviews a document is a single user's review.
 
 
 ```r
-ldoc_words &lt;- ldoc_lyrics_counts %&gt;%
-  bind_tf_idf(term = word, document = artist, n = n)
-
-ldoc_words
-## # A tibble: 1,378 x 6
-##    artist            word      n     tf   idf tf_idf
-##    &lt;chr&gt;             &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-##  1 The White Stripes to      121 0.0357     0      0
-##  2 The White Stripes i       111 0.0328     0      0
-##  3 The White Stripes you     106 0.0313     0      0
-##  4 The White Stripes the     105 0.0310     0      0
-##  5 The White Stripes do      102 0.0301     0      0
-##  6 Powderfinger      the      93 0.0448     0      0
-##  7 Powderfinger      you      77 0.0371     0      0
-##  8 The White Stripes and      73 0.0216     0      0
-##  9 The White Stripes a        72 0.0213     0      0
-## 10 The Midnight      the      60 0.0666     0      0
-## # … with 1,368 more rows
+document &lt;- user_reviews_words %&gt;% 
+    anti_join(stopwords_smart) %&gt;% 
+    filter(user_name == "Discoduckasaur")
+document
+## # A tibble: 372 x 4
+##    grade user_name      date       word      
+##    &lt;dbl&gt; &lt;chr&gt;          &lt;date&gt;     &lt;chr&gt;     
+##  1     4 Discoduckasaur 2020-04-23 start     
+##  2     4 Discoduckasaur 2020-04-23 game      
+##  3     4 Discoduckasaur 2020-04-23 incredibly
+##  4     4 Discoduckasaur 2020-04-23 fun       
+##  5     4 Discoduckasaur 2020-04-23 base      
+##  6     4 Discoduckasaur 2020-04-23 asinine   
+##  7     4 Discoduckasaur 2020-04-23 decisions 
+##  8     4 Discoduckasaur 2020-04-23 made      
+##  9     4 Discoduckasaur 2020-04-23 nintendo  
+## 10     4 Discoduckasaur 2020-04-23 simply    
+## # … with 362 more rows
 ```
 
+
 ---
-# Re-calculating tf-idf
+# Term frequency
+
+The term frequency for each word is the number of times that word occurs
+divided by the total number of words in the document.
+
+.pull-left[
+
+```r
+tbl_tf &lt;- document %&gt;% 
+  count(word, sort = TRUE) %&gt;% 
+  mutate(tf = n / sum(n))
+```
+]
+
+.pull-right[
 
 
 ```r
-ldoc_words %&gt;%
-  bind_tf_idf(term = word, document = artist, n = n) %&gt;%
-  arrange(-tf_idf)
-## # A tibble: 1,378 x 6
-##    artist            word            n      tf   idf  tf_idf
-##    &lt;chr&gt;             &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-##  1 The Midnight      kids           20 0.0222   1.10 0.0244 
-##  2 The Midnight      woah           13 0.0144   1.10 0.0159 
-##  3 The Midnight      bedroom        10 0.0111   1.10 0.0122 
-##  4 The Midnight      monsters       10 0.0111   1.10 0.0122 
-##  5 The Midnight      spare          10 0.0111   1.10 0.0122 
-##  6 The White Stripes girl           35 0.0103   1.10 0.0114 
-##  7 The Midnight      america         9 0.00999  1.10 0.0110 
-##  8 The Midnight      sentimental     9 0.00999  1.10 0.0110 
-##  9 The White Stripes her            25 0.00738  1.10 0.00811
-## 10 The White Stripes cold           24 0.00709  1.10 0.00778
-## # … with 1,368 more rows
+tbl_tf %&gt;% 
+  arrange(desc(tf))
+## # A tibble: 246 x 3
+##    word           n     tf
+##    &lt;chr&gt;      &lt;int&gt;  &lt;dbl&gt;
+##  1 game          15 0.0403
+##  2 time          14 0.0376
+##  3 it’s           7 0.0188
+##  4 nintendo       6 0.0161
+##  5 i’m            5 0.0134
+##  6 bad            4 0.0108
+##  7 fun            4 0.0108
+##  8 give           4 0.0108
+##  9 incredibly     4 0.0108
+## 10 means          4 0.0108
+## # … with 236 more rows
+```
+]
+---
+
+## Inverse-document frequency
+
+The inverse document frequency tells how common or rare a word is accross a collection of documents. It is a function of a word `\(w\)`, and the collection of documents `\(\mathcal{D}\)`.
+
+`$$idf(w, \mathcal{D}) = \log{\left(\frac{\text{size of } \mathcal{D}}{\text{number of documents that contain } w}\right)}$$`
+---
+
+## Inverse document frequency
+
+For the reviews data set, our collection is all the reviews. You could
+compute this in a somewhat roundabout as follows:
+
+
+```r
+tbl_idf &lt;- user_reviews_words %&gt;% 
+    anti_join(stopwords_smart) %&gt;%
+    mutate(collection_size = n_distinct(user_name)) %&gt;% 
+    group_by(collection_size, word) %&gt;% 
+    summarise(times_word_used = n_distinct(user_name)) %&gt;% 
+    mutate(freq = collection_size / times_word_used,
+           idf = log(freq)) 
+arrange(tbl_idf, idf)
+## # A tibble: 12,938 x 5
+## # Groups:   collection_size [1]
+##    collection_size word     times_word_used  freq   idf
+##              &lt;int&gt; &lt;chr&gt;              &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1            2999 game                2354  1.27 0.242
+##  2            2999 island              1671  1.79 0.585
+##  3            2999 switch              1123  2.67 0.982
+##  4            2999 play                1049  2.86 1.05 
+##  5            2999 nintendo             984  3.05 1.11 
+##  6            2999 console              788  3.81 1.34 
+##  7            2999 player               745  4.03 1.39 
+##  8            2999 animal               734  4.09 1.41 
+##  9            2999 crossing             721  4.16 1.43 
+## 10            2999 people               576  5.21 1.65 
+## # … with 12,928 more rows
 ```
 
 ---
-# Re-calculating tf-idf
+## Putting it together term frequency, inverse document frequency
+
+Multiply tf and idf together. This is a function of a word `\(w\)`, a document `\(d\)`,
+and the collection of documents `\(\mathcal{D}\)`:
+
+$$ tf\_idf(w, d, \mathcal{D}) = tf(w,d) \times idf(w, \mathcal{D})$$
+High value of `\(tf\_idf\)` that a word has a high frequency within a document
+but is quite rare over all documents. Likewise if a word occurs in a lot
+of documents idf will be close to zero, so `\(tf\_idf\)` will be small.
+
+---
+## Putting it together, tf-idf 
+
+We illustrate the example for a single user review:
+
+
+```r
+tbl_tf %&gt;% 
+    left_join(tbl_idf) %&gt;% 
+    select(word, tf, idf) %&gt;% 
+    mutate(tf_idf = tf * idf) %&gt;% 
+    arrange(desc(tf_idf))
+## # A tibble: 246 x 4
+##    word            tf   idf tf_idf
+##    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 turnips    0.0108   6.62 0.0712
+##  2 time       0.0376   1.78 0.0669
+##  3 zone       0.00806  7.31 0.0590
+##  4 it’s       0.0188   2.81 0.0528
+##  5 i’m        0.0134   3.64 0.0489
+##  6 you’ll     0.00806  5.70 0.0460
+##  7 incredibly 0.0108   4.05 0.0436
+##  8 hurting    0.00538  8.01 0.0430
+##  9 means      0.0108   3.62 0.0390
+## 10 accepted   0.00538  6.91 0.0371
+## # … with 236 more rows
+```
+---
+# Calculating tf-idf: Perhaps not that exciting...
+
+Instead of rolling our own, we can use `tidytext`
+
+
+```r
+user_reviews_counts &lt;- user_reviews_words %&gt;%
+      anti_join(stopwords_smart) %&gt;% 
+      count(user_name, word, sort = TRUE) %&gt;% 
+      bind_tf_idf(term = word, document = user_name, n = n)
+
+user_reviews_counts
+## # A tibble: 93,540 x 6
+##    user_name    word        n     tf   idf tf_idf
+##    &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Melondrea    island     49 0.5    0.585 0.292 
+##  2 Melondrea    console    48 0.490  1.34  0.655 
+##  3 ScissorSheep game       29 0.254  0.242 0.0616
+##  4 ScissorSheep bombing    28 0.246  3.62  0.890 
+##  5 ScissorSheep review     28 0.246  2.19  0.538 
+##  6 ScissorSheep stop       28 0.246  3.36  0.826 
+##  7 Interruptor  eggs       27 0.203  5.70  1.16  
+##  8 Ditobi       de         26 0.0568 3.44  0.195 
+##  9 Lucishungry  game       26 0.0912 0.242 0.0221
+## 10 Teacol       game       21 0.084  0.242 0.0203
+## # … with 93,530 more rows
+```
+
+---
+
+# What words were important to (a sample of) users that had positive reviews?
 
 &lt;img src="lecture_8a_files/figure-html/gg-tf-idf-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
-# Your Turn:
-
-- go to rstudio.cloud and repeat the analyses done in the lecture for your own artists.
-- some suggestions:
-  - Daft Punk's "Discovery" or "Random Access Memories"
-  - Musicals: "Les Miserables" or "Wicked"
-
----
 class: transition
 
-# Part Two: Tidy Text analysis on Books
+# Your Turn
+
+Complete "8a-animal-crossing.Rmd"
+  - This time we will look at critics reviews
 
 ---
-# Getting some books to study
-
-The [Gutenberg project](http://www.gutenberg.org/wiki/Main_Page) provides the text of over 57000 books free online. 
-
-Let's explore The Origin of the Species by Charles Darwin using the `gutenbergr` R package.
-
---
-
-We need to know the `id` of the book, which means looking this up online anyway. 
-- The first edition is `1228`
-- The sixth edition is `2009`
-
----
-# Packages used
-
-- We need the `tm` package to remove numbers from the page, and `gutenbergr` to access the books.
-
-
-```r
-# The tm package is needed because the book has numbers
-# in the text, that need to be removed, and the
-# install.packages("tm")
-library(tm)
-library(gutenbergr)
-```
-
----
-# Download darwin
-
-
-```r
-darwin1 &lt;- gutenberg_download(1228)
-darwin1
-## # A tibble: 15,819 x 2
-##    gutenberg_id text                                                            
-##           &lt;int&gt; &lt;chr&gt;                                                           
-##  1         1228 "ON THE ORIGIN OF SPECIES."                                     
-##  2         1228 ""                                                              
-##  3         1228 "OR THE PRESERVATION OF FAVOURED RACES IN THE STRUGGLE FOR LIFE…
-##  4         1228 ""                                                              
-##  5         1228 ""                                                              
-##  6         1228 "By Charles Darwin, M.A.,"                                      
-##  7         1228 ""                                                              
-##  8         1228 "Fellow Of The Royal, Geological, Linnaean, Etc., Societies;"   
-##  9         1228 ""                                                              
-## 10         1228 "Author Of 'Journal Of Researches During H.M.S. Beagle's Voyage…
-## # … with 15,809 more rows
-# remove the numbers from the text
-darwin1$text &lt;- removeNumbers(darwin1$text)
-```
-
----
-# Tokenize
-
-.pull-left[
-- break into one word per line
-- remove the stop words
-- count the words
-- find the length of the words
-
-
-```r
-darwin1_words &lt;- darwin1 %&gt;%
-  unnest_tokens(word, text) %&gt;%
-  anti_join(stop_words) %&gt;%
-  count(word, sort = TRUE) %&gt;%
-  mutate(len = str_length(word))
-```
-]
-
-.pull-right[
-
-```r
-darwin1_words
-## # A tibble: 6,395 x 3
-##    word          n   len
-##    &lt;chr&gt;     &lt;int&gt; &lt;int&gt;
-##  1 species    1541     7
-##  2 varieties   434     9
-##  3 selection   414     9
-##  4 forms       403     5
-##  5 natural     382     7
-##  6 plants      335     6
-##  7 life        306     4
-##  8 animals     297     7
-##  9 nature      260     6
-## 10 distinct    257     8
-## # … with 6,385 more rows
-```
-]
-
----
-# Analyse tokens
-
-
-```r
-quantile(
-  darwin1_words$n,
-  probs = seq(0.9, 1, 0.01)
-)
-##     90%     91%     92%     93%     94%     95%     96%     97%     98%     99% 
-##   19.00   21.00   24.00   26.00   31.00   36.00   43.00   52.00   66.00  101.06 
-##    100% 
-## 1541.00
-```
-
----
-# Analyse tokens
-
-
-```r
-darwin1_words %&gt;%
-  top_n(n = 20, wt = n) %&gt;%
-  ggplot(aes(x = n, y = fct_reorder(word, n))) +
-  geom_point() + labs(y = "")
-```
-
-&lt;img src="lecture_8a_files/figure-html/gg-analyse-text-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-# Download and tokenize the 6th edition.
-
-
-```r
-darwin6 &lt;- gutenberg_download(2009)
-
-darwin6$text &lt;- removeNumbers(darwin6$text)
-```
-
----
-# show tokenized words
-
-.pull-left[
-
-```r
-darwin6_words &lt;- darwin6 %&gt;%
-  unnest_tokens(word, text) %&gt;%
-  anti_join(stop_words) %&gt;%
-  count(word, sort = TRUE) %&gt;%
-  mutate(len = str_length(word))
-```
-]
-
-.pull-right[
-
-```r
-darwin6_words
-## # A tibble: 8,335 x 3
-##    word          n   len
-##    &lt;chr&gt;     &lt;int&gt; &lt;int&gt;
-##  1 species    1922     7
-##  2 forms       565     5
-##  3 selection   559     9
-##  4 natural     533     7
-##  5 varieties   486     9
-##  6 plants      471     6
-##  7 animals     436     7
-##  8 distinct    359     8
-##  9 life        350     4
-## 10 nature      325     6
-## # … with 8,325 more rows
-```
-]
-
----
-# show tokenized words
-
-```r
-quantile(darwin6_words$n, probs = seq(0.9, 1, 0.01))
-##     90%     91%     92%     93%     94%     95%     96%     97%     98%     99% 
-##   20.00   22.00   25.00   28.00   32.00   38.00   45.00   57.00   75.00  109.66 
-##    100% 
-## 1922.00
-```
-
----
-# show tokenized words
-
-```r
-darwin6_words %&gt;%
-  top_n(n = 20, wt = n) %&gt;%
-  ggplot(aes(x = n, y = fct_reorder(word, n))) + geom_point() + labs(y = "")
-```
-
-&lt;img src="lecture_8a_files/figure-html/gg-second-edition-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-# Compare the word frequency
-
-.left-code[
-
-```r
-darwin &lt;- full_join(
-  darwin1_words, 
-  darwin6_words, 
-  by = "word"
-  ) %&gt;%
-  rename(
-    n_ed1 = n.x, 
-    len_ed1 = len.x, 
-    n_ed6 = n.y, 
-    len_ed6 = len.y
-    )
-```
-]
-
-.right-plot[
-
-```r
-darwin
-## # A tibble: 8,604 x 5
-##    word      n_ed1 len_ed1 n_ed6 len_ed6
-##    &lt;chr&gt;     &lt;int&gt;   &lt;int&gt; &lt;int&gt;   &lt;int&gt;
-##  1 species    1541       7  1922       7
-##  2 varieties   434       9   486       9
-##  3 selection   414       9   559       9
-##  4 forms       403       5   565       5
-##  5 natural     382       7   533       7
-##  6 plants      335       6   471       6
-##  7 life        306       4   350       4
-##  8 animals     297       7   436       7
-##  9 nature      260       6   325       6
-## 10 distinct    257       8   359       8
-## # … with 8,594 more rows
-```
-]
-
-
----
-# plot the word frequency
-
-.left-code[
-
-```r
-ggplot(darwin, 
-            aes(x = n_ed1, 
-                y = n_ed6, 
-                label = word)) +
-  geom_abline(intercept = 0, 
-              slope = 1) +
-  geom_point(alpha = 0.5) +
-  xlab("First edition") + 
-  ylab("6th edition") +
-  scale_x_log10() + 
-  scale_y_log10() + 
-  theme(aspect.ratio = 1)
-```
-]
-
-.right-plot[
-&lt;img src="lecture_8a_files/figure-html/plot-word-freq-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-]
-
----
-# Your turn:
-
-- Does it look like the 6th edition was an expanded version of the first?
-- What word is most frequent in both editions?
-- Find some words that are not in the first edition but appear in the 6th.
-- Find some words that are used the first edition but not in the 6th.
-- Using a linear regression model find the top few words that appear more often than expected, based on the frequency in the first edition. Find the top few words that appear less often than expected. 
-
----
-# Book comparison
-
-Idea: Find the important words for the content of each document by decreasing the weight of commonly used words and increasing the weight for words that are not used very much in a collection or corpus of documents.
-
----
-# Term frequency, inverse document frequency (`tf_idf`).
-
-Helps measure word importance of a document in a collection of documents.
-
-E.g, A novel in a collection of novels, a website in a collection of websites.
-
-`$$tf_{word} = \frac{Number~of~times~word~t~appears~in~a~document}{Total~number~of~words~in~the~document}$$`
-
-`$$idf_{word} = log \frac{number~of~documents}{number~of~documents~word~appears~in}$$`
-
-`$$tf_idf = tf\times idf$$`
-
----
-# TF IDF
-
-```r
-darwin &lt;- bind_rows("first" = darwin1_words, 
-                    "sixth" = darwin6_words,
-                    .id = "edition")
-
-darwin
-## # A tibble: 14,730 x 4
-##    edition word          n   len
-##    &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt; &lt;int&gt;
-##  1 first   species    1541     7
-##  2 first   varieties   434     9
-##  3 first   selection   414     9
-##  4 first   forms       403     5
-##  5 first   natural     382     7
-##  6 first   plants      335     6
-##  7 first   life        306     4
-##  8 first   animals     297     7
-##  9 first   nature      260     6
-## 10 first   distinct    257     8
-## # … with 14,720 more rows
-```
-
----
-# TF IDF
-
-
-```r
-darwin_tf_idf &lt;- darwin %&gt;% bind_tf_idf(word, edition, n)
-
-darwin_tf_idf %&gt;% arrange(desc(tf_idf))
-## # A tibble: 14,730 x 7
-##    edition word              n   len       tf   idf   tf_idf
-##    &lt;chr&gt;   &lt;chr&gt;         &lt;int&gt; &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
-##  1 sixth   mivart           28     6 0.000361 0.693 0.000250
-##  2 sixth   prof             28     4 0.000361 0.693 0.000250
-##  3 sixth   cambrian         27     8 0.000348 0.693 0.000241
-##  4 sixth   illegitimate     21    12 0.000271 0.693 0.000188
-##  5 sixth   lamellae         21     8 0.000271 0.693 0.000188
-##  6 sixth   pedicellariae    19    13 0.000245 0.693 0.000170
-##  7 sixth   dimorphic        18     9 0.000232 0.693 0.000161
-##  8 sixth   orchids          17     7 0.000219 0.693 0.000152
-##  9 sixth   fittest          16     7 0.000206 0.693 0.000143
-## 10 first   deg              11     3 0.000194 0.693 0.000135
-## # … with 14,720 more rows
-```
-
----
-# TF IDF
-
-```r
-gg_darwin_1_vs_6 &lt;-
-darwin_tf_idf %&gt;%
-  arrange(desc(tf_idf)) %&gt;%
-  mutate(word = factor(word,
-                       levels = rev(unique(word)))) %&gt;%
-  group_by(edition) %&gt;%
-  top_n(15) %&gt;%
-  ungroup() %&gt;%
-  ggplot(aes(x = word, 
-             y = tf_idf, 
-             fill = edition)) +
-  geom_col(show.legend = FALSE) +
-  labs(x = NULL, 
-       y = "tf-idf") +
-  facet_wrap(~edition, 
-             ncol = 2, 
-             scales = "free") +
-  coord_flip() + 
-  scale_fill_brewer(palette = "Dark2")
-```
-
----
-
-&lt;img src="lecture_8a_files/figure-html/gg-rawin-tf-idf-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-# What do we learn?
-
-- Mr Mivart appears in the 6th edition, multiple times
-
-
-```r
-str_which(darwin6$text, "Mivart")
-##  [1]  5435  6973  7982  7987  7990  7998  8003  8011  8026  8059  8081  8194
-## [13]  8204  8229  8234  8268  8413  8466  8506  8532  8575  8581  8603  8612
-## [25]  8677  8684  8759  9001  9014  9025  9055  9063  9125 16240 20456
-darwin6[5435, ]
-## # A tibble: 1 x 2
-##   gutenberg_id text                                                             
-##          &lt;int&gt; &lt;chr&gt;                                                            
-## 1         2009 to this rule, as Mr. Mivart has remarked, that it has little val…
-```
-
----
-# What do we learn?
-
-- Prof title is used more often in the 6th edition
-- There is a tendency for latin names 
-- Mistletoe was mispelled in the 1st edition
-
----
-# Lab exercise 
-
+# Lab exercise (bonus!)
 
 Text Mining with R has an example comparing historical physics textbooks:  *Discourse on Floating Bodies* by Galileo Galilei, *Treatise on Light* by Christiaan Huygens, *Experiments with Alternate Currents of High Potential and High Frequency* by Nikola Tesla, and *Relativity: The Special and General Theory* by Albert Einstein. All are available on the Gutenberg project. 
 
@@ -1387,9 +1094,9 @@ Work your way through the [comparison of physics books](https://www.tidytextmini
 # Thanks
 
 - Dr. Mine Çetinkaya-Rundel
-- Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial
+- Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial and
+https://juliasilge.com/blog/animal-crossing/ 
 - Dr. Julia Silge and Dr. David Robinson: https://www.tidytextmining.com/
-- Josiah Parry: https://github.com/JosiahParry/genius
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
