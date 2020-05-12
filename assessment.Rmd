@@ -91,8 +91,8 @@ kable(escape = FALSE,
 
 [Project instructions](project/project-instructions.html) 
 
-- **Deadline 1 (13th May)**:  Find team members, and potential topics to study (List of groups will be posted here)
-- **Deadline 2 (20th May)**:  Team members and team name, data description.
+- **Deadline 1 (15th May)**:  Find team members, and potential topics to study (List of groups will be posted here)
+- **Deadline 2 (22nd May)**:  Team members and team name, data description.
 - **Deadline 3 (27th May) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
 - **Deadline 4 (3rd June) **:  Final version of story board uploaded. 
 - **Presentation in week 12**

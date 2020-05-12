@@ -1,0 +1,39 @@
+```{r pkgs}
+library(dplyr)
+library(janeaustenr)
+library(tidytext)
+```
+
+
+```{r}
+austen <- austen_books()
+
+austen
+```
+
+
+```{r}
+# Unnest tokens the jane austen novels per word, and then count up
+# the number of words per book
+
+book_words <- austen %>%
+  # unnest_tokens(word, text) %>%
+  unnest_tokens(word, text) %>%
+  group_by(book) %>% 
+  count(word, sort = TRUE)
+```
+
+
+# Use the tf idf to calculate the most important words in each book
+
+```{r}
+book_words
+```
+
+Choose one of the books, and create a visualisation of the top 15 most important words.
+
+```{r}
+  top_n(n = 15,
+        wt = tf_idf) %>% 
+  ungroup() 
+```

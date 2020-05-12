@@ -83,6 +83,53 @@ quotes_df <- tibble(from = c("Dickens", "Simpsons"),
                     text = c(dickens, burns))
 ```
 
+
+```{r}
+quotes_df
+```
+
 How many words are in each quote?
 
-How man times does the trigram `it was the` occur?
+```{r}
+quotes_df %>% 
+  unnest_tokens(output = word,
+                input = text) %>% 
+  group_by(from) %>% 
+  # summarise(n = length(word))
+  count()
+```
+
+
+
+
+
+```{r}
+quotes_df %>% 
+  unnest_tokens(output = words,
+                input = text) %>% 
+  filter(from == "Dickens") %>% 
+  nrow()
+
+quotes_df %>% 
+  unnest_tokens(output = words,
+                input = text) %>% 
+  anti_join()
+  group_by(from)  %>% 
+  # summarise(n = length(words))
+  count()
+  
+```
+
+
+How many times does the trigram `it was the` occur?
+
+```{r}
+quotes_df %>% 
+  unnest_tokens(output = trigram,
+                input = text,
+                token = "ngrams",
+                n = 3) %>% 
+  count(trigram == "it was the",
+        name = "n_times") 
+```
+

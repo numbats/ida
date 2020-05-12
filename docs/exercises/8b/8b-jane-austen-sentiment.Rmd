@@ -1,0 +1,79 @@
+---
+output: html_document
+---
+
+# Exploring sentiment in Jane Austen
+
+`janeaustenr` package contains the full texts, ready for analysis for for Jane Austen's 6 completed novels: 
+
+1. "Sense and Sensibility"
+2. "Pride and Prejudice"
+3. "Mansfield Park"
+4. "Emma"
+5. "Northanger Abbey"
+6. "Persuasion"
+
+
+---
+# Exploring sentiment in Jane Austen
+
+```{r show-jane-austen}
+library(janeaustenr)
+library(stringr)
+
+tidy_books <- austen_books() %>%
+  group_by(book) %>%
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, 
+                                     regex("^chapter [\\divxlc]", 
+                                           ignore_case = TRUE)))) %>%
+  ungroup() %>%
+  unnest_tokens(word, text)
+```
+
+# Count joyful words in "Emma"
+
+```{r count-joy}
+nrc_joy <- get_sentiments("nrc") %>% 
+  filter(sentiment == "joy")
+
+tidy_books %>%
+  filter(book == "Emma") %>%
+  inner_join(nrc_joy) %>%
+  count(word, sort = TRUE)
+```
+
+# Count joyful words in "Emma"
+
+"Good" is the most common joyful word, followed by "young", "friend", "hope". 
+
+All make sense until you see "found". 
+
+Is "found" a joyful word?
+
+# Questions: 
+
+- What are the most common "anger" words used in Emma?
+- What are the most common "surprise" words used in Emma?
+
+# Next round of questions:
+
+- Using the bing and afinn lexicon compute the proportion of positive words in each of Austen's books.
+
+```{r}
+austen_sentiment_bing <- tidy_books %>%
+  inner_join(get_sentiments("bing")) 
+
+austen_sentiment_bing %>% 
+  group_by(book) %>% 
+  count(___) %>% 
+  mutate(prop_total = n / sum(n))
+```
+
+
+```{r}
+austen_sentiment_afinn <- tidy_books %>%
+  inner_join(get_sentiments("afinn"))
+```
+
+- Which book is the most positive? negative?

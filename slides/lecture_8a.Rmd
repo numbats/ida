@@ -1,5 +1,5 @@
 ---
-title: "ETC5510: Introduction to Data Analysis"
+title: "ETC1010: Introduction to Data Analysis"
 week: "Week 8, part A"
 subtitle: "Text analysis"
 author: "Nicholas Tierney & Stuart Lee"

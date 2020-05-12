@@ -42,16 +42,19 @@ text_df
 
 ```{r}
 text_df %>% 
-  filter(line == 1) %>% 
+  # filter(line == 1) %>%
   unnest_tokens(word, text) %>% 
-  left_join(afinn)
+  left_join(afinn) %>% 
+  group_by(line) %>%
+  summarise(avg_senti = mean(value, na.rm = TRUE))
 ```
 
 ```{r}
 text_df %>% 
-  filter(line == 1) %>% 
+  # filter(line == 1) %>%
   unnest_tokens(word, text) %>% 
-  left_join(bing)
+  left_join(bing) %>% 
+  count(sentiment)
 ```
 
 ## Your turn

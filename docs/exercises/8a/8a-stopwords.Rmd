@@ -76,13 +76,24 @@ quotes_df <- tibble(from = c("Dickens", "Simpsons"),
 - How many words are in each quote after removing stop words?
 
 ```{r}
+clean_quotes <- quotes_df %>% 
+  unnest_tokens(output = word,
+                input = text) %>% 
+  # anti_join(stopwords_english) 
+  anti_join(stopwords_smart)
 
+clean_quotes %>% 
+  group_by(from) %>% 
+  count()
 ```
 
 
 - What is the most frequent word in the quotes after removing stop words? 
 
 ```{r}
-
+clean_quotes %>% 
+  # group_by(from) %>% 
+  count(word, sort = TRUE) %>% 
+  count(n, name = "count_n")
 ```
 

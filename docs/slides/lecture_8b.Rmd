@@ -52,17 +52,30 @@ library(lubridate)
 library(gridExtra)
 library(plotly)
 library(broom)
-knitr::opts_chunk$set(echo = TRUE,   
+opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
-               fig.height = 4,
-               fig.retina = 2,
+               fig.height = 5,
                fig.width = 8,
+               fig.retina = 2,
                fig.align = "center",
+               out.width = "100%",
                cache = FALSE)
 
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
+```
+
+```{r load-reviews, echo = FALSE}
+
+
+acnh_user_reviews <- read_tsv(here::here("slides/data/acnh_user_reviews.tsv"))
+
+acnh_user_reviews_parsed <- acnh_user_reviews %>% 
+  mutate(text = str_remove(text, "Expand$"))
+
+user_reviews_words <- acnh_user_reviews_parsed %>%
+  unnest_tokens(output = word, input = text)
 ```
 
 ---
@@ -71,216 +84,303 @@ class: refresher
 # Recap 
 
 - tidying up text
-- use `genius_album()` to download lyrics of songs
-- stop_words - (I, am, be, the, this, what, we, myself)
+- unnest_tokens
+- stop words - (I, am, be, the, this, what, we, myself)
+- sentiment analysis
+
+---
+
+# Upcoming Assessment
+
+- Project
+- Practical Exam
+- Final Exam
+
+---
+
+# Project
+
+- Complete ED quiz before Thursday
+- Focus on narrowing down some interesting questions and datasets
+
+---
+
+# Practice Exams
+
+- Practice exams are up for the final exam and the practical exam
+
 
 ---
 # Overview
 
-- interactions in modelling
-- tidy text
+- Tidy Text continued
+- Term Frequency
+- Inverse Document Frequency
+- More practice
 
 ---
-# Adding interactions to the model
+# What is a document about?
 
-![](images/interaction.png)
+## How do we measure the importance of a word to a document in a collection of documents?
 
----
-# Remember linear regression?
+i.e a novel in a collection of novels or a review in a set of reviews...
 
-```{r echo = FALSE}
-pp <- read_csv("data/paris-paintings.csv")
+We combine the following statistics:
 
-ggplot(pp, aes(x = Height_in,
-               y = Width_in,
-               colour = factor(landsALL))) + 
-  geom_point(alpha = 0.3) + 
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(colour = "")
-```
-
----
-# Interaction between quantitative and categorical variables
-
-- An interaction term is needed in a model if the linear relationship is different for the response vs quantitative variable for different levels of the categorical variable. 
-- That is, a different *slope* needs to be used/estimated for each level. 
-
----
-# Interaction between quantitative and categorical variables
-
-- Let's take a look at how this works for the [2015 OECD PISA data](http://www.oecd.org/pisa/data/2015database/).
-- The question to be answered is whether more time spent studying science is associated with higher science scores, and how this varies with enjoyment of science.
-
----
-# PISA data
-
-```{r print-pisa}
-pisa_au <- read_csv("data/pisa_au.csv")
-pisa_au
-```
-
----
-# PISA data
-
-```{r show-specific-pisa}
-pisa_au %>%
-  select(science_time,
-         science,
-         science_fun)
-```
-
----
-# Interaction between quantitative and categorical variables
-
-
-```{r read-pisa, echo=FALSE}
-
-library(labelled)
-pisa_au_science <- pisa_au %>% 
-  filter(science_fun < 5) %>%
-  filter(!is.na(science_time)) %>% 
-  select(science, 
-         science_fun, 
-         science_time, 
-         stuweight) %>%
-  mutate(science_fun = to_factor(science_fun, 
-                                 ordered = TRUE, 
-                                 drop_unused_labels = TRUE)) %>%
-  mutate(science_time = as.numeric(science_time)) %>%
-  filter(science_time > 0)
-  
-ggplot(pisa_au_science, 
-       aes(x = science_time, 
-           y = science,
-           colour = science_fun)) + 
-  geom_point(alpha = 0.1) + 
-  scale_colour_brewer("Enjoy science", 
-                      palette = "Dark2") +
-  facet_wrap(~science_fun, 
-             ncol = 2) + 
-  scale_x_log10() +
-  # geom_smooth(method="lm", se=FALSE) + 
-  theme(legend.position = "bottom") + 
-  xlab("Time spent studying science per week (mins") + 
-  ylab("Synthetic science score")
-```
-
----
-# There are two possible models:
-
-$y_i = \beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\varepsilon_i$ (Model 1)
-
-$y_i = \beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\beta_3x_{i1}*x_{i2}+\varepsilon_i$ (Model 2)
-
-- $y=$ science score
-- $x_1=$ science study time
-- $x_2=$ science enjoyment. 
-
-Model 2 has an interaction term.  This means that the slope will be allowed to vary for the different levels of the categorical variables, science_fun.
-
----
-# Note on modelling
-
-*Note:* Ordered factors are treated as "numeric" in the default model fit, so we should convert `science_fun` to be an unordered categorical variable. Also, `science_time` is heavily skewed so should be transformed.
+- Term frequency
+- Inverse document frequency
 
 ---
 
-```{r pisa-science}
-pisa_au_science_log10 <- pisa_au_science %>%
-  mutate(log_science_time = log10(science_time)) %>%
-  mutate(science_fun_c = factor(science_fun, ordered = FALSE))
+# Term frequency
 
-mod1 <- lm(science ~ log_science_time + science_fun_c, #<<
-           data = pisa_au_science_log10, 
-           weights = stuweight)
+The raw frequency of a word $w$ in a document $d$. It is a function of the word and the document. 
 
-mod2 <- lm(science ~ log_science_time * science_fun_c, #<<
-           data = pisa_au_science_log10, 
-           weights = stuweight)
+$$tf(w, d) = \frac{\text{count of w in d}}{\text{total count in d}} $$
+
+---
+# Harry Potter books
+
+Using data from Harry potter:
+
+```{r read-harry-potter, echo = FALSE}
+# harry potter package from
+# https://github.com/bradleyboehmke/harrypotter
+hp_books <- 
+map_dfr(
+  .x = list(
+    "Philosopher's Stone" = harrypotter::philosophers_stone,
+    "Chamber of Secrets" = harrypotter::chamber_of_secrets,
+    "Prisoner of Azkaban" = harrypotter::prisoner_of_azkaban,
+    "Goblet of Fire" = harrypotter::goblet_of_fire,
+    "Order of the Phoenix" = harrypotter::order_of_the_phoenix,
+    "Half-Blood Prince" = harrypotter::half_blood_prince,
+    "Deathly Hallows" = harrypotter::deathly_hallows
+    ),
+  .f = function(x) tibble(x) %>% setNames("text"),
+  .id = "book"
+) %>% 
+  mutate(book = as_factor(book))
+
+hp_books
+
+# write_rds(hp_books, here::here("slides/data/harry-potter.rds"), compress = "xz")
 ```
 
 ---
 
-```{r pisa-science-show}
-tidy(mod1)
-tidy(mod2)
+# Harry Potter books
+
+Unnest tokens, and use `count` to count up the words within each book:
+
+.pull-left[
+```{r}
+book_words <- hp_books %>% 
+  unnest_tokens(word, text) %>% 
+  count(book, word, sort = TRUE)
 ```
+]
 
----
-# Five minute challenge
-
-- Write out the equations for both models. (Ignore the log transformation.)
-- Make a **hand** sketch of both models.
-
----
-# Which is the better model?
-
-```{r glance-models}
-glance(mod1)
-glance(mod2)
+.pull-right[
+```{r}
+book_words
 ```
-
-`r emo::ji("shocked")` they are both pretty bad! The interaction model (mod2) is slightly better but its really not.
+]
 
 ---
-# Five minute challenge
+# Term frequency
 
-Using the PISA data: How does science score relate to text anxiety and gender?
+Let's calculate frequency of words for The Philosopher's Stone
 
-- Make a plot of science by anxtest, coloured by gender. Does it look like an interaction term might be necessary?
-- Try an interaction between gender and anxtest. 
-- Which is the better model?
+```{r doc-example}
+stopwords_smart <- get_stopwords(source = "smart")
 
-```{r cd-five}
-library(countdown)
-countdown(minutes = 5)
+document <- book_words %>% 
+  anti_join(stopwords_smart) %>% 
+  filter(book == "Philosopher's Stone") 
+document
 ```
 
 
 ---
-# Model building, Goal:
+# Term frequency
 
-The simplest model possible that provides similar predictive accuracy to most complex model.
+The term frequency for each word is the number of times that word occurs
+divided by the total number of words in the document.
 
----
-# Model building, Approach:
+```{r tf}
+tbl_tf <- document %>% 
+  mutate(tf = n / sum(n))
 
-- Start simply, fit main effects models (single best variable, adding several more variables independently) and try to understand the effect that each has in the model. 
-- Explore transformations with the aim to build a stable foundation of explanatory variables for the model.
-- Check model diagnostics, residual plots.
-- Explore two variable interactions, and understand effect on model.
-- Explore three variable interactions.
-- Use model goodness of fit to help decide on final. There may be more than one model that are almost equally as good.
-
----
-# Some asides on model building
-
-- Ideally, values of explanatory variables cover all possible combinations in their domain. 
-- There should *not be any association between explanatory variables*. 
-- If there is, then the there is more uncertainty in the parameter estimates. 
-- Its like building a table with only two legs, that table would be a bit wobbly, and unstable. 
+tbl_tf %>% 
+  arrange(desc(tf))
+```
 
 ---
-# Some asides on model building
+# Inverse-document frequency
 
-- A work around is to first regress one explanatory variable on the other, and add the residuals from this fit to the model, instead of the original variable. 
-- That is, suppose $X_1, X_2$ are strongly linearly associated, then model $X_2\sim b_0+b_1X_1+e$, and use $e$ (call it $X^*_2$) in the model instead of $X_2$. 
-- You would then only be using the part of $X_2$ that is not related to $X_1$ to expand the model. 
-- This approach can be used for multiple explanatory variables that are associated. 
+We can instead look at a term's inverse document frequency (idf), which:
+
+- Decreases weight for commonly used words, while
+- Increasing weight for those words not used much in a collection of documents.
+
+This effectively tells us **how common or rare a word is accross a collection of documents**. 
+
+It is a function of a word $w$, and the collection of documents $\mathcal{D}$.
+
+$$
+idf(w, \mathcal{D}) = \log{\left(\frac{\text{Number of } \mathcal{D}}{\text{Number of documents containing } w}\right)}
+$$
+
+---
+# Inverse-document frequency: Example
+
+Let's say that we had 20 documents:
+
+- Out of 20 documents $\mathcal{D}$ 
+- How many documents contain the word, "the". (All 20 contain "the")
+
+$$
+idf(w = 20, \mathcal{D} = 20) = \log{\left(\frac{20}{20}\right)}
+$$
+
+$$
+idf(w = 20, \mathcal{D} = 20) = \log{\left(1\right)}
+$$
+
+$$
+idf(w = 20, \mathcal{D} = 20) = 0
+$$
+
+---
+# Inverse-document frequency: Example
+
+Let's say that we had 20 documents:
+
+- Out of 20 documents $\mathcal{D}$ 
+- How many documents contain the word, "Deciduous". (Only 1 contains the word "Deciduous")
+
+$$
+idf(w = 1, \mathcal{D} = 20) = \log{\left(\frac{20}{1}\right)}
+$$
+
+$$
+idf(w = 1, \mathcal{D} = 20) = \log{\left(20\right)}
+$$
+
+$$
+idf(w = 1, \mathcal{D} = 20) = 2.995
+$$
+
+---
+# Inverse-document frequency: Example
+
+Let's say that we had 20 documents:
+
+- Out of 20 documents $\mathcal{D}$ 
+- How many documents contain the word, "Banana". (10 contain the word "Banana")
+
+$$
+idf(w = 10, \mathcal{D} = 20) = \log{\left(\frac{20}{10}\right)}
+$$
+
+$$
+idf(w = 10, \mathcal{D} = 20) = \log{\left(2\right)}
+$$
+
+$$
+idf(w = 1, \mathcal{D} = 2) = 0.693
+$$
+
+---
+
+# Inverse document frequency
+
+- When it is higher: Word is not used much in a collection of documents
+  - E.g., 1 document uses "deciduous"
+- When it is lower: Word is not commonly used much in a collection of documents
+  - E.g., all documents use "the", not as many use "bananas"
+
+---
+
+# Inverse document frequency
+
+For the Harry Potter books, we could
+compute this in a somewhat roundabout as follows:
+
+```{r idf}
+tbl_idf <- book_words %>% 
+    anti_join(stopwords_smart) %>%
+    mutate(collection_size = n_distinct(book)) %>% 
+    group_by(collection_size, word) %>% 
+    summarise(times_word_used = n_distinct(book)) %>% 
+    mutate(freq = collection_size / times_word_used,
+           idf = log(freq)) 
+arrange(tbl_idf, idf)
+```
+
+---
+# Putting it together 
+
+**term frequency, inverse document frequency**
+
+Multiply tf and idf together. This is a function of a word $w$, a document $d$,
+and the collection of documents $\mathcal{D}$:
+
+$$ tf\_idf(w, d, \mathcal{D}) = tf(w,d) \times idf(w, \mathcal{D})$$
+- A **High value** of $tf\_idf$ means a word has a high frequency within a document
+but is quite rare over all documents.
+- Likewise if a word occurs in a lot of documents idf will be close to zero, so $tf\_idf$ will be small.
+
+---
+# TF IDF summary
+
+- TF IDF  helps us find those words that are important in the content of documents
+- It does this by increasing the weight of words not used very much in a collection, since the IDF is higher when a word isn't used often.
+- So a **higher** TF IDF means the word is more important if it is both used a lot (has a high term frequency), and is uncommon (higher IDF).
+- And a **lower** TF IDF means the word is less important, since it might be really common (high term frequency), but be really common (lower IDF).
+
+---
+# Putting it together, tf-idf 
+
+We can calculate TF IDF using `bind_tf_idf()`
+
+```{r calc-tf-idf}
+book_words_counts <- book_words %>%
+      anti_join(stopwords_smart) %>% 
+      bind_tf_idf(term = word, document = book, n = n)
+
+book_words_counts
+```
+
+---
+
+# What words were important to the books?
+
+```{r gg-tf-idf, echo=FALSE,message=FALSE}
+book_words_counts %>% 
+  group_by(book) %>%
+  top_n(10, wt = tf_idf) %>%
+  ungroup() %>%
+  ggplot(aes(x = fct_reorder(word, tf_idf), 
+             y = tf_idf, 
+             fill = book)) +
+  geom_col(show.legend = FALSE) + 
+  coord_flip() +
+  facet_wrap(~book, scales = "free") +
+  scale_y_continuous() +
+  theme_minimal() +
+  labs(x = NULL, 
+       y = "tf-idf")
+```
 
 ---
 class: transition
-# Your Turn:
 
-Build the best model you can for science scoreby exploring  these variables: 
+# Your Turn
 
-- math score
-- reading score
-- tvs
-- books
-- breakfast
-
-Feel free to choose others. (Code provided in exercise is just a sample, and needs to be modified.)
+Explore uncommon / important words in Jane Austen's books!
+- Complete "8b-jane-austen-tf-idf.Rmd"
 
 ---
 class: transition
@@ -336,66 +436,50 @@ get_sentiments("afinn")
 - If there are multiple matches between x and y, all combination of the matches are returned.
 
 ---
-# Exploring sentiment in Jane Austen
+# Exploring sentiment in Harry Potter
 
-`janeaustenr` package contains the full texts, ready for analysis for for Jane Austen's 6 completed novels: 
-
-1. "Sense and Sensibility"
-2. "Pride and Prejudice"
-3. "Mansfield Park"
-4. "Emma"
-5. "Northanger Abbey"
-6. "Persuasion"
-
-
----
-# Exploring sentiment in Jane Austen
-
-```{r show-jane-austen}
-library(janeaustenr)
-library(stringr)
-
-tidy_books <- austen_books() %>%
-  group_by(book) %>%
-  mutate(linenumber = row_number(),
-         chapter = cumsum(str_detect(text, 
-                                     regex("^chapter [\\divxlc]", 
-                                           ignore_case = TRUE)))) %>%
-  ungroup() %>%
-  unnest_tokens(word, text)
-```
-
----
-
-# Exploring sentiment in Jane Austen
 ```{r print-tidy-ooks}
-tidy_books
+book_words
 ```
 
 ---
-# Count joyful words in "Emma"
+# Count joyful words in "Chamber of Secrets"
 
 ```{r count-joy}
 nrc_joy <- get_sentiments("nrc") %>% 
   filter(sentiment == "joy")
 
-tidy_books %>%
-  filter(book == "Emma") %>%
+book_words %>%
+  filter(book == "Chamber of Secrets") %>%
   inner_join(nrc_joy) %>%
-  count(word, sort = TRUE)
+  arrange(desc(n))
 ```
 
 ---
-# Count joyful words in "Emma"
+# Count joyful words in "Chamber of Secrets"
 
-"Good" is the most common joyful word, followed by "young", "friend", "hope". 
+```{r echo = FALSE}
+book_words %>%
+  filter(book == "Chamber of Secrets") %>%
+  inner_join(nrc_joy) %>%
+  arrange(desc(n)) %>% 
+  top_n(6, wt = n)
+```
 
-All make sense until you see "found". 
 
-Is "found" a joyful word?
+"Good" is the most common joyful word, followed by "diary", "found", and "smile". 
+
+These make sense ... except for "diary", and "found", 
+
+--
+
+and ... "white" and "green" ?
 
 ---
+class: transition
 # Your turn: go to rstudio.cloud
+
+Go to "8b-jane-austen-sentiment.Rmd"
 
 - What are the most common "anger" words used in Emma?
 - What are the most common "surprise" words used in Emma?
@@ -403,43 +487,39 @@ Is "found" a joyful word?
 ---
 # Comparing lexicons
 
-.pull-left[
 - All of the lexicons have a measure of positive or negative. 
 - We can tag the words in Emma by each lexicon, and see if they agree. 
-]
 
-.pull-right[
 ```{r compare-sentiments}
 nrc_pn <- get_sentiments("nrc") %>% 
   filter(sentiment %in% c("positive", 
                           "negative"))
 
-emma_nrc <- tidy_books %>%
-  filter(book == "Emma") %>%
+secrets_nrc <- book_words %>%
+  filter(book == "Chamber of Secrets") %>%
   inner_join(nrc_pn)
 
-emma_bing <- tidy_books %>%
-  filter(book == "Emma") %>%
+secrets_bing <- book_words %>%
+  filter(book == "Chamber of Secrets") %>%
   inner_join(get_sentiments("bing")) 
 
-emma_afinn <- tidy_books %>%
-  filter(book == "Emma") %>%
+secrets_afinn <- book_words %>%
+  filter(book == "Chamber of Secrets") %>%
   inner_join(get_sentiments("afinn"))
 ```
-]
 
 ---
 # Comparing lexicons
 
 ```{r show-lexi} 
-emma_nrc
+secrets_nrc
 ```
 
 ---
 # Comparing lexicons
 
 ```{r show-lexi-afinn} 
-emma_afinn
+secrets_afinn
 ```
 
 
@@ -447,27 +527,36 @@ emma_afinn
 # Comparing lexicons
 
 ```{r compare-sentiments-show}
-emma_nrc %>% count(sentiment) %>% mutate(n / sum(n))
+secrets_nrc %>% 
+  count(sentiment, name = "n_sentiment") %>% 
+  mutate(prop_total = n_sentiment / sum(n_sentiment))
+```
 
-emma_bing %>% count(sentiment) %>% mutate(n / sum(n))
+
+```{r compare-sentiments-show-bing}
+secrets_bing %>% 
+  count(sentiment, name = "n_sentiment") %>% 
+  mutate(prop_total = n_sentiment / sum(n_sentiment))
 ```
 
 ---
 # Comparing lexicons
 
 ```{r compare-sentiments-more}
-emma_afinn %>% 
+secrets_afinn %>% 
   mutate(sentiment = ifelse(value > 0, 
                             "positive", 
                             "negative")) %>% 
-  count(sentiment) %>% 
-  mutate(n / sum(n))
+  count(sentiment, name = "n_sentiment") %>% 
+  mutate(prop_total = n_sentiment / sum(n_sentiment))
 
 ```
 
 ---
 class: transition
-# Your turn: Exercise 2
+# Your turn: 
+
+Continue along with "8b-jane-austen-sentiment.Rmd"
 
 - Using your choice of lexicon (nrc, bing, or afinn) compute the proportion of positive words in each of Austen's books.
 - Which book is the most positive? negative?
@@ -580,26 +669,17 @@ ggplot(sc_top_20,
 ---
 # Tag the words with sentiments
 
-
 Using AFINN words will be tagged on a negative to positive scale of -1 to 5.
-]
 
-.pull-left[
 ```{r tag-sentiments}
 sc_word <- sc %>%
-  unnest_tokens(output = word, 
-                input = spoken_words) %>%
+  unnest_tokens(output = word, input = spoken_words) %>%
   anti_join(stop_words) %>%
   count(name, word) %>%
   filter(!is.na(word))
-```
-]
 
-.pull-right[
-```{r tag-sentiments-print}
 sc_word
 ```
-]
 
 ---
 # Tag the words with sentiments
@@ -621,7 +701,7 @@ sc_s %>%
 ```
 
 ---
-# Examine Simpsons characters: Focus on the main characters.
+# Examine Simpsons characters: Focus characters.
 
 ```{r keep-main-chars}
 keep <- sc %>% count(name, 
@@ -638,86 +718,30 @@ sc_s %>%
 
 ---
 class: transition
-# Your turn: Exercise 3
+# Your turn: "8b-simpsons.Rmd"
 
 1. Bart Simpson is featured at various ages. How has the sentiment of his words changed over his life?
 
 2. Repeat the sentiment analysis with the NRC lexicon. What character is the most "angry"? "joyful"?
 
 ---
-# (if time) Example: AFL Finals tweets
+class: transition
 
-The `rtweet` package allows you to pull tweets from the archive. It gives only the last 6-9 days worth of data. You need to have a twitter account, and you need to create an app (its really basic) in order to pull twitter data. The instructions that come from this package (https://rtweet.info) are pretty simple to follow.
+# Extension: Explore Harry Potter
 
----
-# (if time) Example: AFL Finals tweets
-
-
-Given that it is AFL final week, I thought it might be interesting to look at tweets that use the hashtag "#AFLFinals". Once you have a developer account, this is as simple as 
-
-```
-afl <- search_tweets(
-  "#AFLFinals", n = 20000, include_rts = FALSE
-)
-```
+I've included the harry potter data the code from the harry potter part of the lecture in "8b-harry-potter.Rmd", if you want to have a play around, I've got a few questions there.
 
 ---
-# (if time) Example: AFL Finals tweets
+# Further extension
 
-Here is the data collected in the previous year's AFL finals.
+Text Mining with R has an example comparing historical physics textbooks:  *Discourse on Floating Bodies* by Galileo Galilei, *Treatise on Light* by Christiaan Huygens, *Experiments with Alternate Currents of High Potential and High Frequency* by Nikola Tesla, and *Relativity: The Special and General Theory* by Albert Einstein. All are available on the Gutenberg project. 
 
-```{r load-afl}
-afl <- read_rds("data/afl_twitter_past.rds")
-afl
-```
+Work your way through the [comparison of physics books](https://www.tidytextmining.com/tfidf.html#a-corpus-of-physics-texts). It is section 3.4.
 
 ---
-# Your turn
+# Thanks
 
-- When was the final played last year?
-- What is the range of dates of this data?
-- Who is the most frequent tweeter using this hashtag?
-- Are there some days that have more tweets than others?
-- Are there some hours of the day that are more common tweet times?
-]
-
----
-# Your Turn: Sentiment analysis
-
-We need to break text of each tweet into words, tag words with sentiments, and make a cumulative score for each tweet.
-
-- Which tweeter is the most positive? negative?
-- Is there a day that spirits were higher in the tweets? Or when tweets were more negative?
-- Does the tweeter `aflratings` have a trend in positivity or negativity?
-
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
-
-???
-
-
-```{r pipeline, eval=FALSE, echo = FALSE}
-quiz(
-  question("How would you describe the relationship between science score and time spent studying?",
-    answer("Weak", correct = TRUE),
-    answer("Moderate"), 
-    answer("Strong")),
-  question("What do these lines of code do?   `filter(science_fun < 5) %>%
-  filter(!is.na(science_time))`", 
-    answer("Remove missing values", correct = TRUE),
-    answer("Remove extreme values, and missing values"),
-    answer("I have no idea")),
-  question("Why was `science_time` transformed to a log scale?",
-    answer("It has a right-skewed distribution.", correct = TRUE),
-    answer("It has a left-skewed distribution."),
-    answer("It is symmetric")),
-  question("Why were 0 values of `science_time` removed?",
-    answer("It could be argued that these are most likely missing values", correct = TRUE),
-    answer("They are outliers affecting the modeling"),
-    answer("No-one would be able to study science 0 minutes per week"))
-)
-```
-
+- Dr. Mine Çetinkaya-Rundel
+- Dr. Julia Silge: https://github.com/juliasilge/tidytext-tutorial and
+https://juliasilge.com/blog/animal-crossing/ 
+- Dr. Julia Silge and Dr. David Robinson: https://www.tidytextmining.com/

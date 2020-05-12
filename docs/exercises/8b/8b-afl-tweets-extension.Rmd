@@ -1,0 +1,103 @@
+---
+# (if time) Example: AFL Finals tweets
+
+The `rtweet` package allows you to pull tweets from the archive. It gives only the last 6-9 days worth of data. You need to have a twitter account, and you need to create an app (its really basic) in order to pull twitter data. The instructions that come from this package (https://rtweet.info) are pretty simple to follow.
+
+---
+# (if time) Example: AFL Finals tweets
+
+
+Given that it is AFL final week, I thought it might be interesting to look at tweets that use the hashtag "#AFLFinals". Once you have a developer account, this is as simple as 
+
+```
+afl <- search_tweets(
+  "#AFLFinals", n = 20000, include_rts = FALSE
+)
+```
+
+---
+# (if time) Example: AFL Finals tweets
+
+Here is the data collected in the previous year's AFL finals.
+
+```{r load-afl}
+afl <- read_rds("data/afl_twitter_past.rds")
+afl
+```
+
+---
+# Your turn
+
+- When was the final played last year?
+- What is the range of dates of this data?
+- Who is the most frequent tweeter using this hashtag?
+- Are there some days that have more tweets than others?
+- Are there some hours of the day that are more common tweet times?
+]
+
+---
+# Your Turn: Sentiment analysis
+
+We need to break text of each tweet into words, tag words with sentiments, and make a cumulative score for each tweet.
+
+- Which tweeter is the most positive? negative?
+- Is there a day that spirits were higher in the tweets? Or when tweets were more negative?
+- Does the tweeter `aflratings` have a trend in positivity or negativity?
+
+
+---
+  
+  
+  
+# Your Turn: Sentiment analysis
+
+```{r}
+load("data/afl_twitter.rda")
+afl
+```
+
+We need to break the text of each tweet into words, tag the words with sentiments, and make a cumulative score for each tweet.
+
+- Which tweeter is the most positive? negative?
+- Is there a day that spirits were higher in the tweets? Or when tweets were more negative?
+- Does the tweeter `aflratings` have a trend in positivity or negativity?
+
+```{r eval=FALSE, echo=FALSE}
+afl_sentiment <- afl %>% 
+  # group by something
+  group_by() %>%
+  # unnest the tokens
+  unnest_tokens() %>%
+  inner_join(get_sentiments("afinn")) %>%
+  summarise(sentiment = mean(score, na.rm=T)) 
+
+afl_sentiment <- afl %>% 
+  select(status_id, 
+         screen_name, 
+         created_at, 
+         text) %>% 
+  left_join(afl_sentiment, by=c(???))
+
+afl_sentiment %>% 
+  group_by(???) %>%
+  ???(s = mean(sentiment, na.rm=TRUE)) %>% arrange(desc(s))
+afl_sentiment %>% mutate(day = ???)) %>% ggplot(aes(x=day, y=sentiment)) + geom_point() + geom_smooth(se=FALSE)
+afl_sentiment %>% filter(screen_name == ???) %>% 
+  mutate(day = ???) %>%
+  ggplot(aes(x=day, y=sentiment)) + geom_point() + geom_smooth()
+```
+
+
+# Your turn
+
+- When was the final played last year?
+- What is the range of dates of this data?
+- Who is the most frequent tweeter using this hashtag?
+- Are there some days that have more tweets than others?
+- Are there some hours of the day that are more common tweet times?
+
+
+# Sentiment analysis
+
+We need to break the text of each tweet into words, tag the words with sentiments, and make a cumulative score for each tweet.
+

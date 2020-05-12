@@ -14,7 +14,13 @@ library(kableExtra)
 The project is designed to give you experience collecting or finding your own dataset, determining the
 appropriate questions to answer about the data, and planning how to execute analysis of the data.  The project involves several parts. The project represents 13\% of your final grade for ETC1010.
 
-1. Locate a suitable data source and determine appropriate questions that could be answered using this data. It cannot be data set from kaggle. It needs to be from an original source. If it is is csv format, there need to be more than one file or multiple sheets. Challenge yourself to work with data addressing a problem in today's world.
+**Regarding Groups**
+
+For Semester 1, 2020, we strongly suggest that you stay in the groups you were in for assignment 2. If you would like to change groups for your project, you should do this before Milestone One, and email Nick.
+
+**Steps taken to complete the project**
+
+1. Locate a suitable data source and determine appropriate questions that could be answered using this data. It cannot be data set from kaggle, or Tidy Tuesday, or something where the data has been tidied up and ready for data analysis. It needs to be from an original source. If it is is csv format, there need to be more than one file or multiple sheets. Challenge yourself to work with data addressing a problem in today's world.
 
 2. Cleaning of your data, in order to answer your questions. This is the important part to illustrate in your project, because we are expecting you to be able to demonstrate your ability to take a messy data set and organise it for later analysis.
 
@@ -27,8 +33,8 @@ appropriate questions to answer about the data, and planning how to execute anal
 This project will be conducted collaboratively, with team of your choices, and with  **a maximum team size of 4** To ensure correct marks are awarded, please carefully document, in detail, your individual contributions to the project. Each team member is expected to participate substantially in all aspects of the work, including the writing and oral presentation.
 
 ```{r create-deadline-table, echo = FALSE}
-due_date <- c("Milestone 1: 13th May",
-              "Milestone 2: 20th May", 
+due_date <- c("Milestone 1: 15th May",
+              "Milestone 2: 22nd May", 
               "Milestone 3: 27th May",
               "Milestone 4: 3rd June",
               "Milestone 5: 10th June")
