@@ -124,10 +124,11 @@ Past Example projects from ETC1010:
 
 ## Exam information
 
-- [Midterm 2019](exam/midterm2019.pdf) [(solution)](exam/midterm2019_solution.pdf)
-
 - [Formula sheet](exam/formula_sheet.pdf)
 
 - [Final Exam for 2018 Semester 1](exam/exam2018.pdf) [(solution)](exam/exam2018_solution.pdf)
 - [Final Exam for 2018 Semester 2](exam/exam2018_S2.pdf) [(solution)](exam/exam2018_S2_solution.pdf)
 - [Final Exam for 2019 Semester 1](exam/exam2019-s1.pdf)
+
+- Practical Exam 2019 Semester 1: [Rmd](exam/practical_exam_2019_S1.Rmd) [HTML](exam/practical_exam_2019_S1.html)
+- Practical Exam 2019 Semester 1 Solution: [Rmd](exam/practical_exam_2019_S1_solution.Rmd) [HTML](exam/practical_exam_2019_S1_solution.html)
