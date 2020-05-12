@@ -1,0 +1,78 @@
+---
+title: ""
+author: ""
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(tidytext)
+```
+
+
+```{r read-simpsons}
+scripts <- read_csv(here::here("exercises/8b/data/simpsons_script_lines.csv"))
+chs <- read_csv(here::here("exercises/8b/data/simpsons_characters.csv"))
+sc <- left_join(scripts, chs, by = c("character_id" = "id"))
+
+```
+
+```{r create-words}
+sc_word <- sc %>%
+  unnest_tokens(output = word, 
+                input = spoken_words) %>%
+  anti_join(stop_words) %>%
+  count(name, word) %>%
+  filter(!is.na(word))
+
+sc_s <- sc_word %>% 
+  inner_join(get_sentiments("afinn"), by = "word")
+
+sc_s
+```
+
+
+1. Bart Simpson is featured at various ages. How has the sentiment of his words changed over his life?
+
+Here are a few different approaches
+
+```{r}
+# explore barts
+sc %>% 
+  count(name, sort = TRUE) %>%
+  filter(str_detect(name, "Bart"))
+```
+
+
+```{r}
+bart_names <- c("Bart Simpson", 
+                "Baby Bart", 
+                "1-Year-Old Bart", 
+                "2-Year-Old Bart", 
+                "5-Year-Old Bart", 
+                "80-Year-Old Bart")
+
+# now filter the barts
+barts <- sc %>% filter(name %in% bart_names)
+```
+
+
+
+```{r}
+sc_bart <- sc %>%
+  filter(str_detect(name, "Bart")) %>%
+  # find non exact matches for "bart simpson"
+  filter(name != "Bart Simpson") %>%
+  unnest_tokens(output = word,
+                input = spoken_words) %>%
+  anti_join(stop_words) 
+
+sc_bart
+```
+
+2. Repeat the sentiment analysis with the NRC lexicon. What character is the most "angry"? "joyful"?
+
+```{r src-word}
+```
+
+

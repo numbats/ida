@@ -1,0 +1,159 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidytext)
+library(knitr)
+library(lubridate)
+opts_chunk$set(echo = TRUE,   
+               message = FALSE,
+               warning = FALSE,
+               collapse = TRUE,
+               fig.height = 5,
+               fig.width = 8,
+               fig.retina = 2,
+               fig.align = "center",
+               out.width = "100%",
+               cache = FALSE)
+
+as_table <- function(...) knitr::kable(..., format='html', digits = 3)
+```
+
+---
+# Harry Potter books
+
+Using data from Harry potter:
+
+```{r read-harry-potter, echo = FALSE}
+# harry potter package from
+# https://github.com/bradleyboehmke/harrypotter
+hp_books <- read_rds(here::here("data/harry-potter.rds"))
+```
+
+# Harry Potter books
+
+Unnest tokens, and use `count` to count up the words within each book:
+
+```{r}
+book_words <- hp_books %>% 
+  unnest_tokens(word, text) %>% 
+  count(book, word, sort = TRUE)
+book_words
+```
+
+# Inverse document frequency
+
+For the Harry Potter books, we could compute this in a somewhat roundabout as follows:
+
+We can calculate TF IDF using `bind_tf_idf()`
+
+```{r calc-tf-idf}
+book_words_counts <- book_words %>%
+      anti_join(stopwords_smart) %>% 
+      bind_tf_idf(term = word, document = book, n = n)
+
+book_words_counts
+
+# What words were important to the books?
+
+```{r gg-tf-idf, echo=FALSE,message=FALSE}
+book_words_counts %>% 
+  group_by(book) %>%
+  top_n(10, wt = tf_idf) %>%
+  ungroup() %>%
+  ggplot(aes(x = fct_reorder(word, tf_idf), 
+             y = tf_idf, 
+             fill = book)) +
+  geom_col(show.legend = FALSE) + 
+  coord_flip() +
+  facet_wrap(~book, scales = "free") +
+  scale_y_continuous() +
+  theme_minimal() +
+  labs(x = NULL, 
+       y = "tf-idf")
+```
+
+# Your Turn
+
+Explore uncommon / important words in the books?
+
+# Sentiment analysis
+
+
+```{r print-tidy-ooks}
+book_words
+```
+
+# Count joyful words in "Chamber of Secrets"
+
+```{r count-joy}
+nrc_joy <- get_sentiments("nrc") %>% 
+  filter(sentiment == "joy")
+
+book_words %>%
+  filter(book == "Chamber of Secrets") %>%
+  inner_join(nrc_joy) %>%
+  arrange(desc(n))
+```
+
+# Count joyful words in "Chamber of Secrets"
+
+```{r echo = FALSE}
+book_words %>%
+  filter(book == "Chamber of Secrets") %>%
+  inner_join(nrc_joy) %>%
+  arrange(desc(n)) %>% 
+  top_n(6, wt = n)
+```
+
+
+"Good" is the most common joyful word, followed by "diary", "found", and "smile". 
+
+These make sense ... except for "diary", and "found", 
+
+--
+
+and ... "white" and "green" ?
+
+# Your turn
+
+- What are the most common "anger" words used in each of the books?
+- What are the most common "surprise" words used in each of the books?
+
+# Comparing lexicons
+
+- All of the lexicons have a measure of positive or negative. 
+- We can tag the words in Emma by each lexicon, and see if they agree. 
+
+```{r compare-sentiments}
+nrc_pn <- get_sentiments("nrc") %>% 
+  filter(sentiment %in% c("positive", 
+                          "negative"))
+
+secrets_nrc <- book_words %>%
+  filter(book == "Chamber of Secrets") %>%
+  inner_join(nrc_pn)
+
+secrets_bing <- book_words %>%
+  filter(book == "Chamber of Secrets") %>%
+  inner_join(get_sentiments("bing")) 
+
+secrets_afinn <- book_words %>%
+  filter(book == "Chamber of Secrets") %>%
+  inner_join(get_sentiments("afinn"))
+```
+
+# Comparing lexicons
+
+```{r show-lexi} 
+secrets_nrc
+```
+
+# Comparing lexicons
+
+```{r show-lexi-afinn} 
+secrets_afinn
+```
+
