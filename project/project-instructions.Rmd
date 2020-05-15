@@ -33,7 +33,7 @@ For Semester 1, 2020, we strongly suggest that you stay in the groups you were i
 This project will be conducted collaboratively, with team of your choices, and with  **a maximum team size of 4** To ensure correct marks are awarded, please carefully document, in detail, your individual contributions to the project. Each team member is expected to participate substantially in all aspects of the work, including the writing and oral presentation.
 
 ```{r create-deadline-table, echo = FALSE}
-due_date <- c("Milestone 1: 15th May",
+due_date <- c("Milestone 1: 15th May at midnight",
               "Milestone 2: 22nd May", 
               "Milestone 3: 27th May",
               "Milestone 4: 3rd June",
