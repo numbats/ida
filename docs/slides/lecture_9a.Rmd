@@ -71,15 +71,14 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ---
 # Announcements
 
-- Assignment ___ has been released
 - Project deadlines:
-  - **Deadline 3 (<DATE>) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
-  - **Deadline 4 (<DATE>) **:  Final version of story board uploaded. 
+  - **Deadline 2 (<DATE>) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
+  - **Deadline 3 (<DATE>) **:  Final version of story board uploaded. 
 - Practical exam: **<DATE> in class at <TIME>**
-
 
 ---
 class: refresher
+
 # recap: Last week on tidy text data
 
 
@@ -185,82 +184,46 @@ include_graphics("images/Mad-men-title-card.jpg")
 library(tidygraph)
 library(ggraph)
 
-madmen_graph <-  tbl_graph(
-  nodes = madmen$vertices,
-  edges = madmen$edges,
-  directed = TRUE
-  )
+glimpse(madmen)
 ```
 ]
 
 .pull-right[
 ```{r print-madmen, echo = FALSE}
-madmen_graph
+MMnet <- madmen$edges %>%
+  rename(from_id = Name1, to_id = Name2) %>%
+  mutate_all(as.character) %>%
+  full_join(mutate(madmen$vertices, label = as.character(label)), 
+            by = c("from_id" = "label"))
+
 ```
 ]
 
 ---
-# plotting using ggraph
+# How to plot
 
 ```{r ggraph-madmen}
-gg_madmen <- ggraph(madmen_graph, layout = "kk") + 
-  geom_edge_link() + 
-  geom_node_label(aes(colour = Gender,
-                      label = label))
+# create plot
+set.seed(5556677)
+ggplot(data = MMnet, aes(from_id = from_id, to_id = to_id)) +
+  geom_net(aes(colour = Gender), layout.alg = "kamadakawai",
+    size = 2, labelon = TRUE, vjust = -0.6, ecolour = "grey60",
+    directed =FALSE, fontsize = 3, ealpha = 0.5) +
+    scale_colour_manual(values = c("#FF69B4", "#0099ff")) +
+    xlim(c(-0.05, 1.05)) +
+    theme_net() +
+    theme(legend.position = "bottom")
 
-```
-
----
-# plotting using ggraph
-
-```{r print-ggraph-madmen, fig.width = 9, fig.height = 5}
-gg_madmen
 ```
 
 ---
 # Which actor was most connected?
 
 ```{r most-connected}
-madmen_graph %>%
-  activate(nodes) %>% 
-  mutate(count = centrality_degree()) %>%
-  arrange(-count) %>%
-  as_tibble()
+madmen$edges %>% 
+  gather(X, Name, Name1, Name2) %>% 
+  count(Name, sort=TRUE)
 ```
-
----
-# `activate()` what now?
-
-.pull-left[
-```{r show-madmen-graph}
-madmen_graph
-```
-]
-
-.pull-right[
-- need to tell dplyr if you are working on `nodes` or `edges`. 
-- `activate` means we don't need a `mutate_nodes` or `mutate_edges` commands
-]
-
----
-# `centrality` what now?
-
-.pull-left[
-```{r}
-madmen_graph %>%
-  activate(nodes) %>% 
-  mutate(count = centrality_degree()) %>% #<<
-  arrange(-count) %>%
-  as_tibble()
-```
-]
-
-.pull-right[
-- How central is a node or edge in a graph?
-- definition is inherently vague
-- there are many different centrality scores that exist
-- `centrality_degree()` says: "What is the number of adjacent edges?"
-]
 
 ---
 # What do we learn?
@@ -288,40 +251,40 @@ Fall 2000 Season of [Division I college football](https://en.wikipedia.org/wiki/
 - Teams are broken into "conferences" which are the primary competition, but they can play outside this group.
 
 ```{r  make-football-graph, echo=FALSE}
-foot_graph <- as_tbl_graph(football) %>%
-  mutate(schools = if_else(value == "Independents", 
-                           true = label, 
-                           false = NA_character_)) %>%
-  rename(conference = value,
-         uni = label)
+# data step: merge vertices and edges
+ftnet <- full_join(
+  football$edges, football$vertices,
+  by = c("from" = "label")
+) %>%
+  mutate(schools = ifelse(value == "Independents", from, ""))
+
 ```
 
 ---
 # Example: American college football
 
 ```{r print-football}
-foot_graph
-```
-
-
----
-
-```{r plot-foot-graph}
-set.seed(2019-09-25-1117)
-gg_foot_graph <-
-ggraph(foot_graph, layout = "fr") + 
-  geom_edge_link(alpha = 0.2) + 
-  geom_node_point(size = 7,
-                  alpha = 0.9,
-                  aes(colour = conference)) +
-  scale_colour_brewer(palette = "Paired") + 
-  theme(legend.position = "bottom") 
+ggplot(data = ftnet,
+       aes(from_id = from, to_id = to)) +
+  geom_net(
+    aes(
+      colour = value, group = value,
+      linetype = factor(1-same.conf),
+      label = schools
+    ),
+    linewidth = 0.5,
+    size = 5, vjust = -0.75, alpha = 0.3,
+    layout.alg = 'fruchtermanreingold'
+  ) +
+  theme_net() +
+  theme(legend.position = "bottom") +
+  scale_colour_brewer("Conference", palette = "Paired")
 ```
 
 ---
 
 ```{r print-gg-foot-graph, echo = FALSE, fig.width = 10, fig.height = 8, out.width = "80%"}
-gg_foot_graph
+# gg_foot_graph
 ```
 
 ---
@@ -349,43 +312,46 @@ There is a connection between two students if one provides emotional support to 
 - Code to pull the data together is provided by Sam Tyner [here](https://github.com/sctyner/geomnet/blob/master/README.Rmd#harry-potter-peer-support-network).
 
 ```{r read-hp, echo=FALSE}
-hp_chars <- read_csv("data/hp_chars.csv")
-hp_edges <- read_csv("data/hp_edges.csv") 
+hp_chars <- read_csv(here::here("slides/data/hp_chars.csv"))
+hp_edges <- read_csv(here::here("slides/data/hp_edges.csv"))
 
-hp <- tbl_graph(nodes = hp_chars,
-                edges = hp_edges)
+# for each book, expand the edges data and join it to characters
+hp_all <- hp_edges %>%
+  group_by(book) %>%
+  group_map(~ full_join(.x, hp_chars, by = c("name1" = "name"))) %>%
+  bind_rows(.id = "book") %>% 
+  rename(from_id = name1, 
+         to_id = name2)
 ```
 
 ---
 # Harry potter data as nodes and edges
 
 ```{r print-hp}
-hp
+hp_all
 ```
 
 ---
 # Let's plot the characters
 
 ```{r echo=TRUE}
-ggraph_hp <- 
-ggraph(hp,
-       layout = "fr") + 
-  geom_edge_link(alpha = 0.2) + 
-  geom_node_point(aes(colour = house,
-                      shape = gender)) + 
-  # geom_node_text(aes(label = name)) +
-  facet_edges(~book,
-              ncol = 2) +
-  scale_colour_manual(values = c("#941B08","#F1F31C", 
-                                 "#071A80", "#154C07"))
 
+ggplot(data=hp_all, 
+       aes(from_id = from_id, to_id = to_id)) + 
+  geom_net(fiteach=T, directed = T, size = 3, linewidth = .5, 
+           ealpha = .5, labelon = T, fontsize = 3, repel = T, 
+           labelcolour = "black", arrowsize = .5, singletons = FALSE,
+           aes(colour = house, group = house, shape = gender)) + 
+  scale_colour_manual(values = c("#941B08","#F1F31C", 
+                                 "#071A80", "#154C07")) + 
+  facet_wrap(~book, labeller = "label_both", ncol=3) + 
+  theme_net() + theme(panel.background = element_rect(colour = 'black'), legend.position="bottom")
 ```
 
 ---
 # Let's plot the characters
 
 ```{r ggraph-hp}
-ggraph_hp
 ```
 
 
@@ -404,7 +370,6 @@ include_graphics("images/class_network.png")
 ```
 ]
 
-<!--
 ## Simpsons
 
 Your turn to make a network diagram for the Simpsons. The measure of association will be "that the two characters had lines in the same episode together".
@@ -413,10 +378,9 @@ Your turn to make a network diagram for the Simpsons. The measure of association
 - Write code to search if a character has a line in an episode
 - Compile a dataset of episode (rows) and character (columns) which is a binary matrix where 1 indicates the character had a line in the episode, and 0 is otherwise
 - Gather the matrix into long form, with these columns: `episode`, `character`, `had a line` (0,1)
-- Filter the rows with `had a line` equal to 1. 
+- Filter the rows with `had a line` equal to 1.
 - Count the number of times the pair of characters appeared. This now forms your edge set, with an additional column of the strength of the relationship
 - Make your network display
--->
 
 ---
   

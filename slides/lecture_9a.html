@@ -25,12 +25,11 @@
   
 
 
-background-color: #006DAE
-class: middle center hide-slide-number
-
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
 
 &lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
-&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;br&gt;
@@ -38,7 +37,6 @@ class: middle center hide-slide-number
 .white[Press the **right arrow** to progress to the next slide!]
 
 ---
-
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -96,18 +94,15 @@ May 2020
 ---
 # Announcements
 
-- Assignment ___ has been released
 - Project deadlines:
-  - **Deadline 3 (&lt;DATE&gt;) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
-  - **Deadline 4 (&lt;DATE&gt;) **:  Final version of story board uploaded. 
-- Practical exam: **&lt;DATE&gt; in class at &lt;TIME&gt;**
-
+  - **Deadline 2 (22nd May) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
+  - **Deadline 3 (27th May) **:  Final version of story board uploaded. 
+- Practical exam: **&lt;DATE&gt;**
 
 ---
 class: refresher
+
 # recap: Last week on tidy text data
-
-
 
 ---
 # Network analysis
@@ -222,160 +217,63 @@ One way to describe these relationships is to provide association matrix between
 library(tidygraph)
 library(ggraph)
 
-madmen_graph &lt;-  tbl_graph(
-  nodes = madmen$vertices,
-  edges = madmen$edges,
-  directed = TRUE
-  )
+glimpse(madmen)
+## List of 2
+##  $ edges   :'data.frame':	39 obs. of  2 variables:
+##   ..$ Name1: Factor w/ 9 levels "Betty Draper",..: 1 1 2 2 2 2 2 2 2 2 ...
+##   ..$ Name2: Factor w/ 39 levels "Abe Drexler",..: 15 31 2 4 5 6 8 9 11 21 ...
+##  $ vertices:'data.frame':	45 obs. of  2 variables:
+##   ..$ label : Factor w/ 45 levels "Abe Drexler",..: 5 9 16 23 26 32 33 38 39 17 ...
+##   ..$ Gender: Factor w/ 2 levels "female","male": 1 2 2 1 2 1 2 2 2 2 ...
 ```
 ]
 
 .pull-right[
 
-```
-## # A tbl_graph: 45 nodes and 39 edges
-## #
-## # A rooted forest with 6 trees
-## #
-## # Node Data: 45 x 2 (active)
-##   label         Gender
-##   &lt;fct&gt;         &lt;fct&gt; 
-## 1 Betty Draper  female
-## 2 Don Draper    male  
-## 3 Harry Crane   male  
-## 4 Joan Holloway female
-## 5 Lane Pryce    male  
-## 6 Peggy Olson   female
-## # … with 39 more rows
-## #
-## # Edge Data: 39 x 2
-##    from    to
-##   &lt;int&gt; &lt;int&gt;
-## 1     1     2
-## 2     1     3
-## 3     4     5
-## # … with 36 more rows
-```
 ]
 
 ---
-# plotting using ggraph
+# How to plot
 
 
 ```r
-gg_madmen &lt;- ggraph(madmen_graph, layout = "kk") + 
-  geom_edge_link() + 
-  geom_node_label(aes(colour = Gender,
-                      label = label))
+# create plot
+set.seed(5556677)
+ggplot(data = MMnet, aes(from_id = from_id, to_id = to_id)) +
+  geom_net(aes(colour = Gender), layout.alg = "kamadakawai",
+    size = 2, labelon = TRUE, vjust = -0.6, ecolour = "grey60",
+    directed =FALSE, fontsize = 3, ealpha = 0.5) +
+    scale_colour_manual(values = c("#FF69B4", "#0099ff")) +
+    xlim(c(-0.05, 1.05)) +
+    theme_net() +
+    theme(legend.position = "bottom")
 ```
 
----
-# plotting using ggraph
-
-
-```r
-gg_madmen
-```
-
-&lt;img src="lecture_9a_files/figure-html/print-ggraph-madmen-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_9a_files/figure-html/ggraph-madmen-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Which actor was most connected?
 
 
 ```r
-madmen_graph %&gt;%
-  activate(nodes) %&gt;% 
-  mutate(count = centrality_degree()) %&gt;%
-  arrange(-count) %&gt;%
-  as_tibble()
-## # A tibble: 45 x 3
-##    label                    Gender count
-##    &lt;fct&gt;                    &lt;fct&gt;  &lt;dbl&gt;
-##  1 Joan Holloway            female    14
-##  2 Woman at the Clios party female     5
-##  3 Janine                   female     5
-##  4 Rachel Menken            female     3
-##  5 Hildy                    female     3
-##  6 Duck Phillips            male       3
-##  7 Betty Draper             female     2
-##  8 Joy                      female     2
-##  9 Vicky                    female     2
-## 10 Don Draper               male       0
+madmen$edges %&gt;% 
+  gather(X, Name, Name1, Name2) %&gt;% 
+  count(Name, sort=TRUE)
+## # A tibble: 45 x 2
+##    Name               n
+##    &lt;chr&gt;          &lt;int&gt;
+##  1 Don Draper        14
+##  2 Roger Sterling     6
+##  3 Peggy Olson        5
+##  4 Pete Campbell      4
+##  5 Betty Draper       3
+##  6 Joan Holloway      3
+##  7 Lane Pryce         3
+##  8 Harry Crane        2
+##  9 Sal Romano         2
+## 10 Abe Drexler        1
 ## # … with 35 more rows
 ```
-
----
-# `activate()` what now?
-
-.pull-left[
-
-```r
-madmen_graph
-## # A tbl_graph: 45 nodes and 39 edges
-## #
-## # A rooted forest with 6 trees
-## #
-## # Node Data: 45 x 2 (active)
-##   label         Gender
-##   &lt;fct&gt;         &lt;fct&gt; 
-## 1 Betty Draper  female
-## 2 Don Draper    male  
-## 3 Harry Crane   male  
-## 4 Joan Holloway female
-## 5 Lane Pryce    male  
-## 6 Peggy Olson   female
-## # … with 39 more rows
-## #
-## # Edge Data: 39 x 2
-##    from    to
-##   &lt;int&gt; &lt;int&gt;
-## 1     1     2
-## 2     1     3
-## 3     4     5
-## # … with 36 more rows
-```
-]
-
-.pull-right[
-- need to tell dplyr if you are working on `nodes` or `edges`. 
-- `activate` means we don't need a `mutate_nodes` or `mutate_edges` commands
-]
-
----
-# `centrality` what now?
-
-.pull-left[
-
-```r
-madmen_graph %&gt;%
-  activate(nodes) %&gt;% 
-* mutate(count = centrality_degree()) %&gt;%
-  arrange(-count) %&gt;%
-  as_tibble()
-## # A tibble: 45 x 3
-##    label                    Gender count
-##    &lt;fct&gt;                    &lt;fct&gt;  &lt;dbl&gt;
-##  1 Joan Holloway            female    14
-##  2 Woman at the Clios party female     5
-##  3 Janine                   female     5
-##  4 Rachel Menken            female     3
-##  5 Hildy                    female     3
-##  6 Duck Phillips            male       3
-##  7 Betty Draper             female     2
-##  8 Joy                      female     2
-##  9 Vicky                    female     2
-## 10 Don Draper               male       0
-## # … with 35 more rows
-```
-]
-
-.pull-right[
-- How central is a node or edge in a graph?
-- definition is inherently vague
-- there are many different centrality scores that exist
-- `centrality_degree()` says: "What is the number of adjacent edges?"
-]
 
 ---
 # What do we learn?
@@ -407,50 +305,28 @@ Fall 2000 Season of [Division I college football](https://en.wikipedia.org/wiki/
 
 
 ```r
-foot_graph
-## # A tbl_graph: 115 nodes and 613 edges
-## #
-## # A directed acyclic simple graph with 1 component
-## #
-## # Node Data: 115 x 3 (active)
-##   uni          conference     schools
-##   &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;  
-## 1 BrighamYoung Mountain West  &lt;NA&gt;   
-## 2 FloridaState Atlantic Coast &lt;NA&gt;   
-## 3 Iowa         Big Ten        &lt;NA&gt;   
-## 4 KansasState  Big Twelve     &lt;NA&gt;   
-## 5 NewMexico    Mountain West  &lt;NA&gt;   
-## 6 TexasTech    Big Twelve     &lt;NA&gt;   
-## # … with 109 more rows
-## #
-## # Edge Data: 613 x 3
-##    from    to same.conf
-##   &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;
-## 1     1     2         0
-## 2     3     4         0
-## 3     1     5         1
-## # … with 610 more rows
+ggplot(data = ftnet,
+       aes(from_id = from, to_id = to)) +
+  geom_net(
+    aes(
+      colour = value, group = value,
+      linetype = factor(1-same.conf),
+      label = schools
+    ),
+    linewidth = 0.5,
+    size = 5, vjust = -0.75, alpha = 0.3,
+    layout.alg = 'fruchtermanreingold'
+  ) +
+  theme_net() +
+  theme(legend.position = "bottom") +
+  scale_colour_brewer("Conference", palette = "Paired")
 ```
 
+&lt;img src="lecture_9a_files/figure-html/print-football-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 
-```r
-set.seed(2019-09-25-1117)
-gg_foot_graph &lt;-
-ggraph(foot_graph, layout = "fr") + 
-  geom_edge_link(alpha = 0.2) + 
-  geom_node_point(size = 7,
-                  alpha = 0.9,
-                  aes(colour = conference)) +
-  scale_colour_brewer(palette = "Paired") + 
-  theme(legend.position = "bottom") 
-```
-
----
-
-&lt;img src="lecture_9a_files/figure-html/print-gg-foot-graph-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What do we learn?
@@ -481,29 +357,21 @@ There is a connection between two students if one provides emotional support to 
 
 
 ```r
-hp
-## # A tbl_graph: 64 nodes and 434 edges
-## #
-## # A directed multigraph with 29 components
-## #
-## # Node Data: 64 x 4 (active)
-##   name              schoolyear gender house     
-##   &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     
-## 1 Adrian Pucey            1989 M      Slytherin 
-## 2 Alicia Spinnet          1989 F      Gryffindor
-## 3 Angelina Johnson        1989 F      Gryffindor
-## 4 Anthony Goldstein       1991 M      Ravenclaw 
-## 5 Blaise Zabini           1991 M      Slytherin 
-## 6 C. Warrington           1989 M      Slytherin 
-## # … with 58 more rows
-## #
-## # Edge Data: 434 x 3
-##    from    to  book
-##   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-## 1    11    25     1
-## 2    11    26     1
-## 3    11    44     1
-## # … with 431 more rows
+hp_all
+## # A tibble: 720 x 6
+##    book  from_id            to_id              schoolyear gender house     
+##    &lt;chr&gt; &lt;chr&gt;              &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     
+##  1 1     Dean Thomas        Harry James Potter       1991 M      Gryffindor
+##  2 1     Dean Thomas        Hermione Granger         1991 M      Gryffindor
+##  3 1     Dean Thomas        Neville Longbottom       1991 M      Gryffindor
+##  4 1     Dean Thomas        Ronald Weasley           1991 M      Gryffindor
+##  5 1     Dean Thomas        Seamus Finnigan          1991 M      Gryffindor
+##  6 1     Fred Weasley       George Weasley           1989 M      Gryffindor
+##  7 1     Fred Weasley       Harry James Potter       1989 M      Gryffindor
+##  8 1     George Weasley     Fred Weasley             1989 M      Gryffindor
+##  9 1     George Weasley     Harry James Potter       1989 M      Gryffindor
+## 10 1     Harry James Potter Dean Thomas              1991 M      Gryffindor
+## # … with 710 more rows
 ```
 
 ---
@@ -511,28 +379,25 @@ hp
 
 
 ```r
-ggraph_hp &lt;- 
-ggraph(hp,
-       layout = "fr") + 
-  geom_edge_link(alpha = 0.2) + 
-  geom_node_point(aes(colour = house,
-                      shape = gender)) + 
-  # geom_node_text(aes(label = name)) +
-  facet_edges(~book,
-              ncol = 2) +
+
+ggplot(data=hp_all, 
+       aes(from_id = from_id, to_id = to_id)) + 
+  geom_net(fiteach=T, directed = T, size = 3, linewidth = .5, 
+           ealpha = .5, labelon = T, fontsize = 3, repel = T, 
+           labelcolour = "black", arrowsize = .5, singletons = FALSE,
+           aes(colour = house, group = house, shape = gender)) + 
   scale_colour_manual(values = c("#941B08","#F1F31C", 
-                                 "#071A80", "#154C07"))
+                                 "#071A80", "#154C07")) + 
+  facet_wrap(~book, labeller = "label_both", ncol=3) + 
+  theme_net() + theme(panel.background = element_rect(colour = 'black'), legend.position="bottom")
 ```
+
+&lt;img src="lecture_9a_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Let's plot the characters
 
 
-```r
-ggraph_hp
-```
-
-&lt;img src="lecture_9a_files/figure-html/ggraph-hp-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -553,7 +418,6 @@ include_graphics("images/class_network.png")
 &lt;img src="images/class_network.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
-&lt;!--
 ## Simpsons
 
 Your turn to make a network diagram for the Simpsons. The measure of association will be "that the two characters had lines in the same episode together".
@@ -562,13 +426,14 @@ Your turn to make a network diagram for the Simpsons. The measure of association
 - Write code to search if a character has a line in an episode
 - Compile a dataset of episode (rows) and character (columns) which is a binary matrix where 1 indicates the character had a line in the episode, and 0 is otherwise
 - Gather the matrix into long form, with these columns: `episode`, `character`, `had a line` (0,1)
-- Filter the rows with `had a line` equal to 1. 
+- Filter the rows with `had a line` equal to 1.
 - Count the number of times the pair of characters appeared. This now forms your edge set, with an additional column of the strength of the relationship
 - Make your network display
---&gt;
 
 ---
   
+
+
 
 background-image: url(images/bg1.jpg)
 background-size: cover
@@ -670,6 +535,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -687,17 +578,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

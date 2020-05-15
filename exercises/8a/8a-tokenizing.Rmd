@@ -125,10 +125,11 @@ How many times does the trigram `it was the` occur?
 
 ```{r}
 quotes_df %>% 
-  unnest_tokens(output = trigram,
+  unnest_tokens(output = word,
                 input = text,
                 token = "ngrams",
                 n = 3) %>% 
+  count(n = "it was the")
   count(trigram == "it was the",
         name = "n_times") 
 ```

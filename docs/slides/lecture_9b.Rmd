@@ -1,7 +1,7 @@
 ---
 title: "ETC1010: Introduction to Data Analysis"
 week: "Week 9, part B"
-subtitle: "Week of introduction"
+subtitle: "Networks and Graphs"
 author: "Nicholas Tierney"
 email: "nicholas.tierney@monash.edu"
 date: "May 2020"
