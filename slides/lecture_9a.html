@@ -107,9 +107,7 @@ class: refresher
 ---
 # Network analysis
 
---
-
-# A description of phone calls
+**A description of phone calls**
 
 - Johnny --&gt; Liz
 - Liz --&gt; Anna
@@ -128,56 +126,6 @@ class: transition
 # And as an association matrix
 
 [DEMO]
-
----
-# Nodes and edges?
-
-Netword data can be thought of as two related tables, **nodes** and **edges**:
-
-- **nodes** are connection points
-- **edges** are the connections between points
-
----
-# Example: Mad Men. (Nodes = characters from the series)
-
-
-```
-## # A tibble: 45 x 2
-##    label          Gender
-##    &lt;fct&gt;          &lt;fct&gt; 
-##  1 Betty Draper   female
-##  2 Don Draper     male  
-##  3 Harry Crane    male  
-##  4 Joan Holloway  female
-##  5 Lane Pryce     male  
-##  6 Peggy Olson    female
-##  7 Pete Campbell  male  
-##  8 Roger Sterling male  
-##  9 Sal Romano     male  
-## 10 Henry Francis  male  
-## # … with 35 more rows
-```
-
----
-# Example: Mad Men. (Edges = how they are associated)
-
-
-```
-## # A tibble: 39 x 2
-##    Name1        Name2           
-##    &lt;fct&gt;        &lt;fct&gt;           
-##  1 Betty Draper Henry Francis   
-##  2 Betty Draper Random guy      
-##  3 Don Draper   Allison         
-##  4 Don Draper   Bethany Van Nuys
-##  5 Don Draper   Betty Draper    
-##  6 Don Draper   Bobbie Barrett  
-##  7 Don Draper   Candace         
-##  8 Don Draper   Doris           
-##  9 Don Draper   Faye Miller     
-## 10 Don Draper   Joy             
-## # … with 29 more rows
-```
 
 ---
 # Why care about these relationships?
@@ -209,14 +157,10 @@ One way to describe these relationships is to provide association matrix between
 - Overlaying other aspects, e.g. gender
 
 ---
-# introducing `tidygraph` and `ggraph`
+# introducing `madmen` data
 
-.pull-left[
 
 ```r
-library(tidygraph)
-library(ggraph)
-
 glimpse(madmen)
 ## List of 2
 ##  $ edges   :'data.frame':	39 obs. of  2 variables:
@@ -226,39 +170,271 @@ glimpse(madmen)
 ##   ..$ label : Factor w/ 45 levels "Abe Drexler",..: 5 9 16 23 26 32 33 38 39 17 ...
 ##   ..$ Gender: Factor w/ 2 levels "female","male": 1 2 2 1 2 1 2 2 2 2 ...
 ```
+
+---
+# Nodes and edges?
+
+Netword data can be thought of as two related tables, **nodes** and **edges**:
+
+- **nodes** are connection points
+- **edges** are the connections between points
+
+---
+# Example: Mad Men. (Nodes = characters from the series)
+
+
+```r
+madmen_nodes
+## # A tibble: 45 x 2
+##    label          gender
+##    &lt;chr&gt;          &lt;chr&gt; 
+##  1 Betty Draper   female
+##  2 Don Draper     male  
+##  3 Harry Crane    male  
+##  4 Joan Holloway  female
+##  5 Lane Pryce     male  
+##  6 Peggy Olson    female
+##  7 Pete Campbell  male  
+##  8 Roger Sterling male  
+##  9 Sal Romano     male  
+## 10 Henry Francis  male  
+## # … with 35 more rows
+```
+
+---
+# Example: Mad Men. (Edges = how they are associated)
+
+
+```r
+madmen_edges
+## # A tibble: 39 x 2
+##    Name1        Name2           
+##    &lt;chr&gt;        &lt;chr&gt;           
+##  1 Betty Draper Henry Francis   
+##  2 Betty Draper Random guy      
+##  3 Don Draper   Allison         
+##  4 Don Draper   Bethany Van Nuys
+##  5 Don Draper   Betty Draper    
+##  6 Don Draper   Bobbie Barrett  
+##  7 Don Draper   Candace         
+##  8 Don Draper   Doris           
+##  9 Don Draper   Faye Miller     
+## 10 Don Draper   Joy             
+## # … with 29 more rows
+```
+
+---
+# Let's get the madmen data into the right shape
+
+
+```r
+madmen_edges %&gt;%
+  rename(from_id = Name1, to_id = Name2) 
+## # A tibble: 39 x 2
+##    from_id      to_id           
+##    &lt;chr&gt;        &lt;chr&gt;           
+##  1 Betty Draper Henry Francis   
+##  2 Betty Draper Random guy      
+##  3 Don Draper   Allison         
+##  4 Don Draper   Bethany Van Nuys
+##  5 Don Draper   Betty Draper    
+##  6 Don Draper   Bobbie Barrett  
+##  7 Don Draper   Candace         
+##  8 Don Draper   Doris           
+##  9 Don Draper   Faye Miller     
+## 10 Don Draper   Joy             
+## # … with 29 more rows
+```
+
+---
+# Let's get the madmen data into the right shape
+
+
+```r
+madmen_net &lt;- madmen_edges %&gt;%
+  rename(from_id = Name1, to_id = Name2) %&gt;%
+* full_join(madmen_nodes,
+*           by = c("from_id" = "label"))
+
+madmen_net
+## # A tibble: 75 x 3
+##    from_id      to_id            gender
+##    &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt; 
+##  1 Betty Draper Henry Francis    female
+##  2 Betty Draper Random guy       female
+##  3 Don Draper   Allison          male  
+##  4 Don Draper   Bethany Van Nuys male  
+##  5 Don Draper   Betty Draper     male  
+##  6 Don Draper   Bobbie Barrett   male  
+##  7 Don Draper   Candace          male  
+##  8 Don Draper   Doris            male  
+##  9 Don Draper   Faye Miller      male  
+## 10 Don Draper   Joy              male  
+## # … with 65 more rows
+```
+
+---
+# Full join?
+
+&lt;img src="gifs/full-join.gif" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Plotting the data
+
+&lt;img src="lecture_9a_files/figure-html/ggraph-madmen-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# How to plot
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender)) 
+
+```
 ]
 
-.pull-right[
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-step-1-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
 
+---
+# How to plot: specify the layout algorithm
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai") 
+```
+]
+
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-2-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
 # How to plot
 
+.left-code[
 
 ```r
-# create plot
 set.seed(5556677)
-ggplot(data = MMnet, aes(from_id = from_id, to_id = to_id)) +
-  geom_net(aes(colour = Gender), layout.alg = "kamadakawai",
-    size = 2, labelon = TRUE, vjust = -0.6, ecolour = "grey60",
-    directed =FALSE, fontsize = 3, ealpha = 0.5) +
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3) 
+```
+]
+
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-3-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# How to plot
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3,
+           size = 2,
+           vjust = -0.6,
+           ecolour = "grey60",
+           ealpha = 0.5)
+```
+]
+
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-4-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# How to plot
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3,
+           size = 2,
+           vjust = -0.6,
+           ecolour = "grey60",
+           ealpha = 0.5) +
     scale_colour_manual(values = c("#FF69B4", "#0099ff")) +
-    xlim(c(-0.05, 1.05)) +
+    lims(x = c(-0.05, 1.05)) + 
     theme_net() +
     theme(legend.position = "bottom")
 ```
+]
 
-&lt;img src="lecture_9a_files/figure-html/ggraph-madmen-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-5-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
 
 ---
 # Which actor was most connected?
 
 
 ```r
-madmen$edges %&gt;% 
-  gather(X, Name, Name1, Name2) %&gt;% 
-  count(Name, sort=TRUE)
+madmen_edges %&gt;% 
+  pivot_longer(cols = c(Name1, Name2),
+               names_to = "List",
+               values_to = "Name") 
+## # A tibble: 78 x 2
+##    List  Name            
+##    &lt;chr&gt; &lt;chr&gt;           
+##  1 Name1 Betty Draper    
+##  2 Name2 Henry Francis   
+##  3 Name1 Betty Draper    
+##  4 Name2 Random guy      
+##  5 Name1 Don Draper      
+##  6 Name2 Allison         
+##  7 Name1 Don Draper      
+##  8 Name2 Bethany Van Nuys
+##  9 Name1 Don Draper      
+## 10 Name2 Betty Draper    
+## # … with 68 more rows
+```
+
+---
+# Which actor was most connected?
+
+
+```r
+madmen_edges %&gt;% 
+  pivot_longer(cols = c(Name1, Name2),
+               names_to = "List",
+               values_to = "Name") %&gt;% 
+  count(Name, sort = TRUE)
 ## # A tibble: 45 x 2
 ##    Name               n
 ##    &lt;chr&gt;          &lt;int&gt;
@@ -298,7 +474,2015 @@ Fall 2000 Season of [Division I college football](https://en.wikipedia.org/wiki/
 - Nodes are the teams, edges are the matches. 
 - Teams are broken into "conferences" which are the primary competition, but they can play outside this group.
 
+---
+# American college football data
 
+Edges:
+.pull-left[
+
+```r
+football$edges
+##                     from                   to same.conf intriad
+## 1           BrighamYoung         FloridaState         0    TRUE
+## 2                   Iowa          KansasState         0    TRUE
+## 3           BrighamYoung            NewMexico         1    TRUE
+## 4              NewMexico            TexasTech         0   FALSE
+## 5            KansasState            TexasTech         1    TRUE
+## 6                   Iowa            PennState         1    TRUE
+## 7              PennState   SouthernCalifornia         0   FALSE
+## 8           ArizonaState   SouthernCalifornia         1    TRUE
+## 9           ArizonaState        SanDiegoState         0    TRUE
+## 10          BrighamYoung        SanDiegoState         1    TRUE
+## 11             NewMexico        SanDiegoState         1    TRUE
+## 12                Baylor            TexasTech         1    TRUE
+## 13                Baylor           NorthTexas         0    TRUE
+## 14            NorthTexas            TexasTech         0    TRUE
+## 15           KansasState           NorthTexas         0    TRUE
+## 16      NorthernIllinois         Northwestern         0   FALSE
+## 17                  Iowa         Northwestern         1    TRUE
+## 18                  Iowa      WesternMichigan         0    TRUE
+## 19      NorthernIllinois      WesternMichigan         1    TRUE
+## 20       WesternMichigan            Wisconsin         0    TRUE
+## 21          Northwestern            Wisconsin         1    TRUE
+## 22                  Iowa            Wisconsin         1    TRUE
+## 23             NewMexico              Wyoming         1    TRUE
+## 24         SanDiegoState              Wyoming         1    TRUE
+## 25          BrighamYoung              Wyoming         1    TRUE
+## 26                Auburn              Wyoming         0   FALSE
+## 27                Auburn     NorthernIllinois         0   FALSE
+## 28                 Akron     NorthernIllinois         1    TRUE
+## 29                 Akron         VirginiaTech         0    TRUE
+## 30               Alabama               Auburn         1    TRUE
+## 31               Alabama                 UCLA         0   FALSE
+## 32          ArizonaState                 UCLA         1    TRUE
+## 33    SouthernCalifornia                 UCLA         1    TRUE
+## 34               Arizona        SanDiegoState         0    TRUE
+## 35               Arizona   SouthernCalifornia         1    TRUE
+## 36               Arizona                 UCLA         1    TRUE
+## 37               Arizona         ArizonaState         1    TRUE
+## 38               Arizona                 Utah         0    TRUE
+## 39         SanDiegoState                 Utah         1    TRUE
+## 40             NewMexico                 Utah         1    TRUE
+## 41                  Utah              Wyoming         1    TRUE
+## 42          BrighamYoung                 Utah         1    TRUE
+## 43         ArkansasState           NorthTexas         1    TRUE
+## 44         ArkansasState   NorthCarolinaState         0   FALSE
+## 45          FloridaState   NorthCarolinaState         1    TRUE
+## 46             BallState          KansasState         0   FALSE
+## 47             BallState     NorthernIllinois         1    TRUE
+## 48             BallState      WesternMichigan         1    TRUE
+## 49             BallState              Florida         0   FALSE
+## 50                Auburn              Florida         1    TRUE
+## 51               Florida         FloridaState         0   FALSE
+## 52            BoiseState            NewMexico         0    TRUE
+## 53            BoiseState           NorthTexas         0    TRUE
+## 54         ArkansasState           BoiseState         0    TRUE
+## 55         BostonCollege         VirginiaTech         1    TRUE
+## 56         BostonCollege         WestVirginia         1    TRUE
+## 57          VirginiaTech         WestVirginia         1    TRUE
+## 58                 Akron    BowlingGreenState         1    TRUE
+## 59     BowlingGreenState             Michigan         0   FALSE
+## 60              Michigan                 UCLA         0   FALSE
+## 61              Michigan            Wisconsin         1    TRUE
+## 62              Michigan         Northwestern         1    TRUE
+## 63              Michigan            PennState         1    TRUE
+## 64          BrighamYoung             Virginia         0    TRUE
+## 65          FloridaState             Virginia         1    TRUE
+## 66    NorthCarolinaState             Virginia         1    TRUE
+## 67              Virginia         VirginiaTech         0   FALSE
+## 68     BowlingGreenState              Buffalo         1    TRUE
+## 69             BallState              Buffalo         1    TRUE
+## 70               Buffalo     NorthernIllinois         1    TRUE
+## 71                 Akron              Buffalo         1    TRUE
+## 72               Buffalo             Syracuse         0    TRUE
+## 73          BrighamYoung             Syracuse         0   FALSE
+## 74         BostonCollege             Syracuse         1    TRUE
+## 75              Syracuse         VirginiaTech         1    TRUE
+## 76              Syracuse         WestVirginia         1    TRUE
+## 77                 Akron       CentralFlorida         0    TRUE
+## 78        CentralFlorida     NorthernIllinois         0    TRUE
+## 79               Alabama       CentralFlorida         0   FALSE
+## 80        CentralFlorida         VirginiaTech         0    TRUE
+## 81        CentralFlorida          GeorgiaTech         0   FALSE
+## 82          FloridaState          GeorgiaTech         1    TRUE
+## 83           GeorgiaTech   NorthCarolinaState         1    TRUE
+## 84           GeorgiaTech             Virginia         1    TRUE
+## 85                 Akron      CentralMichigan         1    TRUE
+## 86       CentralMichigan              Wyoming         0   FALSE
+## 87            BoiseState      CentralMichigan         0   FALSE
+## 88             BallState      CentralMichigan         1    TRUE
+## 89       CentralMichigan      WesternMichigan         1    TRUE
+## 90       CentralMichigan     NorthernIllinois         1    TRUE
+## 91       CentralMichigan               Purdue         0    TRUE
+## 92             PennState               Purdue         1    TRUE
+## 93              Michigan               Purdue         1    TRUE
+## 94          Northwestern               Purdue         1    TRUE
+## 95                Purdue            Wisconsin         1    TRUE
+## 96              Colorado   SouthernCalifornia         0   FALSE
+## 97              Colorado          KansasState         1    TRUE
+## 98              Colorado        ColoradoState         0   FALSE
+## 99          ArizonaState        ColoradoState         0    TRUE
+## 100        ColoradoState            NewMexico         1    TRUE
+## 101        ColoradoState                 Utah         1    TRUE
+## 102        ColoradoState        SanDiegoState         1    TRUE
+## 103         BrighamYoung        ColoradoState         1    TRUE
+## 104        ColoradoState              Wyoming         1    TRUE
+## 105              Buffalo          Connecticut         0    TRUE
+## 106        BostonCollege          Connecticut         0   FALSE
+## 107                Akron          Connecticut         0    TRUE
+## 108            BallState          Connecticut         0    TRUE
+## 109          Connecticut      EasternMichigan         0    TRUE
+## 110       CentralFlorida      EasternMichigan         0    TRUE
+## 111            BallState      EasternMichigan         1    TRUE
+## 112    BowlingGreenState      EasternMichigan         1    TRUE
+## 113      CentralMichigan      EasternMichigan         1    TRUE
+## 114      EasternMichigan     NorthernIllinois         1    TRUE
+## 115      EasternMichigan      WesternMichigan         1    TRUE
+## 116         EastCarolina         VirginiaTech         0    TRUE
+## 117         EastCarolina             Syracuse         0    TRUE
+## 118         EastCarolina         WestVirginia         0    TRUE
+## 119                 Duke         EastCarolina         0   FALSE
+## 120                 Duke         Northwestern         0   FALSE
+## 121                 Duke             Virginia         1    TRUE
+## 122                 Duke         FloridaState         1    TRUE
+## 123                 Duke          GeorgiaTech         1    TRUE
+## 124                 Duke   NorthCarolinaState         1    TRUE
+## 125          FresnoState                 UCLA         0    TRUE
+## 126          FresnoState            OhioState         0   FALSE
+## 127              Arizona            OhioState         0   FALSE
+## 128            OhioState            PennState         1    TRUE
+## 129            OhioState            Wisconsin         1    TRUE
+## 130                 Iowa            OhioState         1    TRUE
+## 131            OhioState               Purdue         1    TRUE
+## 132             Michigan            OhioState         1    TRUE
+## 133         EastCarolina              Houston         1    TRUE
+## 134              Houston                 Rice         0    TRUE
+## 135             Michigan                 Rice         0   FALSE
+## 136          FresnoState                 Rice         1    TRUE
+## 137                Idaho         WestVirginia         0   FALSE
+## 138        ArkansasState                Idaho         1    TRUE
+## 139                Idaho           NorthTexas         1    TRUE
+## 140           BoiseState                Idaho         0    TRUE
+## 141                Idaho           Washington         0    TRUE
+## 142             Colorado           Washington         0   FALSE
+## 143         ArizonaState           Washington         1    TRUE
+## 144              Arizona           Washington         1    TRUE
+## 145                 UCLA           Washington         1    TRUE
+## 146               Kansas          KansasState         1    TRUE
+## 147             Colorado               Kansas         1    TRUE
+## 148               Kansas            TexasTech         1    TRUE
+## 149               Kansas    SouthernMethodist         0   FALSE
+## 150   NorthCarolinaState    SouthernMethodist         0   FALSE
+## 151              Houston    SouthernMethodist         0    TRUE
+## 152                 Rice    SouthernMethodist         1    TRUE
+## 153          FresnoState    SouthernMethodist         1    TRUE
+## 154                 Kent               Purdue         0    TRUE
+## 155    BowlingGreenState                 Kent         1    TRUE
+## 156      CentralMichigan                 Kent         1    TRUE
+## 157                 Kent      WesternMichigan         1    TRUE
+## 158              Buffalo                 Kent         1    TRUE
+## 159                Akron                 Kent         1    TRUE
+## 160                 Kent           Pittsburgh         0    TRUE
+## 161    BowlingGreenState           Pittsburgh         0    TRUE
+## 162            PennState           Pittsburgh         0   FALSE
+## 163           Pittsburgh             Syracuse         1    TRUE
+## 164        BostonCollege           Pittsburgh         1    TRUE
+## 165           Pittsburgh         VirginiaTech         1    TRUE
+## 166           Pittsburgh         WestVirginia         1    TRUE
+## 167              Florida             Kentucky         1    TRUE
+## 168             Kentucky           Louisville         0   FALSE
+## 169         FloridaState           Louisville         0   FALSE
+## 170          Connecticut           Louisville         0   FALSE
+## 171         EastCarolina           Louisville         1    TRUE
+## 172              Houston           Louisville         1    TRUE
+## 173          KansasState        LouisianaTech         0   FALSE
+## 174        LouisianaTech            PennState         0   FALSE
+## 175               Auburn        LouisianaTech         0   FALSE
+## 176       CentralFlorida        LouisianaTech         0    TRUE
+## 177       CentralFlorida      LouisianaMonroe         0    TRUE
+## 178      LouisianaMonroe        LouisianaTech         0    TRUE
+## 179      LouisianaMonroe            Minnesota         0   FALSE
+## 180               Baylor            Minnesota         0   FALSE
+## 181            Minnesota               Purdue         1    TRUE
+## 182            Minnesota            PennState         1    TRUE
+## 183            Minnesota            OhioState         1    TRUE
+## 184            Minnesota         Northwestern         1    TRUE
+## 185            Minnesota            Wisconsin         1    TRUE
+## 186                 Iowa            Minnesota         1    TRUE
+## 187      EasternMichigan            MiamiOhio         1    TRUE
+## 188            MiamiOhio            OhioState         0   FALSE
+## 189                 Kent            MiamiOhio         1    TRUE
+## 190                Akron            MiamiOhio         1    TRUE
+## 191            BallState            MiamiOhio         1    TRUE
+## 192    BowlingGreenState            MiamiOhio         1    TRUE
+## 193              Buffalo            MiamiOhio         1    TRUE
+## 194            MiamiOhio           Vanderbilt         0   FALSE
+## 195              Alabama           Vanderbilt         1    TRUE
+## 196                 Duke           Vanderbilt         0    TRUE
+## 197               Auburn           Vanderbilt         1    TRUE
+## 198              Florida           Vanderbilt         1    TRUE
+## 199             Kentucky           Vanderbilt         1    TRUE
+## 200              Florida MiddleTennesseeState         0    TRUE
+## 201        LouisianaTech MiddleTennesseeState         0    TRUE
+## 202      LouisianaMonroe MiddleTennesseeState         1    TRUE
+## 203          Connecticut MiddleTennesseeState         0   FALSE
+## 204             Illinois MiddleTennesseeState         0   FALSE
+## 205             Illinois        SanDiegoState         0   FALSE
+## 206             Illinois             Michigan         1    TRUE
+## 207             Illinois            Minnesota         1    TRUE
+## 208             Illinois                 Iowa         1    TRUE
+## 209             Illinois            PennState         1    TRUE
+## 210             Illinois            OhioState         1    TRUE
+## 211             Illinois         Northwestern         1    TRUE
+## 212         BrighamYoung     MississippiState         0   FALSE
+## 213              Florida     MississippiState         1    TRUE
+## 214               Auburn     MississippiState         1    TRUE
+## 215 MiddleTennesseeState     MississippiState         0    TRUE
+## 216             Kentucky     MississippiState         1    TRUE
+## 217              Alabama     MississippiState         1    TRUE
+## 218              Memphis     MississippiState         0   FALSE
+## 219      LouisianaMonroe              Memphis         0    TRUE
+## 220        ArkansasState              Memphis         0   FALSE
+## 221         EastCarolina              Memphis         1    TRUE
+## 222              Houston              Memphis         1    TRUE
+## 223               Nevada              Wyoming         0    TRUE
+## 224        ColoradoState               Nevada         0    TRUE
+## 225          FresnoState               Nevada         1    TRUE
+## 226               Nevada    SouthernMethodist         1    TRUE
+## 227               Nevada                 Rice         1    TRUE
+## 228               Nevada               Oregon         0   FALSE
+## 229               Oregon            Wisconsin         0   FALSE
+## 230                Idaho               Oregon         0    TRUE
+## 231               Oregon                 UCLA         1    TRUE
+## 232               Oregon           Washington         1    TRUE
+## 233               Oregon   SouthernCalifornia         1    TRUE
+## 234              Arizona               Oregon         1    TRUE
+## 235         ArizonaState               Oregon         1    TRUE
+## 236            NewMexico       NewMexicoState         0    TRUE
+## 237        ArkansasState       NewMexicoState         1    TRUE
+## 238           BoiseState       NewMexicoState         0    TRUE
+## 239                Idaho       NewMexicoState         1    TRUE
+## 240       NewMexicoState           NorthTexas         1    TRUE
+## 241       NewMexicoState        SouthCarolina         0    TRUE
+## 242      EasternMichigan        SouthCarolina         0   FALSE
+## 243     MississippiState        SouthCarolina         1    TRUE
+## 244              Alabama        SouthCarolina         1    TRUE
+## 245             Kentucky        SouthCarolina         1    TRUE
+## 246        SouthCarolina           Vanderbilt         1    TRUE
+## 247              Florida        SouthCarolina         1    TRUE
+## 248            Minnesota                 Ohio         0   FALSE
+## 249                Akron                 Ohio         1    TRUE
+## 250                 Ohio      WesternMichigan         1    TRUE
+## 251              Buffalo                 Ohio         1    TRUE
+## 252                 Kent                 Ohio         1    TRUE
+## 253      CentralMichigan                 Ohio         1    TRUE
+## 254            MiamiOhio                 Ohio         1    TRUE
+## 255    BowlingGreenState                 Ohio         1    TRUE
+## 256            IowaState                 Ohio         0   FALSE
+## 257                 Iowa            IowaState         0    TRUE
+## 258               Baylor            IowaState         1    TRUE
+## 259            IowaState          KansasState         1    TRUE
+## 260             Colorado            IowaState         1    TRUE
+## 261            IowaState               Kansas         1    TRUE
+## 262         SanJoseState   SouthernCalifornia         0    TRUE
+## 263                 Rice         SanJoseState         1    TRUE
+## 264         SanJoseState    SouthernMethodist         1    TRUE
+## 265               Nevada         SanJoseState         1    TRUE
+## 266          FresnoState         SanJoseState         1    TRUE
+## 267             Nebraska         SanJoseState         0   FALSE
+## 268                 Iowa             Nebraska         0    TRUE
+## 269            IowaState             Nebraska         1    TRUE
+## 270             Nebraska            TexasTech         1    TRUE
+## 271               Baylor             Nebraska         1    TRUE
+## 272               Kansas             Nebraska         1    TRUE
+## 273          KansasState             Nebraska         1    TRUE
+## 274             Colorado             Nebraska         1    TRUE
+## 275              Alabama  SouthernMississippi         0    TRUE
+## 276              Memphis  SouthernMississippi         1    TRUE
+## 277              Houston  SouthernMississippi         1    TRUE
+## 278           Louisville  SouthernMississippi         1    TRUE
+## 279         EastCarolina  SouthernMississippi         1    TRUE
+## 280  SouthernMississippi            Tennessee         0    TRUE
+## 281              Florida            Tennessee         1    TRUE
+## 282      LouisianaMonroe            Tennessee         0    TRUE
+## 283              Alabama            Tennessee         1    TRUE
+## 284        SouthCarolina            Tennessee         1    TRUE
+## 285              Memphis            Tennessee         0    TRUE
+## 286             Kentucky            Tennessee         1    TRUE
+## 287            Tennessee           Vanderbilt         1    TRUE
+## 288         SanJoseState             Stanford         0    TRUE
+## 289              Arizona             Stanford         1    TRUE
+## 290   SouthernCalifornia             Stanford         1    TRUE
+## 291             Stanford           Washington         1    TRUE
+## 292             Stanford                 UCLA         1    TRUE
+## 293         ArizonaState             Stanford         1    TRUE
+## 294             Stanford      WashingtonState         1    TRUE
+## 295                 Utah      WashingtonState         0    TRUE
+## 296                Idaho      WashingtonState         0    TRUE
+## 297           BoiseState      WashingtonState         0    TRUE
+## 298              Arizona      WashingtonState         1    TRUE
+## 299         ArizonaState      WashingtonState         1    TRUE
+## 300               Oregon      WashingtonState         1    TRUE
+## 301   SouthernCalifornia      WashingtonState         1    TRUE
+## 302           Washington      WashingtonState         1    TRUE
+## 303    BowlingGreenState               Temple         0    TRUE
+## 304      EasternMichigan               Temple         0    TRUE
+## 305               Temple         WestVirginia         1    TRUE
+## 306               Temple         VirginiaTech         1    TRUE
+## 307        BostonCollege               Temple         1    TRUE
+## 308             Syracuse               Temple         1    TRUE
+## 309           Pittsburgh               Temple         1    TRUE
+## 310                 Navy               Temple         0    TRUE
+## 311          GeorgiaTech                 Navy         0    TRUE
+## 312        BostonCollege                 Navy         0    TRUE
+## 313             TexasA&amp;M              Wyoming         0   FALSE
+## 314             TexasA&amp;M            TexasTech         1    TRUE
+## 315             Colorado             TexasA&amp;M         1    TRUE
+## 316               Baylor             TexasA&amp;M         1    TRUE
+## 317            IowaState             TexasA&amp;M         1    TRUE
+## 318          KansasState             TexasA&amp;M         1    TRUE
+## 319            NotreDame             TexasA&amp;M         0   FALSE
+## 320             Nebraska            NotreDame         0   FALSE
+## 321            NotreDame               Purdue         0    TRUE
+## 322            NotreDame             Stanford         0    TRUE
+## 323                 Navy            NotreDame         1    TRUE
+## 324            NotreDame         WestVirginia         0    TRUE
+## 325        BostonCollege            NotreDame         0    TRUE
+## 326            NotreDame   SouthernCalifornia         0    TRUE
+## 327    SouthernMethodist          TexasElPaso         1    TRUE
+## 328             TexasA&amp;M          TexasElPaso         0    TRUE
+## 329       NewMexicoState          TexasElPaso         0    TRUE
+## 330         SanJoseState          TexasElPaso         1    TRUE
+## 331          FresnoState          TexasElPaso         1    TRUE
+## 332               Nevada          TexasElPaso         1    TRUE
+## 333                 Rice          TexasElPaso         1    TRUE
+## 334             Oklahoma          TexasElPaso         0    TRUE
+## 335        ArkansasState             Oklahoma         0   FALSE
+## 336             Oklahoma                 Rice         0    TRUE
+## 337               Kansas             Oklahoma         1    TRUE
+## 338          KansasState             Oklahoma         1    TRUE
+## 339             Nebraska             Oklahoma         1    TRUE
+## 340               Baylor             Oklahoma         1    TRUE
+## 341             Oklahoma             TexasA&amp;M         1    TRUE
+## 342             Oklahoma            TexasTech         1    TRUE
+## 343            PennState               Toledo         0   FALSE
+## 344               Toledo      WesternMichigan         1    TRUE
+## 345      CentralMichigan               Toledo         1    TRUE
+## 346      EasternMichigan               Toledo         1    TRUE
+## 347                 Navy               Toledo         0   FALSE
+## 348     NorthernIllinois               Toledo         1    TRUE
+## 349            BallState               Toledo         1    TRUE
+## 350    BowlingGreenState               Toledo         1    TRUE
+## 351         EastCarolina               Tulane         1    TRUE
+## 352    SouthernMethodist               Tulane         0    TRUE
+## 353  SouthernMississippi               Tulane         1    TRUE
+## 354           Louisville               Tulane         1    TRUE
+## 355              Houston               Tulane         1    TRUE
+## 356                 Navy               Tulane         0    TRUE
+## 357              Memphis               Tulane         1    TRUE
+## 358          Mississippi               Tulane         0   FALSE
+## 359               Auburn          Mississippi         1    TRUE
+## 360          Mississippi           Vanderbilt         1    TRUE
+## 361             Kentucky          Mississippi         1    TRUE
+## 362        ArkansasState          Mississippi         0   FALSE
+## 363              Alabama          Mississippi         1    TRUE
+## 364          Mississippi     MississippiState         1    TRUE
+## 365                 Rice                Tulsa         1    TRUE
+## 366        LouisianaTech                Tulsa         1    TRUE
+## 367          TexasElPaso                Tulsa         1    TRUE
+## 368       NewMexicoState                Tulsa         0    TRUE
+## 369          FresnoState                Tulsa         1    TRUE
+## 370    SouthernMethodist                Tulsa         1    TRUE
+## 371         SanJoseState                Tulsa         1    TRUE
+## 372               Nevada                Tulsa         1    TRUE
+## 373        NorthCarolina                Tulsa         0   FALSE
+## 374         FloridaState        NorthCarolina         1    TRUE
+## 375          GeorgiaTech        NorthCarolina         1    TRUE
+## 376        NorthCarolina   NorthCarolinaState         1    TRUE
+## 377        NorthCarolina             Virginia         1    TRUE
+## 378        NorthCarolina           Pittsburgh         0   FALSE
+## 379                 Duke        NorthCarolina         1    TRUE
+## 380            TexasTech            UtahState         0    TRUE
+## 381         ArizonaState            UtahState         0   FALSE
+## 382                 Utah            UtahState         0    TRUE
+## 383         BrighamYoung            UtahState         0    TRUE
+## 384           NorthTexas            UtahState         0    TRUE
+## 385                Idaho            UtahState         0    TRUE
+## 386        ArkansasState            UtahState         0    TRUE
+## 387       NewMexicoState            UtahState         0    TRUE
+## 388           BoiseState            UtahState         0    TRUE
+## 389                 Army        BostonCollege         0    TRUE
+## 390                 Army              Houston         1    TRUE
+## 391                 Army              Memphis         1    TRUE
+## 392                 Army       NewMexicoState         0   FALSE
+## 393                 Army         EastCarolina         1    TRUE
+## 394                 Army               Tulane         1    TRUE
+## 395                 Army           Louisville         1    TRUE
+## 396                 Army                 Navy         0    TRUE
+## 397                 Army           Cincinnati         1    TRUE
+## 398           Cincinnati             Syracuse         0   FALSE
+## 399           Cincinnati            Wisconsin         0    TRUE
+## 400           Cincinnati               Tulane         1    TRUE
+## 401           Cincinnati              Houston         1    TRUE
+## 402           Cincinnati           Louisville         1    TRUE
+## 403           Cincinnati            MiamiOhio         0   FALSE
+## 404           Cincinnati              Memphis         1    TRUE
+## 405           Cincinnati  SouthernMississippi         1    TRUE
+## 406             AirForce         BrighamYoung         1    TRUE
+## 407             AirForce                 Utah         1    TRUE
+## 408             AirForce                 Navy         0    TRUE
+## 409             AirForce              Wyoming         1    TRUE
+## 410             AirForce            NewMexico         1    TRUE
+## 411             AirForce            NotreDame         0    TRUE
+## 412             AirForce                 Army         0    TRUE
+## 413             AirForce        ColoradoState         1    TRUE
+## 414             AirForce        SanDiegoState         1    TRUE
+## 415              Buffalo              Rutgers         0    TRUE
+## 416              Rutgers         VirginiaTech         1    TRUE
+## 417           Pittsburgh              Rutgers         1    TRUE
+## 418              Rutgers               Temple         1    TRUE
+## 419                 Navy              Rutgers         0    TRUE
+## 420        BostonCollege              Rutgers         1    TRUE
+## 421              Rutgers         WestVirginia         1    TRUE
+## 422            NotreDame              Rutgers         0    TRUE
+## 423              Rutgers             Syracuse         1    TRUE
+## 424              Georgia        SouthCarolina         1    TRUE
+## 425              Georgia       NewMexicoState         0    TRUE
+## 426              Georgia            Tennessee         1    TRUE
+## 427              Georgia           Vanderbilt         1    TRUE
+## 428              Georgia             Kentucky         1    TRUE
+## 429              Florida              Georgia         1    TRUE
+## 430               Auburn              Georgia         1    TRUE
+## 431              Georgia          Mississippi         1    TRUE
+## 432              Georgia          GeorgiaTech         0   FALSE
+## 433              Houston       LouisianaState         0   FALSE
+## 434               Auburn       LouisianaState         1    TRUE
+## 435       LouisianaState            Tennessee         1    TRUE
+## 436              Florida       LouisianaState         1    TRUE
+## 437             Kentucky       LouisianaState         1    TRUE
+## 438       LouisianaState     MississippiState         1    TRUE
+## 439              Alabama       LouisianaState         1    TRUE
+## 440       LouisianaState          Mississippi         1    TRUE
+## 441   LouisianaLafayette            TexasTech         0    TRUE
+## 442   LouisianaLafayette               Tulane         0   FALSE
+## 443   LouisianaLafayette        LouisianaTech         0    TRUE
+## 444   LouisianaLafayette           NorthTexas         1    TRUE
+## 445   LouisianaLafayette      LouisianaMonroe         1    TRUE
+## 446   LouisianaLafayette MiddleTennesseeState         1    TRUE
+## 447   LouisianaLafayette                Texas         0    TRUE
+## 448             Stanford                Texas         0   FALSE
+## 449              Houston                Texas         0   FALSE
+## 450             Oklahoma                Texas         1    TRUE
+## 451             Colorado                Texas         1    TRUE
+## 452               Baylor                Texas         1    TRUE
+## 453                Texas            TexasTech         1    TRUE
+## 454               Kansas                Texas         1    TRUE
+## 455                Texas             TexasA&amp;M         1    TRUE
+## 456             Marshall        NorthCarolina         0   FALSE
+## 457              Buffalo             Marshall         1    TRUE
+## 458             Marshall      WesternMichigan         1    TRUE
+## 459             Marshall               Toledo         1    TRUE
+## 460                 Kent             Marshall         1    TRUE
+## 461                Akron             Marshall         1    TRUE
+## 462    BowlingGreenState             Marshall         1    TRUE
+## 463             Marshall            MiamiOhio         1    TRUE
+## 464             Marshall                 Ohio         1    TRUE
+## 465             Marshall        MichiganState         0   FALSE
+## 466        MichiganState            NotreDame         0    TRUE
+## 467        MichiganState         Northwestern         1    TRUE
+## 468                 Iowa        MichiganState         1    TRUE
+## 469        MichiganState            Wisconsin         1    TRUE
+## 470             Michigan        MichiganState         1    TRUE
+## 471             Illinois        MichiganState         1    TRUE
+## 472        MichiganState            OhioState         1    TRUE
+## 473        MichiganState               Purdue         1    TRUE
+## 474        MichiganState            PennState         1    TRUE
+## 475         MiamiFlorida           Washington         0   FALSE
+## 476         MiamiFlorida         WestVirginia         1    TRUE
+## 477         MiamiFlorida              Rutgers         1    TRUE
+## 478         FloridaState         MiamiFlorida         0   FALSE
+## 479         MiamiFlorida               Temple         1    TRUE
+## 480        LouisianaTech         MiamiFlorida         0   FALSE
+## 481         MiamiFlorida         VirginiaTech         1    TRUE
+## 482         MiamiFlorida           Pittsburgh         1    TRUE
+## 483         MiamiFlorida             Syracuse         1    TRUE
+## 484        BostonCollege         MiamiFlorida         1    TRUE
+## 485        MichiganState             Missouri         0   FALSE
+## 486             Missouri             Nebraska         1    TRUE
+## 487               Kansas             Missouri         1    TRUE
+## 488             Missouri                Texas         1    TRUE
+## 489            IowaState             Missouri         1    TRUE
+## 490             Colorado             Missouri         1    TRUE
+## 491               Baylor             Missouri         1    TRUE
+## 492          KansasState             Missouri         1    TRUE
+## 493              Clemson             Missouri         0   FALSE
+## 494              Clemson             Virginia         1    TRUE
+## 495              Clemson                 Duke         1    TRUE
+## 496              Clemson   NorthCarolinaState         1    TRUE
+## 497              Clemson        NorthCarolina         1    TRUE
+## 498              Clemson          GeorgiaTech         1    TRUE
+## 499              Clemson         FloridaState         1    TRUE
+## 500              Clemson        SouthCarolina         0   FALSE
+## 501            IowaState       NevadaLasVegas         0   FALSE
+## 502       NevadaLasVegas           NorthTexas         0   FALSE
+## 503         BrighamYoung       NevadaLasVegas         1    TRUE
+## 504             AirForce       NevadaLasVegas         1    TRUE
+## 505               Nevada       NevadaLasVegas         0    TRUE
+## 506        ColoradoState       NevadaLasVegas         1    TRUE
+## 507       NevadaLasVegas              Wyoming         1    TRUE
+## 508          Mississippi       NevadaLasVegas         0   FALSE
+## 509       NevadaLasVegas                 Utah         1    TRUE
+## 510       NevadaLasVegas            NewMexico         1    TRUE
+## 511       NevadaLasVegas        SanDiegoState         1    TRUE
+## 512        NorthCarolina           WakeForest         1    TRUE
+## 513              Clemson           WakeForest         1    TRUE
+## 514             Virginia           WakeForest         1    TRUE
+## 515           Vanderbilt           WakeForest         0    TRUE
+## 516          GeorgiaTech           WakeForest         1    TRUE
+## 517                 Duke           WakeForest         1    TRUE
+## 518         FloridaState           WakeForest         1    TRUE
+## 519                 Navy           WakeForest         0    TRUE
+## 520   NorthCarolinaState           WakeForest         1    TRUE
+## 521              Indiana   NorthCarolinaState         0   FALSE
+## 522              Indiana             Kentucky         0   FALSE
+## 523           Cincinnati              Indiana         0    TRUE
+## 524              Indiana                 Iowa         1    TRUE
+## 525              Indiana         Northwestern         1    TRUE
+## 526              Indiana             Michigan         1    TRUE
+## 527              Indiana            Minnesota         1    TRUE
+## 528              Indiana            PennState         1    TRUE
+## 529             Illinois              Indiana         1    TRUE
+## 530              Indiana            Wisconsin         1    TRUE
+## 531              Indiana               Purdue         1    TRUE
+## 532        OklahomaState                Tulsa         0   FALSE
+## 533        OklahomaState  SouthernMississippi         0   FALSE
+## 534        OklahomaState                Texas         1    TRUE
+## 535             Missouri        OklahomaState         1    TRUE
+## 536            IowaState        OklahomaState         1    TRUE
+## 537             Colorado        OklahomaState         1    TRUE
+## 538        OklahomaState             TexasA&amp;M         1    TRUE
+## 539        OklahomaState            TexasTech         1    TRUE
+## 540               Baylor        OklahomaState         1    TRUE
+## 541             Oklahoma        OklahomaState         1    TRUE
+## 542            NewMexico          OregonState         0    TRUE
+## 543          OregonState        SanDiegoState         0    TRUE
+## 544          OregonState   SouthernCalifornia         1    TRUE
+## 545          OregonState           Washington         1    TRUE
+## 546          OregonState             Stanford         1    TRUE
+## 547          OregonState                 UCLA         1    TRUE
+## 548          OregonState      WashingtonState         1    TRUE
+## 549              Arizona          OregonState         1    TRUE
+## 550               Oregon          OregonState         1    TRUE
+## 551             Maryland               Temple         0    TRUE
+## 552             Maryland         WestVirginia         0    TRUE
+## 553             Maryland MiddleTennesseeState         0   FALSE
+## 554         FloridaState             Maryland         1    TRUE
+## 555             Maryland             Virginia         1    TRUE
+## 556              Clemson             Maryland         1    TRUE
+## 557             Maryland           WakeForest         1    TRUE
+## 558                 Duke             Maryland         1    TRUE
+## 559             Maryland   NorthCarolinaState         1    TRUE
+## 560             Maryland        NorthCarolina         1    TRUE
+## 561          GeorgiaTech             Maryland         1    TRUE
+## 562               Nevada       TexasChristian         0    TRUE
+## 563         Northwestern       TexasChristian         0   FALSE
+## 564        ArkansasState       TexasChristian         0   FALSE
+## 565                 Navy       TexasChristian         0   FALSE
+## 566       TexasChristian                Tulsa         0    TRUE
+## 567                 Rice       TexasChristian         0    TRUE
+## 568         SanJoseState       TexasChristian         0    TRUE
+## 569          FresnoState       TexasChristian         0    TRUE
+## 570       TexasChristian          TexasElPaso         0    TRUE
+## 571    SouthernMethodist       TexasChristian         0    TRUE
+## 572           California                 Utah         0    TRUE
+## 573           California             Illinois         0   FALSE
+## 574           California          FresnoState         0    TRUE
+## 575           California      WashingtonState         1    TRUE
+## 576         ArizonaState           California         1    TRUE
+## 577           California                 UCLA         1    TRUE
+## 578           California           Washington         1    TRUE
+## 579           California   SouthernCalifornia         1    TRUE
+## 580           California          OregonState         1    TRUE
+## 581           California               Oregon         1    TRUE
+## 582           California             Stanford         1    TRUE
+## 583    AlabamaBirmingham               Kansas         0   FALSE
+## 584    AlabamaBirmingham       LouisianaState         0   FALSE
+## 585    AlabamaBirmingham   LouisianaLafayette         0    TRUE
+## 586    AlabamaBirmingham           Louisville         1    TRUE
+## 587    AlabamaBirmingham              Memphis         1    TRUE
+## 588    AlabamaBirmingham MiddleTennesseeState         0    TRUE
+## 589    AlabamaBirmingham         EastCarolina         1    TRUE
+## 590    AlabamaBirmingham           Cincinnati         1    TRUE
+## 591    AlabamaBirmingham  SouthernMississippi         1    TRUE
+## 592    AlabamaBirmingham                 Army         1    TRUE
+## 593             Arkansas           BoiseState         0   FALSE
+## 594              Alabama             Arkansas         1    TRUE
+## 595             Arkansas              Georgia         1    TRUE
+## 596             Arkansas      LouisianaMonroe         0    TRUE
+## 597             Arkansas        SouthCarolina         1    TRUE
+## 598             Arkansas               Auburn         1    TRUE
+## 599             Arkansas          Mississippi         1    TRUE
+## 600             Arkansas            Tennessee         1    TRUE
+## 601             Arkansas     MississippiState         1    TRUE
+## 602             Arkansas       LouisianaState         1    TRUE
+## 603               Hawaii          TexasElPaso         1    TRUE
+## 604               Hawaii                Tulsa         1    TRUE
+## 605               Hawaii       TexasChristian         0    TRUE
+## 606               Hawaii    SouthernMethodist         1    TRUE
+## 607               Hawaii                 Rice         1    TRUE
+## 608               Hawaii         SanJoseState         1    TRUE
+## 609          FresnoState               Hawaii         1    TRUE
+## 610               Hawaii               Nevada         1    TRUE
+## 611               Hawaii        LouisianaTech         1    TRUE
+## 612               Hawaii            Wisconsin         0   FALSE
+## 613               Hawaii       NevadaLasVegas         0    TRUE
+```
+]
+
+--
+
+Nodes:
+.pull-right[
+
+```r
+football$vertices
+##                                     label            value
+## BrighamYoung                 BrighamYoung    Mountain West
+## FloridaState                 FloridaState   Atlantic Coast
+## Iowa                                 Iowa          Big Ten
+## KansasState                   KansasState       Big Twelve
+## NewMexico                       NewMexico    Mountain West
+## TexasTech                       TexasTech       Big Twelve
+## PennState                       PennState          Big Ten
+## SouthernCalifornia     SouthernCalifornia      Pacific Ten
+## ArizonaState                 ArizonaState      Pacific Ten
+## SanDiegoState               SanDiegoState    Mountain West
+## Baylor                             Baylor       Big Twelve
+## NorthTexas                     NorthTexas         Sun Belt
+## NorthernIllinois         NorthernIllinois     Mid-American
+## Northwestern                 Northwestern          Big Ten
+## WesternMichigan           WesternMichigan     Mid-American
+## Wisconsin                       Wisconsin          Big Ten
+## Wyoming                           Wyoming    Mountain West
+## Auburn                             Auburn     Southeastern
+## Akron                               Akron     Mid-American
+## VirginiaTech                 VirginiaTech         Big East
+## Alabama                           Alabama     Southeastern
+## UCLA                                 UCLA      Pacific Ten
+## Arizona                           Arizona      Pacific Ten
+## Utah                                 Utah    Mountain West
+## ArkansasState               ArkansasState         Sun Belt
+## NorthCarolinaState     NorthCarolinaState   Atlantic Coast
+## BallState                       BallState     Mid-American
+## Florida                           Florida     Southeastern
+## BoiseState                     BoiseState Western Athletic
+## BostonCollege               BostonCollege         Big East
+## WestVirginia                 WestVirginia         Big East
+## BowlingGreenState       BowlingGreenState     Mid-American
+## Michigan                         Michigan          Big Ten
+## Virginia                         Virginia   Atlantic Coast
+## Buffalo                           Buffalo     Mid-American
+## Syracuse                         Syracuse         Big East
+## CentralFlorida             CentralFlorida     Independents
+## GeorgiaTech                   GeorgiaTech   Atlantic Coast
+## CentralMichigan           CentralMichigan     Mid-American
+## Purdue                             Purdue          Big Ten
+## Colorado                         Colorado       Big Twelve
+## ColoradoState               ColoradoState    Mountain West
+## Connecticut                   Connecticut     Independents
+## EasternMichigan           EasternMichigan     Mid-American
+## EastCarolina                 EastCarolina   Conference USA
+## Duke                                 Duke   Atlantic Coast
+## FresnoState                   FresnoState Western Athletic
+## OhioState                       OhioState          Big Ten
+## Houston                           Houston   Conference USA
+## Rice                                 Rice Western Athletic
+## Idaho                               Idaho         Sun Belt
+## Washington                     Washington      Pacific Ten
+## Kansas                             Kansas       Big Twelve
+## SouthernMethodist       SouthernMethodist Western Athletic
+## Kent                                 Kent     Mid-American
+## Pittsburgh                     Pittsburgh         Big East
+## Kentucky                         Kentucky     Southeastern
+## Louisville                     Louisville   Conference USA
+## LouisianaTech               LouisianaTech Western Athletic
+## LouisianaMonroe           LouisianaMonroe         Sun Belt
+## Minnesota                       Minnesota          Big Ten
+## MiamiOhio                       MiamiOhio     Mid-American
+## Vanderbilt                     Vanderbilt     Southeastern
+## MiddleTennesseeState MiddleTennesseeState         Sun Belt
+## Illinois                         Illinois          Big Ten
+## MississippiState         MississippiState     Southeastern
+## Memphis                           Memphis   Conference USA
+## Nevada                             Nevada Western Athletic
+## Oregon                             Oregon      Pacific Ten
+## NewMexicoState             NewMexicoState         Sun Belt
+## SouthCarolina               SouthCarolina     Southeastern
+## Ohio                                 Ohio     Mid-American
+## IowaState                       IowaState       Big Twelve
+## SanJoseState                 SanJoseState Western Athletic
+## Nebraska                         Nebraska       Big Twelve
+## SouthernMississippi   SouthernMississippi   Conference USA
+## Tennessee                       Tennessee     Southeastern
+## Stanford                         Stanford      Pacific Ten
+## WashingtonState           WashingtonState      Pacific Ten
+## Temple                             Temple         Big East
+## Navy                                 Navy     Independents
+## TexasA&amp;M                         TexasA&amp;M       Big Twelve
+## NotreDame                       NotreDame     Independents
+## TexasElPaso                   TexasElPaso Western Athletic
+## Oklahoma                         Oklahoma       Big Twelve
+## Toledo                             Toledo     Mid-American
+## Tulane                             Tulane   Conference USA
+## Mississippi                   Mississippi     Southeastern
+## Tulsa                               Tulsa Western Athletic
+## NorthCarolina               NorthCarolina   Atlantic Coast
+## UtahState                       UtahState     Independents
+## Army                                 Army   Conference USA
+## Cincinnati                     Cincinnati   Conference USA
+## AirForce                         AirForce    Mountain West
+## Rutgers                           Rutgers         Big East
+## Georgia                           Georgia     Southeastern
+## LouisianaState             LouisianaState     Southeastern
+## LouisianaLafayette     LouisianaLafayette         Sun Belt
+## Texas                               Texas       Big Twelve
+## Marshall                         Marshall     Mid-American
+## MichiganState               MichiganState          Big Ten
+## MiamiFlorida                 MiamiFlorida         Big East
+## Missouri                         Missouri       Big Twelve
+## Clemson                           Clemson   Atlantic Coast
+## NevadaLasVegas             NevadaLasVegas    Mountain West
+## WakeForest                     WakeForest   Atlantic Coast
+## Indiana                           Indiana          Big Ten
+## OklahomaState               OklahomaState       Big Twelve
+## OregonState                   OregonState      Pacific Ten
+## Maryland                         Maryland   Atlantic Coast
+## TexasChristian             TexasChristian   Conference USA
+## California                     California      Pacific Ten
+## AlabamaBirmingham       AlabamaBirmingham   Conference USA
+## Arkansas                         Arkansas     Southeastern
+## Hawaii                             Hawaii Western Athletic
+```
+]
+
+---
+# American college football: joining the data
+
+
+```r
+# data step: merge vertices and edges
+ftnet &lt;- full_join(
+  football$edges, football$vertices,
+  by = c("from" = "label")
+) %&gt;%
+  mutate(schools = if_else(value == "Independents", from, ""))
+
+ftnet
+##                     from                   to same.conf intriad
+## 1           BrighamYoung         FloridaState         0    TRUE
+## 2                   Iowa          KansasState         0    TRUE
+## 3           BrighamYoung            NewMexico         1    TRUE
+## 4              NewMexico            TexasTech         0   FALSE
+## 5            KansasState            TexasTech         1    TRUE
+## 6                   Iowa            PennState         1    TRUE
+## 7              PennState   SouthernCalifornia         0   FALSE
+## 8           ArizonaState   SouthernCalifornia         1    TRUE
+## 9           ArizonaState        SanDiegoState         0    TRUE
+## 10          BrighamYoung        SanDiegoState         1    TRUE
+## 11             NewMexico        SanDiegoState         1    TRUE
+## 12                Baylor            TexasTech         1    TRUE
+## 13                Baylor           NorthTexas         0    TRUE
+## 14            NorthTexas            TexasTech         0    TRUE
+## 15           KansasState           NorthTexas         0    TRUE
+## 16      NorthernIllinois         Northwestern         0   FALSE
+## 17                  Iowa         Northwestern         1    TRUE
+## 18                  Iowa      WesternMichigan         0    TRUE
+## 19      NorthernIllinois      WesternMichigan         1    TRUE
+## 20       WesternMichigan            Wisconsin         0    TRUE
+## 21          Northwestern            Wisconsin         1    TRUE
+## 22                  Iowa            Wisconsin         1    TRUE
+## 23             NewMexico              Wyoming         1    TRUE
+## 24         SanDiegoState              Wyoming         1    TRUE
+## 25          BrighamYoung              Wyoming         1    TRUE
+## 26                Auburn              Wyoming         0   FALSE
+## 27                Auburn     NorthernIllinois         0   FALSE
+## 28                 Akron     NorthernIllinois         1    TRUE
+## 29                 Akron         VirginiaTech         0    TRUE
+## 30               Alabama               Auburn         1    TRUE
+## 31               Alabama                 UCLA         0   FALSE
+## 32          ArizonaState                 UCLA         1    TRUE
+## 33    SouthernCalifornia                 UCLA         1    TRUE
+## 34               Arizona        SanDiegoState         0    TRUE
+## 35               Arizona   SouthernCalifornia         1    TRUE
+## 36               Arizona                 UCLA         1    TRUE
+## 37               Arizona         ArizonaState         1    TRUE
+## 38               Arizona                 Utah         0    TRUE
+## 39         SanDiegoState                 Utah         1    TRUE
+## 40             NewMexico                 Utah         1    TRUE
+## 41                  Utah              Wyoming         1    TRUE
+## 42          BrighamYoung                 Utah         1    TRUE
+## 43         ArkansasState           NorthTexas         1    TRUE
+## 44         ArkansasState   NorthCarolinaState         0   FALSE
+## 45          FloridaState   NorthCarolinaState         1    TRUE
+## 46             BallState          KansasState         0   FALSE
+## 47             BallState     NorthernIllinois         1    TRUE
+## 48             BallState      WesternMichigan         1    TRUE
+## 49             BallState              Florida         0   FALSE
+## 50                Auburn              Florida         1    TRUE
+## 51               Florida         FloridaState         0   FALSE
+## 52            BoiseState            NewMexico         0    TRUE
+## 53            BoiseState           NorthTexas         0    TRUE
+## 54         ArkansasState           BoiseState         0    TRUE
+## 55         BostonCollege         VirginiaTech         1    TRUE
+## 56         BostonCollege         WestVirginia         1    TRUE
+## 57          VirginiaTech         WestVirginia         1    TRUE
+## 58                 Akron    BowlingGreenState         1    TRUE
+## 59     BowlingGreenState             Michigan         0   FALSE
+## 60              Michigan                 UCLA         0   FALSE
+## 61              Michigan            Wisconsin         1    TRUE
+## 62              Michigan         Northwestern         1    TRUE
+## 63              Michigan            PennState         1    TRUE
+## 64          BrighamYoung             Virginia         0    TRUE
+## 65          FloridaState             Virginia         1    TRUE
+## 66    NorthCarolinaState             Virginia         1    TRUE
+## 67              Virginia         VirginiaTech         0   FALSE
+## 68     BowlingGreenState              Buffalo         1    TRUE
+## 69             BallState              Buffalo         1    TRUE
+## 70               Buffalo     NorthernIllinois         1    TRUE
+## 71                 Akron              Buffalo         1    TRUE
+## 72               Buffalo             Syracuse         0    TRUE
+## 73          BrighamYoung             Syracuse         0   FALSE
+## 74         BostonCollege             Syracuse         1    TRUE
+## 75              Syracuse         VirginiaTech         1    TRUE
+## 76              Syracuse         WestVirginia         1    TRUE
+## 77                 Akron       CentralFlorida         0    TRUE
+## 78        CentralFlorida     NorthernIllinois         0    TRUE
+## 79               Alabama       CentralFlorida         0   FALSE
+## 80        CentralFlorida         VirginiaTech         0    TRUE
+## 81        CentralFlorida          GeorgiaTech         0   FALSE
+## 82          FloridaState          GeorgiaTech         1    TRUE
+## 83           GeorgiaTech   NorthCarolinaState         1    TRUE
+## 84           GeorgiaTech             Virginia         1    TRUE
+## 85                 Akron      CentralMichigan         1    TRUE
+## 86       CentralMichigan              Wyoming         0   FALSE
+## 87            BoiseState      CentralMichigan         0   FALSE
+## 88             BallState      CentralMichigan         1    TRUE
+## 89       CentralMichigan      WesternMichigan         1    TRUE
+## 90       CentralMichigan     NorthernIllinois         1    TRUE
+## 91       CentralMichigan               Purdue         0    TRUE
+## 92             PennState               Purdue         1    TRUE
+## 93              Michigan               Purdue         1    TRUE
+## 94          Northwestern               Purdue         1    TRUE
+## 95                Purdue            Wisconsin         1    TRUE
+## 96              Colorado   SouthernCalifornia         0   FALSE
+## 97              Colorado          KansasState         1    TRUE
+## 98              Colorado        ColoradoState         0   FALSE
+## 99          ArizonaState        ColoradoState         0    TRUE
+## 100        ColoradoState            NewMexico         1    TRUE
+## 101        ColoradoState                 Utah         1    TRUE
+## 102        ColoradoState        SanDiegoState         1    TRUE
+## 103         BrighamYoung        ColoradoState         1    TRUE
+## 104        ColoradoState              Wyoming         1    TRUE
+## 105              Buffalo          Connecticut         0    TRUE
+## 106        BostonCollege          Connecticut         0   FALSE
+## 107                Akron          Connecticut         0    TRUE
+## 108            BallState          Connecticut         0    TRUE
+## 109          Connecticut      EasternMichigan         0    TRUE
+## 110       CentralFlorida      EasternMichigan         0    TRUE
+## 111            BallState      EasternMichigan         1    TRUE
+## 112    BowlingGreenState      EasternMichigan         1    TRUE
+## 113      CentralMichigan      EasternMichigan         1    TRUE
+## 114      EasternMichigan     NorthernIllinois         1    TRUE
+## 115      EasternMichigan      WesternMichigan         1    TRUE
+## 116         EastCarolina         VirginiaTech         0    TRUE
+## 117         EastCarolina             Syracuse         0    TRUE
+## 118         EastCarolina         WestVirginia         0    TRUE
+## 119                 Duke         EastCarolina         0   FALSE
+## 120                 Duke         Northwestern         0   FALSE
+## 121                 Duke             Virginia         1    TRUE
+## 122                 Duke         FloridaState         1    TRUE
+## 123                 Duke          GeorgiaTech         1    TRUE
+## 124                 Duke   NorthCarolinaState         1    TRUE
+## 125          FresnoState                 UCLA         0    TRUE
+## 126          FresnoState            OhioState         0   FALSE
+## 127              Arizona            OhioState         0   FALSE
+## 128            OhioState            PennState         1    TRUE
+## 129            OhioState            Wisconsin         1    TRUE
+## 130                 Iowa            OhioState         1    TRUE
+## 131            OhioState               Purdue         1    TRUE
+## 132             Michigan            OhioState         1    TRUE
+## 133         EastCarolina              Houston         1    TRUE
+## 134              Houston                 Rice         0    TRUE
+## 135             Michigan                 Rice         0   FALSE
+## 136          FresnoState                 Rice         1    TRUE
+## 137                Idaho         WestVirginia         0   FALSE
+## 138        ArkansasState                Idaho         1    TRUE
+## 139                Idaho           NorthTexas         1    TRUE
+## 140           BoiseState                Idaho         0    TRUE
+## 141                Idaho           Washington         0    TRUE
+## 142             Colorado           Washington         0   FALSE
+## 143         ArizonaState           Washington         1    TRUE
+## 144              Arizona           Washington         1    TRUE
+## 145                 UCLA           Washington         1    TRUE
+## 146               Kansas          KansasState         1    TRUE
+## 147             Colorado               Kansas         1    TRUE
+## 148               Kansas            TexasTech         1    TRUE
+## 149               Kansas    SouthernMethodist         0   FALSE
+## 150   NorthCarolinaState    SouthernMethodist         0   FALSE
+## 151              Houston    SouthernMethodist         0    TRUE
+## 152                 Rice    SouthernMethodist         1    TRUE
+## 153          FresnoState    SouthernMethodist         1    TRUE
+## 154                 Kent               Purdue         0    TRUE
+## 155    BowlingGreenState                 Kent         1    TRUE
+## 156      CentralMichigan                 Kent         1    TRUE
+## 157                 Kent      WesternMichigan         1    TRUE
+## 158              Buffalo                 Kent         1    TRUE
+## 159                Akron                 Kent         1    TRUE
+## 160                 Kent           Pittsburgh         0    TRUE
+## 161    BowlingGreenState           Pittsburgh         0    TRUE
+## 162            PennState           Pittsburgh         0   FALSE
+## 163           Pittsburgh             Syracuse         1    TRUE
+## 164        BostonCollege           Pittsburgh         1    TRUE
+## 165           Pittsburgh         VirginiaTech         1    TRUE
+## 166           Pittsburgh         WestVirginia         1    TRUE
+## 167              Florida             Kentucky         1    TRUE
+## 168             Kentucky           Louisville         0   FALSE
+## 169         FloridaState           Louisville         0   FALSE
+## 170          Connecticut           Louisville         0   FALSE
+## 171         EastCarolina           Louisville         1    TRUE
+## 172              Houston           Louisville         1    TRUE
+## 173          KansasState        LouisianaTech         0   FALSE
+## 174        LouisianaTech            PennState         0   FALSE
+## 175               Auburn        LouisianaTech         0   FALSE
+## 176       CentralFlorida        LouisianaTech         0    TRUE
+## 177       CentralFlorida      LouisianaMonroe         0    TRUE
+## 178      LouisianaMonroe        LouisianaTech         0    TRUE
+## 179      LouisianaMonroe            Minnesota         0   FALSE
+## 180               Baylor            Minnesota         0   FALSE
+## 181            Minnesota               Purdue         1    TRUE
+## 182            Minnesota            PennState         1    TRUE
+## 183            Minnesota            OhioState         1    TRUE
+## 184            Minnesota         Northwestern         1    TRUE
+## 185            Minnesota            Wisconsin         1    TRUE
+## 186                 Iowa            Minnesota         1    TRUE
+## 187      EasternMichigan            MiamiOhio         1    TRUE
+## 188            MiamiOhio            OhioState         0   FALSE
+## 189                 Kent            MiamiOhio         1    TRUE
+## 190                Akron            MiamiOhio         1    TRUE
+## 191            BallState            MiamiOhio         1    TRUE
+## 192    BowlingGreenState            MiamiOhio         1    TRUE
+## 193              Buffalo            MiamiOhio         1    TRUE
+## 194            MiamiOhio           Vanderbilt         0   FALSE
+## 195              Alabama           Vanderbilt         1    TRUE
+## 196                 Duke           Vanderbilt         0    TRUE
+## 197               Auburn           Vanderbilt         1    TRUE
+## 198              Florida           Vanderbilt         1    TRUE
+## 199             Kentucky           Vanderbilt         1    TRUE
+## 200              Florida MiddleTennesseeState         0    TRUE
+## 201        LouisianaTech MiddleTennesseeState         0    TRUE
+## 202      LouisianaMonroe MiddleTennesseeState         1    TRUE
+## 203          Connecticut MiddleTennesseeState         0   FALSE
+## 204             Illinois MiddleTennesseeState         0   FALSE
+## 205             Illinois        SanDiegoState         0   FALSE
+## 206             Illinois             Michigan         1    TRUE
+## 207             Illinois            Minnesota         1    TRUE
+## 208             Illinois                 Iowa         1    TRUE
+## 209             Illinois            PennState         1    TRUE
+## 210             Illinois            OhioState         1    TRUE
+## 211             Illinois         Northwestern         1    TRUE
+## 212         BrighamYoung     MississippiState         0   FALSE
+## 213              Florida     MississippiState         1    TRUE
+## 214               Auburn     MississippiState         1    TRUE
+## 215 MiddleTennesseeState     MississippiState         0    TRUE
+## 216             Kentucky     MississippiState         1    TRUE
+## 217              Alabama     MississippiState         1    TRUE
+## 218              Memphis     MississippiState         0   FALSE
+## 219      LouisianaMonroe              Memphis         0    TRUE
+## 220        ArkansasState              Memphis         0   FALSE
+## 221         EastCarolina              Memphis         1    TRUE
+## 222              Houston              Memphis         1    TRUE
+## 223               Nevada              Wyoming         0    TRUE
+## 224        ColoradoState               Nevada         0    TRUE
+## 225          FresnoState               Nevada         1    TRUE
+## 226               Nevada    SouthernMethodist         1    TRUE
+## 227               Nevada                 Rice         1    TRUE
+## 228               Nevada               Oregon         0   FALSE
+## 229               Oregon            Wisconsin         0   FALSE
+## 230                Idaho               Oregon         0    TRUE
+## 231               Oregon                 UCLA         1    TRUE
+## 232               Oregon           Washington         1    TRUE
+## 233               Oregon   SouthernCalifornia         1    TRUE
+## 234              Arizona               Oregon         1    TRUE
+## 235         ArizonaState               Oregon         1    TRUE
+## 236            NewMexico       NewMexicoState         0    TRUE
+## 237        ArkansasState       NewMexicoState         1    TRUE
+## 238           BoiseState       NewMexicoState         0    TRUE
+## 239                Idaho       NewMexicoState         1    TRUE
+## 240       NewMexicoState           NorthTexas         1    TRUE
+## 241       NewMexicoState        SouthCarolina         0    TRUE
+## 242      EasternMichigan        SouthCarolina         0   FALSE
+## 243     MississippiState        SouthCarolina         1    TRUE
+## 244              Alabama        SouthCarolina         1    TRUE
+## 245             Kentucky        SouthCarolina         1    TRUE
+## 246        SouthCarolina           Vanderbilt         1    TRUE
+## 247              Florida        SouthCarolina         1    TRUE
+## 248            Minnesota                 Ohio         0   FALSE
+## 249                Akron                 Ohio         1    TRUE
+## 250                 Ohio      WesternMichigan         1    TRUE
+## 251              Buffalo                 Ohio         1    TRUE
+## 252                 Kent                 Ohio         1    TRUE
+## 253      CentralMichigan                 Ohio         1    TRUE
+## 254            MiamiOhio                 Ohio         1    TRUE
+## 255    BowlingGreenState                 Ohio         1    TRUE
+## 256            IowaState                 Ohio         0   FALSE
+## 257                 Iowa            IowaState         0    TRUE
+## 258               Baylor            IowaState         1    TRUE
+## 259            IowaState          KansasState         1    TRUE
+## 260             Colorado            IowaState         1    TRUE
+## 261            IowaState               Kansas         1    TRUE
+## 262         SanJoseState   SouthernCalifornia         0    TRUE
+## 263                 Rice         SanJoseState         1    TRUE
+## 264         SanJoseState    SouthernMethodist         1    TRUE
+## 265               Nevada         SanJoseState         1    TRUE
+## 266          FresnoState         SanJoseState         1    TRUE
+## 267             Nebraska         SanJoseState         0   FALSE
+## 268                 Iowa             Nebraska         0    TRUE
+## 269            IowaState             Nebraska         1    TRUE
+## 270             Nebraska            TexasTech         1    TRUE
+## 271               Baylor             Nebraska         1    TRUE
+## 272               Kansas             Nebraska         1    TRUE
+## 273          KansasState             Nebraska         1    TRUE
+## 274             Colorado             Nebraska         1    TRUE
+## 275              Alabama  SouthernMississippi         0    TRUE
+## 276              Memphis  SouthernMississippi         1    TRUE
+## 277              Houston  SouthernMississippi         1    TRUE
+## 278           Louisville  SouthernMississippi         1    TRUE
+## 279         EastCarolina  SouthernMississippi         1    TRUE
+## 280  SouthernMississippi            Tennessee         0    TRUE
+## 281              Florida            Tennessee         1    TRUE
+## 282      LouisianaMonroe            Tennessee         0    TRUE
+## 283              Alabama            Tennessee         1    TRUE
+## 284        SouthCarolina            Tennessee         1    TRUE
+## 285              Memphis            Tennessee         0    TRUE
+## 286             Kentucky            Tennessee         1    TRUE
+## 287            Tennessee           Vanderbilt         1    TRUE
+## 288         SanJoseState             Stanford         0    TRUE
+## 289              Arizona             Stanford         1    TRUE
+## 290   SouthernCalifornia             Stanford         1    TRUE
+## 291             Stanford           Washington         1    TRUE
+## 292             Stanford                 UCLA         1    TRUE
+## 293         ArizonaState             Stanford         1    TRUE
+## 294             Stanford      WashingtonState         1    TRUE
+## 295                 Utah      WashingtonState         0    TRUE
+## 296                Idaho      WashingtonState         0    TRUE
+## 297           BoiseState      WashingtonState         0    TRUE
+## 298              Arizona      WashingtonState         1    TRUE
+## 299         ArizonaState      WashingtonState         1    TRUE
+## 300               Oregon      WashingtonState         1    TRUE
+## 301   SouthernCalifornia      WashingtonState         1    TRUE
+## 302           Washington      WashingtonState         1    TRUE
+## 303    BowlingGreenState               Temple         0    TRUE
+## 304      EasternMichigan               Temple         0    TRUE
+## 305               Temple         WestVirginia         1    TRUE
+## 306               Temple         VirginiaTech         1    TRUE
+## 307        BostonCollege               Temple         1    TRUE
+## 308             Syracuse               Temple         1    TRUE
+## 309           Pittsburgh               Temple         1    TRUE
+## 310                 Navy               Temple         0    TRUE
+## 311          GeorgiaTech                 Navy         0    TRUE
+## 312        BostonCollege                 Navy         0    TRUE
+## 313             TexasA&amp;M              Wyoming         0   FALSE
+## 314             TexasA&amp;M            TexasTech         1    TRUE
+## 315             Colorado             TexasA&amp;M         1    TRUE
+## 316               Baylor             TexasA&amp;M         1    TRUE
+## 317            IowaState             TexasA&amp;M         1    TRUE
+## 318          KansasState             TexasA&amp;M         1    TRUE
+## 319            NotreDame             TexasA&amp;M         0   FALSE
+## 320             Nebraska            NotreDame         0   FALSE
+## 321            NotreDame               Purdue         0    TRUE
+## 322            NotreDame             Stanford         0    TRUE
+## 323                 Navy            NotreDame         1    TRUE
+## 324            NotreDame         WestVirginia         0    TRUE
+## 325        BostonCollege            NotreDame         0    TRUE
+## 326            NotreDame   SouthernCalifornia         0    TRUE
+## 327    SouthernMethodist          TexasElPaso         1    TRUE
+## 328             TexasA&amp;M          TexasElPaso         0    TRUE
+## 329       NewMexicoState          TexasElPaso         0    TRUE
+## 330         SanJoseState          TexasElPaso         1    TRUE
+## 331          FresnoState          TexasElPaso         1    TRUE
+## 332               Nevada          TexasElPaso         1    TRUE
+## 333                 Rice          TexasElPaso         1    TRUE
+## 334             Oklahoma          TexasElPaso         0    TRUE
+## 335        ArkansasState             Oklahoma         0   FALSE
+## 336             Oklahoma                 Rice         0    TRUE
+## 337               Kansas             Oklahoma         1    TRUE
+## 338          KansasState             Oklahoma         1    TRUE
+## 339             Nebraska             Oklahoma         1    TRUE
+## 340               Baylor             Oklahoma         1    TRUE
+## 341             Oklahoma             TexasA&amp;M         1    TRUE
+## 342             Oklahoma            TexasTech         1    TRUE
+## 343            PennState               Toledo         0   FALSE
+## 344               Toledo      WesternMichigan         1    TRUE
+## 345      CentralMichigan               Toledo         1    TRUE
+## 346      EasternMichigan               Toledo         1    TRUE
+## 347                 Navy               Toledo         0   FALSE
+## 348     NorthernIllinois               Toledo         1    TRUE
+## 349            BallState               Toledo         1    TRUE
+## 350    BowlingGreenState               Toledo         1    TRUE
+## 351         EastCarolina               Tulane         1    TRUE
+## 352    SouthernMethodist               Tulane         0    TRUE
+## 353  SouthernMississippi               Tulane         1    TRUE
+## 354           Louisville               Tulane         1    TRUE
+## 355              Houston               Tulane         1    TRUE
+## 356                 Navy               Tulane         0    TRUE
+## 357              Memphis               Tulane         1    TRUE
+## 358          Mississippi               Tulane         0   FALSE
+## 359               Auburn          Mississippi         1    TRUE
+## 360          Mississippi           Vanderbilt         1    TRUE
+## 361             Kentucky          Mississippi         1    TRUE
+## 362        ArkansasState          Mississippi         0   FALSE
+## 363              Alabama          Mississippi         1    TRUE
+## 364          Mississippi     MississippiState         1    TRUE
+## 365                 Rice                Tulsa         1    TRUE
+## 366        LouisianaTech                Tulsa         1    TRUE
+## 367          TexasElPaso                Tulsa         1    TRUE
+## 368       NewMexicoState                Tulsa         0    TRUE
+## 369          FresnoState                Tulsa         1    TRUE
+## 370    SouthernMethodist                Tulsa         1    TRUE
+## 371         SanJoseState                Tulsa         1    TRUE
+## 372               Nevada                Tulsa         1    TRUE
+## 373        NorthCarolina                Tulsa         0   FALSE
+## 374         FloridaState        NorthCarolina         1    TRUE
+## 375          GeorgiaTech        NorthCarolina         1    TRUE
+## 376        NorthCarolina   NorthCarolinaState         1    TRUE
+## 377        NorthCarolina             Virginia         1    TRUE
+## 378        NorthCarolina           Pittsburgh         0   FALSE
+## 379                 Duke        NorthCarolina         1    TRUE
+## 380            TexasTech            UtahState         0    TRUE
+## 381         ArizonaState            UtahState         0   FALSE
+## 382                 Utah            UtahState         0    TRUE
+## 383         BrighamYoung            UtahState         0    TRUE
+## 384           NorthTexas            UtahState         0    TRUE
+## 385                Idaho            UtahState         0    TRUE
+## 386        ArkansasState            UtahState         0    TRUE
+## 387       NewMexicoState            UtahState         0    TRUE
+## 388           BoiseState            UtahState         0    TRUE
+## 389                 Army        BostonCollege         0    TRUE
+## 390                 Army              Houston         1    TRUE
+## 391                 Army              Memphis         1    TRUE
+## 392                 Army       NewMexicoState         0   FALSE
+## 393                 Army         EastCarolina         1    TRUE
+## 394                 Army               Tulane         1    TRUE
+## 395                 Army           Louisville         1    TRUE
+## 396                 Army                 Navy         0    TRUE
+## 397                 Army           Cincinnati         1    TRUE
+## 398           Cincinnati             Syracuse         0   FALSE
+## 399           Cincinnati            Wisconsin         0    TRUE
+## 400           Cincinnati               Tulane         1    TRUE
+## 401           Cincinnati              Houston         1    TRUE
+## 402           Cincinnati           Louisville         1    TRUE
+## 403           Cincinnati            MiamiOhio         0   FALSE
+## 404           Cincinnati              Memphis         1    TRUE
+## 405           Cincinnati  SouthernMississippi         1    TRUE
+## 406             AirForce         BrighamYoung         1    TRUE
+## 407             AirForce                 Utah         1    TRUE
+## 408             AirForce                 Navy         0    TRUE
+## 409             AirForce              Wyoming         1    TRUE
+## 410             AirForce            NewMexico         1    TRUE
+## 411             AirForce            NotreDame         0    TRUE
+## 412             AirForce                 Army         0    TRUE
+## 413             AirForce        ColoradoState         1    TRUE
+## 414             AirForce        SanDiegoState         1    TRUE
+## 415              Buffalo              Rutgers         0    TRUE
+## 416              Rutgers         VirginiaTech         1    TRUE
+## 417           Pittsburgh              Rutgers         1    TRUE
+## 418              Rutgers               Temple         1    TRUE
+## 419                 Navy              Rutgers         0    TRUE
+## 420        BostonCollege              Rutgers         1    TRUE
+## 421              Rutgers         WestVirginia         1    TRUE
+## 422            NotreDame              Rutgers         0    TRUE
+## 423              Rutgers             Syracuse         1    TRUE
+## 424              Georgia        SouthCarolina         1    TRUE
+## 425              Georgia       NewMexicoState         0    TRUE
+## 426              Georgia            Tennessee         1    TRUE
+## 427              Georgia           Vanderbilt         1    TRUE
+## 428              Georgia             Kentucky         1    TRUE
+## 429              Florida              Georgia         1    TRUE
+## 430               Auburn              Georgia         1    TRUE
+## 431              Georgia          Mississippi         1    TRUE
+## 432              Georgia          GeorgiaTech         0   FALSE
+## 433              Houston       LouisianaState         0   FALSE
+## 434               Auburn       LouisianaState         1    TRUE
+## 435       LouisianaState            Tennessee         1    TRUE
+## 436              Florida       LouisianaState         1    TRUE
+## 437             Kentucky       LouisianaState         1    TRUE
+## 438       LouisianaState     MississippiState         1    TRUE
+## 439              Alabama       LouisianaState         1    TRUE
+## 440       LouisianaState          Mississippi         1    TRUE
+## 441   LouisianaLafayette            TexasTech         0    TRUE
+## 442   LouisianaLafayette               Tulane         0   FALSE
+## 443   LouisianaLafayette        LouisianaTech         0    TRUE
+## 444   LouisianaLafayette           NorthTexas         1    TRUE
+## 445   LouisianaLafayette      LouisianaMonroe         1    TRUE
+## 446   LouisianaLafayette MiddleTennesseeState         1    TRUE
+## 447   LouisianaLafayette                Texas         0    TRUE
+## 448             Stanford                Texas         0   FALSE
+## 449              Houston                Texas         0   FALSE
+## 450             Oklahoma                Texas         1    TRUE
+## 451             Colorado                Texas         1    TRUE
+## 452               Baylor                Texas         1    TRUE
+## 453                Texas            TexasTech         1    TRUE
+## 454               Kansas                Texas         1    TRUE
+## 455                Texas             TexasA&amp;M         1    TRUE
+## 456             Marshall        NorthCarolina         0   FALSE
+## 457              Buffalo             Marshall         1    TRUE
+## 458             Marshall      WesternMichigan         1    TRUE
+## 459             Marshall               Toledo         1    TRUE
+## 460                 Kent             Marshall         1    TRUE
+## 461                Akron             Marshall         1    TRUE
+## 462    BowlingGreenState             Marshall         1    TRUE
+## 463             Marshall            MiamiOhio         1    TRUE
+## 464             Marshall                 Ohio         1    TRUE
+## 465             Marshall        MichiganState         0   FALSE
+## 466        MichiganState            NotreDame         0    TRUE
+## 467        MichiganState         Northwestern         1    TRUE
+## 468                 Iowa        MichiganState         1    TRUE
+## 469        MichiganState            Wisconsin         1    TRUE
+## 470             Michigan        MichiganState         1    TRUE
+## 471             Illinois        MichiganState         1    TRUE
+## 472        MichiganState            OhioState         1    TRUE
+## 473        MichiganState               Purdue         1    TRUE
+## 474        MichiganState            PennState         1    TRUE
+## 475         MiamiFlorida           Washington         0   FALSE
+## 476         MiamiFlorida         WestVirginia         1    TRUE
+## 477         MiamiFlorida              Rutgers         1    TRUE
+## 478         FloridaState         MiamiFlorida         0   FALSE
+## 479         MiamiFlorida               Temple         1    TRUE
+## 480        LouisianaTech         MiamiFlorida         0   FALSE
+## 481         MiamiFlorida         VirginiaTech         1    TRUE
+## 482         MiamiFlorida           Pittsburgh         1    TRUE
+## 483         MiamiFlorida             Syracuse         1    TRUE
+## 484        BostonCollege         MiamiFlorida         1    TRUE
+## 485        MichiganState             Missouri         0   FALSE
+## 486             Missouri             Nebraska         1    TRUE
+## 487               Kansas             Missouri         1    TRUE
+## 488             Missouri                Texas         1    TRUE
+## 489            IowaState             Missouri         1    TRUE
+## 490             Colorado             Missouri         1    TRUE
+## 491               Baylor             Missouri         1    TRUE
+## 492          KansasState             Missouri         1    TRUE
+## 493              Clemson             Missouri         0   FALSE
+## 494              Clemson             Virginia         1    TRUE
+## 495              Clemson                 Duke         1    TRUE
+## 496              Clemson   NorthCarolinaState         1    TRUE
+## 497              Clemson        NorthCarolina         1    TRUE
+## 498              Clemson          GeorgiaTech         1    TRUE
+## 499              Clemson         FloridaState         1    TRUE
+## 500              Clemson        SouthCarolina         0   FALSE
+## 501            IowaState       NevadaLasVegas         0   FALSE
+## 502       NevadaLasVegas           NorthTexas         0   FALSE
+## 503         BrighamYoung       NevadaLasVegas         1    TRUE
+## 504             AirForce       NevadaLasVegas         1    TRUE
+## 505               Nevada       NevadaLasVegas         0    TRUE
+## 506        ColoradoState       NevadaLasVegas         1    TRUE
+## 507       NevadaLasVegas              Wyoming         1    TRUE
+## 508          Mississippi       NevadaLasVegas         0   FALSE
+## 509       NevadaLasVegas                 Utah         1    TRUE
+## 510       NevadaLasVegas            NewMexico         1    TRUE
+## 511       NevadaLasVegas        SanDiegoState         1    TRUE
+## 512        NorthCarolina           WakeForest         1    TRUE
+## 513              Clemson           WakeForest         1    TRUE
+## 514             Virginia           WakeForest         1    TRUE
+## 515           Vanderbilt           WakeForest         0    TRUE
+## 516          GeorgiaTech           WakeForest         1    TRUE
+## 517                 Duke           WakeForest         1    TRUE
+## 518         FloridaState           WakeForest         1    TRUE
+## 519                 Navy           WakeForest         0    TRUE
+## 520   NorthCarolinaState           WakeForest         1    TRUE
+## 521              Indiana   NorthCarolinaState         0   FALSE
+## 522              Indiana             Kentucky         0   FALSE
+## 523           Cincinnati              Indiana         0    TRUE
+## 524              Indiana                 Iowa         1    TRUE
+## 525              Indiana         Northwestern         1    TRUE
+## 526              Indiana             Michigan         1    TRUE
+## 527              Indiana            Minnesota         1    TRUE
+## 528              Indiana            PennState         1    TRUE
+## 529             Illinois              Indiana         1    TRUE
+## 530              Indiana            Wisconsin         1    TRUE
+## 531              Indiana               Purdue         1    TRUE
+## 532        OklahomaState                Tulsa         0   FALSE
+## 533        OklahomaState  SouthernMississippi         0   FALSE
+## 534        OklahomaState                Texas         1    TRUE
+## 535             Missouri        OklahomaState         1    TRUE
+## 536            IowaState        OklahomaState         1    TRUE
+## 537             Colorado        OklahomaState         1    TRUE
+## 538        OklahomaState             TexasA&amp;M         1    TRUE
+## 539        OklahomaState            TexasTech         1    TRUE
+## 540               Baylor        OklahomaState         1    TRUE
+## 541             Oklahoma        OklahomaState         1    TRUE
+## 542            NewMexico          OregonState         0    TRUE
+## 543          OregonState        SanDiegoState         0    TRUE
+## 544          OregonState   SouthernCalifornia         1    TRUE
+## 545          OregonState           Washington         1    TRUE
+## 546          OregonState             Stanford         1    TRUE
+## 547          OregonState                 UCLA         1    TRUE
+## 548          OregonState      WashingtonState         1    TRUE
+## 549              Arizona          OregonState         1    TRUE
+## 550               Oregon          OregonState         1    TRUE
+## 551             Maryland               Temple         0    TRUE
+## 552             Maryland         WestVirginia         0    TRUE
+## 553             Maryland MiddleTennesseeState         0   FALSE
+## 554         FloridaState             Maryland         1    TRUE
+## 555             Maryland             Virginia         1    TRUE
+## 556              Clemson             Maryland         1    TRUE
+## 557             Maryland           WakeForest         1    TRUE
+## 558                 Duke             Maryland         1    TRUE
+## 559             Maryland   NorthCarolinaState         1    TRUE
+## 560             Maryland        NorthCarolina         1    TRUE
+## 561          GeorgiaTech             Maryland         1    TRUE
+## 562               Nevada       TexasChristian         0    TRUE
+## 563         Northwestern       TexasChristian         0   FALSE
+## 564        ArkansasState       TexasChristian         0   FALSE
+## 565                 Navy       TexasChristian         0   FALSE
+## 566       TexasChristian                Tulsa         0    TRUE
+## 567                 Rice       TexasChristian         0    TRUE
+## 568         SanJoseState       TexasChristian         0    TRUE
+## 569          FresnoState       TexasChristian         0    TRUE
+## 570       TexasChristian          TexasElPaso         0    TRUE
+## 571    SouthernMethodist       TexasChristian         0    TRUE
+## 572           California                 Utah         0    TRUE
+## 573           California             Illinois         0   FALSE
+## 574           California          FresnoState         0    TRUE
+## 575           California      WashingtonState         1    TRUE
+## 576         ArizonaState           California         1    TRUE
+## 577           California                 UCLA         1    TRUE
+## 578           California           Washington         1    TRUE
+## 579           California   SouthernCalifornia         1    TRUE
+## 580           California          OregonState         1    TRUE
+## 581           California               Oregon         1    TRUE
+## 582           California             Stanford         1    TRUE
+## 583    AlabamaBirmingham               Kansas         0   FALSE
+## 584    AlabamaBirmingham       LouisianaState         0   FALSE
+## 585    AlabamaBirmingham   LouisianaLafayette         0    TRUE
+## 586    AlabamaBirmingham           Louisville         1    TRUE
+## 587    AlabamaBirmingham              Memphis         1    TRUE
+## 588    AlabamaBirmingham MiddleTennesseeState         0    TRUE
+## 589    AlabamaBirmingham         EastCarolina         1    TRUE
+## 590    AlabamaBirmingham           Cincinnati         1    TRUE
+## 591    AlabamaBirmingham  SouthernMississippi         1    TRUE
+## 592    AlabamaBirmingham                 Army         1    TRUE
+## 593             Arkansas           BoiseState         0   FALSE
+## 594              Alabama             Arkansas         1    TRUE
+## 595             Arkansas              Georgia         1    TRUE
+## 596             Arkansas      LouisianaMonroe         0    TRUE
+## 597             Arkansas        SouthCarolina         1    TRUE
+## 598             Arkansas               Auburn         1    TRUE
+## 599             Arkansas          Mississippi         1    TRUE
+## 600             Arkansas            Tennessee         1    TRUE
+## 601             Arkansas     MississippiState         1    TRUE
+## 602             Arkansas       LouisianaState         1    TRUE
+## 603               Hawaii          TexasElPaso         1    TRUE
+## 604               Hawaii                Tulsa         1    TRUE
+## 605               Hawaii       TexasChristian         0    TRUE
+## 606               Hawaii    SouthernMethodist         1    TRUE
+## 607               Hawaii                 Rice         1    TRUE
+## 608               Hawaii         SanJoseState         1    TRUE
+## 609          FresnoState               Hawaii         1    TRUE
+## 610               Hawaii               Nevada         1    TRUE
+## 611               Hawaii        LouisianaTech         1    TRUE
+## 612               Hawaii            Wisconsin         0   FALSE
+## 613               Hawaii       NevadaLasVegas         0    TRUE
+## 614            Wisconsin                 &lt;NA&gt;        NA      NA
+## 615              Wyoming                 &lt;NA&gt;        NA      NA
+## 616         WestVirginia                 &lt;NA&gt;        NA      NA
+## 617      WashingtonState                 &lt;NA&gt;        NA      NA
+## 618               Tulane                 &lt;NA&gt;        NA      NA
+## 619                Tulsa                 &lt;NA&gt;        NA      NA
+## 620            UtahState                 &lt;NA&gt;        NA      NA
+## 621           WakeForest                 &lt;NA&gt;        NA      NA
+##                value        schools
+## 1      Mountain West               
+## 2            Big Ten               
+## 3      Mountain West               
+## 4      Mountain West               
+## 5         Big Twelve               
+## 6            Big Ten               
+## 7            Big Ten               
+## 8        Pacific Ten               
+## 9        Pacific Ten               
+## 10     Mountain West               
+## 11     Mountain West               
+## 12        Big Twelve               
+## 13        Big Twelve               
+## 14          Sun Belt               
+## 15        Big Twelve               
+## 16      Mid-American               
+## 17           Big Ten               
+## 18           Big Ten               
+## 19      Mid-American               
+## 20      Mid-American               
+## 21           Big Ten               
+## 22           Big Ten               
+## 23     Mountain West               
+## 24     Mountain West               
+## 25     Mountain West               
+## 26      Southeastern               
+## 27      Southeastern               
+## 28      Mid-American               
+## 29      Mid-American               
+## 30      Southeastern               
+## 31      Southeastern               
+## 32       Pacific Ten               
+## 33       Pacific Ten               
+## 34       Pacific Ten               
+## 35       Pacific Ten               
+## 36       Pacific Ten               
+## 37       Pacific Ten               
+## 38       Pacific Ten               
+## 39     Mountain West               
+## 40     Mountain West               
+## 41     Mountain West               
+## 42     Mountain West               
+## 43          Sun Belt               
+## 44          Sun Belt               
+## 45    Atlantic Coast               
+## 46      Mid-American               
+## 47      Mid-American               
+## 48      Mid-American               
+## 49      Mid-American               
+## 50      Southeastern               
+## 51      Southeastern               
+## 52  Western Athletic               
+## 53  Western Athletic               
+## 54          Sun Belt               
+## 55          Big East               
+## 56          Big East               
+## 57          Big East               
+## 58      Mid-American               
+## 59      Mid-American               
+## 60           Big Ten               
+## 61           Big Ten               
+## 62           Big Ten               
+## 63           Big Ten               
+## 64     Mountain West               
+## 65    Atlantic Coast               
+## 66    Atlantic Coast               
+## 67    Atlantic Coast               
+## 68      Mid-American               
+## 69      Mid-American               
+## 70      Mid-American               
+## 71      Mid-American               
+## 72      Mid-American               
+## 73     Mountain West               
+## 74          Big East               
+## 75          Big East               
+## 76          Big East               
+## 77      Mid-American               
+## 78      Independents CentralFlorida
+## 79      Southeastern               
+## 80      Independents CentralFlorida
+## 81      Independents CentralFlorida
+## 82    Atlantic Coast               
+## 83    Atlantic Coast               
+## 84    Atlantic Coast               
+## 85      Mid-American               
+## 86      Mid-American               
+## 87  Western Athletic               
+## 88      Mid-American               
+## 89      Mid-American               
+## 90      Mid-American               
+## 91      Mid-American               
+## 92           Big Ten               
+## 93           Big Ten               
+## 94           Big Ten               
+## 95           Big Ten               
+## 96        Big Twelve               
+## 97        Big Twelve               
+## 98        Big Twelve               
+## 99       Pacific Ten               
+## 100    Mountain West               
+## 101    Mountain West               
+## 102    Mountain West               
+## 103    Mountain West               
+## 104    Mountain West               
+## 105     Mid-American               
+## 106         Big East               
+## 107     Mid-American               
+## 108     Mid-American               
+## 109     Independents    Connecticut
+## 110     Independents CentralFlorida
+## 111     Mid-American               
+## 112     Mid-American               
+## 113     Mid-American               
+## 114     Mid-American               
+## 115     Mid-American               
+## 116   Conference USA               
+## 117   Conference USA               
+## 118   Conference USA               
+## 119   Atlantic Coast               
+## 120   Atlantic Coast               
+## 121   Atlantic Coast               
+## 122   Atlantic Coast               
+## 123   Atlantic Coast               
+## 124   Atlantic Coast               
+## 125 Western Athletic               
+## 126 Western Athletic               
+## 127      Pacific Ten               
+## 128          Big Ten               
+## 129          Big Ten               
+## 130          Big Ten               
+## 131          Big Ten               
+## 132          Big Ten               
+## 133   Conference USA               
+## 134   Conference USA               
+## 135          Big Ten               
+## 136 Western Athletic               
+## 137         Sun Belt               
+## 138         Sun Belt               
+## 139         Sun Belt               
+## 140 Western Athletic               
+## 141         Sun Belt               
+## 142       Big Twelve               
+## 143      Pacific Ten               
+## 144      Pacific Ten               
+## 145      Pacific Ten               
+## 146       Big Twelve               
+## 147       Big Twelve               
+## 148       Big Twelve               
+## 149       Big Twelve               
+## 150   Atlantic Coast               
+## 151   Conference USA               
+## 152 Western Athletic               
+## 153 Western Athletic               
+## 154     Mid-American               
+## 155     Mid-American               
+## 156     Mid-American               
+## 157     Mid-American               
+## 158     Mid-American               
+## 159     Mid-American               
+## 160     Mid-American               
+## 161     Mid-American               
+## 162          Big Ten               
+## 163         Big East               
+## 164         Big East               
+## 165         Big East               
+## 166         Big East               
+## 167     Southeastern               
+## 168     Southeastern               
+## 169   Atlantic Coast               
+## 170     Independents    Connecticut
+## 171   Conference USA               
+## 172   Conference USA               
+## 173       Big Twelve               
+## 174 Western Athletic               
+## 175     Southeastern               
+## 176     Independents CentralFlorida
+## 177     Independents CentralFlorida
+## 178         Sun Belt               
+## 179         Sun Belt               
+## 180       Big Twelve               
+## 181          Big Ten               
+## 182          Big Ten               
+## 183          Big Ten               
+## 184          Big Ten               
+## 185          Big Ten               
+## 186          Big Ten               
+## 187     Mid-American               
+## 188     Mid-American               
+## 189     Mid-American               
+## 190     Mid-American               
+## 191     Mid-American               
+## 192     Mid-American               
+## 193     Mid-American               
+## 194     Mid-American               
+## 195     Southeastern               
+## 196   Atlantic Coast               
+## 197     Southeastern               
+## 198     Southeastern               
+## 199     Southeastern               
+## 200     Southeastern               
+## 201 Western Athletic               
+## 202         Sun Belt               
+## 203     Independents    Connecticut
+## 204          Big Ten               
+## 205          Big Ten               
+## 206          Big Ten               
+## 207          Big Ten               
+## 208          Big Ten               
+## 209          Big Ten               
+## 210          Big Ten               
+## 211          Big Ten               
+## 212    Mountain West               
+## 213     Southeastern               
+## 214     Southeastern               
+## 215         Sun Belt               
+## 216     Southeastern               
+## 217     Southeastern               
+## 218   Conference USA               
+## 219         Sun Belt               
+## 220         Sun Belt               
+## 221   Conference USA               
+## 222   Conference USA               
+## 223 Western Athletic               
+## 224    Mountain West               
+## 225 Western Athletic               
+## 226 Western Athletic               
+## 227 Western Athletic               
+## 228 Western Athletic               
+## 229      Pacific Ten               
+## 230         Sun Belt               
+## 231      Pacific Ten               
+## 232      Pacific Ten               
+## 233      Pacific Ten               
+## 234      Pacific Ten               
+## 235      Pacific Ten               
+## 236    Mountain West               
+## 237         Sun Belt               
+## 238 Western Athletic               
+## 239         Sun Belt               
+## 240         Sun Belt               
+## 241         Sun Belt               
+## 242     Mid-American               
+## 243     Southeastern               
+## 244     Southeastern               
+## 245     Southeastern               
+## 246     Southeastern               
+## 247     Southeastern               
+## 248          Big Ten               
+## 249     Mid-American               
+## 250     Mid-American               
+## 251     Mid-American               
+## 252     Mid-American               
+## 253     Mid-American               
+## 254     Mid-American               
+## 255     Mid-American               
+## 256       Big Twelve               
+## 257          Big Ten               
+## 258       Big Twelve               
+## 259       Big Twelve               
+## 260       Big Twelve               
+## 261       Big Twelve               
+## 262 Western Athletic               
+## 263 Western Athletic               
+## 264 Western Athletic               
+## 265 Western Athletic               
+## 266 Western Athletic               
+## 267       Big Twelve               
+## 268          Big Ten               
+## 269       Big Twelve               
+## 270       Big Twelve               
+## 271       Big Twelve               
+## 272       Big Twelve               
+## 273       Big Twelve               
+## 274       Big Twelve               
+## 275     Southeastern               
+## 276   Conference USA               
+## 277   Conference USA               
+## 278   Conference USA               
+## 279   Conference USA               
+## 280   Conference USA               
+## 281     Southeastern               
+## 282         Sun Belt               
+## 283     Southeastern               
+## 284     Southeastern               
+## 285   Conference USA               
+## 286     Southeastern               
+## 287     Southeastern               
+## 288 Western Athletic               
+## 289      Pacific Ten               
+## 290      Pacific Ten               
+## 291      Pacific Ten               
+## 292      Pacific Ten               
+## 293      Pacific Ten               
+## 294      Pacific Ten               
+## 295    Mountain West               
+## 296         Sun Belt               
+## 297 Western Athletic               
+## 298      Pacific Ten               
+## 299      Pacific Ten               
+## 300      Pacific Ten               
+## 301      Pacific Ten               
+## 302      Pacific Ten               
+## 303     Mid-American               
+## 304     Mid-American               
+## 305         Big East               
+## 306         Big East               
+## 307         Big East               
+## 308         Big East               
+## 309         Big East               
+## 310     Independents           Navy
+## 311   Atlantic Coast               
+## 312         Big East               
+## 313       Big Twelve               
+## 314       Big Twelve               
+## 315       Big Twelve               
+## 316       Big Twelve               
+## 317       Big Twelve               
+## 318       Big Twelve               
+## 319     Independents      NotreDame
+## 320       Big Twelve               
+## 321     Independents      NotreDame
+## 322     Independents      NotreDame
+## 323     Independents           Navy
+## 324     Independents      NotreDame
+## 325         Big East               
+## 326     Independents      NotreDame
+## 327 Western Athletic               
+## 328       Big Twelve               
+## 329         Sun Belt               
+## 330 Western Athletic               
+## 331 Western Athletic               
+## 332 Western Athletic               
+## 333 Western Athletic               
+## 334       Big Twelve               
+## 335         Sun Belt               
+## 336       Big Twelve               
+## 337       Big Twelve               
+## 338       Big Twelve               
+## 339       Big Twelve               
+## 340       Big Twelve               
+## 341       Big Twelve               
+## 342       Big Twelve               
+## 343          Big Ten               
+## 344     Mid-American               
+## 345     Mid-American               
+## 346     Mid-American               
+## 347     Independents           Navy
+## 348     Mid-American               
+## 349     Mid-American               
+## 350     Mid-American               
+## 351   Conference USA               
+## 352 Western Athletic               
+## 353   Conference USA               
+## 354   Conference USA               
+## 355   Conference USA               
+## 356     Independents           Navy
+## 357   Conference USA               
+## 358     Southeastern               
+## 359     Southeastern               
+## 360     Southeastern               
+## 361     Southeastern               
+## 362         Sun Belt               
+## 363     Southeastern               
+## 364     Southeastern               
+## 365 Western Athletic               
+## 366 Western Athletic               
+## 367 Western Athletic               
+## 368         Sun Belt               
+## 369 Western Athletic               
+## 370 Western Athletic               
+## 371 Western Athletic               
+## 372 Western Athletic               
+## 373   Atlantic Coast               
+## 374   Atlantic Coast               
+## 375   Atlantic Coast               
+## 376   Atlantic Coast               
+## 377   Atlantic Coast               
+## 378   Atlantic Coast               
+## 379   Atlantic Coast               
+## 380       Big Twelve               
+## 381      Pacific Ten               
+## 382    Mountain West               
+## 383    Mountain West               
+## 384         Sun Belt               
+## 385         Sun Belt               
+## 386         Sun Belt               
+## 387         Sun Belt               
+## 388 Western Athletic               
+## 389   Conference USA               
+## 390   Conference USA               
+## 391   Conference USA               
+## 392   Conference USA               
+## 393   Conference USA               
+## 394   Conference USA               
+## 395   Conference USA               
+## 396   Conference USA               
+## 397   Conference USA               
+## 398   Conference USA               
+## 399   Conference USA               
+## 400   Conference USA               
+## 401   Conference USA               
+## 402   Conference USA               
+## 403   Conference USA               
+## 404   Conference USA               
+## 405   Conference USA               
+## 406    Mountain West               
+## 407    Mountain West               
+## 408    Mountain West               
+## 409    Mountain West               
+## 410    Mountain West               
+## 411    Mountain West               
+## 412    Mountain West               
+## 413    Mountain West               
+## 414    Mountain West               
+## 415     Mid-American               
+## 416         Big East               
+## 417         Big East               
+## 418         Big East               
+## 419     Independents           Navy
+## 420         Big East               
+## 421         Big East               
+## 422     Independents      NotreDame
+## 423         Big East               
+## 424     Southeastern               
+## 425     Southeastern               
+## 426     Southeastern               
+## 427     Southeastern               
+## 428     Southeastern               
+## 429     Southeastern               
+## 430     Southeastern               
+## 431     Southeastern               
+## 432     Southeastern               
+## 433   Conference USA               
+## 434     Southeastern               
+## 435     Southeastern               
+## 436     Southeastern               
+## 437     Southeastern               
+## 438     Southeastern               
+## 439     Southeastern               
+## 440     Southeastern               
+## 441         Sun Belt               
+## 442         Sun Belt               
+## 443         Sun Belt               
+## 444         Sun Belt               
+## 445         Sun Belt               
+## 446         Sun Belt               
+## 447         Sun Belt               
+## 448      Pacific Ten               
+## 449   Conference USA               
+## 450       Big Twelve               
+## 451       Big Twelve               
+## 452       Big Twelve               
+## 453       Big Twelve               
+## 454       Big Twelve               
+## 455       Big Twelve               
+## 456     Mid-American               
+## 457     Mid-American               
+## 458     Mid-American               
+## 459     Mid-American               
+## 460     Mid-American               
+## 461     Mid-American               
+## 462     Mid-American               
+## 463     Mid-American               
+## 464     Mid-American               
+## 465     Mid-American               
+## 466          Big Ten               
+## 467          Big Ten               
+## 468          Big Ten               
+## 469          Big Ten               
+## 470          Big Ten               
+## 471          Big Ten               
+## 472          Big Ten               
+## 473          Big Ten               
+## 474          Big Ten               
+## 475         Big East               
+## 476         Big East               
+## 477         Big East               
+## 478   Atlantic Coast               
+## 479         Big East               
+## 480 Western Athletic               
+## 481         Big East               
+## 482         Big East               
+## 483         Big East               
+## 484         Big East               
+## 485          Big Ten               
+## 486       Big Twelve               
+## 487       Big Twelve               
+## 488       Big Twelve               
+## 489       Big Twelve               
+## 490       Big Twelve               
+## 491       Big Twelve               
+## 492       Big Twelve               
+## 493   Atlantic Coast               
+## 494   Atlantic Coast               
+## 495   Atlantic Coast               
+## 496   Atlantic Coast               
+## 497   Atlantic Coast               
+## 498   Atlantic Coast               
+## 499   Atlantic Coast               
+## 500   Atlantic Coast               
+## 501       Big Twelve               
+## 502    Mountain West               
+## 503    Mountain West               
+## 504    Mountain West               
+## 505 Western Athletic               
+## 506    Mountain West               
+## 507    Mountain West               
+## 508     Southeastern               
+## 509    Mountain West               
+## 510    Mountain West               
+## 511    Mountain West               
+## 512   Atlantic Coast               
+## 513   Atlantic Coast               
+## 514   Atlantic Coast               
+## 515     Southeastern               
+## 516   Atlantic Coast               
+## 517   Atlantic Coast               
+## 518   Atlantic Coast               
+## 519     Independents           Navy
+## 520   Atlantic Coast               
+## 521          Big Ten               
+## 522          Big Ten               
+## 523   Conference USA               
+## 524          Big Ten               
+## 525          Big Ten               
+## 526          Big Ten               
+## 527          Big Ten               
+## 528          Big Ten               
+## 529          Big Ten               
+## 530          Big Ten               
+## 531          Big Ten               
+## 532       Big Twelve               
+## 533       Big Twelve               
+## 534       Big Twelve               
+## 535       Big Twelve               
+## 536       Big Twelve               
+## 537       Big Twelve               
+## 538       Big Twelve               
+## 539       Big Twelve               
+## 540       Big Twelve               
+## 541       Big Twelve               
+## 542    Mountain West               
+## 543      Pacific Ten               
+## 544      Pacific Ten               
+## 545      Pacific Ten               
+## 546      Pacific Ten               
+## 547      Pacific Ten               
+## 548      Pacific Ten               
+## 549      Pacific Ten               
+## 550      Pacific Ten               
+## 551   Atlantic Coast               
+## 552   Atlantic Coast               
+## 553   Atlantic Coast               
+## 554   Atlantic Coast               
+## 555   Atlantic Coast               
+## 556   Atlantic Coast               
+## 557   Atlantic Coast               
+## 558   Atlantic Coast               
+## 559   Atlantic Coast               
+## 560   Atlantic Coast               
+## 561   Atlantic Coast               
+## 562 Western Athletic               
+## 563          Big Ten               
+## 564         Sun Belt               
+## 565     Independents           Navy
+## 566   Conference USA               
+## 567 Western Athletic               
+## 568 Western Athletic               
+## 569 Western Athletic               
+## 570   Conference USA               
+## 571 Western Athletic               
+## 572      Pacific Ten               
+## 573      Pacific Ten               
+## 574      Pacific Ten               
+## 575      Pacific Ten               
+## 576      Pacific Ten               
+## 577      Pacific Ten               
+## 578      Pacific Ten               
+## 579      Pacific Ten               
+## 580      Pacific Ten               
+## 581      Pacific Ten               
+## 582      Pacific Ten               
+## 583   Conference USA               
+## 584   Conference USA               
+## 585   Conference USA               
+## 586   Conference USA               
+## 587   Conference USA               
+## 588   Conference USA               
+## 589   Conference USA               
+## 590   Conference USA               
+## 591   Conference USA               
+## 592   Conference USA               
+## 593     Southeastern               
+## 594     Southeastern               
+## 595     Southeastern               
+## 596     Southeastern               
+## 597     Southeastern               
+## 598     Southeastern               
+## 599     Southeastern               
+## 600     Southeastern               
+## 601     Southeastern               
+## 602     Southeastern               
+## 603 Western Athletic               
+## 604 Western Athletic               
+## 605 Western Athletic               
+## 606 Western Athletic               
+## 607 Western Athletic               
+## 608 Western Athletic               
+## 609 Western Athletic               
+## 610 Western Athletic               
+## 611 Western Athletic               
+## 612 Western Athletic               
+## 613 Western Athletic               
+## 614          Big Ten               
+## 615    Mountain West               
+## 616         Big East               
+## 617      Pacific Ten               
+## 618   Conference USA               
+## 619 Western Athletic               
+## 620     Independents      UtahState
+## 621   Atlantic Coast
+```
 
 ---
 # Example: American college football
@@ -308,13 +2492,14 @@ Fall 2000 Season of [Division I college football](https://en.wikipedia.org/wiki/
 ggplot(data = ftnet,
        aes(from_id = from, to_id = to)) +
   geom_net(
-    aes(
-      colour = value, group = value,
-      linetype = factor(1-same.conf),
-      label = schools
-    ),
+    aes(colour = value, 
+        group = value,
+        linetype = factor(1-same.conf),
+        label = schools),
     linewidth = 0.5,
-    size = 5, vjust = -0.75, alpha = 0.3,
+    size = 5, 
+    vjust = -0.75, 
+    alpha = 0.3,
     layout.alg = 'fruchtermanreingold'
   ) +
   theme_net() +
@@ -322,11 +2507,9 @@ ggplot(data = ftnet,
   scale_colour_brewer("Conference", palette = "Paired")
 ```
 
-&lt;img src="lecture_9a_files/figure-html/print-football-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
 ---
 
-
+&lt;img src="lecture_9a_files/figure-html/print-gg-foot-graph-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What do we learn?
@@ -379,25 +2562,32 @@ hp_all
 
 
 ```r
-
 ggplot(data=hp_all, 
-       aes(from_id = from_id, to_id = to_id)) + 
-  geom_net(fiteach=T, directed = T, size = 3, linewidth = .5, 
-           ealpha = .5, labelon = T, fontsize = 3, repel = T, 
-           labelcolour = "black", arrowsize = .5, singletons = FALSE,
-           aes(colour = house, group = house, shape = gender)) + 
-  scale_colour_manual(values = c("#941B08","#F1F31C", 
-                                 "#071A80", "#154C07")) + 
+       aes(from_id = from_id, 
+           to_id = to_id)) + 
+  geom_net(aes(colour = house, group = house, shape = gender),
+           fiteach=T, 
+           directed = T, 
+           size = 3, 
+           linewidth = .5, 
+           ealpha = .5, 
+           labelon = T, 
+           fontsize = 3, 
+           repel = T, 
+           labelcolour = "black", 
+           arrowsize = .5, 
+           singletons = FALSE) + 
+  scale_colour_manual(values = c("#941B08","#F1F31C", "#071A80", "#154C07")) + 
   facet_wrap(~book, labeller = "label_both", ncol=3) + 
-  theme_net() + theme(panel.background = element_rect(colour = 'black'), legend.position="bottom")
+  theme_net() + 
+  theme(panel.background = element_rect(colour = 'black'),
+        legend.position="bottom")
 ```
-
-&lt;img src="lecture_9a_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Let's plot the characters
 
-
+&lt;img src="lecture_9a_files/figure-html/ggraph-hp-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -417,68 +2607,6 @@ include_graphics("images/class_network.png")
 
 &lt;img src="images/class_network.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
-
-## Simpsons
-
-Your turn to make a network diagram for the Simpsons. The measure of association will be "that the two characters had lines in the same episode together".
-
-- How many characters appeared only in one episode? (You will want to drop these)
-- Write code to search if a character has a line in an episode
-- Compile a dataset of episode (rows) and character (columns) which is a binary matrix where 1 indicates the character had a line in the episode, and 0 is otherwise
-- Gather the matrix into long form, with these columns: `episode`, `character`, `had a line` (0,1)
-- Filter the rows with `had a line` equal to 1.
-- Count the number of times the pair of characters appeared. This now forms your edge set, with an additional column of the strength of the relationship
-- Make your network display
-
----
-  
-
-
-
-background-image: url(images/bg1.jpg)
-background-size: cover
-class: hide-slide-number split-70
-count: false
-
-.column.shade_black[.content[
-
-&lt;br&gt;&lt;br&gt;
-
-# That's it!
-
-.bottom_abs.width100[
-
-Lecturer: Nicholas Tierney
-
-Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
-
-May 2020
-
-
-]
-
-&lt;br /&gt;
-This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
-
-&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
-
-
-]]
-
-
-
-&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
-&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
-&lt;svg class="clip-svg absolute"&gt;
-&lt;defs&gt;
-&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
-&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
-&lt;/clipPath&gt;
-&lt;/defs&gt;	
-&lt;/svg&gt;
-&lt;/div&gt;
-&lt;/div&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

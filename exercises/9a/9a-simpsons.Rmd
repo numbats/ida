@@ -1,0 +1,22 @@
+---
+title: "9a-simpsons-extension"
+author: "Nicholas Tierney"
+date: "17/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Simpsons
+
+Your turn to make a network diagram for the Simpsons. The measure of association will be "that the two characters had lines in the same episode together".
+
+- How many characters appeared only in one episode? (You will want to drop these)
+- Write code to search if a character has a line in an episode
+- Compile a dataset of episode (rows) and character (columns) which is a binary matrix where 1 indicates the character had a line in the episode, and 0 is otherwise
+- Gather the matrix into long form, with these columns: `episode`, `character`, `had a line` (0,1)
+- Filter the rows with `had a line` equal to 1.
+- Count the number of times the pair of characters appeared. This now forms your edge set, with an additional column of the strength of the relationship
+- Make your network display

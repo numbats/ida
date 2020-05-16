@@ -62,6 +62,7 @@ opts_chunk$set(echo = TRUE,
                collapse = TRUE,
                fig.height = 4,
                fig.width = 8,
+               fig.retina = 2,
                out.width = "100%",
                fig.align = "center",
                cache = FALSE)
@@ -152,7 +153,6 @@ d_edges_filter
 ---
 # Association matrices: Make the network diagram.
 
-.left-code[
 ```{r geom-net-cals, eval = FALSE}
 library(geomnet)
 set.seed(2019-10-09)
@@ -172,13 +172,15 @@ ggplot(data = d_edges_filter,
     ) +
     theme_net() 
 ```  
-]
 
-.right-plot[
+
+---
+# Association matrices: Make the network diagram.
+
 ```{r geom-net-cals-out, ref.label = 'geom-net-cals', echo = FALSE, out.width = "100%"}
 
 ```
-]
+
 
 ---
 # Data:  Last 4 months of currency USD cross-rates

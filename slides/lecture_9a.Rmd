@@ -54,17 +54,26 @@ library(knitr)
 library(lubridate)
 library(gridExtra)
 library(plotly)
+library(geomnet)
 opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
                fig.height = 4,
                fig.width = 8,
+               fig.retina = 2,
                out.width = "100%",
                fig.align = "center",
                cache = FALSE)
 
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
+
+library(geomnet)
+data(madmen)
+madmen_nodes <- as_tibble(madmen$vertices) %>% 
+  mutate_all(as.character) %>% 
+  rename(gender = Gender)
+madmen_edges <- as_tibble(madmen$edges) %>% mutate_all(as.character)
 ```
 
 
@@ -84,9 +93,7 @@ class: refresher
 ---
 # Network analysis
 
---
-
-# A description of phone calls
+**A description of phone calls**
 
 - Johnny --> Liz
 - Liz --> Anna
@@ -116,30 +123,6 @@ class: transition
 # And as an association matrix
 
 [DEMO]
-
----
-# Nodes and edges?
-
-Netword data can be thought of as two related tables, **nodes** and **edges**:
-
-- **nodes** are connection points
-- **edges** are the connections between points
-
----
-# Example: Mad Men. (Nodes = characters from the series)
-
-```{r mm-show-nodes, echo=FALSE}
-library(geomnet)
-data(madmen)
-as_tibble(madmen$vertices)
-```
-
----
-# Example: Mad Men. (Edges = how they are associated)
-
-```{r echo=FALSE}
-as_tibble(madmen$edges)
-```
 
 ---
 # Why care about these relationships?
@@ -175,36 +158,69 @@ include_graphics("images/Mad-men-title-card.jpg")
 - Overlaying other aspects, e.g. gender
 
 ---
-# introducing `tidygraph` and `ggraph`
+# introducing `madmen` data
 
-.pull-left[
 ```{r make-madmen-graph}
-library(tidygraph)
-library(ggraph)
-
 glimpse(madmen)
 ```
-]
-
-.pull-right[
-```{r print-madmen, echo = FALSE}
-MMnet <- madmen$edges %>%
-  rename(from_id = Name1, to_id = Name2) %>%
-  mutate_all(as.character) %>%
-  full_join(mutate(madmen$vertices, label = as.character(label)), 
-            by = c("from_id" = "label"))
-
-```
-]
 
 ---
-# How to plot
+# Nodes and edges?
 
-```{r ggraph-madmen}
+Netword data can be thought of as two related tables, **nodes** and **edges**:
+
+- **nodes** are connection points
+- **edges** are the connections between points
+
+---
+# Example: Mad Men. (Nodes = characters from the series)
+
+```{r mm-nodes}
+madmen_nodes
+```
+
+---
+# Example: Mad Men. (Edges = how they are associated)
+
+```{r mm-edges}
+madmen_edges
+```
+
+---
+# Let's get the madmen data into the right shape
+
+```{r}
+madmen_edges %>%
+  rename(from_id = Name1, to_id = Name2) 
+```
+
+---
+# Let's get the madmen data into the right shape
+
+```{r}
+madmen_net <- madmen_edges %>%
+  rename(from_id = Name1, to_id = Name2) %>%
+  full_join(madmen_nodes,  #<<
+            by = c("from_id" = "label")) #<<
+
+madmen_net
+```
+
+---
+# Full join?
+
+```{r full-join-gif, echo = FALSE, out.width = "60%"}
+include_graphics("gifs/full-join.gif")
+```
+
+---
+# Plotting the data
+
+```{r ggraph-madmen, echo = FALSE, fig.width = 10, fig.height = 5}
 # create plot
 set.seed(5556677)
-ggplot(data = MMnet, aes(from_id = from_id, to_id = to_id)) +
-  geom_net(aes(colour = Gender), layout.alg = "kamadakawai",
+ggplot(data = madmen_net, aes(from_id = from_id, to_id = to_id)) +
+  geom_net(aes(colour = gender), layout.alg = "kamadakawai",
     size = 2, labelon = TRUE, vjust = -0.6, ecolour = "grey60",
     directed =FALSE, fontsize = 3, ealpha = 0.5) +
     scale_colour_manual(values = c("#FF69B4", "#0099ff")) +
@@ -215,12 +231,146 @@ ggplot(data = MMnet, aes(from_id = from_id, to_id = to_id)) +
 ```
 
 ---
+# How to plot
+
+.left-code[
+```{r graph-step-1, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender)) 
+
+```  
+]
+
+.right-plot[
+```{r graph-step-1-out, ref.label = 'graph-step-1', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot: specify the layout algorithm
+
+.left-code[
+```{r graph-plot-2, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai") 
+```  
+]
+
+.right-plot[
+```{r graph-plot-2-out, ref.label = 'graph-plot-2', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot
+
+.left-code[
+```{r graph-plot-3, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3) 
+```  
+]
+
+.right-plot[
+```{r graph-plot-3-out, ref.label = 'graph-plot-3', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot
+
+.left-code[
+```{r graph-plot-4, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3,
+           size = 2,
+           vjust = -0.6,
+           ecolour = "grey60",
+           ealpha = 0.5)
+```  
+]
+
+.right-plot[
+```{r graph-plot-4-out, ref.label = 'graph-plot-4', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot
+
+.left-code[
+```{r graph-plot-5, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3,
+           size = 2,
+           vjust = -0.6,
+           ecolour = "grey60",
+           ealpha = 0.5) +
+    scale_colour_manual(values = c("#FF69B4", "#0099ff")) +
+    lims(x = c(-0.05, 1.05)) + 
+    theme_net() +
+    theme(legend.position = "bottom")
+```  
+]
+
+.right-plot[
+```{r graph-plot-5-out, ref.label = 'graph-plot-5', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+
+---
 # Which actor was most connected?
 
-```{r most-connected}
-madmen$edges %>% 
-  gather(X, Name, Name1, Name2) %>% 
-  count(Name, sort=TRUE)
+```{r}
+madmen_edges %>% 
+  pivot_longer(cols = c(Name1, Name2),
+               names_to = "List",
+               values_to = "Name") 
+```
+
+---
+# Which actor was most connected?
+
+```{r}
+madmen_edges %>% 
+  pivot_longer(cols = c(Name1, Name2),
+               names_to = "List",
+               values_to = "Name") %>% 
+  count(Name, sort = TRUE)
 ```
 
 ---
@@ -248,30 +398,54 @@ Fall 2000 Season of [Division I college football](https://en.wikipedia.org/wiki/
 - Nodes are the teams, edges are the matches. 
 - Teams are broken into "conferences" which are the primary competition, but they can play outside this group.
 
-```{r  make-football-graph, echo=FALSE}
+---
+# American college football data
+
+Edges:
+.pull-left[
+```{r}
+football$edges
+```
+]
+
+--
+
+Nodes:
+.pull-right[
+```{r}
+football$vertices
+```
+]
+
+---
+# American college football: joining the data
+
+```{r  make-football-graph}
 # data step: merge vertices and edges
 ftnet <- full_join(
   football$edges, football$vertices,
   by = c("from" = "label")
 ) %>%
-  mutate(schools = ifelse(value == "Independents", from, ""))
+  mutate(schools = if_else(value == "Independents", from, ""))
 
+ftnet
 ```
 
 ---
 # Example: American college football
 
-```{r print-football}
+```{r print-football, eval = FALSE}
 ggplot(data = ftnet,
        aes(from_id = from, to_id = to)) +
   geom_net(
-    aes(
-      colour = value, group = value,
-      linetype = factor(1-same.conf),
-      label = schools
-    ),
+    aes(colour = value, 
+        group = value,
+        linetype = factor(1-same.conf),
+        label = schools),
     linewidth = 0.5,
-    size = 5, vjust = -0.75, alpha = 0.3,
+    size = 5, 
+    vjust = -0.75, 
+    alpha = 0.3,
     layout.alg = 'fruchtermanreingold'
   ) +
   theme_net() +
@@ -281,7 +455,7 @@ ggplot(data = ftnet,
 
 ---
 
-```{r print-gg-foot-graph, echo = FALSE, fig.width = 10, fig.height = 8, out.width = "80%"}
+```{r print-gg-foot-graph, echo = FALSE, fig.width = 10, fig.height = 8, out.width = "100%", ref.label='print-football'}
 # gg_foot_graph
 ```
 
@@ -332,24 +506,33 @@ hp_all
 ---
 # Let's plot the characters
 
-```{r echo=TRUE}
-
-ggplot(data=hp_all, 
-       aes(from_id = from_id, to_id = to_id)) + 
-  geom_net(fiteach=T, directed = T, size = 3, linewidth = .5, 
-           ealpha = .5, labelon = T, fontsize = 3, repel = T, 
-           labelcolour = "black", arrowsize = .5, singletons = FALSE,
-           aes(colour = house, group = house, shape = gender)) + 
-  scale_colour_manual(values = c("#941B08","#F1F31C", 
-                                 "#071A80", "#154C07")) + 
+```{r plot-hp, echo=TRUE, eval = FALSE}
+ggplot(data = hp_all, 
+       aes(from_id = from_id, 
+           to_id = to_id)) + 
+  geom_net(aes(colour = house, group = house, shape = gender),
+           fiteach=T, 
+           directed = T, 
+           size = 3, 
+           linewidth = .5, 
+           ealpha = .5, 
+           labelon = T, 
+           fontsize = 3, 
+           repel = T, 
+           labelcolour = "black", 
+           arrowsize = .5, 
+           singletons = FALSE) + 
+  scale_colour_manual(values = c("#941B08","#F1F31C", "#071A80", "#154C07")) + 
   facet_wrap(~book, labeller = "label_both", ncol=3) + 
-  theme_net() + theme(panel.background = element_rect(colour = 'black'), legend.position="bottom")
+  theme_net() + 
+  theme(panel.background = element_rect(colour = 'black'),
+        legend.position="bottom")
 ```
 
 ---
 # Let's plot the characters
 
-```{r ggraph-hp}
+```{r ggraph-hp-out, ref.label='plot-hp', echo = FALSE, fig.width = 10, fig.height = 6}
 ```
 
 
@@ -363,24 +546,7 @@ class: transition
 ]
 
 .pull-right[
-```{r}
+```{r echo = FALSE}
 include_graphics("images/class_network.png")
 ```
 ]
-
-## Simpsons
-
-Your turn to make a network diagram for the Simpsons. The measure of association will be "that the two characters had lines in the same episode together".
-
-- How many characters appeared only in one episode? (You will want to drop these)
-- Write code to search if a character has a line in an episode
-- Compile a dataset of episode (rows) and character (columns) which is a binary matrix where 1 indicates the character had a line in the episode, and 0 is otherwise
-- Gather the matrix into long form, with these columns: `episode`, `character`, `had a line` (0,1)
-- Filter the rows with `had a line` equal to 1.
-- Count the number of times the pair of characters appeared. This now forms your edge set, with an additional column of the strength of the relationship
-- Make your network display
-
----
-  
-```{r endslide, child="components/endslide.Rmd"}
-```
