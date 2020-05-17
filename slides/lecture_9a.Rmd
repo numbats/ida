@@ -271,7 +271,7 @@ ggplot(data = madmen_net,
 ]
 
 ---
-# How to plot
+# How to plot: Add some labs and decrease font
 
 .left-code[
 ```{r graph-plot-3, eval = FALSE}
@@ -281,9 +281,9 @@ ggplot(data = madmen_net,
            to_id = to_id)) +
   geom_net(aes(colour = gender), 
            layout.alg = "kamadakawai",
-           directed = FALSE,
-           labelon = TRUE,
-           fontsize = 3) 
+           directed = FALSE, #<<
+           labelon = TRUE, #<<
+           fontsize = 3)  #<<
 ```  
 ]
 
@@ -294,7 +294,7 @@ ggplot(data = madmen_net,
 ]
 
 ---
-# How to plot
+# How to plot: Change edge colour/size
 
 .left-code[
 ```{r graph-plot-4, eval = FALSE}
@@ -307,10 +307,10 @@ ggplot(data = madmen_net,
            directed = FALSE,
            labelon = TRUE,
            fontsize = 3,
-           size = 2,
-           vjust = -0.6,
-           ecolour = "grey60",
-           ealpha = 0.5)
+           size = 2, #<<
+           vjust = -0.6, #<<
+           ecolour = "grey60", #<<
+           ealpha = 0.5) #<<
 ```  
 ]
 
@@ -321,7 +321,7 @@ ggplot(data = madmen_net,
 ]
 
 ---
-# How to plot
+# How to plot: Add colours + theme
 
 .left-code[
 ```{r graph-plot-5, eval = FALSE}
@@ -338,10 +338,9 @@ ggplot(data = madmen_net,
            vjust = -0.6,
            ecolour = "grey60",
            ealpha = 0.5) +
-    scale_colour_manual(values = c("#FF69B4", "#0099ff")) +
-    lims(x = c(-0.05, 1.05)) + 
-    theme_net() +
-    theme(legend.position = "bottom")
+    scale_colour_manual(
+      values = c("#FF69B4", "#0099ff") #<<
+      )
 ```  
 ]
 
@@ -351,9 +350,49 @@ ggplot(data = madmen_net,
 ```
 ]
 
+---
+# How to plot: Add theme + move legend
+
+.left-code[
+```{r graph-plot-6, eval = FALSE}
+set.seed(5556677)
+gg_madmen_net <-
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3,
+           size = 2,
+           vjust = -0.6,
+           ecolour = "grey60",
+           ealpha = 0.5) +
+    scale_colour_manual(values = c("#FF69B4", "#0099ff"))  +
+  theme_net() + #<<
+  theme(legend.position = "bottom") #<<
+gg_madmen_net
+```  
+]
+
+.right-plot[
+```{r graph-plot-6-out, ref.label = 'graph-plot-6', echo = FALSE, out.width = "100%"}
+
+```
+]
+
 
 ---
-# Which actor was most connected?
+# Which character was most connected?
+
+```{r}
+madmen_edges 
+```
+
+
+---
+# Which character was most connected?
 
 ```{r}
 madmen_edges %>% 
@@ -363,7 +402,7 @@ madmen_edges %>%
 ```
 
 ---
-# Which actor was most connected?
+# Which character was most connected?
 
 ```{r}
 madmen_edges %>% 
@@ -371,6 +410,15 @@ madmen_edges %>%
                names_to = "List",
                values_to = "Name") %>% 
   count(Name, sort = TRUE)
+```
+
+---
+
+# Which character was most connected?
+
+```{r echo = FALSE}
+set.seed(5556677)
+gg_madmen_net
 ```
 
 ---
@@ -398,45 +446,45 @@ Fall 2000 Season of [Division I college football](https://en.wikipedia.org/wiki/
 - Nodes are the teams, edges are the matches. 
 - Teams are broken into "conferences" which are the primary competition, but they can play outside this group.
 
+```{r write-football, echo = FALSE}
+football_edges <- as_tibble(football$edges)
+football_nodes <- as_tibble(football$vertices)
+```
+
+
 ---
-# American college football data
+# American college football data: Edges
 
-Edges:
-.pull-left[
 ```{r}
-football$edges
+football_edges
 ```
-]
 
---
+---
+# American college football data: Nodes
 
-Nodes:
-.pull-right[
 ```{r}
-football$vertices
+football_nodes
 ```
-]
 
 ---
 # American college football: joining the data
 
 ```{r  make-football-graph}
 # data step: merge vertices and edges
-ftnet <- full_join(
-  football$edges, football$vertices,
-  by = c("from" = "label")
-) %>%
+ftnet <- full_join(football_edges, 
+                   football_nodes,
+                   by = c("from" = "label")) %>%
   mutate(schools = if_else(value == "Independents", from, ""))
 
 ftnet
 ```
 
 ---
-# Example: American college football
+# American college football: Identify ndoes
 
 ```{r print-football, eval = FALSE}
 ggplot(data = ftnet,
-       aes(from_id = from, to_id = to)) +
+       aes(from_id = from, to_id = to)) + #<<
   geom_net(
     aes(colour = value, 
         group = value,
@@ -454,10 +502,83 @@ ggplot(data = ftnet,
 ```
 
 ---
+# American college football: Add colours and linetypes
 
-```{r print-gg-foot-graph, echo = FALSE, fig.width = 10, fig.height = 8, out.width = "100%", ref.label='print-football'}
+```{r print-football-2, eval = FALSE}
+ggplot(data = ftnet,
+       aes(from_id = from, to_id = to)) +
+  geom_net(
+    aes(colour = value,                  #<<
+        group = value,                   #<< 
+        linetype = factor(1-same.conf),  #<<
+        label = schools),                #<<
+    linewidth = 0.5,
+    size = 5, 
+    vjust = -0.75, 
+    alpha = 0.3,
+    layout.alg = 'fruchtermanreingold'
+  ) +
+  theme_net() +
+  theme(legend.position = "bottom") +
+  scale_colour_brewer("Conference", palette = "Paired")
+```
+
+---
+# American college football: Line features
+
+```{r print-football-3, eval = FALSE}
+ggplot(data = ftnet,
+       aes(from_id = from, to_id = to)) +
+  geom_net(
+    aes(colour = value, 
+        group = value,
+        linetype = factor(1-same.conf),
+        label = schools),
+    linewidth = 0.5,  #<<
+    size = 5,  #<<
+    vjust = -0.75,  #<<
+    alpha = 0.3, #<<
+    layout.alg = 'fruchtermanreingold'
+  ) +
+  theme_net() +
+  theme(legend.position = "bottom") +
+  scale_colour_brewer("Conference", palette = "Paired")
+```
+
+---
+# American college football: Theme features and colours
+
+```{r print-football-4, eval = FALSE}
+ggplot(data = ftnet,
+       aes(from_id = from, to_id = to)) +
+  geom_net(
+    aes(colour = value, 
+        group = value,
+        linetype = factor(1-same.conf),
+        label = schools),
+    linewidth = 0.5,  
+    size = 5,  
+    vjust = -0.75,  
+    alpha = 0.3, 
+    layout.alg = 'fruchtermanreingold' #<<
+  ) +
+  theme_net() + #<<
+  theme(legend.position = "bottom") + #<<
+  scale_colour_brewer("Conference", palette = "Paired") #<<
+```
+
+---
+# American college football:
+
+```{r print-gg-foot-graph, echo = FALSE, fig.width = 16, fig.height = 8, out.width = "100%", ref.label='print-football'}
 # gg_foot_graph
 ```
+
+---
+
+# A note on layouts:
+
+You can learn more about the layout algorithm used by looking at `?geom_net()`.
 
 ---
 # What do we learn?
@@ -469,11 +590,17 @@ ggplot(data = ftnet,
 - Some teams play far afield from their conference.
 
 ---
-# Example: Harry Potter characters
+# Our Turn: Harry Potter characters
 
+.pull-left[
 ```{r show-hp-platform, echo = FALSE, out.width = "50%"}
 include_graphics("images/1069px-Harry_Potter_Platform_Kings_Cross.jpg")
 ```
+]
+
+.pull-right[
+See "9a-harry-potter.Rmd"
+]
 
 *Source: [wikicommons](https://commons.wikimedia.org/wiki/File:Harry_Potter_Platform_Kings_Cross.jpg)*
 
@@ -532,7 +659,7 @@ ggplot(data = hp_all,
 ---
 # Let's plot the characters
 
-```{r ggraph-hp-out, ref.label='plot-hp', echo = FALSE, fig.width = 10, fig.height = 6}
+```{r ggraph-hp-out, ref.label='plot-hp', echo = FALSE, fig.width = 20, fig.height = 12, out.width = "100%"}
 ```
 
 
@@ -541,8 +668,9 @@ class: transition
 # Your turn: rstudio exercise
 
 .pull-left[
+- Complete  9a-class.Rmd
 - Read in last semesters class data, which contains `s1_name` and `s2_name` are the first names of class members, and tutors, with the latter being the "go-to" person for the former. 
-- Write the code to produce a class network that looks something like below
+- Write the code to produce a class network that looks something like the plot on the right.
 ]
 
 .pull-right[

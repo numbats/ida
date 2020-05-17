@@ -1,0 +1,72 @@
+---
+title: "Harry Potter"
+author: "Nicholas Tierney"
+date: "17/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Our Turn: Harry Potter characters
+
+There is a connection between two students if one provides emotional support to the other at some point in the book. 
+- Code to pull the data together is provided by Sam Tyner [here](https://github.com/sctyner/geomnet/blob/master/README.Rmd#harry-potter-peer-support-network).
+
+```{r read-hp, echo=FALSE}
+hp_chars <- read_csv(here::here("data/hp_chars.csv"))
+hp_edges <- read_csv(here::here("data/hp_edges.csv"))
+```
+
+We need to do a pretty gnarly full join, since we want this for each book:
+
+```{r read-hp, echo=FALSE}
+# for each book, expand the edges data and join it to characters
+hp_all <- hp_edges %>%
+  group_by(book) %>%
+  group_map(~ full_join(.x, hp_chars, by = c("name1" = "name"))) %>%
+  bind_rows(.id = "book") %>% 
+  rename(from_id = name1, 
+         to_id = name2)
+```
+
+We now have it in that form that we wanted: 
+
+# Harry potter data as nodes and edges
+
+```{r print-hp}
+hp_all
+```
+
+---
+# Let's plot the characters
+
+```{r plot-hp, echo=TRUE, eval = FALSE}
+ggplot(data = hp_all, 
+       aes(from_id = from_id, 
+           to_id = to_id)) + 
+  geom_net(aes(colour = house, group = house, shape = gender),
+           fiteach=T, 
+           directed = T, 
+           size = 3, 
+           linewidth = .5, 
+           ealpha = .5, 
+           labelon = T, 
+           fontsize = 3, 
+           repel = T, 
+           labelcolour = "black", 
+           arrowsize = .5, 
+           singletons = FALSE) + 
+  scale_colour_manual(values = c("#941B08","#F1F31C", "#071A80", "#154C07")) + 
+  facet_wrap(~book, labeller = "label_both", ncol=3) + 
+  theme_net() + 
+  theme(panel.background = element_rect(colour = 'black'),
+        legend.position="bottom")
+```
+
+---
+# Let's plot the characters
+
+```{r ggraph-hp-out, ref.label='plot-hp', echo = FALSE, fig.width = 20, fig.height = 12, out.width = "100%"}
+```

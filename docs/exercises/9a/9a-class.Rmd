@@ -17,7 +17,7 @@ library(janitor)
 ```
 
 ```{r class-names}
-class_names <- read_csv(here::here("exercises/9a/data/class_names.csv")) %>% clean_names()
+class_names <- read_csv(here::here("data/class_names.csv")) %>% clean_names()
 
 class_names
 ```
