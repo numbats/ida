@@ -279,9 +279,21 @@ madmen_net
 &lt;img src="gifs/full-join.gif" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
-# Plotting the data
+# Plotting the data with `geomnet`
 
 &lt;img src="lecture_9a_files/figure-html/ggraph-madmen-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Aside: Installing `geomnet`
+
+This is the code you will need to use to install it:
+
+
+```r
+install.packages("remotes")
+library(remotes)
+install_github("sctyner/geomnet")
+```
 
 ---
 # How to plot
@@ -319,6 +331,69 @@ ggplot(data = madmen_net,
 
 .right-plot[
 &lt;img src="lecture_9a_files/figure-html/graph-plot-2-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# How to plot: Try different layout algorithms
+
+Follow links in `?geom_net` for more examples:
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+*          layout.alg = "fruchtermanreingold")
+```
+]
+
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-alg-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# How to plot: Try different layout algorithms
+
+Follow links in `?geom_net` for more examples:
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+*          layout.alg = "target")
+```
+]
+
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-alg-out-2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# How to plot: Try different layout algorithms
+
+Follow links in `?geom_net` for more examples:
+
+.left-code[
+
+```r
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+*          layout.alg = "circle")
+```
+]
+
+.right-plot[
+&lt;img src="lecture_9a_files/figure-html/graph-plot-alg-out-3-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -508,13 +583,20 @@ madmen_edges %&gt;%
 
 # Which character was most connected?
 
-&lt;img src="lecture_9a_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_9a_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # What do we learn?
 
 - Joan Holloway had a lot of affairs, all with loyal partners except for his wife Betty, who had two affairs herself
 - Followed by Woman at Clios party
+
+---
+# Your Turn:
+
+- Open 9a-madmen.Rmd
+- Replicate the plots used in the lecture
+- Explore a few different layout algorithms
 
 ---
 # Example: American college football
@@ -706,12 +788,6 @@ ggplot(data = ftnet,
 &lt;img src="lecture_9a_files/figure-html/print-gg-foot-graph-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
-
-# A note on layouts:
-
-You can learn more about the layout algorithm used by looking at `?geom_net()`.
-
----
 # What do we learn?
 
 - Remember layout is done to place nodes that are more similar close together in the display. 
@@ -724,7 +800,7 @@ You can learn more about the layout algorithm used by looking at `?geom_net()`.
 # Our Turn: Harry Potter characters
 
 .pull-left[
-&lt;img src="images/1069px-Harry_Potter_Platform_Kings_Cross.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/1069px-Harry_Potter_Platform_Kings_Cross.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
@@ -791,10 +867,23 @@ ggplot(data = hp_all,
 ```
 
 ---
+# Some more questions
+
+- In the first book, which characters had the most connections?
+- How about the least connections?
+
+---
 # Let's plot the characters
 
 &lt;img src="lecture_9a_files/figure-html/ggraph-hp-out-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
+---
+# Summary
+
+- To make a network analysis, you need:
+
+- an association matrix, that describes how nodes (vertices) are connected to each other
+- a layout algorithm to place the nodes optimally so that the fewest edges cross, or that the nodes that are most closely associated are near to each other.
 
 ---
 class: transition
@@ -809,6 +898,8 @@ class: transition
 .pull-right[
 &lt;img src="images/class_network.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

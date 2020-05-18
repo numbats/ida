@@ -5,6 +5,23 @@ date: "17/05/2020"
 output: html_document
 ---
 
+
+
+```{r}
+library(tidyverse)
+library(geomnet)
+library(here)
+```
+
+ensure you have installed 'geomnet':
+
+```{r}
+# install.packages("remotes")
+# library(remotes)
+# install_github("sctyner/geomnet")
+```
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -39,10 +56,9 @@ We now have it in that form that we wanted:
 hp_all
 ```
 
----
 # Let's plot the characters
 
-```{r plot-hp, echo=TRUE, eval = FALSE}
+```{r plot-hp, echo=TRUE}
 ggplot(data = hp_all, 
        aes(from_id = from_id, 
            to_id = to_id)) + 
@@ -65,8 +81,48 @@ ggplot(data = hp_all,
         legend.position="bottom")
 ```
 
----
-# Let's plot the characters
+# Your Turn
 
-```{r ggraph-hp-out, ref.label='plot-hp', echo = FALSE, fig.width = 20, fig.height = 12, out.width = "100%"}
+In the philosphers stone, who has the most connections?
+
+```{r}
+hp_long_1 <- hp_edges %>% 
+  filter(book == 1) %>% 
+  pivot_longer(cols = c("name1", "name2"),
+               names_to = "list",
+               values_to = "names") 
+
+hp_long_1 %>% 
+  count(names, sort = TRUE)
 ```
+
+In the philosphers stone, who has the least connections?
+
+```{r}
+hp_long_1 %>% 
+  count(names) %>% 
+  arrange(n)
+```
+
+Across all the books, can you show the number of connections?
+
+```{r}
+# Put it in long form
+hp_long <- hp_edges %>% 
+  pivot_longer(cols = c("name1", "name2"),
+               names_to = "list",
+               values_to = "names") 
+  
+# grouping by book, count up the names 
+hp_count <- hp_long %>% 
+  group_by(book) %>% 
+  count(names)
+  
+# Can you make a plot of the number of connections across the books?
+ggplot(hp_count,
+       aes(x = n,
+           y = reorder(names, n))) + 
+  geom_col()  +
+  facet_wrap(~book, scales = "free")
+```
+

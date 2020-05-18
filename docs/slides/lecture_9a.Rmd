@@ -214,7 +214,7 @@ include_graphics("gifs/full-join.gif")
 ```
 
 ---
-# Plotting the data
+# Plotting the data with `geomnet`
 
 ```{r ggraph-madmen, echo = FALSE, fig.width = 10, fig.height = 5}
 # create plot
@@ -228,6 +228,17 @@ ggplot(data = madmen_net, aes(from_id = from_id, to_id = to_id)) +
     theme_net() +
     theme(legend.position = "bottom")
 
+```
+
+---
+# Aside: Installing `geomnet`
+
+This is the code you will need to use to install it:
+
+```{r eval = FALSE}
+install.packages("remotes")
+library(remotes)
+install_github("sctyner/geomnet")
 ```
 
 ---
@@ -266,6 +277,72 @@ ggplot(data = madmen_net,
 
 .right-plot[
 ```{r graph-plot-2-out, ref.label = 'graph-plot-2', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot: Try different layout algorithms
+
+Follow links in `?geom_net` for more examples:
+
+.left-code[
+```{r graph-plot-alg, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "fruchtermanreingold")  #<<
+```  
+]
+
+.right-plot[
+```{r graph-plot-alg-out, ref.label = 'graph-plot-alg', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot: Try different layout algorithms
+
+Follow links in `?geom_net` for more examples:
+
+.left-code[
+```{r graph-plot-alg-2, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "target")  #<<
+```  
+]
+
+.right-plot[
+```{r graph-plot-alg-out-2, ref.label = 'graph-plot-alg-2', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+---
+# How to plot: Try different layout algorithms
+
+Follow links in `?geom_net` for more examples:
+
+.left-code[
+```{r graph-plot-alg-3, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "circle")  #<<
+```  
+]
+
+.right-plot[
+```{r graph-plot-alg-out-3, ref.label = 'graph-plot-alg-3', echo = FALSE, out.width = "100%"}
 
 ```
 ]
@@ -428,6 +505,13 @@ gg_madmen_net
 - Followed by Woman at Clios party
 
 ---
+# Your Turn:
+
+- Open 9a-madmen.Rmd
+- Replicate the plots used in the lecture
+- Explore a few different layout algorithms
+
+---
 # Example: American college football
 
 Early American football outfits were like Australian AFL today!
@@ -575,12 +659,6 @@ ggplot(data = ftnet,
 ```
 
 ---
-
-# A note on layouts:
-
-You can learn more about the layout algorithm used by looking at `?geom_net()`.
-
----
 # What do we learn?
 
 - Remember layout is done to place nodes that are more similar close together in the display. 
@@ -593,7 +671,7 @@ You can learn more about the layout algorithm used by looking at `?geom_net()`.
 # Our Turn: Harry Potter characters
 
 .pull-left[
-```{r show-hp-platform, echo = FALSE, out.width = "50%"}
+```{r show-hp-platform, echo = FALSE, out.width = "100%"}
 include_graphics("images/1069px-Harry_Potter_Platform_Kings_Cross.jpg")
 ```
 ]
@@ -657,11 +735,24 @@ ggplot(data = hp_all,
 ```
 
 ---
+# Some more questions
+
+- In the first book, which characters had the most connections?
+- How about the least connections?
+
+---
 # Let's plot the characters
 
 ```{r ggraph-hp-out, ref.label='plot-hp', echo = FALSE, fig.width = 20, fig.height = 12, out.width = "100%"}
 ```
 
+---
+# Summary
+
+- To make a network analysis, you need:
+
+- an association matrix, that describes how nodes (vertices) are connected to each other
+- a layout algorithm to place the nodes optimally so that the fewest edges cross, or that the nodes that are most closely associated are near to each other.
 
 ---
 class: transition
@@ -678,3 +769,5 @@ class: transition
 include_graphics("images/class_network.png")
 ```
 ]
+
+

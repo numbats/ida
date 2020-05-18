@@ -24,15 +24,10 @@ class_names
 
 
 ```{r class-names}
-class_graph
-```
-
-
-```{r class-names}
-ggplot(class_graph) +
-  geom_edge_fan() + 
-  geom_node_label(alpha = 0.5,
-                  aes(label = name))
+ggplot(class_names,
+       aes(from_id = s1_name, 
+           to_id = s2_name)) +
+  geom_net(labelon = TRUE)
 ```
 
 

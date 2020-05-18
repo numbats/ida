@@ -1,0 +1,93 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(geomnet)
+
+data(madmen)
+madmen_nodes <- as_tibble(madmen$vertices) %>% 
+  mutate_all(as.character) %>% 
+  rename(gender = Gender)
+madmen_edges <- as_tibble(madmen$edges) %>% mutate_all(as.character)
+```
+
+# Example: Madmen
+
+```{r show-madmen-logo, echo = FALSE}
+include_graphics("images/Mad-men-title-card.jpg")
+```
+
+*Source: [wikicommons](https://en.wikipedia.org/wiki/Mad_Men#/media/File:Mad-men-title-card.jpg)*
+
+# introducing `madmen` data
+
+```{r make-madmen-graph}
+glimpse(madmen)
+```
+
+```{r mm-nodes}
+madmen_nodes
+madmen_edges
+```
+
+# Let's get the madmen data into the right shape
+
+```{r}
+madmen_net <- madmen_edges %>%
+  rename(from_id = Name1,
+         to_id = Name2) %>%
+  ___(madmen_nodes,  
+            by = c("from_id" = "label")) #<<
+
+madmen_net
+```
+
+
+# How to plot: specify the layout algorithm
+
+```{r graph-plot-2, eval = FALSE}
+set.seed(5556677)
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai") 
+```  
+
+# How to plot: Add theme + move legend
+
+```{r graph-plot-6}
+set.seed(5556677)
+
+ggplot(data = madmen_net, 
+       aes(from_id = from_id, 
+           to_id = to_id)) +
+  geom_net(aes(colour = gender), 
+           layout.alg = "kamadakawai",
+           directed = FALSE,
+           labelon = TRUE,
+           fontsize = 3,
+           size = 2,
+           vjust = -0.6,
+           ecolour = "grey60",
+           ealpha = 0.5) +
+    scale_colour_manual(values = c("#FF69B4", "#0099ff"))  +
+  theme_net() + #<<
+  theme(legend.position = "bottom") #<<
+```  
+
+# Your Turn: Try out a few different layout algorithms.
+
+# Which character was most connected?
+
+```{r}
+madmen_edges %>% 
+  pivot_longer(cols = ___,
+               names_to = ___,
+               values_to = ___) %>% 
+  count(___, sort = TRUE)
+```
+
+
