@@ -36,7 +36,7 @@ ggplot(class_names,
 
 ```{r}
 class_names_subset <- class_names %>%
-  ___(s1_name %in% c(___, ___))
+  filter(team %in% c("angelina", "marina", "sachin"))
 
 class_names_subset
 ```

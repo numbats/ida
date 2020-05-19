@@ -92,9 +92,9 @@ kable(escape = FALSE,
 [Project instructions](project/project-instructions.html) 
 
 - **Deadline 1 (15th May at midnight)**:  Find team members, and potential topics to study.
-- **Deadline 2 (22nd May)**:  Team members and team name, data description.
-- **Deadline 3 (27th May) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
-- **Deadline 4 (3rd June) **:  Final version of story board uploaded. 
+- **Deadline 2 (22nd May  at midnight)**:  Team members and team name, data description.
+- **Deadline 3 (29th May  at midnight) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
+- **Deadline 4 (5th June) **:  Final version of story board uploaded. 
 - **Presentation in week 12**
 
 There are several ways to do the storyboard:

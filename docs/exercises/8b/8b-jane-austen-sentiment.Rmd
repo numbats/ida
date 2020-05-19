@@ -54,6 +54,35 @@ Is "found" a joyful word?
 # Questions: 
 
 - What are the most common "anger" words used in Emma?
+
+```{r}
+nrc_anger <- get_sentiments("nrc") %>% 
+  filter(sentiment == "anger")
+
+tidy_books %>%
+  filter(book == "Emma") %>%
+  inner_join(nrc_anger) %>%
+  count(word, sort = TRUE)
+```
+
+```{r}
+common_emotion <- function(text_df, book_name, emotion){
+  nrc_emotion <- get_sentiments("nrc") %>% 
+  filter(sentiment == emotion)
+
+text_df %>%
+  filter(book == book_name) %>%
+  inner_join(nrc_emotion) %>%
+  count(word, sort = TRUE)
+}
+```
+
+```{r}
+common_emotion(tidy_books, "Emma", "surprise")
+common_emotion(tidy_books, "Pride & Prejudice", "joy")
+```
+
+
 - What are the most common "surprise" words used in Emma?
 
 # Next round of questions:
