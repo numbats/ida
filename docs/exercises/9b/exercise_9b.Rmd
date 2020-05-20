@@ -1,0 +1,404 @@
+
+title: "ETC1010: Introduction to Data Analysis"
+week: "Week 9, part B"
+
+  
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(geomnet)
+```
+
+# Quantitative association matrices
+
+- You could have the association between nodes described as real numbers.
+
+- E.g., these are the number of times that these people called each other in the last week:
+
+```{r show-n-times-ppl-called, echo = FALSE}
+d <- matrix(c(0, 5, 4, 1, 1, 
+              5, 0, 4, 2, 1,
+              4, 4, 0, 0, 0,
+              1, 2, 0, 0, 6,
+              1, 1, 0, 6, 0), ncol=5, byrow=T)
+colnames(d) <- c("Meg", "Tay", "Yat", "Zili", "Jess")
+rownames(d) <- colnames(d)
+kable(d)
+```
+
+
+# Quantitative association matrices
+
+We would need to turn this into an edge data set:
+
+```{r show-edges, echo=FALSE}
+d_edges <- d %>% as_tibble() %>%
+  mutate(from = rownames(d)) %>%
+  gather(to, count, -from)
+d_edges
+```
+
+
+# Quantitative association matrices
+
+- We need to decide what corresponds to a "connection".
+- Let's say they need to have called each other at least 4 times, to be considered connected.
+
+
+```{r decide-connections, echo = TRUE}
+d_edges_filter <- d_edges %>% filter(count > 3)
+```
+
+--
+
+```{r decide-connections-print, echo = TRUE}
+d_edges_filter
+```
+
+
+# Association matrices: Make the network diagram.
+
+.left-code[
+```{r geom-net-cals, eval = FALSE}
+library(geomnet)
+set.seed(2020-05-09)
+ggplot(data = d_edges_filter, 
+       aes(
+         from_id = from, 
+         to_id = to)) +
+  geom_net(
+    layout.alg = "kamadakawai",
+    size = 3, 
+    labelon = TRUE, 
+    vjust = -0.6, 
+    ecolour = "grey60",
+    directed =FALSE, 
+    fontsize = 4, 
+    ealpha = 0.5
+    ) +
+    theme_net() 
+```  
+]
+
+.right-plot[
+```{r geom-net-cals-out, ref.label = 'geom-net-cals', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+
+# Data: Last 4 months of currency USD cross-rates in 2018
+SO let's try this with cross-currency rates across the globe!
+
+- Data extracted from http://openexchangerates.org/api/historical
+- R packages `jsonlite`, processed with `tidyverse`, `lubridate`
+
+
+# Data: Last 4 months of currency USD cross-rates in 2018
+
+```{r show-rates, echo=FALSE, fig.width=5, fig.height=5}
+rates <- read_csv(here::here("data/rates_new.csv"))
+rates <- rates %>% 
+  distinct() %>%  
+  arrange(date)
+rates %>% head()
+```
+
+
+# Data: Last 4 months of currency USD cross-rates in 2018
+
+```{r plot-rates, echo=FALSE, out.width = "100%"}
+p1 <- ggplot(rates, aes(x=date, y=AUD)) + geom_line()
+p2 <- ggplot(rates, aes(x=date, y=EUR)) + geom_line()
+p3 <- ggplot(rates, aes(x=date, y=JPY)) + geom_line()
+p4 <- rates %>% select(date, AUD, EUR, JPY) %>%
+  gather(curr, value, -date) %>%
+  ggplot(aes(x=date, y=value, colour=curr, group=curr)) + 
+    geom_line() + theme(legend.position="none") +
+  scale_colour_brewer(palette="Dark2")
+grid.arrange(p1, p2, p3, p4, ncol=2)
+```
+
+
+# Your turn: Rstudio
+
+Make some plots (or google) to answer these questions
+
+- Is the NZD more similar to AUD, EUR, or JPY? (What currency is NZD?)
+- Is SGD more similar to AUD, EUR, or JPY? (What currency is SGD?)
+- How many currencies are there in the British Isles? 
+
+
+
+```{r show-many-currencies, out.width = "100%", echo = FALSE}
+p1 <- ggplot(rates, aes(x=date, y=AUD)) + geom_line()
+p2 <- ggplot(rates, aes(x=date, y=EUR)) + geom_line()
+p3 <- ggplot(rates, aes(x=date, y=JPY)) + geom_line()
+p4 <- ggplot(rates, aes(x=date, y=SGD)) + geom_line()
+grid.arrange(p1, p2, p3, p4, ncol=2)
+```
+
+
+# Pre-processing: Keep currencies that change
+
+- Some currencies don't change very much. 
+- These should be filtered from the analysis, because in a study of currency movement, if it doesn't move then there is nothing more to be said. 
+
+
+# Pre-processing: Keep currencies that change
+
+- To filter out these currencies we use a statistic called [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation):
+
+$$
+Coef Variation = \frac{\sigma}{\mu}
+$$
+
+--
+
+- Measures standard deviation of currency relative to the mean. 
+- For high means, we expect a currency to change more. 
+- That is, relatively the standard deviation would be larger to consider it to be changing.
+
+
+
+# Computing CV
+
+### Strategy pivot to long form then group and summarize currency values
+
+```{r}
+# Compute coefficient of variation. We will only analyse 
+# currencies that have changes substantially over this time.
+cv <- function(x){
+  sd(x)/mean(x)
+}
+
+rates_cv <- rates %>% 
+  pivot_longer(cols = -date, names_to = "currency") %>% 
+  group_by(currency) %>% 
+  summarise(cv = cv(value)) 
+```
+
+
+# Distrubtion of CV values
+
+```{r cv-histogram, echo = FALSE}
+rates_cv %>% 
+  ggplot(aes(x = cv)) +
+    geom_histogram(binwidth = 0.01)
+```
+
+
+# Identify currencies with CVs below the first quantile
+
+```{r low-quantile}
+rates_stable <- rates_cv %>%
+  filter(cv < quantile(cv, 0.25))
+```
+
+
+
+# Filter out low cv currencies using pivot and an anti join
+
+```{r anti-low-cv}
+rates_sub <- rates %>% 
+  pivot_longer(cols = -date, names_to = "currency") %>% 
+  anti_join(rates_stable)
+rates_sub
+```
+
+
+# Remove currencies that are not currencies
+
+Some of the currencies ... aren't really currencies. Google these ones: XAG, XDR, XPT - what are they?
+
+
+# Remove currencies that are not currencies
+
+```{r}
+# Remove non-currencies
+rates_dropped <- rates_sub %>% 
+  filter(!currency %in% c("ALL", "XAG", "XDR", "XPT"))
+```
+
+XAG is Gold
+XPT is Platinum
+XDR is special drawing rights
+
+
+# Standardize the currencies
+
+To examine overall trend regardless of actual USD cross rate, standardise the values to have mean 0 and standard deviation 1.
+
+
+```{r scale-fun}
+scale01 <- function(x) (x - mean(x)) / sd(x)
+```
+
+
+# Rescale all values to have standardised values
+
+##  Use `group_by()` plus `mutate()`!
+
+--
+```{r rescale-rates}
+rates_scaled <- rates_dropped %>%
+  group_by(currency) %>% 
+  mutate(value = scale01(value))
+```
+
+
+# Standardize the currencies
+
+```{r currencies-standardized, out.width = "100%", echo = FALSE}
+rates_scaled %>% 
+    filter(currency %in% c("AUD", "EUR", "JPY")) %>% 
+    ggplot(aes(x =  date, y = value)) + 
+    geom_line() +
+    facet_grid(~currency)
+```
+
+
+# Compute distances between all pairs of currencies
+
+Euclidean distance is used to compute similarity between all pairs of currencies. 
+
+$d_{ij} = \sqrt{\sum_{i=1}^{t}{(C_{1i}-C_{2i})^2}}$
+
+
+# Compute distances between all pairs of currencies
+
+We need to put our data back in wide form! And then turn it
+into a matrix. 
+
+```{r compute-dist-01}
+rates_wide <- rates_scaled %>% 
+    pivot_wider(id_cols = "date", names_from = "currency") %>%
+    select(-date)
+
+# compute distance between currencies, rows <--> columns 
+rates_wide_t <- t(rates_wide)
+```
+
+
+
+
+# Use built in function to compute distance
+
+```{r}
+currency_dist <- as.matrix(dist(rates_wide_t, 
+                             diag = TRUE, 
+                             upper = TRUE))
+
+currency_dist[1:5, 1:5]
+```
+
+
+
+# A note on distance matrices:
+
+- A distance matrix is the inverse of an association matrix. 
+- A distance matrix close to 0 means the pair are most similar. 
+- For an association matrix far from zero means the pair are close. 
+- Either can be used to generate a network. 
+
+
+# Create network: Pivot data into long form, filter based on similarity
+
+Here only the pairs of currencies who are closer than "4" to each other are kept. 
+
+```{r}
+distance_tbl <-  currency_dist %>% 
+  as.data.frame() %>%
+  rownames_to_column(var = "from_currency") %>% 
+  pivot_longer(-from_currency, 
+               names_to = "to_currency",
+               values_to = "distance") %>% 
+  filter(distance < 4 ) %>%
+  filter(from_currency != to_currency)
+```
+
+
+# Create network: Gather data into long form, filter based on similarity
+
+Here only the pairs of currencies who are closer than "4" to each other are kept. 
+
+```{r show-zero-tbl}
+distance_tbl
+```
+
+
+
+# Network laid out
+
+.left-code[
+```{r currency-network, eval = FALSE}
+set.seed(10052016)
+ggplot(data = distance_tbl, 
+       aes(
+         from_id = from_currency, 
+         to_id = to_currency
+         )) +
+  geom_net(
+    size = 3, 
+    labelon = TRUE, 
+    repel = TRUE,
+    ecolour = "grey60",
+    fontsize = 3,
+    ealpha = 0.5
+    ) +
+    theme_net() +
+    theme(
+      legend.position = "bottom"
+      )
+```  
+]
+
+.right-plot[
+```{r currency-network-out, ref.label = 'currency-network', echo = FALSE, out.width = "100%"}
+
+```
+]
+
+
+class: transition
+
+# Your turn
+
+- Make a plot of the AUD vs the SGD (using the standardised units). Do they look like they are trending together as suggested by the network?
+- Try out the remaining lab exercises 
+
+
+class: transition
+
+# Flexdashboard
+[demo]
+
+
+# Flexdasboard 
+
+Here is a list, in order of viewing. 
+
+1. Sharon  Machlis: R language tip: Easy dashboards with flexdashboard https://www.youtube.com/watch?v=_oDfBVr9wmQ
+
+2. Jonathan Ng's series:
+  - 5 Minute Dashboard with R Shiny Flex Dashboards https://www.youtube.com/watch?v=45h71BFbL1w: Getting set up with shiny, to have inputs and reactive plots. Uses an igraph example.
+  - Flexdashboard Cheat Sheet https://www.youtube.com/watch?v=gkQvhMA24ig: Layout explanations. Nice style of making  changes and exploring the result
+  - Dyanmic Dashboard Filters with R, Shiny Flex Dashboards https://www.youtube.com/watch?v=MBNdyRQIvE4:  Reasonable getting  started with shiny elements.
+  
+
+# Flexdashboard
+
+2. Jonathan Ng's series (continued):
+
+- Build a Dashboard in 10 Seconds with R Shiny Flexdashboard https://www.youtube.com/watch?v=6WTaGEOVJ6s: Advanced R coding. Starts from a sample flexdashboard with inputs  and  reactives, and adds more advanced elements to it. (Follows Dyanmic Dashboard Filters with R, Shiny Flex Dashboards)
+- Load R Shiny Flexdashboards Faster https://www.youtube.com/watch?v=MlfHf8PpX5E&
+
+
+
+# A note on presenting your project
+
+- We suggest making recording a group presentation with zoom, and uploading to youtube as an unlisted video
+- Time limit of 5 minutes
+- You can use basic software like Quicktime to trim the starts and ends of the videos
+- I will post more details on how to post videos onto youtube soon.
