@@ -51,6 +51,8 @@ library(lubridate)
 library(gridExtra)
 library(plotly)
 library(broom)
+library(broomstick)
+
 opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,
@@ -133,23 +135,34 @@ ggplot(df_lm_aug, aes(x = .fitted,
 
 ```{r echo=TRUE}
 library(rpart)
-library(broom)
-library(broomstick)
 df_rp <- rpart(y~x, data=df)
+
 ```
 
 
-```{r echo=TRUE}
+```{r echo=FALSE}
+splt <- as_tibble(df_rp$splits) %>% 
+  rowid_to_column(var = "order") %>%
+  select(index, order)
+
 df_rp_aug <- augment(df_rp)
 ggplot(df_rp_aug,
        aes(x = .fitted,
            y = .resid)) + 
   geom_point()
+```
 
+---
+# Comparing lm vs rpart
+
+
+```{r echo=FALSE}
+df_aug_both <- 
 bind_rows(lm = df_lm_aug,
           rpart = df_rp_aug,
-          .id = "model") %>% 
-  ggplot(aes(x = .fitted,
+          .id = "model") 
+
+ggplot(df_aug_both, aes(x = .fitted,
              y = .resid,
              colour = model)) + 
   geom_point()
@@ -158,7 +171,7 @@ bind_rows(lm = df_lm_aug,
 ---
 # What the output of a linear model looks like
 
-```{r show-lm, echo = FALSE}
+```{r show-lm-putput, echo = FALSE}
 df_lm
 ```
 
@@ -166,8 +179,72 @@ df_lm
 # What the output of a decision tree looks like
 
 ```{r show-rpart, echo = FALSE}
-df_rpart
+df_rp
 ```
+
+---
+# Predictions from linear model vs rpart
+
+```{r show-preds, echo = FALSE}
+ggplot(df_aug_both,
+       aes(x = x,
+           y = y)) + 
+  geom_point() + 
+  geom_line(aes(y = .fitted,
+                colour = model))
+```
+
+
+---
+# So what is going on?
+
+- A linear model asks "What line fits through these points, to minimise the error"?
+- A decision tree model asks "How can I best break the data into segments" 
+
+---
+# A linear model: draws the line of best fit
+
+```{r echo = FALSE}
+ggplot(data = df_lm_aug, 
+            mapping = aes(x = x, y = y)) +
+  geom_point() + 
+  geom_line(aes(y = .fitted), color = "steelblue", size = 1) +
+  geom_segment(mapping = aes(xend = x, 
+                             yend = .fitted), 
+               color = "grey50",
+               alpha = 0.5)
+```
+
+---
+# A regression tree: segments the data to reduce some error
+
+```{r echo = FALSE}
+ggplot(df, aes(x = x, 
+               y = y)) + 
+  geom_point() +
+  geom_vline(aes(xintercept = splt$index[1], 
+                 colour = "salmon"),
+             linetype = 2) +
+  geom_text(data = splt[1, ],
+            aes(x = index, y = max(df$y), label = order),
+            nudge_x = 0.02) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  scale_colour_viridis_d() +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+
+---
+# Regression trees
+
+- Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
+- It is a computationally intensive technique, involves examining ALL POSSIBLE partitions. 
+- The BEST partition by optimizing some criteria
+- For regression, with a quantitative response variable, the criteria is called ANOVA:
+
+$$SS_T-(SS_L+SS_R)$$
+where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
 
 
 ---
@@ -193,9 +270,6 @@ rpart.plot(df_rp)
 This is how the data is split:
 
 ```{r show-split, echo = FALSE}
-splt <- as_tibble(df_rp$splits) %>% 
-  rowid_to_column(var = "order") %>%
-  select(index, order)
 ggplot(df, aes(x = x, y = y)) + geom_point() +
   geom_vline(data = splt,
              aes(xintercept = index, 
@@ -213,7 +287,7 @@ ggplot(df, aes(x = x, y = y)) + geom_point() +
 ---
 # This is how the model looks:
 
-```{r}
+```{r model-pred, echo = FALSE}
 df <- df %>% 
   mutate(bucket = cut(x, breaks=c(min(x)-0.1, splt$index, max(x)))) 
 df_pred <- df %>% 
@@ -231,57 +305,6 @@ ggplot(df_pred) +
   theme(legend.position="none")
 ```
 
----
-# So what is going on?
-
-- A linear model asks "What line fits through these points, to minimise the error"?
-- A decision tree model asks "How can I best break the data into segments" 
-
----
-# A linear model: draws the line of best fit
-
-```{r echo = FALSE}
-ggplot(data = df_lm_aug, 
-            mapping = aes(x = x, y = y)) +
-  geom_point() + 
-  geom_line(aes(y = .fitted), color = "steelblue", size = 1) +
-  geom_segment(mapping = aes(xend = x, 
-                             yend = .fitted), 
-               color = "grey50",
-               alpha = 0.5)
-```
-
----
-# A regression tree: segments the data to reduce some error
-
-```{r}
-ggplot(df, aes(x = x, 
-               y = y)) + 
-  geom_point() +
-  geom_vline(data = splt,
-             aes(xintercept = index, 
-                 colour = factor(order)),
-             linetype = 2) +
-  geom_text(data = splt,
-            aes(x = index, y = max(df$y), label = order),
-            nudge_x = 0.02) +
-  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
-  scale_colour_viridis_d() +
-  theme_bw() +
-  theme(legend.position = "none")
-```
-
-
----
-# Regression trees
-
-- Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
-- It is a computationally intensive technique, involves examining ALL POSSIBLE partitions. 
-- The BEST partition by optimizing some criteria
-- For regression, with a quantitative response variable, the criteria is called ANOVA:
-
-$$SS_T-(SS_L+SS_R)$$
-where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
 
 ---
 # Stopping rules
@@ -300,32 +323,37 @@ where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values 
 str(df_rp$control)
 ```
 
-If you change these options and re-fit, the model will change. Here we reduce the `minbucket` parameter. 
+---
+# If you change these options 
+
+An re-fit, the model will change. Here we reduce the `minbucket` parameter. 
 
 ```{r echo=TRUE}
-df_rp <- rpart(y~x, data=df, 
-  control = rpart.control(minsplit=10))
-df_rp
+df_rp_m10 <- rpart(y~x, data=df, 
+                        control = rpart.control(minsplit = 2))
+df_rp_m10
 ```
 
 
 ---
-# This yields a more complex model.
+# This yields a (slightly) more complex model.
 
-```{r fig.width=8}
-df_pred2 <- df %>% 
-  mutate(pred = predict(df_rp, df))
-p1 <- ggplot(df_pred) + 
-  geom_point(aes(x=x, y=y)) +
-  geom_line(aes(x=x, y=pred), colour="hotpink", size=1.5) +
-  scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1)) +
-  theme_bw() + ggtitle("Old model")
-p2 <- ggplot(df_pred2) + 
-  geom_point(aes(x=x, y=y)) +
-  geom_line(aes(x=x, y=pred), colour="orange", size=1.5) +
-  scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1)) +
-  theme_bw() + ggtitle("New model")
-grid.arrange(p1, p2, ncol=2)
+```{r echo = FALSE, fig.width=8}
+df_rp_m10_aug <- augment(df_rp_m10)
+
+updated_rpart <- bind_rows(
+  old = df_rp_aug,
+  new = df_rp_m10_aug,
+  .id = "model"
+)
+
+ggplot(updated_rpart,
+       aes(x = x, 
+                 y = y)) +
+  geom_point() +
+  geom_line(aes(y = .fitted,
+                colour = model)) +
+  scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
 ```
 
 ---
@@ -333,7 +361,7 @@ grid.arrange(p1, p2, ncol=2)
 
 Illustration showing the calculations made to decide on the first partition.
 
-```{r}
+```{r echo = FALSE}
 sst <- var(df$y)*(nrow(df)-1)
 compute_anova <- function(left, right) {
   ssl <- var(left$y)*(nrow(left)-1)
@@ -354,9 +382,13 @@ for (i in 2:nrow(df)) {
   aov_f$x[i-1] <- mean(df$x[c(i-1, i)])
   aov_f$f[i-1] <- compute_anova(left, right)
 }
+```
+
+
+```{r echo = FALSE}
 p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
 p2 <- ggplot(data=aov_f) +
-  geom_line(aes(x=x, y=f), colour="hotpink") +
+  geom_line(aes(x=x, y=f) , colour="hotpink") +
     geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)
 grid.arrange(p1, p2, ncol=1)
 ```
@@ -365,9 +397,7 @@ grid.arrange(p1, p2, ncol=1)
 # Residuals
 
 ```{r}
-df_rp <- rpart(y~x, data=df)
-df_rp_aug <- cbind(df, e=residuals(df_rp))
-ggplot(df_rp_aug, aes(x=x, y=e)) + geom_point() +
+ggplot(df_rp_aug, aes(x=x, y= .resid)) + geom_point() +
   ylab("residuals") + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
 ```
 
@@ -426,3 +456,10 @@ Which rewards splits where the observations are all one class.
 - 15 year old standardised test scores, Australia, 2015
 - Response: math
 - Predictors: gender, anxtest, wealth, math_time, books, tvs
+
+```{r}
+# pp <- read_csv(here::here("slides/data/paris-paintings.csv"))
+# 
+# lm(logprice ~ Height_in + Width_in, data = pp)
+# rpart(logprice ~ Height_in + Width_in, data = pp)
+```
