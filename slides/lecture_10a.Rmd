@@ -81,14 +81,18 @@ opts_chunk$set(echo = TRUE,
 - What is a regression tree?
 - How is it computed?
 - Deciding when its a good fit
+  - rmse
 - Comparison with linear models
-- How a classification tree differs from a regression tree?
+- Using multiple variables
+- Next class:
+  - How a classification tree differs from a regression tree?
 
 
 ---
 # Example
 
-Here's a synthetic data set for illustration. Just making up a function to simulate some data to play with.
+X = time
+y = leaf growth on a tree
 
 ```{r simulated-data, echo = FALSE}
 set.seed(2020 - 05 - 21)
@@ -121,20 +125,29 @@ ggplot(df, aes(x = x, y = y)) +
 ```
 
 ---
+# Assessing model fit
+
+- glance
+- look at residuals
+- Look at mean square error
+
+---
 # Looking at the residuals
 
 ```{r resid, echo = FALSE}
 df_lm_aug <- augment(df_lm)
-ggplot(df_lm_aug, aes(x = .fitted,
+ggplot(df_lm_aug, aes(x = x,
                       y = .resid)) + 
   geom_point()
 ```
 
 ---
-# Using rpart
+# Let's use a different mode: "rpart"
 
 ```{r echo=TRUE}
 library(rpart)
+# df_lm <- lm(y~x, data=df)
+# similar to lm! But rpart.
 df_rp <- rpart(y~x, data=df)
 
 ```
@@ -147,7 +160,7 @@ splt <- as_tibble(df_rp$splits) %>%
 
 df_rp_aug <- augment(df_rp)
 ggplot(df_rp_aug,
-       aes(x = .fitted,
+       aes(x = x,
            y = .resid)) + 
   geom_point()
 ```
@@ -162,7 +175,7 @@ bind_rows(lm = df_lm_aug,
           rpart = df_rp_aug,
           .id = "model") 
 
-ggplot(df_aug_both, aes(x = .fitted,
+ggplot(df_aug_both, aes(x = x,
              y = .resid,
              colour = model)) + 
   geom_point()
@@ -199,7 +212,7 @@ ggplot(df_aug_both,
 # So what is going on?
 
 - A linear model asks "What line fits through these points, to minimise the error"?
-- A decision tree model asks "How can I best break the data into segments" 
+- A decision tree model asks "How can I best break the data into segments, to minimize some error?" 
 
 ---
 # A linear model: draws the line of best fit
@@ -246,6 +259,8 @@ ggplot(df, aes(x = x,
 $$SS_T-(SS_L+SS_R)$$
 where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
 
+(fit this sentence in better)
+- By minimizing sum of squares (ANOVA) we are forcing the partitions to have relatively equal variance. The method could be influenced by outliers, but it would be isolating the effect to one partition.
 
 ---
 # Understanding rpart
@@ -317,20 +332,13 @@ ggplot(df_pred) +
 - In addition, we can also look at the change in value of $SS_T-(SS_L+SS_R)$ at each split, and if the change is too *small*, stop. To decide on a suitable value for *small* a cross-validation procedure is used.
 
 ---
-#  Below are the controls for the fit on the example data:
-
-```{r}
-str(df_rp$control)
-```
-
----
-# If you change these options 
+# You can change the options to fit a different model
 
 An re-fit, the model will change. Here we reduce the `minbucket` parameter. 
 
 ```{r echo=TRUE}
 df_rp_m10 <- rpart(y~x, data=df, 
-                        control = rpart.control(minsplit = 2))
+                        control = rpart.control(minsplit = 2)) #<<
 df_rp_m10
 ```
 
@@ -402,11 +410,14 @@ ggplot(df_rp_aug, aes(x=x, y= .resid)) + geom_point() +
 ```
 
 ---
-# Goodness of fit
+# Goodness of fit - Root Mean Square Error
 
 ```{r echo=TRUE}
 gof <- printcp(df_rp, digits=3)
 ```
+
+---
+# goodness of fit?
 
 The relative error is $1-R^2$. For this example, after 6 splits it is `r gof[6,3]`. So $R^2=$ `r 1-gof[6,3]`. 
 
@@ -417,10 +428,18 @@ The relative error is $1-R^2$. For this example, after 6 splits it is `r gof[6,3
 ---
 # Strengths and weaknesses
 
-- There are no parametric assumptions underlying partitioning methods
+- Strengths:
+  - There are no parametric assumptions underlying partitioning methods
+  - Can handle data of unusual shapes and sizes?
+  - Can identify unusual groups of data
+  - Provides a tree based graphic that is fun to interpret
+  - Has an efficient heuristic of handling missing values. 
+- Weaknesses
+  - Doesn't really handle data that is linear very well
+  - Can require tuning parameters to get good model fit
+
 - Also means that there is not a nice formula for the model as a result, or inference about populations available
-- By minimizing sum of squares (ANOVA) we are forcing the partitions to have relatively equal variance. The method could be influenced by outliers, but it would be isolating the effect to one partition.
-- Because it operates on single variables, it can efficiently handle missing values. 
+
 
 ---
 # Your turn: compute a regression tree
@@ -457,9 +476,54 @@ Which rewards splits where the observations are all one class.
 - Response: math
 - Predictors: gender, anxtest, wealth, math_time, books, tvs
 
+---
+# Lab exercise
+
+- Paintings data
+- Just predict price with year
+- 
+
 ```{r}
-# pp <- read_csv(here::here("slides/data/paris-paintings.csv"))
-# 
-# lm(logprice ~ Height_in + Width_in, data = pp)
-# rpart(logprice ~ Height_in + Width_in, data = pp)
+pp <- read_csv(here::here("slides/data/paris-paintings.csv"))
+
+pp_lm <- lm(logprice ~ Height_in + Width_in, data = pp)
+pp_rp <- rpart(logprice ~ Height_in + Width_in + year, data = pp)
+
+pp_lm_aug <- augment(pp_lm)
+pp_rp_aug <- augment(pp_rp)
+library(rpart.plot)
+rpart.plot(pp_rp)
 ```
+
+- include a bit on adding more variables
+- include a bit on using more variables to predict something interesting
+- link to the data dictionary: http://www2.stat.duke.edu/~cr173/Sta112_Fa16/data/paris_paintings.html
+- describe why we've subsetted the data (to avoid perfect predictors?)
+
+```{r}
+pp_rp_all <- rpart(logprice ~ ., data = select(pp, 
+                                               logprice,
+                                               origin_author,
+                                               school_pntg,
+                                               artistliving,
+                                               authorstyle,
+                                               endbuyer,
+                                               Height_in:mat,
+                                               engraved:finished,
+                                               relig,
+                                               landsALL,
+                                               arch:other))
+
+rpart.plot(pp_rp_all)
+```
+
+---
+
+```{r}
+tidy(pp_rp_all) %>% 
+  ggplot(aes(x = importance,
+             y = reorder(variable, importance))) + 
+  geom_col()
+
+```
+
