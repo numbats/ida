@@ -41,6 +41,8 @@ output:
   
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(tibble)
+library(vctrs)
 library(knitr)
 library(kableExtra)
 library(countdown)
@@ -48,6 +50,7 @@ library(knitr)
 library(lubridate)
 library(gridExtra)
 library(plotly)
+library(broom)
 opts_chunk$set(echo = TRUE,   
                message = FALSE,
                warning = FALSE,
@@ -79,23 +82,13 @@ opts_chunk$set(echo = TRUE,
 - Comparison with linear models
 - How a classification tree differs from a regression tree?
 
----
-# Regression trees
-
-- Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
-- It is a computationally intensive technique, involves examining ALL POSSIBLE partitions. 
-- The BEST partition by optimizing some criteria
-- For regression, with a quantitative response variable, the criteria is called ANOVA:
-
-$$SS_T-(SS_L+SS_R)$$
-where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
 
 ---
 # Example
 
 Here's a synthetic data set for illustration. Just making up a function to simulate some data to play with.
 
-```{r simulated-data}
+```{r simulated-data, echo = FALSE}
 set.seed(2020 - 05 - 21)
 x <- sort(runif(100) - 0.5)
 df <- data.frame(x,
@@ -107,17 +100,84 @@ ggplot(df, aes(x = x, y = y)) + geom_point()
 ```
 
 ---
-# Model fit
+# Aims
+
+- We want to be able to predict the Y values
+
+---
+# Using a linear model
+
+```{r show-lm}
+df_lm <- lm(y ~ x, df)
+```
+
+
+```{r lm, echo = FALSE}
+ggplot(df, aes(x = x, y = y)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+---
+# Looking at the residuals
+
+```{r resid, echo = FALSE}
+df_lm_aug <- augment(df_lm)
+ggplot(df_lm_aug, aes(x = .fitted,
+                      y = .resid)) + 
+  geom_point()
+```
+
+---
+# Using rpart
 
 ```{r echo=TRUE}
 library(rpart)
+library(broom)
+library(broomstick)
 df_rp <- rpart(y~x, data=df)
+```
+
+
+```{r echo=TRUE}
+df_rp_aug <- augment(df_rp)
+ggplot(df_rp_aug,
+       aes(x = .fitted,
+           y = .resid)) + 
+  geom_point()
+
+bind_rows(lm = df_lm_aug,
+          rpart = df_rp_aug,
+          .id = "model") %>% 
+  ggplot(aes(x = .fitted,
+             y = .resid,
+             colour = model)) + 
+  geom_point()
+```
+
+---
+# What the output of a linear model looks like
+
+```{r show-lm, echo = FALSE}
+df_lm
+```
+
+---
+# What the output of a decision tree looks like
+
+```{r show-rpart, echo = FALSE}
+df_rpart
+```
+
+
+---
+# Understanding rpart
+
+```{r echo=TRUE}
 df_rp
 ```
 
-`r emo::ji("scream")` Aagh, that's horrible!
-
-`r emo::ji("shrug")` Nah, its really simple!
+**There's a lot going on here, let's break it down.**
 
 ---
 # Plot the model
@@ -132,14 +192,14 @@ rpart.plot(df_rp)
 
 This is how the data is split:
 
-```{r}
-library(vctrs)
+```{r show-split, echo = FALSE}
 splt <- as_tibble(df_rp$splits) %>% 
-  mutate(order = vec_seq_along(splt)) %>%
+  rowid_to_column(var = "order") %>%
   select(index, order)
 ggplot(df, aes(x = x, y = y)) + geom_point() +
   geom_vline(data = splt,
-             aes(xintercept = index, colour = factor(order)),
+             aes(xintercept = index, 
+                 colour = factor(order)),
              linetype = 2) +
   geom_text(data = splt,
             aes(x = index, y = max(df$y), label = order),
@@ -149,7 +209,6 @@ ggplot(df, aes(x = x, y = y)) + geom_point() +
   theme_bw() +
   theme(legend.position = "none")
 ```
-
 
 ---
 # This is how the model looks:
@@ -173,10 +232,62 @@ ggplot(df_pred) +
 ```
 
 ---
+# So what is going on?
+
+- A linear model asks "What line fits through these points, to minimise the error"?
+- A decision tree model asks "How can I best break the data into segments" 
+
+---
+# A linear model: draws the line of best fit
+
+```{r echo = FALSE}
+ggplot(data = df_lm_aug, 
+            mapping = aes(x = x, y = y)) +
+  geom_point() + 
+  geom_line(aes(y = .fitted), color = "steelblue", size = 1) +
+  geom_segment(mapping = aes(xend = x, 
+                             yend = .fitted), 
+               color = "grey50",
+               alpha = 0.5)
+```
+
+---
+# A regression tree: segments the data to reduce some error
+
+```{r}
+ggplot(df, aes(x = x, 
+               y = y)) + 
+  geom_point() +
+  geom_vline(data = splt,
+             aes(xintercept = index, 
+                 colour = factor(order)),
+             linetype = 2) +
+  geom_text(data = splt,
+            aes(x = index, y = max(df$y), label = order),
+            nudge_x = 0.02) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  scale_colour_viridis_d() +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+
+---
+# Regression trees
+
+- Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
+- It is a computationally intensive technique, involves examining ALL POSSIBLE partitions. 
+- The BEST partition by optimizing some criteria
+- For regression, with a quantitative response variable, the criteria is called ANOVA:
+
+$$SS_T-(SS_L+SS_R)$$
+where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
+
+---
 # Stopping rules
 
 - Its an algorithm. Why did it stop at 7 groups?
-- Stopping rules ar needed, else the algorithm will keep fitting until every observartion is in its own group.
+- Stopping rules are needed, else the algorithm will keep fitting until every observation is in its own group.
 - Control parameters set stopping points:
    + minsplit: minimum number of points in a node that algorithm is allowed to split
    + minbucket: minimum number of points in a terminal node
