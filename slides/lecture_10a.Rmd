@@ -65,6 +65,28 @@ opts_chunk$set(echo = TRUE,
                cache = FALSE)
 ```
 
+```{r funs}
+draw_split <- function(split){
+
+df_add_sst <- df %>% 
+  mutate(x_split = if_else(x <= split, "left", "right")) %>% 
+  group_by(x_split) %>% 
+  mutate(y_bar = mean(y),
+         y_slope = 0) 
+
+ggplot(df_add_sst, 
+       aes(x = x, 
+           y = y)) + 
+  geom_point() +
+  geom_vline(xintercept = split, linetype = 2) +
+  geom_line(aes(y = y_bar), colour = "salmon") + 
+  geom_segment(mapping = aes(xend = x, 
+                             yend = y_bar), 
+               color = "grey50",
+               alpha = 0.5) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
+}
+```
 
   
 ```{r titleslide, child="components/titleslide.Rmd"}
@@ -142,12 +164,11 @@ ggplot(df_lm_aug, aes(x = x,
 ```
 
 ---
-# Let's use a different mode: "rpart"
+# Let's use a different model: "rpart"
 
 ```{r echo=TRUE}
 library(rpart)
-# df_lm <- lm(y~x, data=df)
-# similar to lm! But rpart.
+# df_lm <- lm(y~x, data=df) - similar to lm! But rpart.
 df_rp <- rpart(y~x, data=df)
 
 ```
@@ -189,7 +210,7 @@ df_lm
 ```
 
 ---
-# What the output of a decision tree looks like
+# What the output of a rpart looks like
 
 ```{r show-rpart, echo = FALSE}
 df_rp
@@ -222,6 +243,7 @@ ggplot(data = df_lm_aug,
             mapping = aes(x = x, y = y)) +
   geom_point() + 
   geom_line(aes(y = .fitted), color = "steelblue", size = 1) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
   geom_segment(mapping = aes(xend = x, 
                              yend = .fitted), 
                color = "grey50",
@@ -243,7 +265,6 @@ ggplot(df, aes(x = x,
             nudge_x = 0.02) +
   scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
   scale_colour_viridis_d() +
-  theme_bw() +
   theme(legend.position = "none")
 ```
 
@@ -252,35 +273,127 @@ ggplot(df, aes(x = x,
 # Regression trees
 
 - Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
-- It is a computationally intensive technique, involves examining ALL POSSIBLE partitions. 
-- The BEST partition by optimizing some criteria
+- It is a computationally intense technique that examines all possible partitions, and choosing the BEST partition by optimizing some criteria
 - For regression, with a quantitative response variable, the criteria is called ANOVA:
 
 $$SS_T-(SS_L+SS_R)$$
 where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
 
-(fit this sentence in better)
-- By minimizing sum of squares (ANOVA) we are forcing the partitions to have relatively equal variance. The method could be influenced by outliers, but it would be isolating the effect to one partition.
-
 ---
-# Understanding rpart
+# Break down: What is $SS_T = \sum (y_i-\bar{y})^2$ ?
 
-```{r echo=TRUE}
-df_rp
+```{r echo = FALSE}
+df_add_sst <- df %>% 
+  mutate(y_bar = mean(y),
+         y_slope = 0)
+
+ggplot(df_add_sst, 
+       aes(x = x, 
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = y_bar), colour = "salmon") +
+  geom_segment(mapping = aes(xend = x, 
+                             yend = y_bar), 
+               color = "grey50",
+               alpha = 0.5) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
 ```
 
-**There's a lot going on here, let's break it down.**
-
 ---
-# Plot the model
+# Break down: What is $SS_T = \sum (y_i-\bar{y})^2$ ?
 
-```{r}
-library(rpart.plot)
-rpart.plot(df_rp)
+```{r what-is-error, echo = FALSE}
+ggplot(df_add_sst, 
+       aes(x = x, 
+           y = y)) + 
+  geom_segment(mapping = aes(xend = x, 
+                             yend = y_bar), 
+               color = "grey50",
+               alpha = 0.5) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
 ```
 
 ---
-# Plot the model on the data
+
+# $SS_L$ $SS_R$? Choose a point, compare the left and right
+
+
+```{r ssl-ssr-1, echo = FALSE}
+draw_split(-0.4)
+```
+
+---
+
+# $SS_L$ $SS_R$? Choose a point, compare the left and right
+
+
+```{r ssl-ssr-2, echo = FALSE}
+draw_split(-0.2)
+```
+
+---
+
+# $SS_L$ $SS_R$? Choose a point, compare the left and right
+
+
+```{r ssl-ssr-3, echo = FALSE}
+draw_split(0)
+```
+
+---
+
+# $SS_L$ $SS_R$? Choose a point, compare the left and right
+
+```{r ssl-ssr-4, echo = FALSE}
+draw_split(0.2)
+```
+
+---
+
+# $SS_L$ $SS_R$? Choose a point, compare the left and right
+
+```{r fun-ssl-ssr-5, echo = FALSE}
+draw_split(0.4)
+```
+
+
+---
+# Across all values of x?
+
+```{r echo = FALSE}
+sst <- var(df$y)*(nrow(df)-1)
+compute_anova <- function(left, right) {
+  ssl <- var(left$y)*(nrow(left)-1)
+  if (nrow(left) == 1) {
+    ssl <- 1
+}
+  ssr <- var(right$y)*(nrow(right)-1)
+  if (nrow(right) == 1) {
+    ssr <- 1
+  }
+  av <- sst - (ssl+ssr)
+  return(av)
+}
+aov_f <- data.frame(x=df$x[-1], f=df$y[-1])
+for (i in 2:nrow(df)) {
+  left <- df[1:(i-1),]
+  right <- df[i:nrow(df),]
+  aov_f$x[i-1] <- mean(df$x[c(i-1, i)])
+  aov_f$f[i-1] <- compute_anova(left, right)
+}
+```
+
+
+```{r echo = FALSE, fig.height = 5}
+p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+p2 <- ggplot(data=aov_f) +
+  geom_line(aes(x=x, y=f) , colour="hotpink") +
+    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)
+grid.arrange(p1, p2, ncol=1)
+```
+
+---
+# And if we repeated this again
 
 This is how the data is split:
 
@@ -298,6 +411,32 @@ ggplot(df, aes(x = x, y = y)) + geom_point() +
   theme_bw() +
   theme(legend.position = "none")
 ```
+
+---
+# We can represent these splits in a tree format:
+
+```{r}
+library(rpart.plot)
+rpart.plot(df_rp)
+```
+
+
+---
+# note
+
+(fit this sentence in better)
+- By minimizing sum of squares (ANOVA) we are forcing the partitions to have relatively equal variance. The method could be influenced by outliers, but it would be isolating the effect to one partition.
+
+
+---
+# Understanding rpart
+
+```{r echo=TRUE}
+df_rp
+```
+
+**There's a lot going on here, let's break it down.**
+
 
 ---
 # This is how the model looks:
