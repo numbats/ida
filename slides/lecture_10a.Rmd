@@ -113,9 +113,6 @@ ggplot(df_add_sst,
 ---
 # Example
 
-X = time
-y = leaf growth on a tree
-
 ```{r simulated-data, echo = FALSE}
 set.seed(2020 - 05 - 21)
 x <- sort(runif(100) - 0.5)
@@ -128,12 +125,7 @@ ggplot(df, aes(x = x, y = y)) + geom_point()
 ```
 
 ---
-# Aims
-
-- We want to be able to predict the Y values
-
----
-# Using a linear model
+# Let's predict Y using a linear model
 
 ```{r show-lm}
 df_lm <- lm(y ~ x, df)
@@ -149,12 +141,11 @@ ggplot(df, aes(x = x, y = y)) +
 ---
 # Assessing model fit
 
-- glance
-- look at residuals
+- Look at residuals
 - Look at mean square error
 
 ---
-# Looking at the residuals
+# Looking at the residuals: this is bad!
 
 ```{r resid, echo = FALSE}
 df_lm_aug <- augment(df_lm)
@@ -162,6 +153,21 @@ ggplot(df_lm_aug, aes(x = x,
                       y = .resid)) + 
   geom_point()
 ```
+
+It basically looks like the data!
+
+---
+# Looking at the Mean square error (MSE)
+
+$$
+MSE(y) = \frac{\sum_{i = 1}^{i = N} (y_i - \hat{y}_i)^2}{N}
+$$
+In R code:
+
+```{r}
+# calculate example of linear model MSE
+```
+
 
 ---
 # Let's use a different model: "rpart"
@@ -182,9 +188,25 @@ splt <- as_tibble(df_rp$splits) %>%
 df_rp_aug <- augment(df_rp)
 ggplot(df_rp_aug,
        aes(x = x,
-           y = .resid)) + 
-  geom_point()
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
 ```
+
+---
+# Look at residuals
+
+```{r}
+ggplot(df_rp_aug,
+       aes(x = x,
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
+```
+
+
+---
+# Look at MSE
 
 ---
 # Comparing lm vs rpart
@@ -372,6 +394,7 @@ compute_anova <- function(left, right) {
     ssr <- 1
   }
   av <- sst - (ssl+ssr)
+  # av <- (ssl+ssr)
   return(av)
 }
 aov_f <- data.frame(x=df$x[-1], f=df$y[-1])
@@ -388,7 +411,8 @@ for (i in 2:nrow(df)) {
 p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
 p2 <- ggplot(data=aov_f) +
   geom_line(aes(x=x, y=f) , colour="hotpink") +
-    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)
+    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)+
+   scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
 grid.arrange(p1, p2, ncol=1)
 ```
 
@@ -420,13 +444,22 @@ library(rpart.plot)
 rpart.plot(df_rp)
 ```
 
-
 ---
-# note
+# Your turn: compute a regression tree
 
-(fit this sentence in better)
-- By minimizing sum of squares (ANOVA) we are forcing the partitions to have relatively equal variance. The method could be influenced by outliers, but it would be isolating the effect to one partition.
+Using the small data set, manually compute a regression tree model for the data. Sketch the model.
 
+```{r eval=FALSE}
+d <- tibble(x=c(1, 2, 3, 4, 5), y=c(10, 12, 5, 4, 3))
+d
+ggplot(d, aes(x=x, y=y)) + 
+  geom_???()
+```
+
+```{r eval=FALSE, echo=FALSE}
+sst <- var(d$y)*(nrow(???)-1)
+compute_anova(???,???)
+```
 
 ---
 # Understanding rpart
@@ -463,12 +496,12 @@ ggplot(df_pred) +
 ---
 # Stopping rules
 
-- Its an algorithm. Why did it stop at 7 groups?
+- Its an algorithm. Why did it stop at 7 terminal nodes?
 - Stopping rules are needed, else the algorithm will keep fitting until every observation is in its own group.
 - Control parameters set stopping points:
    + minsplit: minimum number of points in a node that algorithm is allowed to split
    + minbucket: minimum number of points in a terminal node
-- In addition, we can also look at the change in value of $SS_T-(SS_L+SS_R)$ at each split, and if the change is too *small*, stop. To decide on a suitable value for *small* a cross-validation procedure is used.
+- We can also look at the change in value of $SS_T-(SS_L+SS_R)$ at each split, and if the change is too *small*, stop.
 
 ---
 # You can change the options to fit a different model
@@ -478,7 +511,6 @@ An re-fit, the model will change. Here we reduce the `minbucket` parameter.
 ```{r echo=TRUE}
 df_rp_m10 <- rpart(y~x, data=df, 
                         control = rpart.control(minsplit = 2)) #<<
-df_rp_m10
 ```
 
 
@@ -505,8 +537,6 @@ ggplot(updated_rpart,
 
 ---
 # What's computed?
-
-Illustration showing the calculations made to decide on the first partition.
 
 ```{r echo = FALSE}
 sst <- var(df$y)*(nrow(df)-1)
@@ -565,40 +595,25 @@ The relative error is $1-R^2$. For this example, after 6 splits it is `r gof[6,3
 ```
 
 ---
-# Strengths and weaknesses
+# Strengths
 
-- Strengths:
   - There are no parametric assumptions underlying partitioning methods
   - Can handle data of unusual shapes and sizes?
   - Can identify unusual groups of data
   - Provides a tree based graphic that is fun to interpret
   - Has an efficient heuristic of handling missing values. 
-- Weaknesses
+  - The method could be influenced by outliers, but it would be isolating the effect to one partition.
+  
+---
+# Weaknesses 
+
   - Doesn't really handle data that is linear very well
   - Can require tuning parameters to get good model fit
 
 - Also means that there is not a nice formula for the model as a result, or inference about populations available
 
-
 ---
-# Your turn: compute a regression tree
-
-Here is a small data set. Manually compute a regression tree model for the data. Sketch the model.
-
-```{r eval=FALSE}
-d <- tibble(x=c(1, 2, 3, 4, 5), y=c(10, 12, 5, 4, 3))
-d
-ggplot(d, aes(x=x, y=y)) + 
-  geom_???()
-```
-
-```{r eval=FALSE, echo=FALSE}
-sst <- var(d$y)*(nrow(???)-1)
-compute_anova(???,???)
-```
-
----
-# Classification trees
+# Next week: Classification trees
 
 When the response is categorical, the model is called a classification tree. The criteria for making the splits changes also. There are a number of split criteria commonly used. If we consider a binary response ($y=0, 1$), and $p$ is the proportion of observations in class $1$.
 
@@ -608,19 +623,10 @@ When the response is categorical, the model is called a classification tree. The
 Which rewards splits where the observations are all one class.
 
 ---
-# Lab exercise
+# Your Turn: Lab exercise
 
-- OECD PISA, what factors affect reading scores?
-- 15 year old standardised test scores, Australia, 2015
-- Response: math
-- Predictors: gender, anxtest, wealth, math_time, books, tvs
-
----
-# Lab exercise
-
-- Paintings data
+- Return of the paintings data
 - Just predict price with year
-- 
 
 ```{r}
 pp <- read_csv(here::here("slides/data/paris-paintings.csv"))

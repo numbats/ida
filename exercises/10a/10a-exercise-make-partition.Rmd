@@ -1,0 +1,172 @@
+---
+output: html_document
+---
+```{r}
+library(tidyverse)
+```
+
+
+Previous data:
+
+```{r}
+set.seed(2020 - 05 - 21)
+x <- sort(runif(100) - 0.5)
+df <- data.frame(x,
+                 y = 10 * c(x[1:50] ^ 2,
+                            x[51:75] * 2,
+                            -x[76:100] ^ 2) + rnorm(100) * 0.5)
+
+ggplot(df, aes(x = x, y = y)) + geom_point()
+```
+
+Example of calculating splits there:
+
+```{r echo = FALSE}
+sum_sq <- function(data, y_var) {
+  if (nrow(data) == 1){
+    res <- 1
+  }
+  
+  y <- data[[y_var]]
+  
+  res <- var(y) * (nrow(data) - 1)
+  
+  return(res)
+}
+
+ss_t <- sum_sq(df, "y")
+
+compute_anova <- function(ss_t, left, right, y_var) {
+  ss_l <- sum_sq(left, y_var)
+  ss_r <- sum_sq(right, y_var)
+  av <- ss_t - (ss_l + ss_r)
+  return(av)
+}
+```
+
+
+```{r echo = FALSE}
+# establish dataframe to hold results
+aov_f <- data.frame(x=df$x[-1], f=df$y[-1])
+
+# cycle through the data and calculate the left and right hand side
+# sums of squares over all values of X
+for (i in 2:nrow(df)) {
+  ss_t <- sum_sq(df, "y")
+  left <- df[1:(i-1),]
+  right <- df[i:nrow(df),]
+  aov_f$x[i-1] <- mean(df$x[c(i-1, i)])
+  aov_f$f[i-1] <- compute_anova(ss_t = ss_t, 
+                                left = left, 
+                                right = right, 
+                                y_var = "y")
+}
+```
+
+
+```{r}
+library(rpart)
+df_rp <- rpart(y~x, data=df)
+```
+
+
+```{r echo = FALSE, fig.height = 5}
+p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+p2 <- ggplot(data=aov_f) +
+  geom_line(aes(x=x, y=f) , colour="hotpink") +
+    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)+
+   scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+library(gridExtra)
+grid.arrange(p1, p2, ncol=1)
+```
+
+Now try with a smaller dataset
+
+Manually compute a regression tree model for the data. 
+
+Sketch the model.
+
+```{r}
+d <- tibble(
+  x = c(1, 2, 3, 4, 5), 
+  y = c(10, 12, 5, 4, 3)
+  )
+
+d
+ggplot(d, aes(x=x, y=y)) + 
+  geom_point()
+```
+
+Now try by hand - computing the first split, and second and third.
+
+```{r}
+# Calculate the SST
+
+ss_t <- sum_sq(d, "y")
+
+d
+# 
+# calculate the SSL
+compute_anova(ss_t = ss_t,
+              left = slice(d, 1),
+              right = slice(d, 2:5),
+              y_var = "y")
+
+compute_anova(ss_t = ss_t,
+              left = slice(d, 1:2),
+              right = slice(d, 3:5),
+              y_var = "y")
+
+compute_anova(ss_t = ss_t,
+              left = slice(d, 1:3),
+              right = slice(d, 4:5),
+              y_var = "y")
+
+compute_anova(ss_t = ss_t,
+              left = slice(d, 1:4),
+              right = slice(d, 5),
+              y_var = "y")
+
+# now, which value has the highest?
+```
+
+
+
+```{r}
+d_sst <- var(d$y)*(nrow(d)-1)
+
+d_aov_f <- data.frame(x=d$x[-1], f=d$y[-1])
+
+# cycle through the data and calculate the left and right hand side
+# sums of squares over all values of X
+
+calculate_split <- function(data){
+
+  ss_t <- sum_sq(data, "y")
+  
+  d_aov_f <- tibble(x = data$x[-1], 
+                    f = data$y[-1])
+  
+  for (i in 2:nrow(data)) {
+    left <- data[1:(i-1),]
+    right <- data[i:nrow(data),]
+    d_aov_f$x[i-1] <- mean(data$x[c(i-1, i)])
+    # d_aov_f$x[i-1] <- data$x[c(i-1)]
+    d_aov_f$f[i-1] <- compute_anova(ss_t = ss_t,
+                                    left = left, 
+                                    right = right,
+                                    y_var = "y")
+  }
+  
+  return(d_aov_f)
+
+}
+
+d_aov <- calculate_split(d)
+
+ggplot(d, aes(x=x, y=y)) + 
+  geom_point() +
+  geom_vline(xintercept = d_aov$x[which.max(d_aov$f)])
+
+rpart(y ~ x, d)
+```
