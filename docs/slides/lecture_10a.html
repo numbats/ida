@@ -3,7 +3,7 @@
   <head>
     <title>ETC1010: Introduction to Data Analysis</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Nicholas Tierney" />
+    <meta name="author" content="Nicholas Tierney &amp; Stuart Lee" />
     <script src="libs/header-attrs-2.1/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
@@ -22,6 +22,33 @@
   </head>
   <body>
     <textarea id="source">
+
+  
+
+
+
+```r
+draw_split &lt;- function(split){
+
+df_add_sst &lt;- df %&gt;% 
+  mutate(x_split = if_else(x &lt;= split, "left", "right")) %&gt;% 
+  group_by(x_split) %&gt;% 
+  mutate(y_bar = mean(y),
+         y_slope = 0) 
+
+ggplot(df_add_sst, 
+       aes(x = x, 
+           y = y)) + 
+  geom_point() +
+  geom_vline(xintercept = split, linetype = 2) +
+  geom_line(aes(y = y_bar), colour = "salmon") + 
+  geom_segment(mapping = aes(xend = x, 
+                             yend = y_bar), 
+               color = "grey50",
+               alpha = 0.5) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
+}
+```
 
   
 
@@ -54,17 +81,17 @@ count: false
 
 &lt;br&gt;
 
-&lt;h2 style="font-weight:900!important;"&gt;Week of introduction&lt;/h2&gt;
+&lt;h2 style="font-weight:900!important;"&gt;Regression and Decision Trees&lt;/h2&gt;
 
 .bottom_abs.width100[
 
-Lecturer: *Nicholas Tierney*
+Lecturer: *Nicholas Tierney &amp; Stuart Lee*
 
 Department of Econometrics and Business Statistics
 
 <span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
 
-11th Mar 2020
+May 2020
 
 &lt;br&gt;
 ]
@@ -88,267 +115,465 @@ Department of Econometrics and Business Statistics
 
 
 
+---
+# recap
 
+- networks
+
+---
+# Overview
+
+- What is a regression tree?
+- How is it computed?
+- Deciding when its a good fit
+  - rmse
+- Comparison with linear models
+- Using multiple variables
+- Next class:
+  - How a classification tree differs from a regression tree?
+
+
+---
+# Example
+
+&lt;img src="lecture_10a_files/figure-html/simulated-data-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Let's predict Y using a linear model
+
+
+```r
+df_lm &lt;- lm(y ~ x, df)
+```
+
+
+&lt;img src="lecture_10a_files/figure-html/lm-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Assessing model fit
+
+- Look at residuals
+- Look at mean square error
+
+---
+# Looking at the residuals: this is bad!
+
+&lt;img src="lecture_10a_files/figure-html/resid-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+It basically looks like the data!
+
+---
+# Looking at the Mean square error (MSE)
+
+$$
+MSE(y) = \frac{\sum_{i = 1}^{i = N} (y_i - \hat{y}_i)^2}{N}
+$$
+In R code:
+
+
+```r
+# calculate example of linear model MSE
+```
+
+
+---
+# Let's use a different model: "rpart"
+
+
+```r
+library(rpart)
+# df_lm &lt;- lm(y~x, data=df) - similar to lm! But rpart.
+df_rp &lt;- rpart(y~x, data=df)
+```
+
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Look at residuals
+
+
+```r
+ggplot(df_rp_aug,
+       aes(x = x,
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
+```
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Look at MSE
+
+---
+# Comparing lm vs rpart
+
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# What the output of a linear model looks like
+
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##      0.8806      -2.2165
+```
+
+---
+# What the output of a rpart looks like
+
+
+```
+## n= 100 
+## 
+## node), split, n, deviance, yval
+##       * denotes terminal node
+## 
+##  1) root 100 359.245100  0.8081071  
+##    2) x&gt;=0.2775916 24  16.840100 -1.4822830  
+##      4) x&gt;=0.3817438 12   3.832238 -2.0814410 *
+##      5) x&lt; 0.3817438 12   4.392090 -0.8831252 *
+##    3) x&lt; 0.2775916 76 176.745400  1.5313880  
+##      6) x&lt; 0.1426085 61  41.562800  0.9365995  
+##       12) x&gt;=-0.3999242 50  24.519860  0.7035330  
+##         24) x&lt; 0.05905847 41  11.729940  0.4807175  
+##           48) x&gt;=-0.1455513 25   5.653876  0.2281914 *
+##           49) x&lt; -0.1455513 16   1.990829  0.8752895 *
+##         25) x&gt;=0.05905847 9   1.481498  1.7185820 *
+##       13) x&lt; -0.3999242 11   1.981477  1.9959930 *
+##      7) x&gt;=0.1426085 15  25.842970  3.9501960 *
+```
+
+---
+# Predictions from linear model vs rpart
+
+&lt;img src="lecture_10a_files/figure-html/show-preds-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# So what is going on?
+
+- A linear model asks "What line fits through these points, to minimise the error"?
+- A decision tree model asks "How can I best break the data into segments, to minimize some error?" 
+
+---
+# A linear model: draws the line of best fit
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# A regression tree: segments the data to reduce some error
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Regression trees
+
+- Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
+- It is a computationally intense technique that examines all possible partitions, and choosing the BEST partition by optimizing some criteria
+- For regression, with a quantitative response variable, the criteria is called ANOVA:
+
+`$$SS_T-(SS_L+SS_R)$$`
+where `\(SS_T = \sum (y_i-\bar{y})^2\)`, and `\(SS_L, SS_R\)` are the equivalent values for the two subsets created by partitioning.
+
+---
+# Break down: What is `\(SS_T = \sum (y_i-\bar{y})^2\)` ?
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Break down: What is `\(SS_T = \sum (y_i-\bar{y})^2\)` ?
+
+&lt;img src="lecture_10a_files/figure-html/what-is-error-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `\(SS_L\)` `\(SS_R\)`? Choose a point, compare the left and right
+
+
+&lt;img src="lecture_10a_files/figure-html/ssl-ssr-1-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `\(SS_L\)` `\(SS_R\)`? Choose a point, compare the left and right
+
+
+&lt;img src="lecture_10a_files/figure-html/ssl-ssr-2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `\(SS_L\)` `\(SS_R\)`? Choose a point, compare the left and right
+
+
+&lt;img src="lecture_10a_files/figure-html/ssl-ssr-3-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `\(SS_L\)` `\(SS_R\)`? Choose a point, compare the left and right
+
+&lt;img src="lecture_10a_files/figure-html/ssl-ssr-4-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `\(SS_L\)` `\(SS_R\)`? Choose a point, compare the left and right
+
+&lt;img src="lecture_10a_files/figure-html/fun-ssl-ssr-5-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Across all values of x?
+
+
+
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# And if we repeated this again
+
+This is how the data is split:
+
+&lt;img src="lecture_10a_files/figure-html/show-split-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# We can represent these splits in a tree format:
+
+
+```r
+library(rpart.plot)
+rpart.plot(df_rp)
+```
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Your turn: compute a regression tree
+
+Using the small data set, manually compute a regression tree model for the data. Sketch the model.
+
+
+```r
+d &lt;- tibble(x=c(1, 2, 3, 4, 5), y=c(10, 12, 5, 4, 3))
+d
+ggplot(d, aes(x=x, y=y)) + 
+  geom_???()
+```
 
 
 
 ---
+# Understanding rpart
 
-# Announcements
 
-- Current alternative for viewing: Download the HTML or the RMD for the moment and view locally.
-- I'm in the process of sorting it out
+```r
+df_rp
+## n= 100 
+## 
+## node), split, n, deviance, yval
+##       * denotes terminal node
+## 
+##  1) root 100 359.245100  0.8081071  
+##    2) x&gt;=0.2775916 24  16.840100 -1.4822830  
+##      4) x&gt;=0.3817438 12   3.832238 -2.0814410 *
+##      5) x&lt; 0.3817438 12   4.392090 -0.8831252 *
+##    3) x&lt; 0.2775916 76 176.745400  1.5313880  
+##      6) x&lt; 0.1426085 61  41.562800  0.9365995  
+##       12) x&gt;=-0.3999242 50  24.519860  0.7035330  
+##         24) x&lt; 0.05905847 41  11.729940  0.4807175  
+##           48) x&gt;=-0.1455513 25   5.653876  0.2281914 *
+##           49) x&lt; -0.1455513 16   1.990829  0.8752895 *
+##         25) x&gt;=0.05905847 9   1.481498  1.7185820 *
+##       13) x&lt; -0.3999242 11   1.981477  1.9959930 *
+##      7) x&gt;=0.1426085 15  25.842970  3.9501960 *
+```
 
----
-# The Practical Exam
-
-- Time: 1 Hour
-- Task: Complete a data analysis and answer questions (like the assignments, but short - similar to the in class exercises)
-- Conditions: 
-  - Open book
-  - Internet access
-  - No contacting / messaging / communicating friends during exam (penalty will be the same as cheating in exam)
-
----
-# The Project Data Milestone: What do Submit
-
-- An Rmd file + 
-- The rendered HTML file
-- The data
-- Zipped / compressed together
-- In the document:
-  - Write about the data - what is it, what are the variables, what sort of questions are you asking, what did you need to do clean the data, what cleaning is remaining?
-  - (About 1-2 paragraphs of text.)
-
----
-# The Project: More general questions
-
-- "How many questions should we ask?"
-  - About 3 - roughly one per person in your group
-- "How will the project be marked?"
-  - You will all mark the projects as you watch them
-- You will need to present for 5 minutes max - use this to help frame how long your analysis should be. 
-- 5 minutes is short - but it is actually a pretty serious challenge!
-- But also consider that the project will be marked by me as well - you won't need to cover everything
-
----
-# The project: What should we present?
-
-Many options!
-
-- You can submit an Rmarkdown document + HTML file
-- You present with a [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) (demo)
-- You could even present as a slide show (like the lecture slides)
-- How to share - Ideally you can use netlify drag and drop (demo)
-
----
-# Exam details
-
-- Worth 50% of your final grade
-- NOT Open Book
-- Calculator: Yes - Allowed to take in "Only HP 10bII+ or Casio FX82 (any suffix) calculator permitted"
-- One A4 page of notes, printed on both sides. This will be collected at the end of the examination.
-- **Hurdle requirement**: You must get 40% on the exam to pass the course (also true of the final project).
-
----
-# Exam Details
-
-- I'll now talk about the questions in the exam, and some of the concepts you need to be familiar with
-- These concepts will help guide what you focus on in the lectures
-- Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
-
----
-# Tidy data Concepts:
-
-- Variables
-- Observations
-- Tidy data
-
----
-# Data Wrangling Concepts:
-
-- Converting "messy" data to tidy data
-- Code / key functions to use to convert data into "tidy" data
-  - e.g, `pivot_longer`, `pivot_wider`, `separate`, etc.
-
----
-# Relational data concepts:
-
-- Left Join
-- Why do joins of data
-- Predict output of a join
-- Sketching out code to summarise data from a join
-
----
-# Data visualisation concepts:
-
-- How the grammar of graphics produces a plot - identify plots produced by which code
-- Understand the focus of a given graphic on the data - questions like: 
-  - "What and how does this graphic make us focus on what feature of the data?"
-  - "What do you learn from a graphic?"
-
----
-# Missing Values concepts:
-
-- Principles of tidy missing data
-- Interpreting graphics of missing data
-- Predict output of function on data with missing values
-- Imputation - what is it, which methods are good / bad / better
-
----
-# Linear Models Concepts:
-
-- Write down an equation of a model from code output
-
---
-
-- The formula `\(y = 3x + 5\)` is a function with input `\(x\)`, and output `\(y\)`, when x is `___` , the output is `___`
-
----
-# Linear Models Concepts:
-
-`$$\widehat{height_{in}} \sim 3.62 + 0.78 Width_{in}$$`
-- **slope**: For each additional inch the painting is wider, the height is expected to be higher, on average, by 0.78 inches.
-- **Intercept**: Paintings that are 0 inches wide are expected to be 3.62 inches high, on average.
-- If a paining is 5 Inches wide, what is it's estimated height?
-
----
-# Linear Models Concepts:
-
-- How to make predictions from a fitted model
-- Understand what makes predictions good and bad
-- Measurements of model fit:
-  - R2 - what it is - what values mean good/bad fit?
-  - **A good idea to bring in an equation of R2**
-- Residuals - What do we expect to see
-- Centering variables
-- Think about how you can improve fit of models to your data
-
----
-# Programming concepts:
-
-- Why write functions
-- How to write a function in R
-- How to take existing code and turn it into a function
-- Identify potential mistakes in provided code
-- Understand what `map` does
-
----
-# Networks Concepts:
-
-- From an association / correlation matrix, which are most or least related?
-- Understand how you can convert a numeric matrix into a binary association matrix
-- Understand how a correlation matrix (or other association) of data relates to a provided network (let's do an example)
-
----
-# How to study for the exam
-
-These concepts guide what to focus on
-
-While the readings aren't assessed, **they provide great information that will certainly help improve your understanding**
-
-Remember that these are to help you focus, I can't give you the exam, but I can help tell you what is important.
-
-Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
-
----
-# Learning technique: study
-
-- Practice previous exam in exam conditions (last semester's exam is on dmac.netlify.com)
-
---
-
-- Think up exam questions, write them down
-
---
-
-- Practice explaining concepts - either out aloud by yourself, in the mirror, to a friend, to an empty room. Saying things out aloud builds better connections.
-
----
-# Learning technique: in exam
-
---
-
-- Peruse the exam before starting
-
---
-
-- Take off one shoe (My high school teacher claimed this worked)
-
---
-
-- Number questions in order from easy-hard - start with the easiest one first
-
---
-
-- Work out a marks : minutes ratio. (e.g.,60 marks with 60 minutes means one mark per minute)
+**There's a lot going on here, let's break it down.**
 
 
 ---
+# This is how the model looks:
+
+&lt;img src="lecture_10a_files/figure-html/model-pred-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
-# On a more personal note
+# Stopping rules
 
-I've had a great time this semester
+- Its an algorithm. Why did it stop at 7 terminal nodes?
+- Stopping rules are needed, else the algorithm will keep fitting until every observation is in its own group.
+- Control parameters set stopping points:
+   + minsplit: minimum number of points in a node that algorithm is allowed to split
+   + minbucket: minimum number of points in a terminal node
+- We can also look at the change in value of `\(SS_T-(SS_L+SS_R)\)` at each split, and if the change is too *small*, stop.
 
-I've been **seriously impressed** with you all - you are all so bright!
+---
+# You can change the options to fit a different model
 
-Thanks for being engaged and curious, I'm really excited to see your projects!
+An re-fit, the model will change. Here we reduce the `minbucket` parameter. 
 
---
 
-Also a special thanks to everyone for dealing with the 8am lecture!
+```r
+df_rp_m10 &lt;- rpart(y~x, data=df, 
+*                       control = rpart.control(minsplit = 2))
+```
+
+
+---
+# This yields a (slightly) more complex model.
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# What's computed?
+
+
+
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Residuals
+
+
+```r
+ggplot(df_rp_aug, aes(x=x, y= .resid)) + geom_point() +
+  ylab("residuals") + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+```
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Goodness of fit - Root Mean Square Error
+
+
+```r
+gof &lt;- printcp(df_rp, digits=3)
+## 
+## Regression tree:
+## rpart(formula = y ~ x, data = df)
+## 
+## Variables actually used in tree construction:
+## [1] x
+## 
+## Root node error: 359/100 = 3.59
+## 
+## n= 100 
+## 
+##       CP nsplit rel error xerror   xstd
+## 1 0.4611      0     1.000  1.008 0.1426
+## 2 0.3044      1     0.539  0.580 0.0891
+## 3 0.0419      2     0.235  0.301 0.0643
+## 4 0.0315      3     0.193  0.248 0.0621
+## 5 0.0240      4     0.161  0.246 0.0623
+## 6 0.0114      5     0.137  0.218 0.0617
+## 7 0.0100      6     0.126  0.216 0.0616
+```
+
+---
+# goodness of fit?
+
+The relative error is `\(1-R^2\)`. For this example, after 6 splits it is 0.1371214. So `\(R^2=\)` 0.8628786. 
+
+
+```r
+1-sum(df_rp_aug$e^2)/sum((df$y-mean(df$y))^2)
+```
+
+---
+# Strengths
+
+  - There are no parametric assumptions underlying partitioning methods
+  - Can handle data of unusual shapes and sizes?
+  - Can identify unusual groups of data
+  - Provides a tree based graphic that is fun to interpret
+  - Has an efficient heuristic of handling missing values. 
+  - The method could be influenced by outliers, but it would be isolating the effect to one partition.
+  
+---
+# Weaknesses 
+
+  - Doesn't really handle data that is linear very well
+  - Can require tuning parameters to get good model fit
+
+- Also means that there is not a nice formula for the model as a result, or inference about populations available
+
+---
+# Next week: Classification trees
+
+When the response is categorical, the model is called a classification tree. The criteria for making the splits changes also. There are a number of split criteria commonly used. If we consider a binary response ($y=0, 1$), and `\(p\)` is the proportion of observations in class `\(1\)`.
+
+- Gini: `\(2p(1-p)\)`
+- Entropy: `\(-p(\log_e p)-(1-p)\log_e(1-p)\)`
+
+Which rewards splits where the observations are all one class.
+
+---
+# Your Turn: Lab exercise
+
+- Return of the paintings data
+- Just predict price with year
+
+
+```r
+pp &lt;- read_csv(here::here("slides/data/paris-paintings.csv"))
+
+pp_lm &lt;- lm(logprice ~ Height_in + Width_in, data = pp)
+pp_rp &lt;- rpart(logprice ~ Height_in + Width_in + year, data = pp)
+
+pp_lm_aug &lt;- augment(pp_lm)
+pp_rp_aug &lt;- augment(pp_rp)
+library(rpart.plot)
+rpart.plot(pp_rp)
+```
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+- include a bit on adding more variables
+- include a bit on using more variables to predict something interesting
+- link to the data dictionary: http://www2.stat.duke.edu/~cr173/Sta112_Fa16/data/paris_paintings.html
+- describe why we've subsetted the data (to avoid perfect predictors?)
+
+
+```r
+pp_rp_all &lt;- rpart(logprice ~ ., data = select(pp, 
+                                               logprice,
+                                               origin_author,
+                                               school_pntg,
+                                               artistliving,
+                                               authorstyle,
+                                               endbuyer,
+                                               Height_in:mat,
+                                               engraved:finished,
+                                               relig,
+                                               landsALL,
+                                               arch:other))
+
+rpart.plot(pp_rp_all)
+```
+
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 
+```r
+tidy(pp_rp_all) %&gt;% 
+  ggplot(aes(x = importance,
+             y = reorder(variable, importance))) + 
+  geom_col()
+```
 
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
-background-image: url(images/bg1.jpg)
-background-size: cover
-class: hide-slide-number split-70
-count: false
-
-.column.shade_black[.content[
-
-&lt;br&gt;&lt;br&gt;
-
-# That's it!
-
-.bottom_abs.width100[
-
-Lecturer: Nicholas Tierney
-
-Department of Econometrics and Business Statistics&lt;br&gt;
-<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
-
-11th Mar 2020
-
-
-]
-
-&lt;br /&gt;
-This work is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/a&gt;.
-
-&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /&gt;&lt;/a&gt;
-
-
-]]
-
-
-
-&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
-&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
-&lt;svg class="clip-svg absolute"&gt;
-&lt;defs&gt;
-&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
-&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
-&lt;/clipPath&gt;
-&lt;/defs&gt;	
-&lt;/svg&gt;
-&lt;/div&gt;
-&lt;/div&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
