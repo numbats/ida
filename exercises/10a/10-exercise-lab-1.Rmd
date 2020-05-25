@@ -3,6 +3,15 @@ output: html_document
 ---
 # Your Turn: Lab exercise
 
+
+```{r}
+library(tidyverse)
+library(broom)
+library(broomstick)
+library(rpart)
+library(rpart.plot)
+```
+
 - Return of the paintings data
 - Just predict price with year
 
@@ -19,7 +28,7 @@ Questions:
   - 
 
 ```{r}
-pp <- read_csv(here::here("data/paris-paintings.csv"))
+pp <- read_csv("data/paris-paintings.csv", na = c("-", "n/a", "-", ""))
 
 pp_lm <- lm(logprice ~ Height_in + Width_in, data = pp)
 pp_rp <- rpart(logprice ~ Height_in + Width_in + year, data = pp)
@@ -49,7 +58,7 @@ pp_rp_all <- rpart(logprice ~ ., data = select(pp,
                                                landsALL,
                                                arch:other))
 
-rpart.plot(pp_rp_all)
+rpart.plot(pp_rp_all, roundint = FALSE)
 ```
 
 ---
@@ -61,4 +70,21 @@ tidy(pp_rp_all) %>%
   geom_col()
 
 ```
+
+## Price prediction 
+
+Use the most 3 important varible to build a new tree:
+
+
+```{r}
+pp_rp_simple <- rpart(logprice ~ .., data = pp)
+```
+
+You are handed a new painting where the origin author and school of the painting are unknown and the material is cuivre. What is the expected price?
+
+How does this compare to a prediction from a linear model?
+
+
+
+
 
