@@ -3,23 +3,26 @@ output: html_document
 ---
 # Your Turn: Lab exercise
 
-- Return of the paintings data
-- Just predict price with year
+```{r}
+library(tidyverse)
+library(broom)
+library(rpart)
+library(rpart.plot)
+```
 
-Questions:
+You will need to install the "broomstick" package from GitHub
+with the following code to complete the exercise:
 
-- If you were an auctioneer, and you were given a piece with the characteristics: 
-  ...., ..., what woul you predict the log price to be?
-- How many terminal nodes are there
-- How many splits?
-- What was the predicted value for node XX
-- What is the most important variable according to this model
-  - unpack what "tidy" does in this context
-  - introduce "broomstick" package
-  - 
+```{r install, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("njtierney/broomstick")
+```
+
+Let's fit a basic decision tree, predicting log price with height and width:
 
 ```{r}
-pp <- read_csv(here::here("data/paris-paintings.csv"))
+library(broomstick)
+pp <- read_csv("data/paris-paintings.csv", na = c("-", "n/a", "-", ""))
 
 pp_lm <- lm(logprice ~ Height_in + Width_in, data = pp)
 pp_rp <- rpart(logprice ~ Height_in + Width_in + year, data = pp)
@@ -30,29 +33,48 @@ library(rpart.plot)
 rpart.plot(pp_rp)
 ```
 
-- include a bit on adding more variables
-- include a bit on using more variables to predict something interesting
-- link to the data dictionary: http://www2.stat.duke.edu/~cr173/Sta112_Fa16/data/paris_paintings.html
-- describe why we've subsetted the data (to avoid perfect predictors?)
+- How many terminal nodes are there
+- How many splits?
+- What was the predicted value for node XX
+- What is the most important variable according to this model?
+
+We can use `tidy` to calculate the most important variables
 
 ```{r}
-pp_rp_all <- rpart(logprice ~ ., data = select(pp, 
-                                               logprice,
-                                               origin_author,
-                                               school_pntg,
-                                               artistliving,
-                                               authorstyle,
-                                               endbuyer,
-                                               Height_in:mat,
-                                               engraved:finished,
-                                               relig,
-                                               landsALL,
-                                               arch:other))
-
-rpart.plot(pp_rp_all)
+tidy(pp_rp)
 ```
 
----
+
+Now let's imagine you were an auctioneer, you might want to know what the most important features of a painting are in predicting the price.
+
+
+After exploring the [paris paintaings data dictionary](http://www2.stat.duke.edu/~cr173/Sta112_Fa16/data/paris_paintings.html), we have selected from variables that are not unique to each paintain (otherwise we'll end up with perfect prediction):
+
+
+```{r}
+pp_subset <- pp %>% select(logprice,
+                           origin_author,
+                           school_pntg,
+                           artistliving,
+                           authorstyle,
+                           endbuyer,
+                           Height_in:mat,
+                           engraved:finished,
+                           relig,
+                           landsALL,
+                           arch:other)
+```
+
+
+and we fit a decision tree modle to all the variables
+
+```{r}
+pp_rp_all <- rpart(logprice ~ ., data = )
+
+rpart.plot(pp_rp_all, roundint = FALSE)
+```
+
+Now let's look at which variables are most important:
 
 ```{r}
 tidy(pp_rp_all) %>% 
@@ -61,4 +83,17 @@ tidy(pp_rp_all) %>%
   geom_col()
 
 ```
+
+## Your Turn: Price prediction 
+
+Use the most 3 important variable to build a new tree:
+
+```{r}
+pp_rp_simple <- rpart(logprice ~ ..., data = pp)
+```
+
+You are handed a new painting where the origin author and school of the painting are unknown and the material is cuivre (copper). What is the expected price?
+
+How does this compare to a prediction from a linear model?
+
 

@@ -1,10 +1,13 @@
 ---
 output: html_document
 ---
+
 ```{r}
 library(tidyverse)
+library(rpart)
+library(rpart.plot)
+library(gridExtra)
 ```
-
 
 Previous data:
 
@@ -63,6 +66,7 @@ for (i in 2:nrow(df)) {
 }
 ```
 
+In this case, the rpart model doesn't actually fit the data, because there aren't enough data points, we'll come to that in the lecture.
 
 ```{r}
 library(rpart)
@@ -76,7 +80,7 @@ p2 <- ggplot(data=aov_f) +
   geom_line(aes(x=x, y=f) , colour="hotpink") +
     geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)+
    scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
-library(gridExtra)
+
 grid.arrange(p1, p2, ncol=1)
 ```
 

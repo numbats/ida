@@ -1,0 +1,119 @@
+---
+title: "ETC1010: Introduction to Data Analysis"
+week: "Week 10, part A"
+subtitle: "Regression and Decision Trees"
+author: "Nicholas Tierney & Stuart Lee"
+email: "nicholas.tierney@monash.edu"
+date: "May 2020"
+pdflink: ""
+bgimg: "images/bg1.jpg"
+output:
+  xaringan::moon_reader:
+    css:
+      - ninjutsu 
+      - "assets/animate.css"
+      - "assets/monash-logo.css"
+      - "assets/monash-brand.css"
+      - "assets/monash-fonts.css"
+      - "assets/styles.css" # small improvements
+      - "assets/custom.css" # add your own CSS here!
+      - "assets/demo.css" # this should be removed
+    self_contained: false 
+    seal: false 
+    chakra: 'libs/remark-latest.min.js'
+    lib_dir: libs
+    includes:
+      in_header: "assets/custom.html"
+    mathjax: "assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    nature:
+      highlightStyle: github 
+      highlightLanguage: r 
+      highlightLines: true
+      highlightSpans: false 
+      countIncrementalSlides: false
+      slideNumberFormat: '%current%/%total%'
+      navigation:
+        scroll: false 
+        touch: true
+        click: false
+      ratio: '16:9'
+---
+  
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tibble)
+library(vctrs)
+library(knitr)
+library(kableExtra)
+library(countdown)
+library(knitr)
+library(lubridate)
+library(gridExtra)
+library(plotly)
+library(broom)
+library(broomstick)
+
+opts_chunk$set(echo = TRUE,   
+               message = FALSE,
+               warning = FALSE,
+               collapse = TRUE,
+               fig.height = 4,
+               fig.width = 8,
+               fig.retina = 2,
+               out.width = "100%",
+               fig.align = "center",
+               cache = FALSE)
+```
+
+```{r funs, echo = FALSE}
+draw_split <- function(split){
+
+df_add_sst <- df %>% 
+  mutate(x_split = if_else(x <= split, "left", "right")) %>% 
+  group_by(x_split) %>% 
+  mutate(y_bar = mean(y),
+         y_slope = 0) 
+
+ggplot(df_add_sst, 
+       aes(x = x, 
+           y = y)) + 
+  geom_point() +
+  geom_vline(xintercept = split, linetype = 2) +
+  geom_line(aes(y = y_bar), colour = "salmon") + 
+  geom_segment(mapping = aes(xend = x, 
+                             yend = y_bar), 
+               color = "grey50",
+               alpha = 0.5) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
+}
+```
+
+  
+```{r titleslide, child="components/titleslide.Rmd"}
+```
+
+---
+# recap
+
+- Decision Trees
+
+---
+# Overview
+
+- What is a regression tree?
+- How is it computed?
+- Deciding when its a good fit
+  - rmse
+- Comparison with linear models
+- Using multiple variables
+- Next class:
+  - How a classification tree differs from a regression tree?
+
+
+
+When the response is categorical, the model is called a classification tree. The criteria for making the splits changes also. There are a number of split criteria commonly used. If we consider a binary response ($y=0, 1$), and $p$ is the proportion of observations in class $1$.
+
+- Gini: $2p(1-p)$
+- Entropy: $-p(\log_e p)-(1-p)\log_e(1-p)$
+
+Which rewards splits where the observations are all one class.

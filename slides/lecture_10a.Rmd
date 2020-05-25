@@ -65,7 +65,7 @@ opts_chunk$set(echo = TRUE,
                cache = FALSE)
 ```
 
-```{r funs}
+```{r funs, echo = FALSE}
 draw_split <- function(split){
 
 df_add_sst <- df %>% 
@@ -159,15 +159,24 @@ It basically looks like the data!
 ---
 # Looking at the Mean square error (MSE)
 
+This is another way to assess a model, it is like taking the average amount of error in the model.
+
 $$
 MSE(y) = \frac{\sum_{i = 1}^{i = N} (y_i - \hat{y}_i)^2}{N}
 $$
 In R code:
 
-```{r}
-# calculate example of linear model MSE
-```
+```{r mse}
+mse <- function(model){
+  mod_aug <- augment(model)
+  mod_aug %>% 
+    mutate(res_2 = .resid^2) %>% 
+    summarise(mse = mean(res_2)) %>% 
+    pull(mse)
+}
 
+mse(df_lm)
+```
 
 ---
 # Let's use a different model: "rpart"
@@ -179,6 +188,7 @@ df_rp <- rpart(y~x, data=df)
 
 ```
 
+--
 
 ```{r echo=FALSE}
 splt <- as_tibble(df_rp$splits) %>% 
@@ -191,32 +201,53 @@ ggplot(df_rp_aug,
            y = y)) + 
   geom_point() +
   geom_line(aes(y = .fitted), colour = "salmon", size = 2)
+
+
 ```
 
 ---
-# Look at residuals
+# Comparing lm vs rpart: Predictions
 
-```{r}
-ggplot(df_rp_aug,
-       aes(x = x,
-           y = y)) + 
-  geom_point() +
-  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
-```
-
-
----
-# Look at MSE
-
----
-# Comparing lm vs rpart
-
-
-```{r echo=FALSE}
+```{r compare, echo = FALSE}
 df_aug_both <- 
 bind_rows(lm = df_lm_aug,
           rpart = df_rp_aug,
           .id = "model") 
+
+ggplot(df_aug_both,
+       aes(x = x,
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = .fitted,
+                colour = model), 
+            size = 1)
+```
+
+
+---
+# Comparing lm vs rpart: MSE
+
+```{r}
+# linear model
+mse(df_lm)
+
+# rpart model
+mse(df_rp)
+```
+
+--
+
+The rpart model is much lower! 
+
+--
+
+We can look at the residuals plotted against the values of x to get an idea
+
+---
+# Comparing lm vs rpart: residuals
+
+
+```{r echo=FALSE}
 
 ggplot(df_aug_both, aes(x = x,
              y = .resid,
@@ -225,31 +256,18 @@ ggplot(df_aug_both, aes(x = x,
 ```
 
 ---
-# What the output of a linear model looks like
+# Comparing lm vs rpart: output
 
 ```{r show-lm-putput, echo = FALSE}
 df_lm
 ```
 
 ---
-# What the output of a rpart looks like
+# Comparing lm vs rpart: output
 
 ```{r show-rpart, echo = FALSE}
 df_rp
 ```
-
----
-# Predictions from linear model vs rpart
-
-```{r show-preds, echo = FALSE}
-ggplot(df_aug_both,
-       aes(x = x,
-           y = y)) + 
-  geom_point() + 
-  geom_line(aes(y = .fitted,
-                colour = model))
-```
-
 
 ---
 # So what is going on?
@@ -273,7 +291,7 @@ ggplot(data = df_lm_aug,
 ```
 
 ---
-# A regression tree: segments the data to reduce some error
+# A regression tree: segments the data to reduce mean error
 
 ```{r echo = FALSE}
 ggplot(df, aes(x = x, 
@@ -296,7 +314,7 @@ ggplot(df, aes(x = x,
 
 - Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
 - It is a computationally intense technique that examines all possible partitions, and choosing the BEST partition by optimizing some criteria
-- For regression, with a quantitative response variable, the criteria is called ANOVA:
+- For regression, with a quantitative response variable, the criteria to maximise is called ANOVA:
 
 $$SS_T-(SS_L+SS_R)$$
 where $SS_T = \sum (y_i-\bar{y})^2$, and $SS_L, SS_R$ are the equivalent values for the two subsets created by partitioning.
@@ -417,7 +435,7 @@ grid.arrange(p1, p2, ncol=1)
 ```
 
 ---
-# And if we repeated this again
+# And if we repeated this within each split
 
 This is how the data is split:
 
@@ -445,34 +463,7 @@ rpart.plot(df_rp)
 ```
 
 ---
-# Your turn: compute a regression tree
-
-Using the small data set, manually compute a regression tree model for the data. Sketch the model.
-
-```{r eval=FALSE}
-d <- tibble(x=c(1, 2, 3, 4, 5), y=c(10, 12, 5, 4, 3))
-d
-ggplot(d, aes(x=x, y=y)) + 
-  geom_???()
-```
-
-```{r eval=FALSE, echo=FALSE}
-sst <- var(d$y)*(nrow(???)-1)
-compute_anova(???,???)
-```
-
----
-# Understanding rpart
-
-```{r echo=TRUE}
-df_rp
-```
-
-**There's a lot going on here, let's break it down.**
-
-
----
-# This is how the model looks:
+# The model predictions with the splits
 
 ```{r model-pred, echo = FALSE}
 df <- df %>% 
@@ -492,15 +483,32 @@ ggplot(df_pred) +
   theme(legend.position="none")
 ```
 
+---
+# Your turn: compute a regression tree
+
+Using the small data set, manually compute a regression tree model for the data. Sketch the model.
+
+```{r eval=FALSE}
+d <- tibble(x=c(1, 2, 3, 4, 5), y=c(10, 12, 5, 4, 3))
+d
+ggplot(d, aes(x=x, y=y)) + 
+  geom_???()
+```
+
+```{r eval=FALSE, echo=FALSE}
+sst <- var(d$y)*(nrow(???)-1)
+compute_anova(???,???)
+```
 
 ---
 # Stopping rules
 
-- Its an algorithm. Why did it stop at 7 terminal nodes?
+- Its an algorithm, and it has to know when to stop.
+- Why did it stop at 7 terminal nodes?
 - Stopping rules are needed, else the algorithm will keep fitting until every observation is in its own group.
 - Control parameters set stopping points:
-   + minsplit: minimum number of points in a node that algorithm is allowed to split
-   + minbucket: minimum number of points in a terminal node
+   + **minsplit**: minimum number of points in a node that algorithm is allowed to split
+   + **minbucket**: minimum number of points in a terminal node
 - We can also look at the change in value of $SS_T-(SS_L+SS_R)$ at each split, and if the change is too *small*, stop.
 
 ---
@@ -536,139 +544,51 @@ ggplot(updated_rpart,
 ```
 
 ---
-# What's computed?
+# Beyond one variable
 
-```{r echo = FALSE}
-sst <- var(df$y)*(nrow(df)-1)
-compute_anova <- function(left, right) {
-  ssl <- var(left$y)*(nrow(left)-1)
-  if (nrow(left) == 1) {
-    ssl <- 1
-}
-  ssr <- var(right$y)*(nrow(right)-1)
-  if (nrow(right) == 1) {
-    ssr <- 1
-  }
-  av <- sst - (ssl+ssr)
-  return(av)
-}
-aov_f <- data.frame(x=df$x[-1], f=df$y[-1])
-for (i in 2:nrow(df)) {
-  left <- df[1:(i-1),]
-  right <- df[i:nrow(df),]
-  aov_f$x[i-1] <- mean(df$x[c(i-1, i)])
-  aov_f$f[i-1] <- compute_anova(left, right)
-}
+- So far we have only considered cases with one explanatory variable:
+
+```r
+rpart(y ~ x)
 ```
 
-
-```{r echo = FALSE}
-p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
-p2 <- ggplot(data=aov_f) +
-  geom_line(aes(x=x, y=f) , colour="hotpink") +
-    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)
-grid.arrange(p1, p2, ncol=1)
-```
+- When given multiple variables, a decision tree will **only use variables that provide the best splits**
+- This means that we can identify variables that are important for predicting an outcome.
+- This is called "Variable importance"
 
 ---
-# Residuals
+# Variable importance
 
-```{r}
-ggplot(df_rp_aug, aes(x=x, y= .resid)) + geom_point() +
-  ylab("residuals") + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
-```
-
----
-# Goodness of fit - Root Mean Square Error
-
-```{r echo=TRUE}
-gof <- printcp(df_rp, digits=3)
-```
+- After calculating all the potential splits, each variable is given an importance value, that is typically based on the number of times it was used in splitting, and the order in the splits
+- The earlier the split, the more important the variable.
+- These "importance values" are usually scaled to sum to 100
+- But the numbers themselves are arbitrary
+- Let's explore this in the next exercise, "10-exercise-lab-1.Rmd"
 
 ---
-# goodness of fit?
-
-The relative error is $1-R^2$. For this example, after 6 splits it is `r gof[6,3]`. So $R^2=$ `r 1-gof[6,3]`. 
-
-```{r eval=FALSE}
-1-sum(df_rp_aug$e^2)/sum((df$y-mean(df$y))^2)
-```
+class: transition
+# Wrapping up
 
 ---
 # Strengths
 
-  - There are no parametric assumptions underlying partitioning methods
-  - Can handle data of unusual shapes and sizes?
-  - Can identify unusual groups of data
-  - Provides a tree based graphic that is fun to interpret
-  - Has an efficient heuristic of handling missing values. 
-  - The method could be influenced by outliers, but it would be isolating the effect to one partition.
+- There are no parametric assumptions underlying partitioning methods
+- Can handle data of unusual shapes and sizes
+- Can identify unusual groups of data
+- Provides a tree based graphic that is fun to interpret
+- Has an efficient heuristic of handling missing values. 
+- The method could be influenced by outliers, but it would be isolating them to one partition.
   
 ---
 # Weaknesses 
 
-  - Doesn't really handle data that is linear very well
-  - Can require tuning parameters to get good model fit
+- Doesn't really handle data that is linear very well
+- Can require tuning parameters to get good model fit
 
 - Also means that there is not a nice formula for the model as a result, or inference about populations available
+  - E.g., You can't say things like: "For every one unit increase in weight, we expect height to increase by XX amount".
 
 ---
-# Next week: Classification trees
+# Next class: 
 
-When the response is categorical, the model is called a classification tree. The criteria for making the splits changes also. There are a number of split criteria commonly used. If we consider a binary response ($y=0, 1$), and $p$ is the proportion of observations in class $1$.
-
-- Gini: $2p(1-p)$
-- Entropy: $-p(\log_e p)-(1-p)\log_e(1-p)$
-
-Which rewards splits where the observations are all one class.
-
----
-# Your Turn: Lab exercise
-
-- Return of the paintings data
-- Just predict price with year
-
-```{r}
-pp <- read_csv(here::here("slides/data/paris-paintings.csv"))
-
-pp_lm <- lm(logprice ~ Height_in + Width_in, data = pp)
-pp_rp <- rpart(logprice ~ Height_in + Width_in + year, data = pp)
-
-pp_lm_aug <- augment(pp_lm)
-pp_rp_aug <- augment(pp_rp)
-library(rpart.plot)
-rpart.plot(pp_rp)
-```
-
-- include a bit on adding more variables
-- include a bit on using more variables to predict something interesting
-- link to the data dictionary: http://www2.stat.duke.edu/~cr173/Sta112_Fa16/data/paris_paintings.html
-- describe why we've subsetted the data (to avoid perfect predictors?)
-
-```{r}
-pp_rp_all <- rpart(logprice ~ ., data = select(pp, 
-                                               logprice,
-                                               origin_author,
-                                               school_pntg,
-                                               artistliving,
-                                               authorstyle,
-                                               endbuyer,
-                                               Height_in:mat,
-                                               engraved:finished,
-                                               relig,
-                                               landsALL,
-                                               arch:other))
-
-rpart.plot(pp_rp_all)
-```
-
----
-
-```{r}
-tidy(pp_rp_all) %>% 
-  ggplot(aes(x = importance,
-             y = reorder(variable, importance))) + 
-  geom_col()
-
-```
-
+- Classification trees

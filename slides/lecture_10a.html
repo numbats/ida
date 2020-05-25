@@ -27,28 +27,6 @@
 
 
 
-```r
-draw_split &lt;- function(split){
-
-df_add_sst &lt;- df %&gt;% 
-  mutate(x_split = if_else(x &lt;= split, "left", "right")) %&gt;% 
-  group_by(x_split) %&gt;% 
-  mutate(y_bar = mean(y),
-         y_slope = 0) 
-
-ggplot(df_add_sst, 
-       aes(x = x, 
-           y = y)) + 
-  geom_point() +
-  geom_vline(xintercept = split, linetype = 2) +
-  geom_line(aes(y = y_bar), colour = "salmon") + 
-  geom_segment(mapping = aes(xend = x, 
-                             yend = y_bar), 
-               color = "grey50",
-               alpha = 0.5) +
-  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
-}
-```
 
   
 
@@ -165,6 +143,8 @@ It basically looks like the data!
 ---
 # Looking at the Mean square error (MSE)
 
+This is another way to assess a model, it is like taking the average amount of error in the model.
+
 $$
 MSE(y) = \frac{\sum_{i = 1}^{i = N} (y_i - \hat{y}_i)^2}{N}
 $$
@@ -172,9 +152,17 @@ In R code:
 
 
 ```r
-# calculate example of linear model MSE
-```
+mse &lt;- function(model){
+  mod_aug &lt;- augment(model)
+  mod_aug %&gt;% 
+    mutate(res_2 = .resid^2) %&gt;% 
+    summarise(mse = mean(res_2)) %&gt;% 
+    pull(mse)
+}
 
+mse(df_lm)
+## [1] 3.216767
+```
 
 ---
 # Let's use a different model: "rpart"
@@ -186,35 +174,46 @@ library(rpart)
 df_rp &lt;- rpart(y~x, data=df)
 ```
 
+--
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
-# Look at residuals
+# Comparing lm vs rpart: Predictions
+
+&lt;img src="lecture_10a_files/figure-html/compare-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Comparing lm vs rpart: MSE
 
 
 ```r
-ggplot(df_rp_aug,
-       aes(x = x,
-           y = y)) + 
-  geom_point() +
-  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
+# linear model
+mse(df_lm)
+## [1] 3.216767
+
+# rpart model
+mse(df_rp)
+## [1] 0.4517498
 ```
+
+--
+
+The rpart model is much lower! 
+
+--
+
+We can look at the residuals plotted against the values of x to get an idea
+
+---
+# Comparing lm vs rpart: residuals
+
 
 &lt;img src="lecture_10a_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
-
 ---
-# Look at MSE
-
----
-# Comparing lm vs rpart
-
-
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-# What the output of a linear model looks like
+# Comparing lm vs rpart: output
 
 
 ```
@@ -228,7 +227,7 @@ ggplot(df_rp_aug,
 ```
 
 ---
-# What the output of a rpart looks like
+# Comparing lm vs rpart: output
 
 
 ```
@@ -253,12 +252,6 @@ ggplot(df_rp_aug,
 ```
 
 ---
-# Predictions from linear model vs rpart
-
-&lt;img src="lecture_10a_files/figure-html/show-preds-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-
----
 # So what is going on?
 
 - A linear model asks "What line fits through these points, to minimise the error"?
@@ -267,12 +260,12 @@ ggplot(df_rp_aug,
 ---
 # A linear model: draws the line of best fit
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
-# A regression tree: segments the data to reduce some error
+# A regression tree: segments the data to reduce mean error
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -280,7 +273,7 @@ ggplot(df_rp_aug,
 
 - Regression trees recursively partition the data, and use the average response value of each partition as the model estimate
 - It is a computationally intense technique that examines all possible partitions, and choosing the BEST partition by optimizing some criteria
-- For regression, with a quantitative response variable, the criteria is called ANOVA:
+- For regression, with a quantitative response variable, the criteria to maximise is called ANOVA:
 
 `$$SS_T-(SS_L+SS_R)$$`
 where `\(SS_T = \sum (y_i-\bar{y})^2\)`, and `\(SS_L, SS_R\)` are the equivalent values for the two subsets created by partitioning.
@@ -288,7 +281,7 @@ where `\(SS_T = \sum (y_i-\bar{y})^2\)`, and `\(SS_L, SS_R\)` are the equivalent
 ---
 # Break down: What is `\(SS_T = \sum (y_i-\bar{y})^2\)` ?
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Break down: What is `\(SS_T = \sum (y_i-\bar{y})^2\)` ?
@@ -335,10 +328,10 @@ where `\(SS_T = \sum (y_i-\bar{y})^2\)`, and `\(SS_L, SS_R\)` are the equivalent
 
 
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
-# And if we repeated this again
+# And if we repeated this within each split
 
 This is how the data is split:
 
@@ -353,7 +346,12 @@ library(rpart.plot)
 rpart.plot(df_rp)
 ```
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# The model predictions with the splits
+
+&lt;img src="lecture_10a_files/figure-html/model-pred-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Your turn: compute a regression tree
@@ -371,48 +369,14 @@ ggplot(d, aes(x=x, y=y)) +
 
 
 ---
-# Understanding rpart
-
-
-```r
-df_rp
-## n= 100 
-## 
-## node), split, n, deviance, yval
-##       * denotes terminal node
-## 
-##  1) root 100 359.245100  0.8081071  
-##    2) x&gt;=0.2775916 24  16.840100 -1.4822830  
-##      4) x&gt;=0.3817438 12   3.832238 -2.0814410 *
-##      5) x&lt; 0.3817438 12   4.392090 -0.8831252 *
-##    3) x&lt; 0.2775916 76 176.745400  1.5313880  
-##      6) x&lt; 0.1426085 61  41.562800  0.9365995  
-##       12) x&gt;=-0.3999242 50  24.519860  0.7035330  
-##         24) x&lt; 0.05905847 41  11.729940  0.4807175  
-##           48) x&gt;=-0.1455513 25   5.653876  0.2281914 *
-##           49) x&lt; -0.1455513 16   1.990829  0.8752895 *
-##         25) x&gt;=0.05905847 9   1.481498  1.7185820 *
-##       13) x&lt; -0.3999242 11   1.981477  1.9959930 *
-##      7) x&gt;=0.1426085 15  25.842970  3.9501960 *
-```
-
-**There's a lot going on here, let's break it down.**
-
-
----
-# This is how the model looks:
-
-&lt;img src="lecture_10a_files/figure-html/model-pred-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-
----
 # Stopping rules
 
-- Its an algorithm. Why did it stop at 7 terminal nodes?
+- Its an algorithm, and it has to know when to stop.
+- Why did it stop at 7 terminal nodes?
 - Stopping rules are needed, else the algorithm will keep fitting until every observation is in its own group.
 - Control parameters set stopping points:
-   + minsplit: minimum number of points in a node that algorithm is allowed to split
-   + minbucket: minimum number of points in a terminal node
+   + **minsplit**: minimum number of points in a node that algorithm is allowed to split
+   + **minbucket**: minimum number of points in a terminal node
 - We can also look at the change in value of `\(SS_T-(SS_L+SS_R)\)` at each split, and if the change is too *small*, stop.
 
 ---
@@ -430,150 +394,57 @@ df_rp_m10 &lt;- rpart(y~x, data=df,
 ---
 # This yields a (slightly) more complex model.
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
-# What's computed?
+# Beyond one variable
 
-
-
-
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-# Residuals
-
+- So far we have only considered cases with one explanatory variable:
 
 ```r
-ggplot(df_rp_aug, aes(x=x, y= .resid)) + geom_point() +
-  ylab("residuals") + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+rpart(y ~ x)
 ```
 
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+- When given multiple variables, a decision tree will **only use variables that provide the best splits**
+- This means that we can identify variables that are important for predicting an outcome.
+- This is called "Variable importance"
 
 ---
-# Goodness of fit - Root Mean Square Error
+# Variable importance
 
-
-```r
-gof &lt;- printcp(df_rp, digits=3)
-## 
-## Regression tree:
-## rpart(formula = y ~ x, data = df)
-## 
-## Variables actually used in tree construction:
-## [1] x
-## 
-## Root node error: 359/100 = 3.59
-## 
-## n= 100 
-## 
-##       CP nsplit rel error xerror   xstd
-## 1 0.4611      0     1.000  1.008 0.1426
-## 2 0.3044      1     0.539  0.580 0.0891
-## 3 0.0419      2     0.235  0.301 0.0643
-## 4 0.0315      3     0.193  0.248 0.0621
-## 5 0.0240      4     0.161  0.246 0.0623
-## 6 0.0114      5     0.137  0.218 0.0617
-## 7 0.0100      6     0.126  0.216 0.0616
-```
+- After calculating all the potential splits, each variable is given an importance value, that is typically based on the number of times it was used in splitting, and the order in the splits
+- The earlier the split, the more important the variable.
+- These "importance values" are usually scaled to sum to 100
+- But the numbers themselves are arbitrary
+- Let's explore this in the next exercise, "10-exercise-lab-1.Rmd"
 
 ---
-# goodness of fit?
-
-The relative error is `\(1-R^2\)`. For this example, after 6 splits it is 0.1371214. So `\(R^2=\)` 0.8628786. 
-
-
-```r
-1-sum(df_rp_aug$e^2)/sum((df$y-mean(df$y))^2)
-```
+class: transition
+# Wrapping up
 
 ---
 # Strengths
 
-  - There are no parametric assumptions underlying partitioning methods
-  - Can handle data of unusual shapes and sizes?
-  - Can identify unusual groups of data
-  - Provides a tree based graphic that is fun to interpret
-  - Has an efficient heuristic of handling missing values. 
-  - The method could be influenced by outliers, but it would be isolating the effect to one partition.
+- There are no parametric assumptions underlying partitioning methods
+- Can handle data of unusual shapes and sizes
+- Can identify unusual groups of data
+- Provides a tree based graphic that is fun to interpret
+- Has an efficient heuristic of handling missing values. 
+- The method could be influenced by outliers, but it would be isolating them to one partition.
   
 ---
 # Weaknesses 
 
-  - Doesn't really handle data that is linear very well
-  - Can require tuning parameters to get good model fit
+- Doesn't really handle data that is linear very well
+- Can require tuning parameters to get good model fit
 
 - Also means that there is not a nice formula for the model as a result, or inference about populations available
+  - E.g., You can't say things like: "For every one unit increase in weight, we expect height to increase by XX amount".
 
 ---
-# Next week: Classification trees
+# Next class: 
 
-When the response is categorical, the model is called a classification tree. The criteria for making the splits changes also. There are a number of split criteria commonly used. If we consider a binary response ($y=0, 1$), and `\(p\)` is the proportion of observations in class `\(1\)`.
-
-- Gini: `\(2p(1-p)\)`
-- Entropy: `\(-p(\log_e p)-(1-p)\log_e(1-p)\)`
-
-Which rewards splits where the observations are all one class.
-
----
-# Your Turn: Lab exercise
-
-- Return of the paintings data
-- Just predict price with year
-
-
-```r
-pp &lt;- read_csv(here::here("slides/data/paris-paintings.csv"))
-
-pp_lm &lt;- lm(logprice ~ Height_in + Width_in, data = pp)
-pp_rp &lt;- rpart(logprice ~ Height_in + Width_in + year, data = pp)
-
-pp_lm_aug &lt;- augment(pp_lm)
-pp_rp_aug &lt;- augment(pp_rp)
-library(rpart.plot)
-rpart.plot(pp_rp)
-```
-
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-- include a bit on adding more variables
-- include a bit on using more variables to predict something interesting
-- link to the data dictionary: http://www2.stat.duke.edu/~cr173/Sta112_Fa16/data/paris_paintings.html
-- describe why we've subsetted the data (to avoid perfect predictors?)
-
-
-```r
-pp_rp_all &lt;- rpart(logprice ~ ., data = select(pp, 
-                                               logprice,
-                                               origin_author,
-                                               school_pntg,
-                                               artistliving,
-                                               authorstyle,
-                                               endbuyer,
-                                               Height_in:mat,
-                                               engraved:finished,
-                                               relig,
-                                               landsALL,
-                                               arch:other))
-
-rpart.plot(pp_rp_all)
-```
-
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-
-
-```r
-tidy(pp_rp_all) %&gt;% 
-  ggplot(aes(x = importance,
-             y = reorder(variable, importance))) + 
-  geom_col()
-```
-
-&lt;img src="lecture_10a_files/figure-html/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /&gt;
-
+- Classification trees
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

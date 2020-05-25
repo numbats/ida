@@ -2,7 +2,7 @@
 output: html_document
 ---
 
-# Lab exercise
+# Lab exercise: extension
 
 - OECD PISA, what factors affect reading scores?
 - 15 year old standardised test scores, Australia, 2015
@@ -12,7 +12,8 @@ output: html_document
 - Make a plot of all the variables
 
 ```{r fig.width=12, fig.height=6, eval=FALSE, echo=FALSE}
-load("data/pisa_au_sub.rda")
+pisa_au <- read_rds("data/pisa_au.rds")
+
 pisa_au <- pisa_au %>% 
   filter(!is.na(gender)) %>%
   filter(!is.na(anxtest)) %>%
@@ -40,7 +41,8 @@ grid.arrange(p1, p2, p3, p4, p5, p6, ncol=3)
 
 ```{r eval=FALSE, echo=FALSE}
 pisa_lm <- lm(math~gender+???+wealth+math_time+books+???,
-              data=pisa_au, weights=stuweight)
+              data=pisa_au, 
+              weights=stuweight)
 summary(pisa_lm)
 ```
 
@@ -48,7 +50,9 @@ summary(pisa_lm)
 # Fit a regression tree
 
 ```{r eval=FALSE, echo=FALSE}
-pisa_rp <- rpart(math~gender+???+wealth+math_time+books+???, data=pisa_au, weights=stuweight)
+pisa_rp <- rpart(math~gender+???+wealth+math_time+books+???,
+                 data=pisa_au, 
+                 weights=stuweight)
 pisa_rp
 ```
 
@@ -60,27 +64,28 @@ rpart.plot(???)
 # What is the most important variable
 
 ```{r eval=FALSE, echo=FALSE}
-ggplot(pisa_au, aes(x=???, y=math)) +
-  geom_point() + geom_vline(xintercept=???, colour="hotpink")
+tidy(pisa_rp)
 ```
 
----
-# How good is the model? Compute the $R^2$ for the tree.
+# How good is the model? Compute the MSE
 
 ```{r eval=FALSE, echo=FALSE}
-pisa_rp_aug <- cbind(pisa_au, e=???(pisa_rp))
-1-sum(pisa_rp_aug$e^2)/sum((pisa_au$math-???(pisa_au$math))^2)
+pisa_rp_aug <- mse(pisa_rp)
 ```
 
 ---
 # Which model fits better? The tree or the linear regression model?
 
-- Change the control parameters to reduce the $R^2$ of the tree below that of the regression model.
+- Change the control parameters to reduce the $MSE$ of the tree below that of the regression model.
 
 ```{r eval=FALSE, echo=FALSE}
-pisa_rp <- rpart(math~gender+???+wealth+math_time+???+tvs, data=pisa_au, weights=stuweight, control = rpart.control(???))
+pisa_rp <- rpart(math~gender+???+wealth+math_time+???+tvs, 
+                 data=pisa_au, 
+                 weights=stuweight, 
+                 control = rpart.control(???))
 pisa_rp
-pisa_rp_aug <- cbind(pisa_au, e=???(pisa_rp))
-1-sum(pisa_rp_aug$e^2)/sum((pisa_au$math-???(pisa_au$math))^2)
+
+pisa_rp_aug <- augment(pisa_rp)
+
 ```
 
