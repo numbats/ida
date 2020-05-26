@@ -66,6 +66,12 @@ library(magick)
 - Decision Tree
 
 ---
+# Admin
+
+- Project
+  - Use of data
+
+---
 # Overview
 
 - What is a classification tree?
@@ -90,6 +96,18 @@ include_graphics("images/tree.jpg")
 
 
 ---
+# Regression Tree
+
+3 slides:
+
+- Image of the optimal split being chosen
+- Subsequent partitions
+- decision tree being drawn
+
+- What if we want to predict something being in a particular group?
+  - Moving from continuous to categorical response.
+
+---
 # Classification trees
 
 - A classification tree is used to predict a .orange[categorical response] and regression tree is used to predict a quantitative response
@@ -98,24 +116,7 @@ include_graphics("images/tree.jpg")
 
 
 ---
-class: transition
-# In class exercise!
-
-**Imagine** everyone in the class line up from tallest to shortest.
-
----
-# Sorting algorithms
-
-```{r sort-alg, out.width = "90%"}
-include_graphics("gifs/sorting.gif")
-```
-
-
-The "speed" of classification trees depends on how quickly one can sort. .green[[Source](www.sorting-algorithms.com)]
-
-
----
-# What about two dimensions ?
+# Predicting pass or fail ?
 
 Consider the dataset `Exam` where two exam scores are given for each student, 
 and a class `Label` represents whether they passed or failed the course.
@@ -140,6 +141,11 @@ ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   theme(text = element_text(size=20)) 
 ```
 ]
+
+---
+# Your turn: 
+
+Open "10b-exercise-intro.Rmd" and let's decide a point to split the data.
 
 ---
 # Calculate the number of misclassifications

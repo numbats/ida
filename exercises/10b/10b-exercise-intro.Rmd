@@ -23,8 +23,59 @@ ggplot(exams, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   theme(text = element_text(size=20)) 
 ```
 
-
 We could go through and look at misclassifications here, and computing
 the gini and entropy metrics?
 
+```{r}
+sort_exam <- sort(exams$Exam1)
+
+drop_last <- function(x) head(x, -1)
+
+sa_left <-  sort_exam %>% .[-1] %>% accumulate(c, .init = NA_real_)
+sa_right <- rev(sort_exam) %>% .[-1] %>% accumulate(c, 
+                                                    .init = NA_real_, 
+                                                    .dir = "backward")
+
+exams %>% 
+  arrange(Exam1) %>% 
+  mutate(left = sa_left,
+         right = sa_right)
+
+
+```
+
+
+```{r}
+miss_class <- function(data, y_var) {
+  min(
+    c(
+    sum(data[[y_var]] == 0),
+    sum(data[[y_var]] == 1)
+    )
+  )
+}
+
+tibble(exam = 1:6,
+       lab = c(1, 0, 1, 1, 1, 0))
+
+```
+
+```{r}
+
+sorted_exams <- exams %>% 
+  arrange(Exam1)
+
+miss_class(sorted_exams[2:100, ], "Label")
+miss_class(sorted_exams[3:100, ], "Label")
+miss_class(sorted_exams[4:100, ], "Label")
+
+exam_mc <- c()
+for(i in 2:nrow(sorted_exams)){
+  vec[i - 1] <- miss_class(sorted_exams[i:nrow(sorted_exams), ], "Label")
+}
+
+plot(vec, sorted_exams$Exam1[-1])
+plot(y = vec, x = sorted_exams$Exam1[-1])
+
+```
 
