@@ -1,0 +1,100 @@
+---
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(rpart)
+library(rpart.plot)
+```
+
+# Classification Trees
+
+Here we will practice fitting classification trees, for a categorical
+variable that has more than two classes
+
+## Measurements of Australian Crabs
+
+This data consists of measurements about crab species in WA (described 
+[here](http://ggobi.org/book/chap-data.pdf))
+
+> Measurements on rock crabs of the genus Leptograpsus. One
+species L. variegatus had been split into two new species, previously grouped
+by color, orange and blue. Preserved specimens lose their color, so it was
+hoped that morphological differences would enable museum specimens to be
+classified. There are 50 specimens of each sex of each species, collected on site
+at Fremantle, Western Australia. 
+
+
+```{r}
+crabs <- read_csv("data/australian-crabs.csv")
+glimpse(crabs)
+```
+
+What each variable does? 
+
+ * __species__: orange or blue
+ * __sex__: male or female
+ * __index__: observation identifier 1–200
+ * __frontal lip (FL)__ length, in mm
+ * __rear width (RW)__ width, in mm
+ * __carapace length (CL)__ length of midline of the carapace, in mm
+ * __carapace width (CW)__ maximum width of carapace, in mm
+ * __body depth (BD)__ depth of the body; for females, measured after
+displacement of the abdomen, in mm
+
+## Aim
+
+Can we determine the species and sex of the crabs based on the five
+body variables above? 
+
+## Your turn: create a predictor variable 
+
+Make a new predictor called `class` that combines the `species` and `sex`
+variables:
+
+```{r}
+crabs <- crabs %>% 
+  mutate(class = ---(species, sex)) %>% 
+  mutate(class = factor(class))
+
+crabs %>% 
+  count(class)
+```
+
+
+Make plots of each explantory variable (FL:BD) coloured by the class
+
+## Your turn: create a decision tree
+
+```{r}
+rp_crab_all <- rpart(class ~ ., data = select(crabs, class, FL:BD))
+
+rpart.plot(rp_crab_all)
+```
+
+Which variables appear to be important? How many terminal nodes are there?
+
+## Plot the decision boundaries for the two most important variables
+
+```{r}
+crab_grid <- ## use expand grid?
+crab_grid$sex <- predict(rp_crab_all, newdata=crab_grid, type="class")
+ggplot(data=crab_grid, aes(x=FL, y=RW, color=class)) + 
+  geom_point(alpha=0.3, size=3) + 
+  geom_point(data=crabs, aes(x=FL, y=RW, color=class), shape=2, size=3) + 
+  scale_colour_brewer(palette="Dark2") +
+  theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") 
+
+```
+
+
+## Your turn: modify the input parameters
+
+* try changing the splitting criterion (from 'gini' to 'importance')
+* minsplit and minbucket
+
+How do your results compare to the default? Trying plotting the decision
+boundaries again and look at the metrics for your model fit.
+

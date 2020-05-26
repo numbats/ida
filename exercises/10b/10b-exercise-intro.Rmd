@@ -1,0 +1,25 @@
+---
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(rpart)
+library(rpart.plot)
+```
+
+## Manually computing splits
+
+```{r}
+exams <- read_csv("data/exam.csv")
+exams
+```
+
+```{r}
+ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
+  geom_point(size=4) + 
+  scale_color_brewer("", palette="Dark2") +
+  theme_minimal() +
+  theme(text = element_text(size=20)) 
+```
+
