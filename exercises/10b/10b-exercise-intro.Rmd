@@ -16,10 +16,15 @@ exams
 ```
 
 ```{r}
-ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
+ggplot(exams, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   geom_point(size=4) + 
   scale_color_brewer("", palette="Dark2") +
   theme_minimal() +
   theme(text = element_text(size=20)) 
 ```
+
+
+We could go through and look at misclassifications here, and computing
+the gini and entropy metrics?
+
 
