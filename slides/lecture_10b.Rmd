@@ -18,7 +18,6 @@ output:
       - "assets/styles.css" # small improvements
       - "assets/custom.css" # add your own CSS here!
       - "assets/demo.css" # this should be removed
-      - "assets/di.css"
     self_contained: false 
     seal: false 
     chakra: 'libs/remark-latest.min.js'
@@ -43,7 +42,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(knitr)
-opts_chunk$set(echo = TRUE,   
+opts_chunk$set(echo = FALSE,   
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
@@ -57,50 +56,41 @@ options(htmltools.dir.version = FALSE)
 library(magick)
 ```
 
+  
+```{r titleslide, child="components/titleslide.Rmd"}
+```
+
 ---
 # recap
 
-- networks
+- Decision Tree
 
 ---
 # Overview
 
-- What is a regression tree?
-- How is it computed?
-- Deciding when its a good fit
-  - rmse
+- What is a classification tree?
 - Comparison with linear models
 - Using multiple variables
-- Next class:
-  - How a classification tree differs from a regression tree?
 
 ---
+# What is a decision tree?
 
-class: split-two
-
-.column[.pad50px[
-
-## What is a decision tree?
-
-<br>
-
+.pull-left[
 Tree based models consist of one or more of nested `if-then` statements for the predictors that partition the data. Within these partitions, a model is used to predict the outcome.
+]
 
-]]
+.pull-right[
+```{r images-tree}
+include_graphics("images/tree.jpg")
+```
 
-.column[.content.vmiddle.center[
+.small[Source: [Egor Dezhic](becominghuman.ai)]
 
-
-<img src="images/tree.jpg" style="width: 70%"/>
-
- .font_tiny[Source: [Egor Dezhic](becominghuman.ai)]
-
-
-]]
+]
 
 
 ---
-## Classification trees
+# Classification trees
 
 - A classification tree is used to predict a .orange[categorical response] and regression tree is used to predict a quantitative response
 - Use a recursive binary splitting to grow a classification tree. That is, sequentially break the data into two subsets, typically using a single variable each time.
@@ -108,52 +98,40 @@ Tree based models consist of one or more of nested `if-then` statements for the 
 
 
 ---
-class: middle center
+class: transition
 # In class exercise!
 
-Everyone in the class line up from tallest to shortest.
+**Imagine** everyone in the class line up from tallest to shortest.
 
 ---
+# Sorting algorithms
 
-## Sorting algorithms
+```{r sort-alg, out.width = "90%"}
+include_graphics("gifs/sorting.gif")
+```
 
-There are numerous sorting algorithms
-
-<center>
-<img src="images/sorting.gif" style="width:75%">
-</center>
 
 The "speed" of classification trees depends on how quickly one can sort. .green[[Source](www.sorting-algorithms.com)]
 
 
 ---
-
-class: split-two
-
-.column[.pad50px[
-
 # What about two dimensions ?
 
 Consider the dataset `Exam` where two exam scores are given for each student, 
 and a class `Label` represents whether they passed or failed the course.
 
-
-```{r, echo = FALSE}
+```{r read-exam}
 data <- read.csv("data/Exam.csv", header=T)
 ```
 
-```{r, fig.retina=4}
+.pull-left[
+```{r head-data}
 head(data,4)
 ```
+]
 
-
-
-]]
-
-.column[.content.vmiddle.center[
-
-
-```{r, fig.retina=4, echo=FALSE}
+.pull-right[
+```{r, echo=FALSE, out.width = "100%", fig.height = 4, fig.width = 4}
 library(tidyverse)
 ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   geom_point(size=4) + 
@@ -161,46 +139,41 @@ ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   theme_minimal() +
   theme(text = element_text(size=20)) 
 ```
-]]
-
+]
 
 ---
-### Calculate the number of misclassifications along all splits for `Exam1` classifying according to the majority class for the left and right splits
+# Calculate the number of misclassifications
+
+Along all splits for `Exam1` classifying according to the majority class for the left and right splits
  
-<center>
-<img src="images/two_d_cart.gif" style="width:70%">
-</center>
+```{r show-two-dgif, out.width = "80%"}
+include_graphics("gifs/two_d_cart.gif")
+```
 
-Red dots are .orange["fails"], blue dots are .green["passes"], and crosses indicate misclassifications.
-
-.font_tiny[Source: John Ormerod, U.Syd]
----
-
-### Calculate the number of misclassifications along all splits for `Exam2` classifying according to the majority class for the top and bottom splits
-
-<center>
-<img src="images/two_d_cart2.gif" style="width:70%">
-</center>
-
-Red dots are .orange["fails"], blue dots are .green["passes"], and crosses indicate misclassifications.
-
-.font_tiny[Source: John Ormerod, U.Syd]
+Red dots are .orange["fails"], blue dots are .green["passes"], and crosses indicate misclassifications. .small[Source: John Ormerod, U.Syd]
 
 ---
+# Calculate the number of misclassifications
 
-## Combining the results from `Exam1` and `Exam2` splits
+Along all splits for `Exam2` classifying according to the majority class for the top and bottom splits
 
-<br>
+```{r two-d-cart-2-gif, out.width = "80%"}
+include_graphics("gifs/two_d_cart2.gif")
+```
 
-+ The minimum number of misclassifications from using all possible splits of `Exam1` was 19 when the value of `Exam1` was **56.7**
-+ The minimum number of misclassifications from using all possible splits of `Exam2` was 23 when the value of `Exam2` was **52.5**
+Red dots are .orange["fails"], blue dots are .green["passes"], and crosses indicate misclassifications. .small[Source: John Ormerod, U.Syd]
 
-<br>
+---
+# Combining the results from `Exam1` and `Exam2` splits
+
+- The minimum number of misclassifications from using all possible splits of `Exam1` was 19 when the value of `Exam1` was **56.7**
+- The minimum number of misclassifications from using all possible splits of `Exam2` was 23 when the value of `Exam2` was .orange[52.5]
+
+--
 
 So we split on the best of these, i.e., split the data on `Exam1` at 56.7.
 ---
-## Split criteria - purity/impurity metrics
-
+# Split criteria - purity/impurity metrics
 
 - The .orange[Gini index] measures total variance across the $K$ classes:
 	$$G = \sum_{k =1}^K \hat{p}_{mk}(1 - \hat{p}_{mk})$$
@@ -210,21 +183,13 @@ So we split on the best of these, i.e., split the data on `Exam1` at 56.7.
 
 
 ---
-class: split-two
-
-.column[.pad50px[
-
-## Example - predicting heart disease
-
-<br>
+# Example - predicting heart disease
 
 $Y$: presence of heart disease (Yes/No)
 
 $X$: heart and lung function measurements
 
-<br>
-<br>
-```{r results='markup'}
+```{r print-names}
 library(tidyverse)
 library(ISLR)
 library(rpart)
@@ -236,11 +201,8 @@ heart <- heart %>% filter(!is.na(Ca)) %>% filter(!is.na(Thal))
 colnames(heart)
 ```
 
-]]
 
-.column[.content.center[
-
-```{r}
+```{r rpart-heart, out.width = "70%"}
 heart <- heart %>% dplyr::select(Age:AHD)
 set.seed(2019)
 tr_indx <- createDataPartition(heart$AHD)$Resample1
@@ -250,37 +212,21 @@ heart_finalrp <- rpart(AHD~., data=heart_tr)
 prp(heart_finalrp)
 ```
 
-
-
-]]
-
-
 ---
-
-class: split-two
-
-.column[.pad50px[
-
-## Deeper trees
-
-<br>
+# Deeper trees
 
 Trees can be built deeper by:
 
 - decreasing the value of the complexity parameter `cp`, which sets the difference between impurity values required to continue splitting.
 - reducing  the `minsplit` and `minbucket` parameters,  which control the number of  observations  below splits are forbidden.
 
-]]
-.column[.content.vmiddle[
-
-```{r out.width="100%"}
+```{r deeper-trees, out.width="70%"}
 heart_finalrp <- rpart(AHD~., data=heart_tr, control=rpart.control(minsplit=6, cp=0.02))
 prp(heart_finalrp)
 ```
-]]
----
 
-Tabulate true vs predicted to make a .orange[confusion table]. 
+---
+# Tabulate true vs predicted to make a .orange[confusion table]. 
 
 <center>
 <table>
@@ -298,36 +244,14 @@ Tabulate true vs predicted to make a .orange[confusion table].
 - .orange[Balanced accuracy: *(sensitivity+specificity)/2*]
 
 ---
+# Confusion and error
 
-class: split-two
-
-.column[.pad50px[
-
-<center>
-    Training confusion and error
-</center>
-
-```{r}
+```{r train-confus}
 confusionMatrix(heart_tr$AHD, predict(heart_finalrp, newdata=heart_tr, type="class"))$table
 confusionMatrix(heart_tr$AHD, predict(heart_finalrp, newdata=heart_tr, type="class"))$overall[1]
 ```
-]]
 
-.column[.pad50px[
-<center>
-    Test confusion and error
-</center>
-```{r}
-confusionMatrix(heart_ts$AHD, predict(heart_finalrp, newdata=heart_ts, type="class"))$table
-confusionMatrix(heart_ts$AHD, predict(heart_finalrp, newdata=heart_ts, type="class"))$overall[1]
-
-```
-]]
-
----
-## Training vs testing performance
-
-```{r out.width="80%", fig.width=6, fig.height=4}
+```{r train-v-test, out.width="80%", fig.width=6, fig.height=4}
 # Decide on best model
 heart_bigrp <- rpart(AHD~., data=heart_tr, control=rpart.control(minsplit=6, cp=0.005))
 tr_err <- 1-confusionMatrix(factor(heart_tr$AHD), predict(heart_bigrp, newdata=heart_tr, type="class"))$overall[1]
@@ -342,7 +266,8 @@ for (i in 1:length(cp)) {
 }
 heart_fit <- tibble(cp=c(0.005, cp), nnodes, train=tr_err, test=ts_err) %>% 
   gather(type, error, train, test) 
-ggplot(heart_fit, aes(x=nnodes, y=error, colour=type)) + 
+
+gg_heart_fit <- ggplot(heart_fit, aes(x=nnodes, y=error, colour=type)) + 
   geom_line() + scale_colour_brewer("", palette="Dark2") +
   xlab("Size of tree") + ylim(c(0,0.4))
 ```
@@ -363,56 +288,27 @@ prp(heart_rp$finalModel, digits=2, roundint=FALSE)
 
 
 ---
-class: split-two
-
-.column[.pad50px[
-
-## Comparison with LDA
-
-<br>
+# Comparison with LDA
 
 Look at the following classification problems and resultant decision boundaries for LDA (left) and CART (right). 
 
-<br>
-
 .green[What characteristics determine which method is more appropriate?]
 
+```{r images-lda-cart}
+include_graphics("images/8.7.png")
+```
 
-]]
-
-.column[.content.vmiddle.center[
-
-<a href="http://www-bcf.usc.edu/~gareth/ISL/Chapter8/8.7.pdf" target="_BLANK"> <img src="images/8.7.png" style="width: 70%; align: center"/>  </a>
-
-
-]]
-
-
+.small[From: http://www-bcf.usc.edu/~gareth/ISL/Chapter8/8.7.pdf]
 
 
 ---
-
-class: split-two
-
-.column[.pad50px[
-
-## Example - Crabs
-
-<br>
+# Example - Crabs
 
 Physical measurements on WA crabs, males and females.
 
-<br>
+.small[*Data source*: Campbell, N. A. & Mahon, R. J. (1974)]
 
-.font_small[*Data source*: Campbell, N. A. & Mahon, R. J. (1974)]
-
-]]
-
-.column[.content.vmiddle.center[
-
-
-
-```{r out.width="100%", fig.width=5, fig.height=5}
+```{r read-crabs, out.width="50%", fig.width=5, fig.height=5}
 crab <- read.csv("http://www.ggobi.org/book/data/australian-crabs.csv")
 crab <- subset(crab, species=="Blue", select=c("sex", "FL", "RW"))
 crab_rp <- rpart(sex~FL+RW, data=crab, parms = list(split = "information"), 
@@ -420,14 +316,10 @@ crab_rp <- rpart(sex~FL+RW, data=crab, parms = list(split = "information"),
 prp(crab_rp)
 ```
 
-]]
-
-
-
 ---
-## Example - Crabs
+# Example - Crabs
 
-```{r out.width="80%", fig.width=6, fig.height=4}
+```{r crabs-plot, out.width="80%", fig.width=6, fig.height=4}
 ggplot(data=crab, aes(x=FL, y=RW, color=sex, shape=sex)) + 
   geom_point(alpha=0.7, size=3) + 
   scale_colour_brewer(palette="Dark2") +
@@ -445,14 +337,13 @@ ggplot(data=crab, aes(x=FL, y=RW, color=sex, shape=sex)) +
 ```
 
 ---
-class: split-50
-layout: false
+# Comparing models
 
-.column[.content.vmiddle.center[
+.pull-left[
 
 Classification tree
 
-```{r out.width="80%", fig.height=4, fig.width=4}
+```{r out.width="100%", fig.height=4, fig.width=4}
 crab_grid <- expand.grid(FL=seq(7,22,0.25), RW=seq(6,17,0.25))
 crab_grid$sex <- predict(crab_rp, newdata=crab_grid, type="class")
 ggplot(data=crab_grid, aes(x=FL, y=RW, color=sex)) + 
@@ -463,12 +354,14 @@ ggplot(data=crab_grid, aes(x=FL, y=RW, color=sex)) +
   theme(aspect.ratio=1, legend.position="none") 
 
 ```
-]]
-.column[.content.vmiddle.center[
+]
+
+
+.pull-right[
 
 Linear discriminant classifier
 
-```{r out.width="80%", fig.height=4, fig.width=4}
+```{r out.width="100%", fig.height=4, fig.width=4}
 library(MASS)
 crab_lda <- lda(sex~FL+RW, data=crab, prior=c(0.5,0.5))
 crab_grid$sex <- predict(crab_lda, newdata=crab_grid)$class
@@ -480,27 +373,43 @@ ggplot(data=crab_grid, aes(x=FL, y=RW, color=sex)) +
   theme(aspect.ratio=1, legend.position="none") 
 ```
 
-]]
+]
 
 ---
-## Pros and cons
+# Strengths and Weaknesses
 
+Strengths:
 
 - The decision rules provided by trees are very easy to explain, and follow. A simple classification model.
 - Trees can handle a mix of predictor types, categorical and quantitative.
 - Trees efficiently operate when there are missing values in the predictors.
+
+Weaknesses:
+
 - Algorithm is greedy, a better final solution might be obtained by taking a second best split earlier.
 - When separation is in linear combinations of variables trees struggle to provide a good classification
 
 ---
-layout: false
 # `r set.seed(2020); emo::ji("technologist")` Made by a human with a computer
 
-### Slides at [https://iml.numbat.space](https://iml.numbat.space).
-### Code and data at [https://github.com/numbats/iml](https://github.com/numbats/iml).
-<br>
+- Slides inspired by [https://iml.numbat.space](https://iml.numbat.space), [https://github.com/numbats/iml](https://github.com/numbats/iml).
+- Created using [R Markdown](https://rmarkdown.rstudio.com) with flair by [**xaringan**](https://github.com/yihui/xaringan), and [**kunoichi** (female ninja) style](https://github.com/emitanaka/ninja-theme).
 
-### Created using [R Markdown](https://rmarkdown.rstudio.com) with flair by [**xaringan**](https://github.com/yihui/xaringan), and [**kunoichi** (female ninja) style](https://github.com/emitanaka/ninja-theme).
-
-<br> 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+
+```{r}
+# output:
+#   xaringan::moon_reader:
+#     css:
+#       - ninjutsu 
+#       - "assets/animate.css"
+#       - "assets/monash-logo.css"
+#       - "assets/monash-brand.css"
+#       - "assets/monash-fonts.css"
+#       - "assets/styles.css" # small improvements
+#       - "assets/custom.css" # add your own CSS here!
+#       - "assets/demo.css" # this should be removed
+#       - "assets/di.css"
+```
+
