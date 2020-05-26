@@ -23,31 +23,14 @@ ggplot(exams, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   theme(text = element_text(size=20)) 
 ```
 
-We could go through and look at misclassifications here, and computing
-the gini and entropy metrics?
+First, we are going to work out the number of misclassifications
 
-```{r}
-sort_exam <- sort(exams$Exam1)
-
-drop_last <- function(x) head(x, -1)
-
-sa_left <-  sort_exam %>% .[-1] %>% accumulate(c, .init = NA_real_)
-sa_right <- rev(sort_exam) %>% .[-1] %>% accumulate(c, 
-                                                    .init = NA_real_, 
-                                                    .dir = "backward")
-
-exams %>% 
-  arrange(Exam1) %>% 
-  mutate(left = sa_left,
-         right = sa_right)
-
-
-```
 
 
 ```{r}
-miss_class <- function(data, y_var) {
-  min(
+# given a binary label in the data, what is the most frequent class 0 or 1?
+max_vote <- function(data, y_var) {
+    max(
     c(
     sum(data[[y_var]] == 0),
     sum(data[[y_var]] == 1)
@@ -55,27 +38,90 @@ miss_class <- function(data, y_var) {
   )
 }
 
-tibble(exam = 1:6,
-       lab = c(1, 0, 1, 1, 1, 0))
-
-```
-
-```{r}
-
-sorted_exams <- exams %>% 
-  arrange(Exam1)
-
-miss_class(sorted_exams[2:100, ], "Label")
-miss_class(sorted_exams[3:100, ], "Label")
-miss_class(sorted_exams[4:100, ], "Label")
-
-exam_mc <- c()
-for(i in 2:nrow(sorted_exams)){
-  vec[i - 1] <- miss_class(sorted_exams[i:nrow(sorted_exams), ], "Label")
+# our 'criterion' for determining a split
+# total = the number of cases to be classified,
+# left the left partition,
+# right the right partition,
+# y_var the class label
+miss_class <- function(total, left, right, y_var) {
+  l_max <- max_vote(left, y_var)
+  r_max <- max_vote(right, y_var)
+  total - (l_max + r_max)
 }
 
-plot(vec, sorted_exams$Exam1[-1])
-plot(y = vec, x = sorted_exams$Exam1[-1])
+miss_party <- function(sorted_data, x_var, y_var) {
+  # total number of cases
+  total <- nrow(sorted_data)
+  # initialise a data frame to hold the results
+  miss_class_ans <- data.frame(
+    x = numeric(total-1), 
+    n = integer(total-1)
+  )
+  colnames(miss_class_ans) <- c(x_var, "n_miss")
+  # loop over the data to generate the number of classifications
+  for(i in 2:total){
+    left <- sorted_data[1:(i-1), ]
+    right <- sorted_data[i:total, ]
+    miss_class_ans[i-1,][[x_var]] <- mean(sorted_data[c(i-1, i),][[x_var]])
+    miss_class_ans[i-1,][["n_miss"]] <- miss_class(total, left, right, y_var)
+  }
+  miss_class_ans
+}
 
 ```
 
+Now we are ready to count the miss-classifications for the first 
+variable `Exam1`. Remember in order to create the partitions we need to 
+sort the data by the variable we are trying to split:
+
+```{r}
+exam1_misclass <- exams %>% 
+  arrange(Exam1) %>% 
+  miss_party(., "Exam1", "Label")
+```
+Plot the result: 
+
+```{r}
+ggplot(exam1_misclass, aes(x = Exam1, y = n_miss)) +
+  geom_line()
+```
+
+
+Which value of `Exam1` minimises the the number of misclassifications and
+should be used for the split?
+
+
+Try again for exam 2:
+
+```{r}
+exam2_misclass <- exams
+  arrange(Exam2) %>% 
+  miss_party(., "Exam2", "Label")
+
+ggplot(exam2_misclass, aes(x = Exam2, y = n_miss)) +
+  geom_line()
+```
+
+What is the minimum number of misclassifications? 
+Which value(s) of `Exam2` minimises the number of misclassifications? There
+are actually two!
+
+So the split happens on the first variable `Exam1` because the split
+results in fewer mis-classifcations!
+
+Run the `rpart` function and plot the tree:
+
+```{r}
+rpart(factor(Label) ~ ., data = exams)
+```
+
+Try running the miss party function after filtering to values on Exam1 below
+the first split: why do you think `rpart` didn't make a further split at this
+node?
+
+```{r}
+exams
+  filter(Exam1 < 56.74626) %>% 
+  arrange(Exam2) %>% 
+  miss_party(., "Exam2", "Label")
+```
