@@ -1,0 +1,124 @@
+---
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(rpart)
+library(rpart.plot)
+library(broomstick)
+```
+
+# Classification Trees
+
+Here we will practice fitting classification trees, for a categorical
+variable that has more than two classes
+
+## Measurements of Australian Crabs
+
+This data consists of measurements about crab species in WA (described 
+[here](http://ggobi.org/book/chap-data.pdf))
+
+> Measurements on rock crabs of the genus Leptograpsus. One
+species L. variegatus had been split into two new species, previously grouped
+by color, orange and blue. Preserved specimens lose their color, so it was
+hoped that morphological differences would enable museum specimens to be
+classified. There are 50 specimens of each sex of each species, collected on site
+at Fremantle, Western Australia. 
+
+
+```{r}
+crabs <- read_csv("data/australian-crabs.csv") %>% 
+  mutate(species = factor(species))
+glimpse(crabs)
+```
+
+What each variable does? 
+
+ * __species__: orange or blue
+ * __sex__: male or female
+ * __index__: observation identifier 1–200
+ * __frontal lip (FL)__ length, in mm
+ * __rear width (RW)__ width, in mm
+ * __carapace length (CL)__ length of midline of the carapace, in mm
+ * __carapace width (CW)__ maximum width of carapace, in mm
+ * __body depth (BD)__ depth of the body; for females, measured after
+displacement of the abdomen, in mm
+
+## Aim
+
+Can we determine the species and sex of the crabs based on the five
+body variables above? 
+
+Let's try and do a simpler problem and see if we can predict the
+species of the crab - whether it is blue or orange
+
+```{r}
+crabs %>% 
+  count(species)
+```
+
+
+Make a scatterplot of FL by BD coloured by the crab species?
+
+```{r}
+ggplot(...)
+```
+
+## Your turn: create a decision tree using FL and BD
+
+```{r}
+rp_crab <- rpart(species ~ FL + BD, data = select(crabs, species, FL:BD))
+
+rpart.plot(rp_crab)
+```
+
+How many terminal nodes are there?
+
+## Plot the decision surfaces for the two most important variables
+
+```{r}
+crab_grid <- expand_grid(
+  FL = seq(min(crabs$FL), max(crabs$FL), length.out = 50),
+  BD = seq(min(crabs$BD), max(crabs$BD), length.out = 50)
+) 
+
+crab_grid_aug <- augment(rp_crab, newdata = crab_grid, type = "class")
+
+ggplot(data = crabs, aes(x=FL, y=BD)) + 
+  geom_point(aes(color= species), shape=2, size=3) +
+  geom_point(data = crab_grid_aug,
+             aes(color = .fitted),
+             alpha=0.3, size=3) + 
+  scale_color_manual(values = c("lightblue", "darkorange")) +
+  theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") 
+```
+
+## Metrics
+
+Use augment on the `rp_crab` to and counts to work out how many 'correct'
+classifications the model makes
+
+```{r}
+crabs_aug <- augment(rp_crab,  type = "class") 
+
+crabs_aug %>% 
+  count(---, ---)
+
+# what's the accuracy of this model? 
+```
+
+
+## Your turn: modify the input parameters
+
+* try changing the splitting criterion (from 'gini' to 'importance')
+
+```{r}
+```
+
+* minsplit and minbucket and cp
+
+How do your results compare to the default? Trying plotting the decision
+boundaries again and look at the metrics for your model fit.
+

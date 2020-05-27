@@ -1,8 +1,8 @@
 ---
 title: "ETC1010: Introduction to Data Analysis"
-week: "Week 10, part A"
-subtitle: "Regression and Decision Trees"
-author: "Nicholas Tierney & Stuart Lee"
+week: "Week 10, part B"
+subtitle: "Classification Trees"
+author: "Professer Di Cook & Nicholas Tierney & Stuart Lee"
 email: "nicholas.tierney@monash.edu"
 date: "May 2020"
 pdflink: ""
@@ -38,22 +38,11 @@ output:
         click: false
       ratio: '16:9'
 ---
-  
-```{r setup, include=FALSE}
-library(tidyverse)
-library(tibble)
-library(vctrs)
-library(knitr)
-library(kableExtra)
-library(countdown)
-library(knitr)
-library(lubridate)
-library(gridExtra)
-library(plotly)
-library(broom)
-library(broomstick)
 
-opts_chunk$set(echo = TRUE,   
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(echo = FALSE,   
                message = FALSE,
                warning = FALSE,
                collapse = TRUE,
@@ -62,58 +51,530 @@ opts_chunk$set(echo = TRUE,
                fig.retina = 2,
                out.width = "100%",
                fig.align = "center",
-               cache = FALSE)
+               cache = TRUE)
+options(htmltools.dir.version = FALSE)
 ```
 
-```{r funs, echo = FALSE}
-draw_split <- function(split){
+```{r pkgs, include = FALSE}
+library(magick)
+library(tidyverse)
+library(broomstick)
+library(gridExtra)
+```
 
-df_add_sst <- df %>% 
-  mutate(x_split = if_else(x <= split, "left", "right")) %>% 
-  group_by(x_split) %>% 
-  mutate(y_bar = mean(y),
-         y_slope = 0) 
 
-ggplot(df_add_sst, 
-       aes(x = x, 
-           y = y)) + 
-  geom_point() +
-  geom_vline(xintercept = split, linetype = 2) +
-  geom_line(aes(y = y_bar), colour = "salmon") + 
-  geom_segment(mapping = aes(xend = x, 
-                             yend = y_bar), 
-               color = "grey50",
-               alpha = 0.5) +
-  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1))
+```{r simulated-data}
+set.seed(2020 - 05 - 21)
+x <- sort(runif(100) - 0.5)
+df <- data.frame(x,
+                 y = 10 * c(x[1:50] ^ 2,
+                            x[51:75] * 2,
+                            -x[76:100] ^ 2) + rnorm(100) * 0.5)
+
+# ggplot(df, aes(x = x, y = y)) + geom_point()
+
+library(rpart)
+# df_lm <- lm(y~x, data=df) - similar to lm! But rpart.
+df_rp <- rpart(y~x, data=df)
+
+splt <- as_tibble(df_rp$splits) %>% 
+  rowid_to_column(var = "order") %>%
+  select(index, order)
+
+df_rp_aug <- augment(df_rp)
+
+```
+
+```{r for-loop}
+sst <- var(df$y)*(nrow(df)-1)
+compute_anova <- function(left, right) {
+  ssl <- var(left$y)*(nrow(left)-1)
+  if (nrow(left) == 1) {
+    ssl <- 1
+}
+  ssr <- var(right$y)*(nrow(right)-1)
+  if (nrow(right) == 1) {
+    ssr <- 1
+  }
+  av <- sst - (ssl+ssr)
+  # av <- (ssl+ssr)
+  return(av)
+}
+aov_f <- data.frame(x=df$x[-1], f=df$y[-1])
+for (i in 2:nrow(df)) {
+  left <- df[1:(i-1),]
+  right <- df[i:nrow(df),]
+  aov_f$x[i-1] <- mean(df$x[c(i-1, i)])
+  aov_f$f[i-1] <- compute_anova(left, right)
 }
 ```
 
-  
+```{r read-exam}
+data <- read.csv("data/Exam.csv", header=T)
+```
+
+
 ```{r titleslide, child="components/titleslide.Rmd"}
 ```
 
 ---
 # recap
 
-- Decision Trees
+- Decision Tree
 
 ---
-# Overview
+# Admin
 
-- What is a regression tree?
-- How is it computed?
-- Deciding when its a good fit
-  - rmse
-- Comparison with linear models
-- Using multiple variables
-- Next class:
-  - How a classification tree differs from a regression tree?
+- Project
+  - Use of data
+  - Don't use kaggle datasets
+  - Talk to us about your data in class and at consults
+- Practical exam
+  - Next Wednesday from 12pm Wednesday, closing 12pm Thursday
+
+---
+# What is a decision tree?
+
+.pull-left[
+Tree based models consist of one or more of nested `if-then` statements for the predictors that partition the data. Within these partitions, a model is used to predict the outcome.
+]
+
+.pull-right[
+```{r images-tree}
+include_graphics("images/tree.jpg")
+```
+
+.small[Source: [Egor Dezhic](becominghuman.ai)]
+
+]
+
+
+---
+# Regression Tree
+
+.pull-left[
+```{r reg-tree-split, fig.height = 10}
+p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+p2 <- ggplot(data=aov_f) +
+  geom_line(aes(x=x, y=f) , colour="hotpink") +
+    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)+
+   scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+grid.arrange(p1, p2, ncol=1)
+```
+]
+
+.pull-right[
+```{r show-split, fig.height = 10}
+ggplot(df, aes(x = x, y = y)) + geom_point() +
+  geom_vline(data = splt,
+             aes(xintercept = index, 
+                 colour = factor(order)),
+             linetype = 2) +
+  geom_text(data = splt,
+            aes(x = index, y = max(df$y), label = order),
+            nudge_x = 0.02) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  scale_colour_viridis_d() +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+]
+
+
+---
+# Regression Tree
+
+.pull-left[
+```{r show-split-again, fig.height = 10}
+ggplot(df, aes(x = x, y = y)) + geom_point() +
+  geom_vline(data = splt,
+             aes(xintercept = index, 
+                 colour = factor(order)),
+             linetype = 2) +
+  geom_text(data = splt,
+            aes(x = index, y = max(df$y), label = order),
+            nudge_x = 0.02) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  scale_colour_viridis_d() +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+]
+
+.pull-right[
+```{r rpart-plot, fig.height = 10}
+library(rpart.plot)
+rpart.plot(df_rp)
+```
+]
+
+---
+# Regression tree
+
+- What if we want to predict something being in a particular group? Say,predicting whether someone passes a course based on two exam scores:
+- Moving from continuous to categorical response.
+
+```{r out.width = "80%"}
+ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
+  geom_point(size=4) + 
+  scale_color_brewer("", palette="Dark2") +
+  theme_minimal() +
+  theme(text = element_text(size=20)) 
+```
+
+
+---
+# Regression? Classification?
+  
+- Regression trees give the predicted response for an observation by using the mean response of the observations that belong to the
+same terminal node:
+
+```{r show-reg-pred}
+ggplot(df_rp_aug,
+       aes(x = x,
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
+```
+
+
+---
+# Classification
+
+A classification tree predicts each observation belonging to the most commonly occurring class of observations.
+
+However, when we interpret a classification tree, we are often interested not only in the class prediction (what is most common), but also the proportion of correct classifications.
+
+---
+# Building a classification tree
+
+- Similar approach to building a classification tree as for regression trees
+- We use this "recursive binary splitting" approach
+- But we don't use the residual sums of squares
+
+
+$$
+SS_T = \sum (y_i-\bar{y})^2
+$$
+
+
+Since we now have a category, we need some way to describe that.
+
+We need something else!
+
+---
+# Classification tree
+
+- We can use the "classification error".
+- Where we count up the number of mis-classified things, and choose the split that has the lowest number of mis-classified things.
+- We can represent this in an equation as the .orange[fraction of observations in a region which don't belong to the most common class].
+
+  
+$$
+E = 1 - \text{max}_{k}(\hat{p}_{mk})
+$$
+
+Here,  $\hat{p}_{mk}$ refers to the proportion of observations in the $m$th region, from the $k$th class. 
+
+---
+# Understanding classification
+
+Another way to think about this is to understand when E is zero, and when E is large
+
+
+$E = 1 - \text{max}_{k}(\hat{p}_{mk})$
+
+
+E is zero when $\text{max}_{k}(\hat{p}_{mk})$ is 1, which is 1 when observations are the same class:
 
 
 
-When the response is categorical, the model is called a classification tree. The criteria for making the splits changes also. There are a number of split criteria commonly used. If we consider a binary response ($y=0, 1$), and $p$ is the proportion of observations in class $1$.
+---
+# Classification trees
 
-- Gini: $2p(1-p)$
-- Entropy: $-p(\log_e p)-(1-p)\log_e(1-p)$
+- A classification tree is used to predict a .orange[categorical response] and regression tree is used to predict a quantitative response
+- Use a recursive binary splitting to grow a classification tree. That is, sequentially break the data into two subsets, typically using a single variable each time.
+- The predicted value for a new observation, $x_0$, will be the .orange[most commonly occurring class] of observations in the sub-region in which $x_0$ falls
 
-Which rewards splits where the observations are all one class.
+
+---
+# Predicting pass or fail ?
+
+Consider the dataset `Exam` where two exam scores are given for each student, 
+and a class `Label` represents whether they passed or failed the course.
+
+.pull-left[
+```{r head-data}
+head(data,4)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, out.width = "100%", fig.height = 4, fig.width = 4}
+ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
+  geom_point(size=4) + 
+  scale_color_brewer("", palette="Dark2") +
+  theme_minimal() +
+  theme(text = element_text(size=20)) 
+```
+]
+
+---
+# Your turn: 
+
+Open "10b-exercise-intro.Rmd" and let's decide a point to split the data.
+
+---
+# Calculate the number of misclassifications
+
+Along all splits for `Exam1` classifying according to the majority class for the left and right splits
+ 
+```{r show-two-dgif, out.width = "80%"}
+include_graphics("gifs/two_d_cart.gif")
+```
+
+Red dots are .orange["fails"], blue dots are .green["passes"], and crosses indicate misclassifications. .small[Source: John Ormerod, U.Syd]
+
+---
+# Calculate the number of misclassifications
+
+Along all splits for `Exam2` classifying according to the majority class for the top and bottom splits
+
+```{r two-d-cart-2-gif, out.width = "80%"}
+include_graphics("gifs/two_d_cart2.gif")
+```
+
+Red dots are .orange["fails"], blue dots are .green["passes"], and crosses indicate misclassifications. .small[Source: John Ormerod, U.Syd]
+
+---
+# Combining the results from `Exam1` and `Exam2` splits
+
+- The minimum number of misclassifications from using all possible splits of `Exam1` was 19 when the value of `Exam1` was **56.7**
+- The minimum number of misclassifications from using all possible splits of `Exam2` was 23 when the value of `Exam2` was .orange[52.5]
+
+--
+
+So we split on the best of these, i.e., split the data on `Exam1` at 56.7.
+---
+# Split criteria - purity/impurity metrics
+
+It turns out that classification error is not sufficiently sensitive for tree-growing.
+
+In practice two other measures are preferable, as they are more sensitive:
+
+- The Gini Index and 
+- Information Entropy. 
+
+They are both quite similar numerically. 
+
+Small values mean that a node contains mostly observations of a single class, referred to as .orange[node purity].
+
+---
+# Example - predicting heart disease
+
+$Y$: presence of heart disease (Yes/No)
+
+$X$: heart and lung function measurements
+
+```{r print-names}
+library(tidyverse)
+library(ISLR)
+library(rpart)
+library(rpart.plot)
+library(caret)
+heart <- read_csv("http://faculty.marshall.usc.edu/gareth-james/ISL/Heart.csv") %>%
+  dplyr::select(-X1) %>% mutate(AHD=factor(AHD))
+heart <- heart %>% filter(!is.na(Ca)) %>% filter(!is.na(Thal))
+colnames(heart)
+```
+
+
+```{r rpart-heart, out.width = "70%"}
+heart <- heart %>% dplyr::select(Age:AHD)
+set.seed(2019)
+tr_indx <- createDataPartition(heart$AHD)$Resample1
+heart_tr <- heart[tr_indx,]
+heart_ts <- heart[-tr_indx,]
+heart_finalrp <- rpart(AHD~., data=heart_tr)
+prp(heart_finalrp)
+```
+
+---
+# Deeper trees
+
+Trees can be built deeper by:
+
+- decreasing the value of the complexity parameter `cp`, which sets the difference between impurity values required to continue splitting.
+- reducing  the `minsplit` and `minbucket` parameters,  which control the number of  observations  below splits are forbidden.
+
+```{r deeper-trees, out.width="70%"}
+heart_finalrp <- rpart(AHD~., data=heart_tr, control=rpart.control(minsplit=6, cp=0.02))
+prp(heart_finalrp)
+```
+
+---
+# Tabulate true vs predicted to make a .orange[confusion table]. 
+
+<center>
+<table>
+<tr>  <td> </td><td> </td> <td colspan="2" align="center" > true </td> </tr>
+<tr>  <td> </td><td> </td> <td align="center" bgcolor="#daf2e9" width="80px"> C1 (positive) </td> <td align="center" bgcolor="#daf2e9" width="80px"> C2 (negative) </td> </tr>
+<tr height="50px">  <td> pred- </td><td bgcolor="#daf2e9"> C1 </td> <td align="center" bgcolor="#D3D3D3"> <em>a</em> </td> <td align="center" bgcolor="#D3D3D3"> <em>b</em> </td> </tr>
+<tr height="50px">  <td>icted </td><td bgcolor="#daf2e9"> C2</td> <td align="center" bgcolor="#D3D3D3"> <em>c</em> </td> <td align="center" bgcolor="#D3D3D3"> <em>d</em> </td> </tr>
+</table>
+</center>
+
+- .orange[Accuracy: *(a+d)/(a+b+c+d)*]
+- .orange[Error: *(b+c)/(a+b+c+d)*]
+- Sensitivity: *a/(a+c)*  (true positive, recall)
+- Specificity: *d/(b+d)* (true negative)
+- .orange[Balanced accuracy: *(sensitivity+specificity)/2*]
+
+---
+# Confusion and error
+
+```{r train-confus}
+confusionMatrix(heart_tr$AHD, predict(heart_finalrp, newdata=heart_tr, type="class"))$table
+confusionMatrix(heart_tr$AHD, predict(heart_finalrp, newdata=heart_tr, type="class"))$overall[1]
+```
+
+```{r train-v-test, out.width="80%", fig.width=6, fig.height=4}
+# Decide on best model
+heart_bigrp <- rpart(AHD~., data=heart_tr, control=rpart.control(minsplit=6, cp=0.005))
+tr_err <- 1-confusionMatrix(factor(heart_tr$AHD), predict(heart_bigrp, newdata=heart_tr, type="class"))$overall[1]
+ts_err <- 1-confusionMatrix(factor(heart_ts$AHD), predict(heart_bigrp, newdata=heart_ts, type="class"))$overall[1]
+nnodes <- max(heart_bigrp$cptable[,2])+1
+cp <- c(0.006, 0.007, 0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.5)
+for (i in 1:length(cp)) {
+  heart_rp <- rpart(AHD~., data=heart_tr, control=rpart.control(minsplit=6, cp=cp[i]))
+  tr_err <- c(tr_err, 1-confusionMatrix(heart_tr$AHD, predict(heart_rp, newdata=heart_tr, type="class"))$overall[1])
+  ts_err <- c(ts_err, 1-confusionMatrix(heart_ts$AHD, predict(heart_rp, newdata=heart_ts, type="class"))$overall[1])
+  nnodes <- c(nnodes, max(heart_rp$cptable[,2])+1)
+}
+heart_fit <- tibble(cp=c(0.005, cp), nnodes, train=tr_err, test=ts_err) %>% 
+  gather(type, error, train, test) 
+
+gg_heart_fit <- ggplot(heart_fit, aes(x=nnodes, y=error, colour=type)) + 
+  geom_line() + scale_colour_brewer("", palette="Dark2") +
+  xlab("Size of tree") + ylim(c(0,0.4))
+```
+
+```{r eval=FALSE}
+# Cross-validation, but it transforms catagorical variables to numeric
+library(e1071)
+caret.control <- trainControl(method = "repeatedcv",
+                              number = 10,
+                              repeats = 1)
+heart_rp <- train(AHD~., 
+                  data=heart,
+                  method = "rpart",
+                  trControl = caret.control,
+                  tuneLength = 100)
+prp(heart_rp$finalModel, digits=2, roundint=FALSE)
+```
+
+
+---
+# Example - Crabs
+
+Physical measurements on WA crabs, males and females.
+
+.small[*Data source*: Campbell, N. A. & Mahon, R. J. (1974)]
+
+```{r read-crabs, out.width="50%", fig.width=5, fig.height=5}
+crab <- read.csv("http://www.ggobi.org/book/data/australian-crabs.csv")
+crab <- subset(crab, species=="Blue", select=c("sex", "FL", "RW"))
+crab_rp <- rpart(sex~FL+RW, data=crab, parms = list(split = "information"), 
+                 control = rpart.control(minsplit=3))
+prp(crab_rp)
+```
+
+---
+# Example - Crabs
+
+```{r crabs-plot, out.width="80%", fig.width=6, fig.height=4}
+ggplot(data=crab, aes(x=FL, y=RW, color=sex, shape=sex)) + 
+  geom_point(alpha=0.7, size=3) + 
+  scale_colour_brewer(palette="Dark2") +
+  theme(aspect.ratio=1) + 
+  geom_vline(xintercept=16, linetype=2) + 
+  geom_segment(aes(x=7, xend=16, y=12, yend=12), color="black", linetype=2) +
+  geom_segment(aes(x=12, xend=12, y=6, yend=12), color="black", linetype=2) + 
+  geom_segment(aes(x=7, xend=16, y=8.1, yend=8.1), color="black", linetype=2) +
+  geom_segment(aes(x=11, xend=11, y=8.1, yend=12), color="black", linetype=2) +
+  geom_segment(aes(x=11, xend=16, y=11, yend=11), color="black", linetype=2) +
+  geom_segment(aes(x=11, xend=11, y=8.1, yend=11), color="black", linetype=2) +
+  geom_segment(aes(x=12, xend=16, y=11, yend=11), color="black", linetype=2) +
+  geom_segment(aes(x=14, xend=14, y=11, yend=12), color="black", linetype=2) +
+  geom_segment(aes(x=16, xend=21.3, y=16, yend=16), color="black", linetype=2)
+```
+
+---
+# Comparing models
+
+.pull-left[
+
+Classification tree
+
+```{r out.width="100%", fig.height=4, fig.width=4}
+crab_grid <- expand.grid(FL=seq(7,22,0.25), RW=seq(6,17,0.25))
+crab_grid$sex <- predict(crab_rp, newdata=crab_grid, type="class")
+ggplot(data=crab_grid, aes(x=FL, y=RW, color=sex)) + 
+  geom_point(alpha=0.3, size=3) + 
+  geom_point(data=crab, aes(x=FL, y=RW, color=sex), shape=2, size=3) + 
+  scale_colour_brewer(palette="Dark2") +
+  theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") 
+
+```
+]
+
+
+.pull-right[
+
+Linear discriminant classifier
+
+```{r out.width="100%", fig.height=4, fig.width=4}
+library(MASS)
+crab_lda <- lda(sex~FL+RW, data=crab, prior=c(0.5,0.5))
+crab_grid$sex <- predict(crab_lda, newdata=crab_grid)$class
+ggplot(data=crab_grid, aes(x=FL, y=RW, color=sex)) + 
+  geom_point(alpha=0.3, size=3) + 
+  geom_point(data=crab, aes(x=FL, y=RW, color=sex), shape=2, size=3) + 
+  scale_colour_brewer(palette="Dark2") +
+  theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") 
+```
+
+]
+
+---
+# Strengths and Weaknesses
+
+Strengths:
+
+- The decision rules provided by trees are very easy to explain, and follow. A simple classification model.
+- Trees can handle a mix of predictor types, categorical and quantitative.
+- Trees efficiently operate when there are missing values in the predictors.
+
+Weaknesses:
+
+- Algorithm is greedy, a better final solution might be obtained by taking a second best split earlier.
+- When separation is in linear combinations of variables trees struggle to provide a good classification
+
+---
+# `r set.seed(2020); emo::ji("technologist")` Made by a human with a computer
+
+- Slides inspired by [https://iml.numbat.space](https://iml.numbat.space), [https://github.com/numbats/iml](https://github.com/numbats/iml).
+- Created using [R Markdown](https://rmarkdown.rstudio.com) with flair by [**xaringan**](https://github.com/yihui/xaringan), and [**kunoichi** (female ninja) style](https://github.com/emitanaka/ninja-theme).
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+
+```{r}
+# include_graphics("images/8.7.png")
+# .small[From: http://www-bcf.usc.edu/~gareth/ISL/Chapter8/8.7.pdf]
+```
+
+
