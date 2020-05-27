@@ -171,7 +171,7 @@ mse <- function(model){
   mod_aug <- augment(model)
   mod_aug %>% 
     mutate(res_2 = .resid^2) %>% 
-    summarise(mse = mean(res_2)) %>% 
+    summarise(mse = mean(sum(res_2))) %>% 
     pull(mse)
 }
 

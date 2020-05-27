@@ -51,12 +51,69 @@ opts_chunk$set(echo = FALSE,
                fig.retina = 2,
                out.width = "100%",
                fig.align = "center",
-               cache = FALSE)
+               cache = TRUE)
 options(htmltools.dir.version = FALSE)
-library(magick)
 ```
 
-  
+```{r pkgs, include = FALSE}
+library(magick)
+library(tidyverse)
+library(broomstick)
+library(gridExtra)
+```
+
+
+```{r simulated-data}
+set.seed(2020 - 05 - 21)
+x <- sort(runif(100) - 0.5)
+df <- data.frame(x,
+                 y = 10 * c(x[1:50] ^ 2,
+                            x[51:75] * 2,
+                            -x[76:100] ^ 2) + rnorm(100) * 0.5)
+
+# ggplot(df, aes(x = x, y = y)) + geom_point()
+
+library(rpart)
+# df_lm <- lm(y~x, data=df) - similar to lm! But rpart.
+df_rp <- rpart(y~x, data=df)
+
+splt <- as_tibble(df_rp$splits) %>% 
+  rowid_to_column(var = "order") %>%
+  select(index, order)
+
+df_rp_aug <- augment(df_rp)
+
+```
+
+```{r for-loop}
+sst <- var(df$y)*(nrow(df)-1)
+compute_anova <- function(left, right) {
+  ssl <- var(left$y)*(nrow(left)-1)
+  if (nrow(left) == 1) {
+    ssl <- 1
+}
+  ssr <- var(right$y)*(nrow(right)-1)
+  if (nrow(right) == 1) {
+    ssr <- 1
+  }
+  av <- sst - (ssl+ssr)
+  # av <- (ssl+ssr)
+  return(av)
+}
+aov_f <- data.frame(x=df$x[-1], f=df$y[-1])
+for (i in 2:nrow(df)) {
+  left <- df[1:(i-1),]
+  right <- df[i:nrow(df),]
+  aov_f$x[i-1] <- mean(df$x[c(i-1, i)])
+  aov_f$f[i-1] <- compute_anova(left, right)
+}
+```
+
+```{r read-exam}
+data <- read.csv("data/Exam.csv", header=T)
+```
+
+
 ```{r titleslide, child="components/titleslide.Rmd"}
 ```
 
@@ -70,13 +127,10 @@ library(magick)
 
 - Project
   - Use of data
-
----
-# Overview
-
-- What is a classification tree?
-- Comparison with linear models
-- Using multiple variables
+  - Don't use kaggle datasets
+  - Talk to us about your data in class and at consults
+- Practical exam
+  - Next Wednesday from 12pm Wednesday, closing 12pm Thursday
 
 ---
 # What is a decision tree?
@@ -98,21 +152,150 @@ include_graphics("images/tree.jpg")
 ---
 # Regression Tree
 
-3 slides:
+.pull-left[
+```{r reg-tree-split, fig.height = 10}
+p1 <- ggplot(df, aes(x=x, y=y)) + geom_point(alpha=0.5) + scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+p2 <- ggplot(data=aov_f) +
+  geom_line(aes(x=x, y=f) , colour="hotpink") +
+    geom_vline(xintercept = df_rp$splits[1,4], colour="hotpink", linetype=2)+
+   scale_x_continuous(breaks=seq(-0.5, 0.5, 0.1))
+grid.arrange(p1, p2, ncol=1)
+```
+]
 
-- Image of the optimal split being chosen
-- Subsequent partitions
-- decision tree being drawn
+.pull-right[
+```{r show-split, fig.height = 10}
+ggplot(df, aes(x = x, y = y)) + geom_point() +
+  geom_vline(data = splt,
+             aes(xintercept = index, 
+                 colour = factor(order)),
+             linetype = 2) +
+  geom_text(data = splt,
+            aes(x = index, y = max(df$y), label = order),
+            nudge_x = 0.02) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  scale_colour_viridis_d() +
+  theme_bw() +
+  theme(legend.position = "none")
+```
 
-- What if we want to predict something being in a particular group?
-  - Moving from continuous to categorical response.
+]
+
+
+---
+# Regression Tree
+
+.pull-left[
+```{r show-split-again, fig.height = 10}
+ggplot(df, aes(x = x, y = y)) + geom_point() +
+  geom_vline(data = splt,
+             aes(xintercept = index, 
+                 colour = factor(order)),
+             linetype = 2) +
+  geom_text(data = splt,
+            aes(x = index, y = max(df$y), label = order),
+            nudge_x = 0.02) +
+  scale_x_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  scale_colour_viridis_d() +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+]
+
+.pull-right[
+```{r rpart-plot, fig.height = 10}
+library(rpart.plot)
+rpart.plot(df_rp)
+```
+]
+
+---
+# Regression tree
+
+- What if we want to predict something being in a particular group? Say,predicting whether someone passes a course based on two exam scores:
+- Moving from continuous to categorical response.
+
+```{r out.width = "80%"}
+ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
+  geom_point(size=4) + 
+  scale_color_brewer("", palette="Dark2") +
+  theme_minimal() +
+  theme(text = element_text(size=20)) 
+```
+
+
+---
+# Regression? Classification?
+  
+- Regression trees give the predicted response for an observation by using the mean response of the observations that belong to the
+same terminal node:
+
+```{r show-reg-pred}
+ggplot(df_rp_aug,
+       aes(x = x,
+           y = y)) + 
+  geom_point() +
+  geom_line(aes(y = .fitted), colour = "salmon", size = 2)
+```
+
+
+---
+# Classification
+
+A classification tree predicts each observation belonging to the most commonly occurring class of observations.
+
+However, when we interpret a classification tree, we are often interested not only in the class prediction (what is most common), but also the proportion of correct classifications.
+
+---
+# Building a classification tree
+
+- Similar approach to building a classification tree as for regression trees
+- We use this "recursive binary splitting" approach
+- But we don't use the residual sums of squares
+
+
+$$
+SS_T = \sum (y_i-\bar{y})^2
+$$
+
+
+Since we now have a category, we need some way to describe that.
+
+We need something else!
+
+---
+# Classification tree
+
+- We can use the "classification error".
+- Where we count up the number of mis-classified things, and choose the split that has the lowest number of mis-classified things.
+- We can represent this in an equation as the .orange[fraction of observations in a region which don't belong to the most common class].
+
+  
+$$
+E = 1 - \text{max}_{k}(\hat{p}_{mk})
+$$
+
+Here,  $\hat{p}_{mk}$ refers to the proportion of observations in the $m$th region, from the $k$th class. 
+
+---
+# Understanding classification
+
+Another way to think about this is to understand when E is zero, and when E is large
+
+
+$E = 1 - \text{max}_{k}(\hat{p}_{mk})$
+
+
+E is zero when $\text{max}_{k}(\hat{p}_{mk})$ is 1, which is 1 when observations are the same class:
+
+
 
 ---
 # Classification trees
 
 - A classification tree is used to predict a .orange[categorical response] and regression tree is used to predict a quantitative response
 - Use a recursive binary splitting to grow a classification tree. That is, sequentially break the data into two subsets, typically using a single variable each time.
-- The predicted value for a new observation, $x_0$, will be the .orange[most commonly occurring class] of training observations in the sub-region in which $x_0$ falls
+- The predicted value for a new observation, $x_0$, will be the .orange[most commonly occurring class] of observations in the sub-region in which $x_0$ falls
 
 
 ---
@@ -120,10 +303,6 @@ include_graphics("images/tree.jpg")
 
 Consider the dataset `Exam` where two exam scores are given for each student, 
 and a class `Label` represents whether they passed or failed the course.
-
-```{r read-exam}
-data <- read.csv("data/Exam.csv", header=T)
-```
 
 .pull-left[
 ```{r head-data}
@@ -133,7 +312,6 @@ head(data,4)
 
 .pull-right[
 ```{r, echo=FALSE, out.width = "100%", fig.height = 4, fig.width = 4}
-library(tidyverse)
 ggplot(data, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   geom_point(size=4) + 
   scale_color_brewer("", palette="Dark2") +
@@ -181,12 +359,16 @@ So we split on the best of these, i.e., split the data on `Exam1` at 56.7.
 ---
 # Split criteria - purity/impurity metrics
 
-- The .orange[Gini index] measures total variance across the $K$ classes:
-	$$G = \sum_{k =1}^K \hat{p}_{mk}(1 - \hat{p}_{mk})$$
-- .orange[Entropy] is defined as
-	$$D = - \sum_{k =1}^K \hat{p}_{mk} log(\hat{p}_{mk})$$ 
-- If all $\hat{p}_{mk}$’s close to zero or one, $G$ and $D$ are small.
+It turns out that classification error is not sufficiently sensitive for tree-growing.
 
+In practice two other measures are preferable, as they are more sensitive:
+
+- The Gini Index and 
+- Information Entropy. 
+
+They are both quite similar numerically. 
+
+Small values mean that a node contains mostly observations of a single class, referred to as .orange[node purity].
 
 ---
 # Example - predicting heart disease
@@ -294,20 +476,6 @@ prp(heart_rp$finalModel, digits=2, roundint=FALSE)
 
 
 ---
-# Comparison with LDA
-
-Look at the following classification problems and resultant decision boundaries for LDA (left) and CART (right). 
-
-.green[What characteristics determine which method is more appropriate?]
-
-```{r images-lda-cart}
-include_graphics("images/8.7.png")
-```
-
-.small[From: http://www-bcf.usc.edu/~gareth/ISL/Chapter8/8.7.pdf]
-
-
----
 # Example - Crabs
 
 Physical measurements on WA crabs, males and females.
@@ -405,17 +573,8 @@ Weaknesses:
 
 
 ```{r}
-# output:
-#   xaringan::moon_reader:
-#     css:
-#       - ninjutsu 
-#       - "assets/animate.css"
-#       - "assets/monash-logo.css"
-#       - "assets/monash-brand.css"
-#       - "assets/monash-fonts.css"
-#       - "assets/styles.css" # small improvements
-#       - "assets/custom.css" # add your own CSS here!
-#       - "assets/demo.css" # this should be removed
-#       - "assets/di.css"
+# include_graphics("images/8.7.png")
+# .small[From: http://www-bcf.usc.edu/~gareth/ISL/Chapter8/8.7.pdf]
 ```
+
 

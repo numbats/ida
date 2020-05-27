@@ -67,7 +67,6 @@ miss_party <- function(sorted_data, x_var, y_var) {
   }
   miss_class_ans
 }
-
 ```
 
 Now we are ready to count the miss-classifications for the first 
@@ -92,14 +91,13 @@ should be used for the split?
 
 
 Try again for exam 2:
-
 ```{r}
-exam2_misclass <- exams
-  arrange(Exam2) %>% 
-  miss_party(., "Exam2", "Label")
+sorted_exams <- exams %>% 
+  arrange(Exam1)
 
-ggplot(exam2_misclass, aes(x = Exam2, y = n_miss)) +
-  geom_line()
+exam_mc <- c()
+for(i in 2:nrow(sorted_exams)){
+  vec[i - 1] <- miss_class(sorted_exams[i:nrow(sorted_exams), ], "Label")
 ```
 
 What is the minimum number of misclassifications? 
@@ -125,3 +123,19 @@ exams
   arrange(Exam2) %>% 
   miss_party(., "Exam2", "Label")
 ```
+
+
+```{r}
+vec <- c(0, 1, 0, 1, 0, 0)
+
+df <- tibble(exam1 = runif(6), 
+             exam2 = runif(6),
+             lab = c("pass", "fail", "pass", "pass", "pass", "fail"))
+
+ggplot(df,
+       aes(x = exam1,
+           y = exam2,
+           colour = lab)) + 
+  geom_point()
+```
+
