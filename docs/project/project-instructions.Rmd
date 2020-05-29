@@ -35,9 +35,9 @@ This project will be conducted collaboratively, with team of your choices, and w
 ```{r create-deadline-table, echo = FALSE}
 due_date <- c("Milestone 1: 15th May at midnight",
               "Milestone 2: 22nd May", 
-              "Milestone 3: 27th May",
-              "Milestone 4: 3rd June",
-              "Milestone 5: 10th June")
+              "Milestone 3: 29th May",
+              "Milestone 4: 5th June",
+              "Milestone 5: 8th + 10th June")
 
 # Find team members, and potential topics to study (List of groups will be posted here)
 # Team members and team name, data description.
