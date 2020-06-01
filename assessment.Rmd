@@ -132,3 +132,4 @@ Past Example projects from ETC1010:
 
 - Practical Exam 2019 Semester 1: [Rmd](exam/practical_exam_2019_S1.Rmd) [HTML](exam/practical_exam_2019_S1.html)
 - Practical Exam 2019 Semester 1 Solution: [Rmd](exam/practical_exam_2019_S1_solution.Rmd) [HTML](exam/practical_exam_2019_S1_solution.html)
+- [Practical Exam 2020 Semester 2, solution and student copy](exam/practical-exam-2019-s2.zip)
