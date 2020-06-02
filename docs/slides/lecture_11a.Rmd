@@ -1,0 +1,176 @@
+---
+title: "ETC1010: Introduction to Data Analysis"
+week: "Week 11"
+subtitle: "Notes on the practical Exam"
+author: "Nicholas Tierney"
+email: "nicholas.tierney@monash.edu"
+date: "June 2020"
+pdflink: ""
+bgimg: "images/bg1.jpg"
+output:
+  xaringan::moon_reader:
+    css:
+      - ninjutsu 
+      - "assets/animate.css"
+      - "assets/monash-logo.css"
+      - "assets/monash-brand.css"
+      - "assets/monash-fonts.css"
+      - "assets/styles.css" # small improvements
+      - "assets/custom.css" # add your own CSS here!
+      - "assets/demo.css" # this should be removed
+    self_contained: false 
+    seal: false 
+    chakra: 'libs/remark-latest.min.js'
+    lib_dir: libs
+    includes:
+      in_header: "assets/custom.html"
+    mathjax: "assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    nature:
+      highlightStyle: github 
+      highlightLanguage: r 
+      highlightLines: true
+      highlightSpans: false 
+      countIncrementalSlides: false
+      slideNumberFormat: '%current%/%total%'
+      navigation:
+        scroll: false 
+        touch: true
+        click: false
+      ratio: '16:9'
+---
+  
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+opts_chunk$set(echo = TRUE,   
+               message = FALSE,
+               warning = FALSE,
+               collapse = TRUE,
+               fig.height = 4,
+               fig.width = 8,
+               fig.retina = 2,
+               out.width = "100%",
+               fig.align = "center",
+               cache = FALSE)
+```
+
+
+```{r titleslide, child="components/titleslide.Rmd"}
+```
+
+---
+class: transition
+# Some notes on the practical exam
+
+---
+# Practical exam
+
+- Practical exam is worth 15% of your final grade
+- There is another practical exam up on the assessment tab for you to access
+- There are two parts to submission:
+
+1. Rmd and HTML files have to be submitted on ED (7 possible marks)
+2. ED quiz will open and you must complete this  (28 possible marks)
+
+- Practical exam opens at **12:00pm on Wednesday 3rd June**
+- Practical exam closes at **12:00pm on Thursday 4th June**
+- ED quiz opens at at **12:01pm on Thursday 4th June and close at 8pm that same day**
+
+---
+# Practical Exam: How Marks are allocated
+
+- 35 marks total
+  - 7 Marks for submitting an Rmd document that compiles to HTML will full answers
+  - 28 Marks for completing the ED quiz, which will contain the questions from the Rmd.
+    - These questions will be multiple choice or short answer.
+  
+---
+# Example of questions on practical exam and questions on ED
+
+Question on ED:
+
+> "How many students are enrolled in ETC1010?"
+
+Multiple Choice:
+
+B) 125
+C) 129
+A) 134
+D) 131
+
+---
+# Expectations for independent work
+
+COVID19 has meant that we've had to change a lot about how we teach and do the course. We wanted to give you all a fair opportunity to complete the assignment in a timeline that suits you. So we have given you 24 hours to complete the exam.
+
+Please make sure that you don't cheat, and be fair. Penalties for cheating will carry the same academic penalty
+
+- Open book
+- Internet access
+- No contacting / messaging / communicating friends during exam (penalty will be the same as cheating in exam)
+- No collaborating with others (students, anyone online)
+- No discussion on anything related to this exercise with others, the work submitted should reflect entirely your own work.
+- Clarification questions can be asked between 12-2pm on Wednesday at the lecture zoom chat
+
+---
+class: transition
+# The project: What and when do we present?
+
+---
+# Due dates for the final project
+
+Friday 5th June by midnight:
+
+- Submit the full storyboard
+  - This should be a zip file that contains everything I would need to re-run the project.
+
+Monday 8th June by 4pm
+
+- Final project video submitted
+  - We are still finalising the best way to submit the final video, but it is looking likely that we will be asking you to submit the video via ED or moodle, rather than youtube. More details to come.
+
+---
+# The Project: More general questions
+
+> "Do we need to stick to 5 minutes"
+
+- Yes! You can do shorter if you like, but 3-5 minutes is a good aim
+- DO: Keep it 5 minutes or shorter
+- DO NOT: Have a video less than 2 minutes
+- DO NOT: Have a video more than 5 minutes.
+
+---
+# The Project: More general questions
+
+> "Do we need to show the data cleaning?"
+
+- Yes, I should be able to see the data cleaning that you have done in the final submitted storyboard.
+- Your data cleaning should be in the final submitted project, and ideally should be visible in the 
+
+- DO: Give a brief overview of the data cleaning required for your project in your presentation
+- DO NOT: Spend 4 minutes talking about data cleaning and 1 minute talking about what you learn from the dataset
+
+- DO: Provide the code used to clean your data, potentially in a tab/page in your flexdashboard (but you don't need to walk through all of it)
+- DO: Provide the cleaning code in your final submission.
+- DO NOT: only say: "Data was cleaned and tidied for data analysis".
+
+---
+# The Project: Sharing your project
+
+- You might be interested in sharing your project with others, if you want to share your final project, there's a pretty nifty solution with `netlify` that is free, I've made a short video on how to share your project there: https://www.youtube.com/watch?v=mAM7IYLbv30
+
+---
+
+# The Project: More general questions
+
+> "How many questions should we ask?"
+  
+- About 3 main questions - roughly one per person in your group. You want to be able to present in five minutes
+
+> "How will the project be marked?"
+
+- You will all mark the projects as you watch them, an ED quiz will be uploaded with the presentations.
+- Peer marks count for 30 marks
+- Instructor marks for the remaining marks

@@ -95,6 +95,7 @@ kable(escape = FALSE,
 - **Deadline 2 (22nd May  at midnight)**:  Team members and team name, data description.
 - **Deadline 3 (29th May  at midnight) **:  Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.
 - **Deadline 4 (5th June) **:  Final version of story board uploaded. 
+- **Deadline 5( 8th June)**: Video of presentation uploaded.
 - **Presentation in week 12**
 
 There are several ways to do the storyboard:
@@ -132,4 +133,4 @@ Past Example projects from ETC1010:
 
 - Practical Exam 2019 Semester 1: [Rmd](exam/practical_exam_2019_S1.Rmd) [HTML](exam/practical_exam_2019_S1.html)
 - Practical Exam 2019 Semester 1 Solution: [Rmd](exam/practical_exam_2019_S1_solution.Rmd) [HTML](exam/practical_exam_2019_S1_solution.html)
-- [Practical Exam 2020 Semester 2, solution and student copy](exam/practical-exam-2019-s2.zip)
+- [Practical Exam 2019 Semester 2, solution and student copy](exam/practical-exam-2019-s2.zip)

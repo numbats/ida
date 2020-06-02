@@ -1,7 +1,7 @@
 ---
 title: "ETC1010 Project"
 author: "Nicholas Tierney"
-date: "04/09/2019"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -37,7 +37,8 @@ due_date <- c("Milestone 1: 15th May at midnight",
               "Milestone 2: 22nd May", 
               "Milestone 3: 29th May",
               "Milestone 4: 5th June",
-              "Milestone 5: 8th + 10th June")
+              "Milestone 5: 8th June",
+              "View + mark videos: 9th-12th June")
 
 # Find team members, and potential topics to study (List of groups will be posted here)
 # Team members and team name, data description.
@@ -49,13 +50,15 @@ turn_in <- c("Prospective team members and topics",
              "Team members and team name, and paragraph describing possible data sets, with links to the data sources.",
              "Electronic copy of your data, and a page of data description, and cleaning done, or needing to be done.",
              "Final version of story board uploaded",
+             "Upload project presentation video by 4pm",
              "Project presentations during class periods. All students are expected to attend, and points will be de- ducted for non-attendance.")
 
 points <- c(5,
             5,
             10,
-            40,
-            "30 (peer evaluation) 5 points will be deducted from your presenta- tion score if you do not attend for the entire class, and 5 points if you skip the class where you did not present.")
+            20,
+            20,
+            "30 (peer evaluation) 5 points will be deducted from your presentation score if you do not mark all presentations. 5 points if you skip the class where you did not present.")
 
 library(tibble)
 df_project <- tibble(`Due date` = due_date,

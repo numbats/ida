@@ -16,11 +16,14 @@ exams
 ```
 
 ```{r}
-ggplot(exams, aes(x=Exam1, y=Exam2, color=factor(Label))) +
+
+p <- ggplot(exams, aes(x=Exam1, y=Exam2, color=factor(Label))) +
   geom_point(size=4) + 
   scale_color_brewer("", palette="Dark2") +
   theme_minimal() +
   theme(text = element_text(size=20)) 
+
+p
 ```
 
 First, we are going to work out the number of misclassifications
@@ -85,6 +88,11 @@ ggplot(exam1_misclass, aes(x = Exam1, y = n_miss)) +
   geom_line()
 ```
 
+```{r}
+p + 
+  geom_vline(xintercept = 57, colour = "red")
+```
+
 
 Which value of `Exam1` minimises the the number of misclassifications and
 should be used for the split?
@@ -99,8 +107,15 @@ exam2_misclass <- exams %>%
   arrange(Exam2) %>% 
   miss_party(., "Exam2", "Label")
 
+exam1_misclass %>% filter(n_miss == min(n_miss))
+exam2_misclass %>% filter(n_miss == min(n_miss))
+
 ggplot(exam2_misclass, aes(x = Exam2, y = n_miss)) +
   geom_line()
+
+p + 
+  geom_vline(xintercept = 57, colour = "red") +
+  geom_hline(yintercept = 53, colour = "blue")
 ```
 
 What is the minimum number of misclassifications? 
@@ -118,6 +133,13 @@ rp_exams <- rpart(factor(Label) ~ ., data = exams)
 library(rpart.plot)
 
 rpart.plot(rp_exams)
+
+library(ggpart)
+
+p + 
+  geom_vline(xintercept = 57, colour = "red") +
+  geom_hline(yintercept = 43, colour = "blue")
+
 ```
 
 Try running the miss party function after filtering to values on Exam1 below
