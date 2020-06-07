@@ -1,15 +1,3 @@
----
-title: "ETC1010 Groups, Semester one, 2020"
-output: html_document
----
-
-# Confirm your final groups! See username below, and your group, then find your group members!
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r get-groups, include = FALSE}
 library(googlesheets4)
 library(tidyverse)
 googlesheets4::gs4_auth(email = "nicholas.tierney@monash.edu")
@@ -21,9 +9,7 @@ final_groups <- read_sheet("https://docs.google.com/spreadsheets/d/1YZAhzZvrPyIP
   select(username,
          email_address,
          project_group)
-```
 
-```{r dt, echo = FALSE}
-DT::datatable(final_groups)
-```
+View(final_groups)
 
+write_csv(final_groups, "groups/final_groups.csv")
