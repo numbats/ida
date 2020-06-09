@@ -1,0 +1,45 @@
+---
+title: "ETC1010 Final project links, Semester one, 2020"
+output: html_document
+---
+
+# Here are the final links for the final project
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-sheets, echo = FALSE, include = FALSE}
+# library(googlesheets4)
+library(tidyverse)
+library(glue)
+links <- read_csv(here::here("project/final-group-link.csv"),
+                  col_names = c("project",
+                                "full_link"),
+                  skip = 1) %>% 
+  mutate(link = glue("[{project}]({full_link})")) %>% 
+  select(project, link)
+  # "<a href='", site,"' target='_blank'>", site,"</a>"
+  # mutate(link = glue("<a href='{full_link}'target='_blank'>{project}</a>"))
+```
+
+```{r dt, echo = FALSE}
+knitr::kable(links)
+```
+
+```{r create-sheets, echo = FALSE}
+# googlesheets4::gs4_auth(email = "nicholas.tierney@monash.edu")
+
+# final_project <- read_sheet("https://docs.google.com/spreadsheets/d/1YZAhzZvrPyIPHsTl0MGsLiNzL4U1s2-AbdO0SdFufyk/edit#gid=323156061",
+#                      sheet = "project-final-milestone",
+#                      .name_repair = janitor::make_clean_names) %>% 
+#   filter(enrolled == "Enrolled") %>%
+#   select(username,
+#          email_address,
+#          project_group) %>% 
+#   distinct(project_group)
+# 
+# write_csv(final_project, path = "project/final-group-link.csv")
+# this file is then edited to add the links
+```
+
