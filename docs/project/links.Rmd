@@ -17,8 +17,9 @@ links <- read_csv(here::here("project/final-group-link.csv"),
                   col_names = c("project",
                                 "full_link"),
                   skip = 1) %>% 
-  mutate(link = glue("<a href='{full_link}'target='_blank'>{project}</a>")) %>% 
+  mutate(link = glue("<a href='{full_link}'target='_blank'>{project}</a>"))  %>% 
   select(project, link)
+
 ```
 
 ```{r dt, echo = FALSE}
