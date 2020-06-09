@@ -17,14 +17,12 @@ links <- read_csv(here::here("project/final-group-link.csv"),
                   col_names = c("project",
                                 "full_link"),
                   skip = 1) %>% 
-  mutate(link = glue("[{project}]({full_link})")) %>% 
+  mutate(link = glue("<a href='{full_link}'target='_blank'>{project}</a>")) %>% 
   select(project, link)
-  # "<a href='", site,"' target='_blank'>", site,"</a>"
-  # mutate(link = glue("<a href='{full_link}'target='_blank'>{project}</a>"))
 ```
 
 ```{r dt, echo = FALSE}
-knitr::kable(links)
+DT::datatable(links, escape = FALSE)
 ```
 
 ```{r create-sheets, echo = FALSE}
