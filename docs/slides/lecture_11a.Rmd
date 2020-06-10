@@ -89,7 +89,22 @@ class: transition
 ---
 # Example of questions on practical exam and questions on ED
 
-Question on ED:
+Question on Practical Exam:
+
+> "How many students are enrolled in ETC1010?"
+
+```{r}
+library(tidyverse)
+students <- read_csv("students.csv")
+length(unique(students))
+```
+
+!> Answer: ...
+
+---
+# Example of questions on practical exam and questions on ED
+
+Question on ED (Note that it is the same question, but provides MCQ):
 
 > "How many students are enrolled in ETC1010?"
 
@@ -99,6 +114,7 @@ B) 125
 C) 129
 A) 134
 D) 131
+
 
 ---
 # Expectations for independent work
