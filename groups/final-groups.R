@@ -10,6 +10,4 @@ final_groups <- read_sheet("https://docs.google.com/spreadsheets/d/1YZAhzZvrPyIP
          email_address,
          project_group)
 
-View(final_groups)
-
 write_csv(final_groups, "groups/final_groups.csv")

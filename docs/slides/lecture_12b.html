@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ETC1010: Introduction to Data Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nicholas Tierney" />
+    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    -->
+    <link rel="icon" href="images/favicon.ico"  type='image/x-icon'/>    
+    <link rel="stylesheet" href="assets/animate.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-logo.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-brand.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles.css" type="text/css" />
+    <link rel="stylesheet" href="assets/custom.css" type="text/css" />
+    <link rel="stylesheet" href="assets/demo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+  
+
+
+
+
+
+&lt;!-- background-color: #006DAE --&gt;
+&lt;!-- class: middle center hide-slide-number --&gt;
+
+&lt;div class="shade_black"  style="width:60%;right:0;bottom:0;padding:10px;border: dashed 4px white;margin: auto;"&gt;
+&lt;i class="fas fa-exclamation-circle"&gt;&lt;/i&gt; These slides are viewed best by Chrome and occasionally need to be refreshed if elements did not load properly. See &lt;a href=/&gt;here for PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;br&gt;
+
+.white[Press the **right arrow** to progress to the next slide!]
+
+---
+
+background-image: url(images/bg1.jpg)
+background-size: cover
+class: hide-slide-number split-70 title-slide
+count: false
+
+.column.shade_black[.content[
+
+&lt;br&gt;
+
+# .monash-blue.outline-text[ETC1010: Introduction to Data Analysis]
+
+&lt;h2 class="monash-blue2 outline-text" style="font-size: 30pt!important;"&gt;Week 12&lt;/h2&gt;
+
+&lt;br&gt;
+
+&lt;h2 style="font-weight:900!important;"&gt;Notes on the final Exam&lt;/h2&gt;
+
+.bottom_abs.width100[
+
+Lecturer: *Nicholas Tierney*
+
+Department of Econometrics and Business Statistics
+
+<span>&lt;i class="fas  fa-envelope faa-float animated "&gt;&lt;/i&gt;</span>  nicholas.tierney@monash.edu
+
+June 2020
+
+&lt;br&gt;
+]
+
+
+]]
+
+
+
+&lt;div class="column transition monash-m-new delay-1s" style="clip-path:url(#swipe__clip-path);"&gt;
+&lt;div class="background-image" style="background-image:url('images/large.png');background-position: center;background-size:cover;margin-left:3px;"&gt;
+&lt;svg class="clip-svg absolute"&gt;
+&lt;defs&gt;
+&lt;clipPath id="swipe__clip-path" clipPathUnits="objectBoundingBox"&gt;
+&lt;polygon points="0.5745 0, 0.5 0.33, 0.42 0, 0 0, 0 1, 0.27 1, 0.27 0.59, 0.37 1, 0.634 1, 0.736 0.59, 0.736 1, 1 1, 1 0, 0.5745 0" /&gt;
+&lt;/clipPath&gt;
+&lt;/defs&gt;	
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+---
+class: transition
+# Well done on your projects!
+
+---
+# We did it!
+
+--
+
+What a semester!
+
+--
+
+Thank you all for your patience, it's been a hard semester for all of us.
+
+--
+
+It has been an absolute pleasure to teach you all this semester
+
+You have such a great group of students to work with!
+
+We hope that what we've covered can be useful for you and that you *continue to practice these skills*. 
+
+And maybe use these skills in other classes where you are doing data analysis.
+
+---
+class: transition
+# Special thanks to the super tutor dream team
+
+
+--
+
+Nitika
+
+--
+
+Sarah
+
+--
+
+Sherry
+
+--
+
+Steff
+
+
+---
+# Exam details
+
+- Worth 50% of your final grade
+- Delivered online on moodle (short practice example will be made available soon)
+- MCQ, TRUE/FALSE, Fill in blanks, short answer.
+- **Hurdle requirement**: You must get 40% on the exam to pass the course 
+- Covers entire span of course except guest lecture
+
+---
+# Exam Details
+
+- I'll now talk about the questions in the exam, and some of the concepts you need to be familiar with
+- These concepts will help guide what you focus on in the lectures
+- Disclaimer: This list is **absolutely not exhaustive** - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+# Tidy data Concepts:
+
+Defining and identifying:
+
+- Variables
+- Observations
+- Values
+- Tidy data
+
+---
+# Data Wrangling Concepts:
+
+- Converting "messy" data to tidy data
+- Code / key functions to use to convert data into "tidy" data
+  - e.g, `pivot_longer`, `pivot_wider`, `separate`, etc.
+- Computing summaries using verbs of `dplyr`, `mutate`, `select`, `summarise`, etc.
+- Data formats (CSV, HTML, JSON)
+
+---
+# Relational data concepts:
+
+- Why do joins of data
+- When to do certain types of join
+- Predict output of a join
+- Sketching out code to summarise data from a join
+
+---
+# Data visualisation concepts:
+
+- How the grammar of graphics produces a plot - identify plots produced by which code
+- Understand the focus of a given graphic on the data - questions like: 
+  - "What and how does this graphic make us focus on what feature of the data?"
+  - "What do you learn from a graphic?"
+- Interpreting a graphic
+- Uses of colour
+- Hierarchies of data vis
+
+---
+# Temporal data
+
+- Extracting and cleaning time information
+
+---
+# Workflow
+
+- Filepaths
+- The `here` package
+- How data is read into R from certain files in a directory
+
+---
+# Missing Values concepts:
+
+- Principles of tidy missing data
+- Interpreting graphics of missing data
+- Predict output of function on data with missing values
+- Imputation - what is it, which methods are good / bad / better
+
+---
+# Linear Models Concepts:
+
+- Write down an equation of a model from code output
+
+--
+
+- The formula `\(y = 3x + 5\)` is a function with input `\(x\)`, and output `\(y\)`, when x is `___` , the output is `___`
+
+---
+# Linear Models Concepts:
+
+`$$\widehat{height_{in}} \sim 3.62 + 0.78 Width_{in}$$`
+- **slope**: For each additional inch the painting is wider, the height is expected to be higher, on average, by 0.78 inches.
+
+- **Intercept**: Paintings that are 0 inches wide are expected to be 3.62 inches high, on average.
+
+- If a paining is 5 Inches wide, what is it's estimated height?
+
+---
+# Linear Models Concepts:
+
+- How to make predictions from a fitted model
+- Understand what makes predictions good and bad
+- Measurements of model fit:
+  - R2 - what it is - what values mean good/bad fit?
+  - **A good idea to bring in an equation of R2**
+- Residuals - What do we expect to see
+- Centering variables
+- Think about how you can improve fit of models to your data
+
+---
+# Programming concepts:
+
+- Why write functions
+- How to write a function in R
+- How to take existing code and turn it into a function
+- Identify potential mistakes in provided code
+- Understand what `map` does
+
+---
+# Networks Concepts:
+
+- From an association / correlation matrix, which are most or least related?
+- Understand how you can convert a numeric matrix into a binary association matrix
+- Understand how a correlation matrix (or other association) of data relates to a provided network
+
+---
+# Remember: Not an exhaustive list
+
+These concepts guide what to focus on.
+
+The readings **provide great information that will certainly help improve your understanding**
+
+Remember that these are to help you focus, I can't give you the exam, but I can help tell you what is important.
+
+Disclaimer: This list is not exhaustive - these are to help give you a sense of what I'm thinking about for each of the questions in the exam.
+
+---
+class: transition
+# How to study for the exam.
+
+One approach, the Feynman technique, which boils down to:
+
+&gt; If you want to understand something well, try to explain it simply.
+
+---
+# The Feynman Technique
+
+1. Write the name of the concept at the top of a blank piece of paper.
+2. Explain the concept as if you were teaching it to someone else
+  - In writing
+  - Talking out aloud to a room
+  - Talking to a person IRL / zoom
+3. Identify knowledge gaps - loop back to your explanation and expand.
+4. Challenge yourself to reduce the complexity / jargon of the language
+
+---
+# Feynman Technique
+
+Some resources on Feynman technique:
+
+  - [Video - 2 minutes](https://www.youtube.com/watch?v=tkm0TNFzIeg)
+  - [Video - 6 minutes](https://www.youtube.com/watch?v=_f-qkGJBPts)
+  - [Blog post](https://collegeinfogeek.com/feynman-technique/)
+  
+---
+# How to study for the exam.
+
+- When taking practice exam, make sure you don't have the answers / don't check them immediately
+- Work through examples and exam on an answer until you are confident you've given it your best go
+- Write your own exam questions and share with friends
+
+---
+# Exam technique
+
+- Peruse (read through carefully) the entire exam before starting
+- Rank questions in terms of difficulty for you
+- Complete easy questions first
+- Make sure you've read the entire exam before starting. Your brain starts ticking away and working in the background.
+
+---
+class: transition
+# What Now?
+
+---
+# Join the R community 
+
+&lt;img src="https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/welcome_to_rstats_twitter.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+
+*image from Alison Horst*
+
+---
+# What Now?
+
+- Consider writing up your project as a blog post using [blogdown](https://bookdown.org/yihui/blogdown/) - See [Alison Hill's blogpost on creating your own blog](https://alison.rbind.io/post/2017-06-12-up-and-running-with-blogdown/) 
+- Consider sharing your project talk with the [Melbourne R user network (MelbURN)](https://www.meetup.com/MelbURN-Melbourne-Users-of-R-Network/) or [R-Ladies Melbourne](https://www.meetup.com/rladies-melbourne/)
+- Learning more about git and github with [happygitwithr](https://happygitwithr.com/)
+- Join twitter and partake in discussions on #rstats
+
+---
+# Major
+
+- Where do you go from here, if you are a **business analytics major**
+- Courses using R: 
+    - **core** 
+        - ETC2420: randomization and simulation to understand uncertainty, and a little about Bayesian models
+        - ETC3250: data mining, computationally intensive approach to fitting models
+    - **electives** 
+        - ETC3555, ETC3580: advanced statistical models, and advanced machine learning methods
+        - ETC3550, ETF3500, ETX2250: forcasting and multivariate analysis, data analytics
+
+---
+# Masters
+
+Monash is launching a new masters program, the Masters of Business Analytics.
+
+You can learn more about the new masters program at this link:
+
+https://www.monash.edu/business/master-of-business-analytics
+
+(check out the video too, there are some familiar faces there!)
+
+---
+# Assessment marks
+
+- Assignment 2 marks are finalised, you will have until June 22 to propose changes
+- ED assessment and remaining marks will be uploaded and shared with you via moodle
+
+---
+# Final Exam 
+
+For exam prep, the week before the exam, we will have **three consultation times**. (these will be posted on the course site)
+
+---
+# Final Exam
+
+The exam from last year is posted. 
+
+Not all topics are the same this year, and this should be clear when you look at the questions.
+
+
+---
+# Music from the semester
+
+Normally I play music during the lecture at the start of the lecture, and during group activities.
+
+If you want to listen to any of the music played this semester you can search for "ETC1010" on spotify, or click on these links:
+
+[ETC1010 Openers](https://open.spotify.com/playlist/437mFw9wTy2b17TZksp0Yp?si=n_rlrdB-Tiqd-4HXjLSB3w)
+
+[ETC1010 Closers](https://open.spotify.com/playlist/6OxlUzqcsLhVhKcWhLckbx?si=oBezzbIvTG-G3kU1b0gjPA)
+
+---
+# Course evaluation
+
+*Please complete the course evaluation.*
+
+This is a new version, new material, new format. The course will evolve, and your help in improving it is greatly appreciated.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLanguage": "r",
+"highlightLines": true,
+"highlightSpans": false,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%/%total%",
+"navigation": {
+"scroll": false,
+"touch": true,
+"click": false
+},
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'assets/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
