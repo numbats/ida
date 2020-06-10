@@ -108,29 +108,34 @@ Past Example projects from ETC1010:
 - [Analysing Movie Data](https://ebsmonash.shinyapps.io/Thor/)
 - [Instagram analysis](https://ebsmonash.shinyapps.io/Instagram/)
 
-- Examples from different web sites:
-  - [Blue Bikes Sharing in Boston](https://www.r-bloggers.com/blue-bikes-sharing-in-boston/)
-  - [What birds are observed near Radolfzell? Bird occurrence data in R](https://ropensci.org/blog/2018/08/21/birds-radolfzell/)
-	- [Who wrote the anti-Trump New York Times op-ed? Using tidytext to find document similarity](https://www.r-bloggers.com/who-wrote-the-anti-trump-new-york-times-op-ed-using-tidytext-to-find-document-similarity/)
-	- [Hotels vs Airbnb - Barcelona case study (proof of concept)](https://nycdatascience.com/blog/student-works/web-scraping/hotels-vs-airbnb-barcelona-case-study-proof-of-concept/)
-	- [Don't Worry: Google Only Checks Your Location Every 10 Minutes](http://www.sastibe.de/2018/04/don-t-worry-google-location/)
-	- [World Income, Inequality and Murder](http://staff.math.su.se/hoehle/blog/2018/07/09/gini.html)
-	- [Text analysis of Trump's tweets confirms he writes only the (angrier) Android half](http://varianceexplained.org/r/trump-tweets/)
-	- [What digits should you bet on in Super Bowl squares?](http://varianceexplained.org/r/super-bowl-squares/)
-	- [Exploring handwritten digit classification: a tidy analysis of the MNIST dataset](http://varianceexplained.org/r/digit-eda/)
-	- [Facebook advertising case-study: dog food and manhood](https://rickpackblog.wordpress.com/2018/08/20/facebook-advertising-case-study-dog-food-and-manhood/)
-	- [Analysis of Los Angeles Crime with R](https://datascienceplus.com/analysis-of-los-angeles-crime-with-r/)
-	- [Looking at Seinfeld dialogues using #tidytext](https://pradeepadhokshaja.wordpress.com/2018/08/06/looking-at-seinfeld-dialogues-using-tidytext/)
-	- [Twitter Coverage of the useR Conference 2018](https://github.com/neilfws/Twitter/blob/master/user2018/code/R/user2018.md)
+Examples from different web sites:
+
+- [Blue Bikes Sharing in Boston](https://www.r-bloggers.com/blue-bikes-sharing-in-boston/)
+- [What birds are observed near Radolfzell? Bird occurrence data in R](https://ropensci.org/blog/2018/08/21/birds-radolfzell/)
+- [Who wrote the anti-Trump New York Times op-ed? Using tidytext to find document similarity](https://www.r-bloggers.com/who-wrote-the-anti-trump-new-york-times-op-ed-using-tidytext-to-find-document-similarity/)
+- [Hotels vs Airbnb - Barcelona case study (proof of concept)](https://nycdatascience.com/blog/student-works/web-scraping/hotels-vs-airbnb-barcelona-case-study-proof-of-concept/)
+- [Don't Worry: Google Only Checks Your Location Every 10 Minutes](http://www.sastibe.de/2018/04/don-t-worry-google-location/)
+- [World Income, Inequality and Murder](http://staff.math.su.se/hoehle/blog/2018/07/09/gini.html)
+- [Text analysis of Trump's tweets confirms he writes only the (angrier) Android half](http://varianceexplained.org/r/trump-tweets/)
+- [What digits should you bet on in Super Bowl squares?](http://varianceexplained.org/r/super-bowl-squares/)
+- [Exploring handwritten digit classification: a tidy analysis of the MNIST dataset](http://varianceexplained.org/r/digit-eda/)
+- [Facebook advertising case-study: dog food and manhood](https://rickpackblog.wordpress.com/2018/08/20/facebook-advertising-case-study-dog-food-and-manhood/)
+- [Analysis of Los Angeles Crime with R](https://datascienceplus.com/analysis-of-los-angeles-crime-with-r/)
+- [Looking at Seinfeld dialogues using #tidytext](https://pradeepadhokshaja.wordpress.com/2018/08/06/looking-at-seinfeld-dialogues-using-tidytext/)
+- [Twitter Coverage of the useR Conference 2018](https://github.com/neilfws/Twitter/blob/master/user2018/code/R/user2018.md)
 
 ## Exam information
 
 - [Formula sheet](exam/formula_sheet.pdf)
 
-- [Final Exam for 2018 Semester 1](exam/exam2018.pdf) [(solution)](exam/exam2018_solution.pdf)
-- [Final Exam for 2018 Semester 2](exam/exam2018_S2.pdf) [(solution)](exam/exam2018_S2_solution.pdf)
-- [Final Exam for 2019 Semester 1](exam/exam2019-s1.pdf)
+**practical exam**
 
 - Practical Exam 2019 Semester 1: [Rmd](exam/practical_exam_2019_S1.Rmd) [HTML](exam/practical_exam_2019_S1.html)
 - Practical Exam 2019 Semester 1 Solution: [Rmd](exam/practical_exam_2019_S1_solution.Rmd) [HTML](exam/practical_exam_2019_S1_solution.html)
 - [Practical Exam 2019 Semester 2, solution and student copy](exam/practical-exam-2019-s2.zip)
+
+**Final exams**
+
+- [Final Exam for 2018 Semester 1](exam/exam2018.pdf) [(solution)](exam/exam2018_solution.pdf)
+- [Final Exam for 2018 Semester 2](exam/exam2018_S2.pdf) [(solution)](exam/exam2018_S2_solution.pdf)
+- [Final Exam for 2019 Semester 1](exam/final-exam-2019-s1.pdf) [(Solution)](exam/final-exam-2019-s1-solution.pdf)
